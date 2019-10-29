@@ -24,11 +24,12 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Navigator, Forms.Scaffold, Frames.Logo;
+uses UI.Consts, UI.Navigator, Forms.Scaffold, Frames.Logo;
 
 constructor TMainForm.Create(AOwner: TComponent);
 begin
   inherited;
+
   Navigator(FormStand1) // initialization
 
   .DefineRoute<TScaffoldForm>( // route definition

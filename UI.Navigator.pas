@@ -51,7 +51,7 @@ type
     class destructor ClassDestroy;
   end;
 
-function Navigator(const AFormStand: TFormStand = nil): TNavigator; inline;
+function Navigator(const AFormStand: TFormStand = nil): TNavigator;
 
 implementation
 
