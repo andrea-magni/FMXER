@@ -1,0 +1,20 @@
+object GlyphFrame: TGlyphFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 240.000000000000000000
+  Size.PlatformDefault = False
+  object ContentGlyph: TGlyph
+    Align = Client
+    Size.Width = 320.000000000000000000
+    Size.Height = 240.000000000000000000
+    Size.PlatformDefault = False
+    object ClickLayout: TLayout
+      Align = Contents
+      Size.Width = 320.000000000000000000
+      Size.Height = 240.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnClick = ClickLayoutClick
+    end
+  end
+end

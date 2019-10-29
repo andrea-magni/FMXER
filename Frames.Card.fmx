@@ -1,0 +1,86 @@
+object CardFrame: TCardFrame
+  Align = Client
+  Padding.Left = 3.000000000000000000
+  Padding.Top = 3.000000000000000000
+  Padding.Right = 3.000000000000000000
+  Padding.Bottom = 3.000000000000000000
+  Margins.Left = 3.000000000000000000
+  Margins.Top = 3.000000000000000000
+  Margins.Right = 3.000000000000000000
+  Margins.Bottom = 3.000000000000000000
+  Size.Width = 290.000000000000000000
+  Size.Height = 210.000000000000000000
+  Size.PlatformDefault = False
+  object TitleLayout: TLayout
+    Align = Top
+    Position.X = 3.000000000000000000
+    Position.Y = 3.000000000000000000
+    Size.Width = 284.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object TitleBackground: TRectangle
+      Align = Contents
+      Fill.Color = xFF1565C0
+      HitTest = False
+      Sides = []
+      Size.Width = 284.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object GlyphLayout: TLayout
+      Align = FitLeft
+      Size.Width = 50.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    inline TitleTextFrame: TTextFrame
+      Align = Client
+      Size.Width = 234.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      inherited TextContent: TText
+        Size.Width = 234.000000000000000000
+        Size.Height = 50.000000000000000000
+        TextSettings.HorzAlign = Leading
+      end
+    end
+  end
+  object ContentLayout: TLayout
+    Align = Client
+    Size.Width = 284.000000000000000000
+    Size.Height = 154.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object ContentBackground: TRectangle
+      Align = Contents
+      Fill.Color = claSilver
+      HitTest = False
+      Sides = []
+      Size.Width = 284.000000000000000000
+      Size.Height = 154.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 24
+    Top = 72
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    Left = 96
+    Top = 72
+  end
+end

@@ -1,0 +1,43 @@
+object ActionButtonFrame: TActionButtonFrame
+  Align = Client
+  Size.Width = 200.000000000000000000
+  Size.Height = 200.000000000000000000
+  Size.PlatformDefault = False
+  object BackgroundCircle: TCircle
+    Align = Client
+    Fill.Color = xFF1565C0
+    HitTest = False
+    Size.Width = 200.000000000000000000
+    Size.Height = 200.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Thickness = 0.000000000000000000
+  end
+  object OverlayLayout: TLayout
+    Align = Scale
+    Position.X = 20.000000000000000000
+    Position.Y = 20.000000000000000000
+    Size.Width = 160.000000000000000000
+    Size.Height = 160.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object ClickableLayout: TLayout
+    Align = Contents
+    HitTest = True
+    Size.Width = 200.000000000000000000
+    Size.Height = 200.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    OnClick = ClickableLayoutClick
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    Left = 32
+    Top = 144
+  end
+end

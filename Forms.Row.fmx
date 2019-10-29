@@ -1,0 +1,64 @@
+object RowForm: TRowForm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 228
+  ClientWidth = 357
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object ContentLayout: TLayout
+    Align = Client
+    Size.Width = 357.000000000000000000
+    Size.Height = 228.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object Stands: TStyleBook
+    Styles = <
+      item
+        ResourcesBin = {
+          464D585F5354594C4520322E3501060666616465496E03A60100545046300754
+          4C61796F757400095374796C654E616D65060666616465496E05416C69676E07
+          0643656E7465720A53697A652E57696474680500000000000040A008400B5369
+          7A652E48656967687405000000000000C0C608401453697A652E506C6174666F
+          726D44656661756C7408085461624F7264657202000007544C61796F75740009
+          5374796C654E616D650609636F6E7461696E657205416C69676E0706436C6965
+          6E740A53697A652E57696474680500000000000040A008400B53697A652E4865
+          6967687405000000000000C0C608401453697A652E506C6174666F726D446566
+          61756C7408085461624F726465720200000F54466C6F6174416E696D6174696F
+          6E00095374796C654E616D65060D4F6E53686F775F46616465496E0D416E696D
+          6174696F6E5479706507034F7574084475726174696F6E050000000000000080
+          FF3F0D496E746572706F6C6174696F6E07095175616472617469630C50726F70
+          657274794E616D6506074F7061636974790A537461727456616C756505000000
+          000000000000000953746F7056616C7565050000000000000080FF3F00000000}
+      end>
+    Left = 104
+    Top = 177
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'fadeIn'
+    DefaultStandName = 'fadeIn'
+    StyleBook = Stands
+    StandBook = Stands
+    Left = 104
+    Top = 121
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'fadeIn'
+    DefaultStandName = 'fadeIn'
+    StyleBook = Stands
+    StandBook = Stands
+    Left = 32
+    Top = 121
+  end
+end
