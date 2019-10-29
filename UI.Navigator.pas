@@ -14,6 +14,7 @@ type
   protected
     FRouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>>;
     FActiveRoutes: TDictionary<string, TSubjectInfo>;
+    FStack: TStack<string>;
   protected
     class var _ClassInstance: TNavigator;
     class function GetClassInstance: TNavigator; static;
@@ -26,6 +27,7 @@ type
     procedure CloseAllRoutesExcept(const ARouteName: string);
     procedure CloseRoute(const ARouteName: string);
     procedure CloseRouteDelayed(const ARouteName: string; const ADelay_ms: Integer = 100);
+    procedure StackPop;
     procedure RouteTo(const ARouteName: string);
     procedure RouteToDelayed(const ARouteName: string; const ADelay_ms: Integer = 100);
     function DefineRoute(const ARouteName: string;
@@ -38,6 +40,7 @@ type
     property ActiveRoutes: TDictionary<string, TSubjectInfo> read FActiveRoutes;
     property RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>> read FRouteDefinitions;
     property FormStand: TFormStand read FFormStand;
+    property Stack: TStack<string> read FStack;
     property OnCreateRoute: TProc<string> read FOnCreateRouteProc write FOnCreateRouteProc;
     property OnCloseRoute: TProc<string> read FOnCloseRouteProc write FOnCloseRouteProc;
 
@@ -106,6 +109,7 @@ begin
         end
     );
     ActiveRoutes.Remove(ARouteName);
+    FStack.Pop;
   end;
 end;
 
@@ -126,6 +130,7 @@ begin
   FFormStand := AFormStand;
   FRouteDefinitions := TDictionary<string, TFunc<TSubjectInfo>>.Create;
   FActiveRoutes := TDictionary<string, TSubjectInfo>.Create;
+  FStack := TStack<string>.Create;
 end;
 
 function TNavigator.DefineRoute(const ARouteName: string;
@@ -151,6 +156,7 @@ end;
 
 destructor TNavigator.Destroy;
 begin
+  FreeAndNil(FStack);
   FreeAndNil(FActiveRoutes);
   FreeAndNil(FRouteDefinitions);
   inherited;
@@ -187,6 +193,7 @@ begin
     begin
       LSubjectInfo := LDefinitionFunc();
       ActiveRoutes.Add(ARouteName, LSubjectInfo);
+      FStack.Push(ARouteName);
       if Assigned(FOnCreateRouteProc) then
         FOnCreateRouteProc(ARouteName);
     end;
@@ -204,6 +211,17 @@ begin
         RouteTo(ARouteName);
       end
   );
+end;
+
+procedure TNavigator.StackPop;
+var
+  LRouteName: string;
+begin
+  if Stack.Count > 0 then
+  begin
+    LRouteName := Stack.Peek;
+    CloseRoute(LRouteName);
+  end;
 end;
 
 end.
