@@ -1,0 +1,69 @@
+object MyDataSetDetailFrame: TMyDataSetDetailFrame
+  Align = Client
+  Size.Width = 300.000000000000000000
+  Size.Height = 400.000000000000000000
+  Size.PlatformDefault = False
+  object MyDataSetListBox: TListBox
+    Align = Client
+    Size.Width = 300.000000000000000000
+    Size.Height = 400.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 296.000000000000000000
+    Viewport.Height = 396.000000000000000000
+    object ListBoxItem1: TListBoxItem
+      TabOrder = 0
+      Text = 'First name: Roberto'
+    end
+    object ListBoxItem2: TListBoxItem
+      Position.Y = 19.000000000000000000
+      TabOrder = 1
+      Text = 'Last name: Nelson'
+    end
+    object ListBoxItem3: TListBoxItem
+      Position.Y = 38.000000000000000000
+      TabOrder = 2
+      Text = 'Phone Ext: 250'
+    end
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = DataModule1.MyDataSet
+    ScopeMappings = <>
+    Left = 136
+    Top = 184
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 132
+    Top = 117
+    object LinkPropertyToFieldText: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'LastName'
+      Component = ListBoxItem2
+      CustomFormat = #39'Last name: '#39' + %s'
+      ComponentProperty = 'Text'
+    end
+    object LinkPropertyToFieldText2: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'FirstName'
+      Component = ListBoxItem1
+      CustomFormat = #39'First name: '#39' + %s'
+      ComponentProperty = 'Text'
+    end
+    object LinkPropertyToFieldText3: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'PhoneExt'
+      Component = ListBoxItem3
+      CustomFormat = #39'Phone Ext: '#39' + %s'
+      ComponentProperty = 'Text'
+    end
+  end
+end

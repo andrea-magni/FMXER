@@ -1,0 +1,40 @@
+object MyDatasetListFrame: TMyDatasetListFrame
+  Align = Client
+  Size.Width = 290.000000000000000000
+  Size.Height = 344.000000000000000000
+  Size.PlatformDefault = False
+  object MyDataSetListView: TListView
+    ItemAppearanceClassName = 'TListItemAppearance'
+    ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
+    HeaderAppearanceClassName = 'TListHeaderObjects'
+    FooterAppearanceClassName = 'TListHeaderObjects'
+    ItemIndex = 0
+    Align = Client
+    Size.Width = 290.000000000000000000
+    Size.Height = 344.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnItemClick = MyDataSetListViewItemClick
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = DataModule1.MyDataSet
+    ScopeMappings = <>
+    Left = 128
+    Top = 160
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 20
+    Top = 5
+    object LinkListControlToField1: TLinkListControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'LastName'
+      Control = MyDataSetListView
+      FillExpressions = <>
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+  end
+end

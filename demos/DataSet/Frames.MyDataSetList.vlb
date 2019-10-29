@@ -1,0 +1,17 @@
+﻿[MyDataSetListView]
+Coordinates=10,10,108,141
+Visible=True
+
+[]
+Coordinates=145,1,91,36
+
+[DataModule1.MyDataSet]
+Coordinates=137,1,133,33
+Visible=False
+
+[BindSourceDB1]
+Coordinates=137,1,121,177
+
+[BindingsList1]
+Coordinates=48,170,82,33
+
