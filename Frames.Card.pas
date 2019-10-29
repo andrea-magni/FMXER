@@ -53,8 +53,8 @@ constructor TCardFrame.Create(AOwner: TComponent);
 begin
   inherited;
 
-  TitleBackground.Fill.Color := TAppColors.PRIMARY_COLOR;
-  ContentBackground.Fill.Color := TAppColors.LIGHT_BACKGROUND_COLOR;
+  TitleBackground.Fill.Color := TAppColors.PrimaryColor;
+  ContentBackground.Fill.Color := TAppColors.LightBackgroundColor;
 end;
 
 destructor TCardFrame.Destroy;

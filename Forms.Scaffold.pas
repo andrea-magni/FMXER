@@ -127,8 +127,8 @@ begin
   inherited;
   FActionButtons := TList<TFrameInfo<TActionButtonFrame>>.Create;
 
-  TitleBackground.Fill.Color := TAppColors.PRIMARY_COLOR;
-  TitleLabel.TextSettings.FontColor := TAppColors.PRIMARY_TEXT_COLOR;
+  TitleBackground.Fill.Color := TAppColors.PrimaryColor;
+  TitleLabel.TextSettings.FontColor := TAppColors.PrimaryTextColor;
 end;
 
 destructor TScaffoldForm.Destroy;

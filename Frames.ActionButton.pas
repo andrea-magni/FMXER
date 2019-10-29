@@ -50,7 +50,7 @@ end;
 constructor TActionButtonFrame.Create(AOwner: TComponent);
 begin
   inherited;
-  BackgroundCircle.Fill.Color := TAppColors.PRIMARY_COLOR;
+  BackgroundCircle.Fill.Color := TAppColors.PrimaryColor;
 end;
 
 procedure TActionButtonFrame.SetOverlayAsFrame<T>(

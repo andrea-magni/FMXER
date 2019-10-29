@@ -29,7 +29,7 @@ uses UI.Consts;
 constructor TTextFrame.Create(AOwner: TComponent);
 begin
   inherited;
-  TextContent.TextSettings.FontColor := TAppColors.PRIMARY_TEXT_COLOR;
+  TextContent.TextSettings.FontColor := TAppColors.PrimaryTextColor;
 end;
 
 procedure TTextFrame.SetContent(const Value: string);
