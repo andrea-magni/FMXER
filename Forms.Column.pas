@@ -8,12 +8,6 @@ uses
 , SubjectStand, Generics.Collections, FormStand, FrameStand, UI.Misc;
 
 type
-  TColElementDef<T> = record
-    Height: Integer;
-    ConfigProc: TProc<T>;
-    constructor Create(const AHeight: Integer; const AConfigProc: TProc<T> = nil);
-  end;
-
   TColumnForm = class(TForm)
     FrameStand1: TFrameStand;
     FormStand1: TFormStand;
@@ -23,15 +17,17 @@ type
     FElements: TList<TSubjectInfoContainer>;
     FElementStand: string;
   public
+    const DEFAULT_ELEMENT_HEIGHT = 200;
+
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure AddElementAsFrame<T: TFrame>(const AHeight: Integer = 200;
+    procedure AddElementAsFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
       const AConfigProc: TProc<T> = nil); overload;
 
-    procedure AddElementAsFrame<T: TFrame>(const AColElDef: TColElementDef<T>); overload;
+    procedure AddElementAsFrame<T: TFrame>(const AColDef: TElementDef<T>); overload;
 
-    procedure AddElementAsForm<T: TForm>(const AHeight: Integer = 200;
+    procedure AddElementAsForm<T: TForm>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
       const AConfigProc: TProc<T> = nil);
 
     property ElementStand: string read FElementStand write FElementStand;
@@ -105,9 +101,11 @@ begin
   end;
 end;
 
-procedure TColumnForm.AddElementAsFrame<T>(const AColElDef: TColElementDef<T>);
+procedure TColumnForm.AddElementAsFrame<T>(const AColDef: TElementDef<T>);
 begin
-  AddElementAsFrame<T>(AColElDef.Height, AColElDef.ConfigProc);
+  AddElementAsFrame<T>(
+    AColDef.ParamByName('Height', DEFAULT_ELEMENT_HEIGHT).AsInteger
+  , AColDef.ConfigProc);
 end;
 
 constructor TColumnForm.Create(AOwner: TComponent);
@@ -122,16 +120,6 @@ begin
   FrameStand1.CloseAll();
   FreeAndNil(FElements);
   inherited;
-end;
-
-
-{ TColElementDef<T> }
-
-constructor TColElementDef<T>.Create(const AHeight: Integer;
-  const AConfigProc: TProc<T>);
-begin
-  Height := AHeight;
-  ConfigProc := AConfigProc;
 end;
 
 end.
