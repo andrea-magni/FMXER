@@ -8,14 +8,14 @@ object CardFrame: TCardFrame
   Margins.Top = 3.000000000000000000
   Margins.Right = 3.000000000000000000
   Margins.Bottom = 3.000000000000000000
-  Size.Width = 290.000000000000000000
-  Size.Height = 210.000000000000000000
+  Size.Width = 284.000000000000000000
+  Size.Height = 204.000000000000000000
   Size.PlatformDefault = False
   object TitleLayout: TLayout
     Align = Top
     Position.X = 3.000000000000000000
     Position.Y = 3.000000000000000000
-    Size.Width = 284.000000000000000000
+    Size.Width = 278.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
@@ -24,33 +24,32 @@ object CardFrame: TCardFrame
       Fill.Color = xFF1565C0
       HitTest = False
       Sides = []
-      Size.Width = 284.000000000000000000
+      Size.Width = 278.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
     end
     object GlyphLayout: TLayout
-      Align = FitLeft
+      Align = Left
       Size.Width = 50.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      Visible = False
+      TabOrder = 1
     end
-    inline TitleTextFrame: TTextFrame
-      Align = Client
-      Size.Width = 234.000000000000000000
+    object GlyphRLayout: TLayout
+      Align = Right
+      Position.X = 240.000000000000000000
+      Size.Width = 50.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      inherited TextContent: TText
-        Size.Width = 234.000000000000000000
-        Size.Height = 50.000000000000000000
-        TextSettings.HorzAlign = Leading
-      end
+      Visible = False
+      TabOrder = 0
     end
   end
   object ContentLayout: TLayout
     Align = Client
-    Size.Width = 284.000000000000000000
-    Size.Height = 154.000000000000000000
+    Size.Width = 278.000000000000000000
+    Size.Height = 148.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object ContentBackground: TRectangle
@@ -58,8 +57,8 @@ object CardFrame: TCardFrame
       Fill.Color = claSilver
       HitTest = False
       Sides = []
-      Size.Width = 284.000000000000000000
-      Size.Height = 154.000000000000000000
+      Size.Width = 278.000000000000000000
+      Size.Height = 148.000000000000000000
       Size.PlatformDefault = False
     end
   end

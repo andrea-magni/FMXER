@@ -27,7 +27,9 @@ type
 //    procedure SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
 
     // shortcuts
-    procedure SetOverlayAsText(const AText: string; const AConfigProc: TProc<TTextFrame> = nil);
+    procedure SetOverlayAsText(const AText: string;
+      const AOnClickProc: TProc = nil;
+      const AConfigProc: TProc<TTextFrame> = nil);
 
     property OnClickProc: TProc read FOnClickProc write FOnClickProc;
     property OverlayStand: string read FOverlayStand write FOverlayStand;
@@ -60,7 +62,7 @@ begin
 end;
 
 procedure TActionButtonFrame.SetOverlayAsText(const AText: string;
-  const AConfigProc: TProc<TTextFrame>);
+  const AOnClickProc: TProc; const AConfigProc: TProc<TTextFrame>);
 begin
   SetOverlayAsFrame<TTextFrame>(
     procedure (ATextFrame: TTextFrame)
@@ -70,6 +72,9 @@ begin
         AConfigProc(ATextFrame);
     end
   );
+
+  if Assigned(AOnClickProc) then
+    OnClickProc := AOnClickProc;
 end;
 
 end.

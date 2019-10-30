@@ -13,9 +13,15 @@ type
   private
     FContent: string;
     procedure SetContent(const Value: string);
+    function GetHorzAlign: TTextAlign;
+    function GetVertAlign: TTextAlign;
+    procedure SetHorzAlign(const Value: TTextAlign);
+    procedure SetVertAlign(const Value: TTextAlign);
   public
     constructor Create(AOwner: TComponent); override;
     property Content: string read FContent write SetContent;
+    property HorzAlign: TTextAlign read GetHorzAlign write SetHorzAlign;
+    property VertAlign: TTextAlign read GetVertAlign write SetVertAlign;
   end;
 
 implementation
@@ -32,10 +38,30 @@ begin
   TextContent.TextSettings.FontColor := TAppColors.PrimaryTextColor;
 end;
 
+function TTextFrame.GetHorzAlign: TTextAlign;
+begin
+  Result := TextContent.TextSettings.HorzAlign;
+end;
+
+function TTextFrame.GetVertAlign: TTextAlign;
+begin
+  Result := TextContent.TextSettings.VertAlign;
+end;
+
 procedure TTextFrame.SetContent(const Value: string);
 begin
   FContent := Value;
   TextContent.Text := FContent;
+end;
+
+procedure TTextFrame.SetHorzAlign(const Value: TTextAlign);
+begin
+  TextContent.TextSettings.HorzAlign := Value;
+end;
+
+procedure TTextFrame.SetVertAlign(const Value: TTextAlign);
+begin
+  TextContent.TextSettings.VertAlign := Value;
 end;
 
 end.
