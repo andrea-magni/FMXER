@@ -33,7 +33,7 @@ type
     function DefineRoute(const ARouteName: string;
       const ARouteDef: TFunc<TSubjectInfo>): TNavigator; overload;
     function DefineRoute<T: TForm>(const ARouteName: string;
-      const AConfigureProc: TProc<T> = nil;
+      const AConfigProc: TProc<T> = nil;
       const AParent: TFmxObject = nil;
       const AStandName: string = ''): TNavigator; overload;
     //
@@ -141,15 +141,15 @@ begin
 end;
 
 function TNavigator.DefineRoute<T>(const ARouteName: string;
-  const AConfigureProc: TProc<T>; const AParent: TFmxObject;
+  const AConfigProc: TProc<T>; const AParent: TFmxObject;
       const AStandName: string): TNavigator;
 begin
   Result := DefineRoute(ARouteName
   , function: TSubjectInfo
     begin
       Result := FormStand.New<T>(AParent, AStandName);
-      if Assigned(AConfigureProc) then
-        AConfigureProc(T(Result.Subject));
+      if Assigned(AConfigProc) then
+        AConfigProc(T(Result.Subject));
     end
   );
 end;

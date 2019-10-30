@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Objects, FMX.Controls.Presentation, FMX.Ani, FMX.Layouts, SubjectStand,
-  FrameStand, Frames.Text;
+  FrameStand, Frames.Text, FormStand;
 
 type
   TActionButtonFrame = class(TFrame)
@@ -14,6 +14,7 @@ type
     OverlayLayout: TLayout;
     FrameStand1: TFrameStand;
     ClickableLayout: TLayout;
+    FormStand1: TFormStand;
     procedure ClickableLayoutClick(Sender: TObject);
   private
     FOnClickProc: TProc;
@@ -24,7 +25,7 @@ type
     constructor Create(AOwner: TComponent); override;
 
     procedure SetOverlayAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-//    procedure SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    procedure SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
 
     // shortcuts
     procedure SetOverlayAsText(const AText: string;
@@ -53,6 +54,11 @@ constructor TActionButtonFrame.Create(AOwner: TComponent);
 begin
   inherited;
   BackgroundCircle.Fill.Color := TAppColors.PrimaryColor;
+end;
+
+procedure TActionButtonFrame.SetOverlayAsForm<T>(const AConfigProc: TProc<T>);
+begin
+  FOverlay := FormStand1.NewAndShow<T>(OverlayLayout, OverlayStand, AConfigProc);
 end;
 
 procedure TActionButtonFrame.SetOverlayAsFrame<T>(

@@ -40,4 +40,14 @@ object ActionButtonFrame: TActionButtonFrame
     Left = 32
     Top = 144
   end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 104
+    Top = 144
+  end
 end

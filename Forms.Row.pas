@@ -21,9 +21,9 @@ type
     destructor Destroy; override;
 
     procedure AddElementAsFrame<T: TFrame>(const AWidth: Integer = 200;
-      const AConfigureProc: TProc<T> = nil);
+      const AConfigProc: TProc<T> = nil);
     procedure AddElementAsForm<T: TForm>(const AWidth: Integer = 200;
-      const AConfigureProc: TProc<T> = nil);
+      const AConfigProc: TProc<T> = nil);
 
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -39,7 +39,7 @@ implementation
 { TRowForm }
 
 procedure TRowForm.AddElementAsForm<T>(const AWidth: Integer;
-  const AConfigureProc: TProc<T>);
+  const AConfigProc: TProc<T>);
 var
   LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
@@ -55,8 +55,8 @@ begin
 
     LElement := FormStand1.New<T>(LElementContainer, ElementStand);
     LElementContainer.SubjectInfo := LElement;
-    if Assigned(AConfigureProc) then
-      AConfigureProc(T(LElement.Subject));
+    if Assigned(AConfigProc) then
+      AConfigProc(T(LElement.Subject));
     LElement.SubjectShow();
 
     FElements.Add(LElementContainer);
@@ -67,7 +67,7 @@ begin
 end;
 
 procedure TRowForm.AddElementAsFrame<T>(const AWidth: Integer;
-  const AConfigureProc: TProc<T>);
+  const AConfigProc: TProc<T>);
 var
   LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
@@ -83,8 +83,8 @@ begin
 
     LElement := FrameStand1.New<T>(LElementContainer, ElementStand);
     LElementContainer.SubjectInfo := LElement;
-    if Assigned(AConfigureProc) then
-      AConfigureProc(T(LElement.Subject));
+    if Assigned(AConfigProc) then
+      AConfigProc(T(LElement.Subject));
     LElement.SubjectShow();
 
     FElements.Add(LElementContainer);
