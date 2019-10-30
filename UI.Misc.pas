@@ -36,7 +36,11 @@ type
   end;
 
   // shortcut function
-  function Param(const AName: string; const AValue: TValue): TNameValueParam;
+  function Param(const AName: string; const AValue: TValue): TNameValueParam; overload;
+  function Param(const AName: string; const AValue: TProc): TNameValueParam; overload;
+  function Param(const AName: string; const AValue: TFunc<Boolean>): TNameValueParam; overload;
+  function OnClickProc(const AValue: TProc): TNameValueParam; overload;
+
 
 implementation
 
@@ -92,6 +96,21 @@ end;
 function Param(const AName: string; const AValue: TValue): TNameValueParam;
 begin
   Result := TNameValueParam.Create(AName, AValue);
+end;
+
+function Param(const AName: string; const AValue: TProc): TNameValueParam;
+begin
+  Result := TNameValueParam.Create(AName, TValue.From<TProc>(AValue));
+end;
+
+function Param(const AName: string; const AValue: TFunc<Boolean>): TNameValueParam;
+begin
+  Result := TNameValueParam.Create(AName, TValue.From<TFunc<Boolean>>(AValue));
+end;
+
+function OnClickProc(const AValue: TProc): TNameValueParam;
+begin
+  Result := TNameValueParam.Create('OnClickProc', TValue.From<TProc>(AValue));
 end;
 
 end.

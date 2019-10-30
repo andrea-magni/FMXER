@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, SubjectStand, FrameStand,
   Generics.Collections, System.Actions, FMX.ActnList, FMX.Effects, FormStand,
-  FMX.ImgList
+  FMX.ImgList, System.Rtti, UI.Misc
 // Frames
 , Frames.ActionButton, Frames.Text, Frames.Glyph
 ;
@@ -43,14 +43,17 @@ type
     procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
     procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
 
-    procedure AddActionButton(const ACaption: string; const AOnClickProc: TProc); overload;
+    procedure AddActionButtonOverlayFrame<T: TFrame>(const AOverlayConfigProc: TProc<T>;
+      const AOnClickProc: TProc); overload;
+    procedure AddActionButtonOverlayFrame<T: TFrame>(const AElementDef: TElementDef<T>); overload;
+
+    procedure AddActionButtonOverlayForm<T: TForm>(const AOverlayConfigProc: TProc<T>;
+      const AOnClickProc: TProc);
+
+    // shortcuts
+    procedure AddActionButton(const ACaption: string; const AParams: TParams); overload;
     procedure AddActionButton(const AImageList: TCustomImageList;
       const AImageIndex: Integer; const AOnClickProc: TProc); overload;
-
-    procedure AddActionButtonOverlayFrame<T: TFrame>(const AOverlayConfigProc: TProc<T>;
-      const AOnClickProc: TProc);
-//    procedure AddActionButtonOverlayForm<T: TForm>(const AOverlayConfigProc: TProc<T>;
-//      const AOnClickProc: TProc);
 
     procedure ShowSnackBar(const AText: string; const ADuration_ms: Integer);
     //
@@ -79,14 +82,16 @@ begin
 end;
 
 procedure TScaffoldForm.AddActionButton(const ACaption: string;
-  const AOnClickProc: TProc);
+  const AParams: TParams);
 begin
   AddActionButtonOverlayFrame<TTextFrame>(
-    procedure (ATextFrame: TTextFrame)
-    begin
-      ATextFrame.Content := ACaption;
-    end
-  , AOnClickProc
+    TElementDef<TTextFrame>.Create(
+      procedure (ATextFrame: TTextFrame)
+      begin
+        ATextFrame.Content := ACaption;
+      end
+    , AParams
+    )
   );
 end;
 
@@ -103,6 +108,34 @@ begin
   );
 end;
 
+procedure TScaffoldForm.AddActionButtonOverlayForm<T>(
+  const AOverlayConfigProc: TProc<T>; const AOnClickProc: TProc);
+begin
+  FrameStand1.NewAndShow<TActionButtonFrame>(ActionButtonsLayout, ActionButtonStand
+  , nil
+  , procedure (FI: TFrameInfo<TActionButtonFrame>)
+    begin
+      FI.Stand.Position.X := MaxInt;
+      FI.Stand.Align := TAlignLayout.Right;
+      FI.Stand.Margins.Right := 10;
+
+      FI.Frame.OnClickProc := AOnClickProc;
+      FI.Frame.SetOverlayAsForm<T>(AOverlayConfigProc);
+
+      FActionButtons.Add(FI);
+    end
+  );
+end;
+
+procedure TScaffoldForm.AddActionButtonOverlayFrame<T>(
+  const AElementDef: TElementDef<T>);
+var
+  LProc: TProc;
+begin
+  LProc := TProc(AElementDef.ParamByName('OnClickProc', nil).GetReferenceToRawData^);
+  AddActionButtonOverlayFrame<T>(AElementDef.ConfigProc, LProc);
+end;
+
 procedure TScaffoldForm.AddActionButtonOverlayFrame<T>(
   const AOverlayConfigProc: TProc<T>; const AOnClickProc: TProc);
 begin
@@ -110,7 +143,7 @@ begin
   , nil
   , procedure (FI: TFrameInfo<TActionButtonFrame>)
     begin
-      FI.Stand.Position.X := 100000;
+      FI.Stand.Position.X := MaxInt;
       FI.Stand.Align := TAlignLayout.Right;
       FI.Stand.Margins.Right := 10;
 
