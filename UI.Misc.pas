@@ -3,7 +3,7 @@ unit UI.Misc;
 interface
 
 uses
-  Classes, SysUtils, FMX.Layouts, System.Rtti,
+  Classes, SysUtils, System.Rtti, FMX.Forms, FMX.Layouts,
   SubjectStand;
 
 type
@@ -32,6 +32,8 @@ type
     FSubjectInfo: TSubjectInfo;
   protected
   public
+    function ContainedFrame<T: TFrame>: T;
+    function ContainedForm<T: TForm>: T;
     property SubjectInfo: TSubjectInfo read FSubjectInfo write FSubjectInfo;
   end;
 
@@ -111,6 +113,22 @@ end;
 function OnClickProc(const AValue: TProc): TNameValueParam;
 begin
   Result := TNameValueParam.Create('OnClickProc', TValue.From<TProc>(AValue));
+end;
+
+{ TSubjectInfoContainer }
+
+function TSubjectInfoContainer.ContainedForm<T>: T;
+begin
+  Result := nil;
+  if Assigned(SubjectInfo) and (SubjectInfo.Subject is TForm) then
+    Result := SubjectInfo.Subject as T;
+end;
+
+function TSubjectInfoContainer.ContainedFrame<T>: T;
+begin
+  Result := nil;
+  if Assigned(SubjectInfo) and (SubjectInfo.Subject is TFrame) then
+    Result := SubjectInfo.Subject as T;
 end;
 
 end.

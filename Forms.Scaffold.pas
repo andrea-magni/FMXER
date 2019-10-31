@@ -52,6 +52,7 @@ type
 
     // shortcuts
     procedure AddActionButton(const ACaption: string; const AParams: TParams); overload;
+    procedure AddActionButton(const ACaption: string; const AOnClickProc: TProc); overload;
     procedure AddActionButton(const AImageList: TCustomImageList;
       const AImageIndex: Integer; const AOnClickProc: TProc); overload;
 
@@ -106,6 +107,12 @@ begin
    end
   , AOnClickProc
   );
+end;
+
+procedure TScaffoldForm.AddActionButton(const ACaption: string;
+  const AOnClickProc: TProc);
+begin
+  AddActionButton(ACaption, [ OnClickProc(AOnClickProc) ]);
 end;
 
 procedure TScaffoldForm.AddActionButtonOverlayForm<T>(

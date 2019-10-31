@@ -24,7 +24,7 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Consts, UI.Navigator, Forms.Scaffold, Frames.Logo;
+uses UI.Consts, UI.Misc, UI.Navigator, Forms.Scaffold, Frames.Logo;
 
 constructor TMainForm.Create(AOwner: TComponent);
 begin
@@ -40,19 +40,17 @@ begin
 
        AForm.SetContentAsFrame<TLogoFrame>;
 
-       AForm.AddActionButton('A'
-       , procedure
+       AForm.AddActionButton('A',
+         procedure
          begin
            AForm.ShowSnackBar('This is a transient message', 3000);
-         end
-       );
+         end);
 
-       AForm.AddActionButton('X'
-       , procedure
+       AForm.AddActionButton('X',
+         procedure
          begin
            Navigator.CloseRoute('home');
-         end
-       );
+         end);
      end
   );
 

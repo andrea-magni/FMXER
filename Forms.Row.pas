@@ -17,13 +17,18 @@ type
     FElements: TList<TSubjectInfoContainer>;
     FElementStand: string;
   public
+    const DEFAULT_ELEMENT_WIDTH = 200;
+
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure AddElementAsFrame<T: TFrame>(const AWidth: Integer = 200;
-      const AConfigProc: TProc<T> = nil);
-    procedure AddElementAsForm<T: TForm>(const AWidth: Integer = 200;
-      const AConfigProc: TProc<T> = nil);
+    procedure AddFrame<T: TFrame>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
+      const AConfigProc: TProc<T> = nil); overload;
+    procedure AddFrame<T: TFrame>(const AColDef: TElementDef<T>); overload;
+
+    procedure AddForm<T: TForm>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
+      const AConfigProc: TProc<T> = nil); overload;
+    procedure AddForm<T: TForm>(const AColDef: TElementDef<T>); overload;
 
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -38,7 +43,7 @@ implementation
 
 { TRowForm }
 
-procedure TRowForm.AddElementAsForm<T>(const AWidth: Integer;
+procedure TRowForm.AddForm<T>(const AWidth: Integer;
   const AConfigProc: TProc<T>);
 var
   LElement: TSubjectInfo;
@@ -48,7 +53,7 @@ begin
 
   LElementContainer := TSubjectInfoContainer.Create(Self);
   try
-    LElementContainer.Position.X := 10000;
+    LElementContainer.Position.X := MaxInt;
     LElementContainer.Parent := ContentLayout;
     LElementContainer.Width := AWidth;
     LElementContainer.Align := TAlignLayout.Left;
@@ -66,7 +71,7 @@ begin
   end;
 end;
 
-procedure TRowForm.AddElementAsFrame<T>(const AWidth: Integer;
+procedure TRowForm.AddFrame<T>(const AWidth: Integer;
   const AConfigProc: TProc<T>);
 var
   LElement: TSubjectInfo;
@@ -76,7 +81,7 @@ begin
 
   LElementContainer := TSubjectInfoContainer.Create(Self);
   try
-    LElementContainer.Position.X := 10000;
+    LElementContainer.Position.X := MaxInt;
     LElementContainer.Parent := ContentLayout;
     LElementContainer.Width := AWidth;
     LElementContainer.Align := TAlignLayout.Left;
@@ -94,11 +99,18 @@ begin
   end;
 end;
 
+procedure TRowForm.AddFrame<T>(const AColDef: TElementDef<T>);
+begin
+  AddFrame<T>(
+    AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
+  , AColDef.ConfigProc);
+end;
+
 constructor TRowForm.Create(AOwner: TComponent);
 begin
   inherited;
   FElements := TList<TSubjectInfoContainer>.Create;
-  Width := 1;
+  Width := 0;
 end;
 
 destructor TRowForm.Destroy;
@@ -106,6 +118,13 @@ begin
   FrameStand1.CloseAll();
   FreeAndNil(FElements);
   inherited;
+end;
+
+procedure TRowForm.AddForm<T>(const AColDef: TElementDef<T>);
+begin
+  AddForm<T>(
+    AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
+  , AColDef.ConfigProc);
 end;
 
 end.

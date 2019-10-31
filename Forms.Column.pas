@@ -22,13 +22,13 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure AddElementAsFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
+    procedure AddFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
       const AConfigProc: TProc<T> = nil); overload;
+    procedure AddFrame<T: TFrame>(const AColDef: TElementDef<T>); overload;
 
-    procedure AddElementAsFrame<T: TFrame>(const AColDef: TElementDef<T>); overload;
-
-    procedure AddElementAsForm<T: TForm>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
-      const AConfigProc: TProc<T> = nil);
+    procedure AddForm<T: TForm>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
+      const AConfigProc: TProc<T> = nil); overload;
+    procedure AddForm<T: TForm>(const AColDef: TElementDef<T>); overload;
 
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -41,7 +41,7 @@ implementation
 
 { TCenterForm }
 
-procedure TColumnForm.AddElementAsForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>);
+procedure TColumnForm.AddForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>);
 var
   LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
@@ -72,7 +72,7 @@ begin
 end;
 
 
-procedure TColumnForm.AddElementAsFrame<T>(const AHeight: Integer; const AConfigProc: TProc<T>);
+procedure TColumnForm.AddFrame<T>(const AHeight: Integer; const AConfigProc: TProc<T>);
 var
   LElementContainer: TSubjectInfoContainer;
 begin
@@ -101,9 +101,16 @@ begin
   end;
 end;
 
-procedure TColumnForm.AddElementAsFrame<T>(const AColDef: TElementDef<T>);
+procedure TColumnForm.AddForm<T>(const AColDef: TElementDef<T>);
 begin
-  AddElementAsFrame<T>(
+  AddForm<T>(
+    AColDef.ParamByName('Height', DEFAULT_ELEMENT_HEIGHT).AsInteger
+  , AColDef.ConfigProc);
+end;
+
+procedure TColumnForm.AddFrame<T>(const AColDef: TElementDef<T>);
+begin
+  AddFrame<T>(
     AColDef.ParamByName('Height', DEFAULT_ELEMENT_HEIGHT).AsInteger
   , AColDef.ConfigProc);
 end;
