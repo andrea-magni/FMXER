@@ -39,6 +39,8 @@ begin
     var
       LContent: T;
     begin
+      AFrame.Align := TAlignLayout.Client;
+
       LContent := T.Create(AFrame);
       try
         LContent.Parent := AFrame;
