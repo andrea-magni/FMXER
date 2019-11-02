@@ -10,6 +10,7 @@ Visual framework (Flutter inspired) for FMX
 ## Demos
  - HelloWorld
  - DataSet
+ - Column
 
 ## Quick start
 1. Clone this repository
