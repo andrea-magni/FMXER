@@ -1,0 +1,14 @@
+object HorzDividerFrame: THorzDividerFrame
+  Size.Width = 320.000000000000000000
+  Size.Height = 1.000000000000000000
+  Size.PlatformDefault = False
+  object DividerLine: TLine
+    Align = Client
+    LineType = Top
+    Size.Width = 320.000000000000000000
+    Size.Height = 1.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Cap = Round
+    Stroke.Join = Round
+  end
+end

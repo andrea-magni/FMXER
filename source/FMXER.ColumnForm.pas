@@ -4,8 +4,10 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts
-, SubjectStand, Generics.Collections, FormStand, FrameStand, UI.Misc;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
+  Generics.Collections
+, SubjectStand, FrameStand, FormStand
+, FMXER.UI.Misc;
 
 type
   TColumnForm = class(TForm)

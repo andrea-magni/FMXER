@@ -10,8 +10,10 @@ uses
 type
   TTextFrame = class(TFrame)
     TextContent: TText;
+    procedure TextContentClick(Sender: TObject);
   private
     FContent: string;
+    FOnClickProc: TProc;
     procedure SetContent(const Value: string);
     function GetHorzAlign: TTextAlign;
     function GetVertAlign: TTextAlign;
@@ -22,6 +24,7 @@ type
     property Content: string read FContent write SetContent;
     property HorzAlign: TTextAlign read GetHorzAlign write SetHorzAlign;
     property VertAlign: TTextAlign read GetVertAlign write SetVertAlign;
+    property OnClickProc: TProc read FOnClickProc write FOnClickProc;
   end;
 
 implementation
@@ -62,6 +65,12 @@ end;
 procedure TTextFrame.SetVertAlign(const Value: TTextAlign);
 begin
   TextContent.TextSettings.VertAlign := Value;
+end;
+
+procedure TTextFrame.TextContentClick(Sender: TObject);
+begin
+  if Assigned(OnClickProc) then
+    OnClickProc();
 end;
 
 end.

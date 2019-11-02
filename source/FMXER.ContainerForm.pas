@@ -4,8 +4,9 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FormStand,
-  SubjectStand, FrameStand, FMX.Layouts, FMX.Objects;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Layouts, FMX.Objects
+, SubjectStand, FrameStand, FormStand;
 
 type
   TContainerForm = class(TForm)
@@ -13,16 +14,16 @@ type
     FormStand1: TFormStand;
     ContentLayout: TLayout;
   private
-    FContent: TObject;
+    FContent: TSubjectInfo;
     FContentStand: string;
-    procedure SetContent(const Value: TObject);
+//    procedure SetContent(const Value: TSubjectInfo);
   public
     //
     procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
     procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
     //
     property ContentStand: string read FContentStand write FContentStand;
-    property Content: TObject read FContent write SetContent;
+    property Content: TSubjectInfo read FContent;
   end;
 
 var
@@ -33,13 +34,6 @@ implementation
 {$R *.fmx}
 
 { TContainerForm }
-
-procedure TContainerForm.SetContent(const Value: TObject);
-begin
-   FContent := Value;
-   if Assigned(FContent) and (FContent is TFmxObject) then
-     TFmxObject(FContent).Parent := ContentLayout;
-end;
 
 procedure TContainerForm.SetContentAsForm<T>(const AConfigProc: TProc<T>);
 begin

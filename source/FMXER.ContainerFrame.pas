@@ -1,11 +1,12 @@
-unit FMXER.ContainterFrame;
+unit FMXER.ContainerFrame;
 
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FrameStand, SubjectStand, FormStand, FMX.Layouts;
+  FMX.Layouts
+, SubjectStand, FrameStand, FormStand;
 
 type
   TContainerFrame = class(TFrame)
@@ -13,16 +14,16 @@ type
     FrameStand1: TFrameStand;
     ContentLayout: TLayout;
   private
-    FContent: TObject;
+    FContent: TSubjectInfo;
     FContentStand: string;
-    procedure SetContent(const Value: TObject);
   public
     //
     procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
     procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    procedure SetContentAs<T: TFmxObject>(const AConfigProc: TProc<T> = nil);
     //
     property ContentStand: string read FContentStand write FContentStand;
-    property Content: TObject read FContent write SetContent;
+    property Content: TSubjectInfo read FContent;
   end;
 
 implementation
@@ -31,11 +32,23 @@ implementation
 
 { TContainerFrame }
 
-procedure TContainerFrame.SetContent(const Value: TObject);
+procedure TContainerFrame.SetContentAs<T>(const AConfigProc: TProc<T>);
 begin
-  FContent := Value;
-  if Assigned(FContent) and (FContent is TFmxObject) then
-    TFmxObject(FContent).Parent := Self;
+  FContent := FrameStand1.NewAndShow<TFrame>(ContentLayout, ContentStand
+  , procedure (AFrame: TFrame)
+    var
+      LContent: T;
+    begin
+      LContent := T.Create(AFrame);
+      try
+        LContent.Parent := AFrame;
+        if Assigned(AConfigProc) then
+          AConfigProc(LContent);
+      except
+        LContent.Free;
+        raise;
+      end;
+    end);
 end;
 
 procedure TContainerFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);

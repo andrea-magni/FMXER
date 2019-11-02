@@ -8,5 +8,6 @@ object TextFrame: TTextFrame
     Size.Width = 320.000000000000000000
     Size.Height = 86.000000000000000000
     Size.PlatformDefault = False
+    OnClick = TextContentClick
   end
 end
