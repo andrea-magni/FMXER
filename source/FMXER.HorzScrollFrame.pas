@@ -1,4 +1,4 @@
-unit Frames.HorzScroll;
+unit FMXER.HorzScrollFrame;
 
 interface
 

@@ -4,8 +4,9 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, SubjectStand,
-  FormStand, System.ImageList, FMX.ImgList, FMX.Ani;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, System.ImageList,
+  FMX.ImgList, FMX.Ani
+, SubjectStand, FormStand;
 
 type
   TMainForm = class(TForm)
@@ -28,7 +29,7 @@ implementation
 {$R *.fmx}
 
 uses
-  UI.Navigator, Forms.Scaffold, Frames.Glyph
+  FMXER.Navigator, FMXER.ScaffoldForm, FMXER.GlyphFrame
 , Frames.MyDataSetList, Frames.MyDataSetDetail;
 
 constructor TMainForm.Create(AOwner: TComponent);

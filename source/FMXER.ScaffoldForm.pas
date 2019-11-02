@@ -1,15 +1,14 @@
-unit Forms.Scaffold;
+unit FMXER.ScaffoldForm;
 
 interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
-  FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, SubjectStand, FrameStand,
-  Generics.Collections, System.Actions, FMX.ActnList, FMX.Effects, FormStand,
-  FMX.ImgList, System.Rtti, UI.Misc
-// Frames
-, Frames.ActionButton, Frames.Text, Frames.Glyph
+  FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, FMX.ImgList, System.Rtti,
+  Generics.Collections, System.Actions, FMX.ActnList, FMX.Effects
+, SubjectStand, FrameStand, FormStand
+, FMXER.UI.Misc, FMXER.ActionButtonFrame, FMXER.TextFrame, FMXER.GlyphFrame
 ;
 
 type
@@ -71,7 +70,7 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Consts;
+uses FMXER.UI.Consts;
 
 
 { TScaffoldForm }

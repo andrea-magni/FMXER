@@ -27,7 +27,7 @@ implementation
 
 {$R *.fmx}
 
-uses Data.Main, UI.Navigator;
+uses Data.Main, FMXER.Navigator;
 
 procedure TMyDatasetListFrame.MyDataSetListViewItemClick(const Sender: TObject;
   const AItem: TListViewItem);

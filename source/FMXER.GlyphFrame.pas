@@ -1,4 +1,4 @@
-unit Frames.Glyph;
+unit FMXER.GlyphFrame;
 
 interface
 

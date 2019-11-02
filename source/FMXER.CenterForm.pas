@@ -1,4 +1,4 @@
-unit Forms.Center;
+unit FMXER.CenterForm;
 
 interface
 

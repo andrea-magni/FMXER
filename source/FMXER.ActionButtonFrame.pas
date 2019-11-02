@@ -1,12 +1,13 @@
-unit Frames.ActionButton;
+unit FMXER.ActionButtonFrame;
 
 interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Objects, FMX.Controls.Presentation, FMX.Ani, FMX.Layouts, SubjectStand,
-  FrameStand, Frames.Text, FormStand;
+  FMX.Objects, FMX.Controls.Presentation, FMX.Ani, FMX.Layouts
+, SubjectStand, FrameStand, FormStand
+, FMXER.TextFrame;
 
 type
   TActionButtonFrame = class(TFrame)
@@ -40,7 +41,7 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Consts;
+uses FMXER.UI.Consts;
 
 { TActionButtonFrame }
 

@@ -1,19 +1,18 @@
-unit Frames.Logo;
+unit FMXER.ImageFrame;
 
 interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Objects;
+  FMX.Objects, FMX.MultiResBitmap;
 
 type
-  TLogoFrame = class(TFrame)
-    LogoImage: TImage;
+  TImageFrame = class(TFrame)
+    ContentImage: TImage;
   private
-    { Private declarations }
   public
-    { Public declarations }
+    property Image: TImage read ContentImage;
   end;
 
 implementation

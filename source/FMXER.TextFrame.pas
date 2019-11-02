@@ -1,4 +1,4 @@
-unit Frames.Text;
+unit FMXER.TextFrame;
 
 interface
 
@@ -28,7 +28,7 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Consts;
+uses FMXER.UI.Consts;
 
 { TTextFrame }
 

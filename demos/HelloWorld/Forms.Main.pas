@@ -24,7 +24,7 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Consts, UI.Misc, UI.Navigator, Forms.Scaffold, Frames.Logo;
+uses FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator, FMXER.ScaffoldForm, FMXER.LogoFrame;
 
 constructor TMainForm.Create(AOwner: TComponent);
 begin
