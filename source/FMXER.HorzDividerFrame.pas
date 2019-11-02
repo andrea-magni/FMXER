@@ -11,13 +11,23 @@ type
   THorzDividerFrame = class(TFrame)
     DividerLine: TLine;
   private
-    { Private declarations }
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+
   end;
 
 implementation
 
 {$R *.fmx}
+
+uses FMXER.UI.Consts;
+
+{ THorzDividerFrame }
+
+constructor THorzDividerFrame.Create(AOwner: TComponent);
+begin
+  inherited;
+  DividerLine.Stroke.Color := TAppColors.DividerColor;
+end;
 
 end.
