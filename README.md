@@ -26,7 +26,7 @@ Visual framework (Flutter inspired) for FMX
 [List of available elements](List.md)
 Missing something? just open an issue or implement your own (it's easy!) and submit a pull request.
 
-Contact me if you encounter any problem (just open an issue here) and please also feel free to provide me some feedback about this project!
+Contact me if you encounter any problem (just open an issue here) and please provide me some feedback about this project!
 
 Sincerely,
 Andrea
