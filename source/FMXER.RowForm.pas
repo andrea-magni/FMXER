@@ -4,8 +4,10 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FrameStand,
-  SubjectStand, FormStand, FMX.Layouts, Generics.Collections, UI.Misc;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
+  Generics.Collections
+, SubjectStand, FrameStand, FormStand
+, FMXER.UI.Misc;
 
 type
   TRowForm = class(TForm)

@@ -5,8 +5,9 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Layouts, Frames.Text, FMX.Objects, SubjectStand, FrameStand, FormStand,
-  Forms.Column;
+  FMX.Layouts, FMX.Objects
+, SubjectStand, FrameStand, FormStand
+, FMXER.ColumnForm, FMXER.TextFrame;
 
 type
   TCardFrame = class(TFrame)
@@ -54,7 +55,7 @@ implementation
 
 {$R *.fmx}
 
-uses UI.Consts;
+uses FMXER.UI.Consts;
 
 { TCardFrame }
 
