@@ -1,6 +1,8 @@
 # FMXER
 Visual framework (Flutter inspired) for FMX
 
+![FMXER](media/FMXER_R_256.png)
+
 ## Delphi version:
  - Delphi 10.3.2 (should have good backward compatibility but not verified yet)
 
