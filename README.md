@@ -14,6 +14,9 @@ Visual framework (Flutter inspired) for FMX
  - DataSet
  - Column
 
+## Video
+ - [CodeRage 2019: Introducing FMXER](https://youtu.be/RiK2re19Kyk)
+
 ## Quick start
 1. Clone this repository
 2. If you haven't yet, install TFrameStand:
