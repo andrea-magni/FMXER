@@ -1,12 +1,12 @@
 object TextFrame: TTextFrame
   Align = Client
   Size.Width = 320.000000000000000000
-  Size.Height = 86.000000000000000000
+  Size.Height = 80.000000000000000000
   Size.PlatformDefault = False
   object TextContent: TText
     Align = Client
     Size.Width = 320.000000000000000000
-    Size.Height = 86.000000000000000000
+    Size.Height = 80.000000000000000000
     Size.PlatformDefault = False
     OnClick = TextContentClick
   end

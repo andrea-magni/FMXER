@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{58065874-F875-4A84-A4F6-5A13B8936B59}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="HelloWorld\HelloWorldProject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DataSet\DataSetProject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Column\ColumnProject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MyTicketing\MyTicketingProject.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="HelloWorldProject">
+        <MSBuild Projects="HelloWorld\HelloWorldProject.dproj"/>
+    </Target>
+    <Target Name="HelloWorldProject:Clean">
+        <MSBuild Projects="HelloWorld\HelloWorldProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HelloWorldProject:Make">
+        <MSBuild Projects="HelloWorld\HelloWorldProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DataSetProject">
+        <MSBuild Projects="DataSet\DataSetProject.dproj"/>
+    </Target>
+    <Target Name="DataSetProject:Clean">
+        <MSBuild Projects="DataSet\DataSetProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DataSetProject:Make">
+        <MSBuild Projects="DataSet\DataSetProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ColumnProject">
+        <MSBuild Projects="Column\ColumnProject.dproj"/>
+    </Target>
+    <Target Name="ColumnProject:Clean">
+        <MSBuild Projects="Column\ColumnProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ColumnProject:Make">
+        <MSBuild Projects="Column\ColumnProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MyTicketingProject">
+        <MSBuild Projects="MyTicketing\MyTicketingProject.dproj"/>
+    </Target>
+    <Target Name="MyTicketingProject:Clean">
+        <MSBuild Projects="MyTicketing\MyTicketingProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MyTicketingProject:Make">
+        <MSBuild Projects="MyTicketing\MyTicketingProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="HelloWorldProject;DataSetProject;ColumnProject;MyTicketingProject"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="HelloWorldProject:Clean;DataSetProject:Clean;ColumnProject:Clean;MyTicketingProject:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="HelloWorldProject:Make;DataSetProject:Make;ColumnProject:Make;MyTicketingProject:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

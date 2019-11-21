@@ -1,0 +1,39 @@
+object EditFrame: TEditFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 80.000000000000000000
+  Size.PlatformDefault = False
+  object EditControl: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    TabOrder = 0
+    Position.X = 10.000000000000000000
+    Position.Y = 29.000000000000000000
+    Size.Width = 300.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChange = EditControlChange
+    OnChangeTracking = EditControlChangeTracking
+  end
+  object CaptionLabel: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 10.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 300.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+  end
+  object ExtraLabel: TLabel
+    Anchors = [akLeft, akRight, akBottom]
+    StyledSettings = [Family, Size, Style]
+    Position.X = 10.000000000000000000
+    Position.Y = 61.000000000000000000
+    Size.Width = 300.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.FontColor = claGray
+    TextSettings.HorzAlign = Center
+    TabOrder = 1
+  end
+end

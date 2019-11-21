@@ -24,6 +24,7 @@ type
     function FindParam(const AName: string; out AParam: TNameValueParam): Boolean;
     function ParamByName(const AName: string; const ADefaultValue: TValue): TValue; overload;
     function ParamByName(const AName: string): TValue; overload;
+    class operator Implicit(AConfigProc: TProc<T>): TElementDef<T>;
   end;
 
 
@@ -70,6 +71,11 @@ begin
       Break;
     end;
   end;
+end;
+
+class operator TElementDef<T>.Implicit(AConfigProc: TProc<T>): TElementDef<T>;
+begin
+  Result := TElementDef<T>.Create(AConfigProc);
 end;
 
 function TElementDef<T>.ParamByName(const AName: string): TValue;
