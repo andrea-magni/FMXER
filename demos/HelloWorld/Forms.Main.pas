@@ -24,7 +24,8 @@ implementation
 
 {$R *.fmx}
 
-uses FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator, FMXER.ScaffoldForm, FMXER.LogoFrame;
+uses FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator, FMXER.ScaffoldForm, FMXER.LogoFrame
+, Frames.Custom1;
 
 constructor TMainForm.Create(AOwner: TComponent);
 begin
@@ -38,7 +39,7 @@ begin
      begin
        AForm.Title := 'Hello, World!';
 
-       AForm.SetContentAsFrame<TLogoFrame>;
+       AForm.SetContentAsFrame<TCustom1Frame>;
 
        AForm.AddActionButton('A',
          procedure

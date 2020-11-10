@@ -6,6 +6,9 @@
         <Projects Include="HelloWorld\HelloWorldProject.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="HelloWorld_IFIL\HelloWorldProject_IFIL.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="DataSet\DataSetProject.dproj">
             <Dependencies/>
         </Projects>
@@ -13,6 +16,9 @@
             <Dependencies/>
         </Projects>
         <Projects Include="MyTicketing\MyTicketingProject.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="RemoteMic\RemoteMicProject.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -31,6 +37,15 @@
     </Target>
     <Target Name="HelloWorldProject:Make">
         <MSBuild Projects="HelloWorld\HelloWorldProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="HelloWorldProject_IFIL">
+        <MSBuild Projects="HelloWorld_IFIL\HelloWorldProject_IFIL.dproj"/>
+    </Target>
+    <Target Name="HelloWorldProject_IFIL:Clean">
+        <MSBuild Projects="HelloWorld_IFIL\HelloWorldProject_IFIL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HelloWorldProject_IFIL:Make">
+        <MSBuild Projects="HelloWorld_IFIL\HelloWorldProject_IFIL.dproj" Targets="Make"/>
     </Target>
     <Target Name="DataSetProject">
         <MSBuild Projects="DataSet\DataSetProject.dproj"/>
@@ -59,14 +74,23 @@
     <Target Name="MyTicketingProject:Make">
         <MSBuild Projects="MyTicketing\MyTicketingProject.dproj" Targets="Make"/>
     </Target>
+    <Target Name="RemoteMicProject">
+        <MSBuild Projects="RemoteMic\RemoteMicProject.dproj"/>
+    </Target>
+    <Target Name="RemoteMicProject:Clean">
+        <MSBuild Projects="RemoteMic\RemoteMicProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RemoteMicProject:Make">
+        <MSBuild Projects="RemoteMic\RemoteMicProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;DataSetProject;ColumnProject;MyTicketingProject"/>
+        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MyTicketingProject;RemoteMicProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;DataSetProject:Clean;ColumnProject:Clean;MyTicketingProject:Clean"/>
+        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MyTicketingProject:Clean;RemoteMicProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;DataSetProject:Make;ColumnProject:Make;MyTicketingProject:Make"/>
+        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MyTicketingProject:Make;RemoteMicProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

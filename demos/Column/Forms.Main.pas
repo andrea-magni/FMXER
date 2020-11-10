@@ -37,7 +37,7 @@ uses
 , FMXER.ContainerFrame, FMXER.ContainerForm
 , FMXER.BackgroundFrame, FMXER.BackgroundForm
 , FMXER.HorzDividerFrame, FMXER.VertScrollFrame
-, FMXER.TextFrame, FMXER.LogoFrame;
+, FMXER.TextFrame, FMXER.LogoFrame, FMXER.CardFrame;
 
 procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
@@ -75,6 +75,23 @@ begin
          TElementDef<TLogoFrame>.Create(nil, [
            Param('Height', 200)
          ]));
+
+       AColumn.AddFrame<TCardFrame>(
+        TElementDef<TCardFrame>.Create(
+         procedure (Card: TCardFrame)
+         begin
+           Card.Title := 'Delphi Live 13/5';
+           Card.SetContentAsFrame<TLogoFrame>(
+             procedure (ALogo: TLogoFrame)
+             begin
+               ALogo.Height := 150;
+             end
+           );
+         end
+        , []
+        )
+      );
+
      end
 end;
 
@@ -125,7 +142,9 @@ begin
    , procedure(ABackground: TBackgroundForm)
      begin
        ABackground.Fill.Color := TAppColors.MATERIAL_AMBER_800;
-       ABackground.SetContentAsForm<TColumnForm>(GetColumnDefinition());
+       ABackground.SetContentAsForm<TColumnForm>(
+         GetColumnDefinition()
+       );
      end)
 
   .DefineRoute<TBackgroundForm>('vertScrollColumn'
@@ -135,7 +154,9 @@ begin
        ABackground.SetContentAsFrame<TVertScrollFrame>(
          procedure (AScroll: TVertScrollFrame)
          begin
-           AScroll.SetContentAsForm<TColumnForm>(GetColumnDefinition());
+           AScroll.SetContentAsForm<TColumnForm>(
+             GetColumnDefinition()
+           );
          end);
      end);
 

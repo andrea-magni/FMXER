@@ -3,7 +3,8 @@ program HelloWorldProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Forms.Main in 'Forms.Main.pas' {MainForm};
+  Forms.Main in 'Forms.Main.pas' {MainForm},
+  Frames.Custom1 in 'Frames.Custom1.pas' {Custom1Frame: TFrame};
 
 {$R *.res}
 
