@@ -4,7 +4,7 @@ Visual framework (Flutter inspired) for FMX
 ![FMXER](media/FMXER_R_256.png)
 
 ## Delphi version:
- - Delphi 10.3.2 (should have good backward compatibility but not verified yet)
+ - Delphi 10.4 (should have good backward compatibility but not verified yet)
 
 ## Submodules:
  - lib\TFrameStand: [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
