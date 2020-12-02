@@ -24,6 +24,7 @@ type
     ShadowEffect2: TShadowEffect;
     FormStand1: TFormStand;
     Stands: TStyleBook;
+    TitleDetailLayout: TLayout;
     procedure ActionList1Update(Action: TBasicAction; var Handled: Boolean);
   private
     FContent: TSubjectInfo;
@@ -31,6 +32,7 @@ type
     FActionButtonStand: string;
     FActionButtons: TList<TFrameInfo<TActionButtonFrame>>;
     FTitle: string;
+    FTitleDetailStand: string;
     procedure SetTitle(const Value: string);
     function GetContent: TSubject;
   protected
@@ -38,14 +40,18 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    //
+    // Content
     procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
     procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
 
+    // Title detail
+    procedure SetTitleDetailContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
+    procedure SetTitleDetailContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+
+    // Action buttons
     procedure AddActionButtonOverlayFrame<T: TFrame>(const AOverlayConfigProc: TProc<T>;
       const AOnClickProc: TProc); overload;
     procedure AddActionButtonOverlayFrame<T: TFrame>(const AElementDef: TElementDef<T>); overload;
-
     procedure AddActionButtonOverlayForm<T: TForm>(const AOverlayConfigProc: TProc<T>;
       const AOnClickProc: TProc);
 
@@ -63,6 +69,7 @@ type
     property ActionButtonStand: string read FActionButtonStand write FActionButtonStand;
     property ContentStand: string read FContentStand write FContentStand;
     property Title: string read FTitle write SetTitle;
+    property TitleDetailStand: string read FTitleDetailStand write FTitleDetailStand;
     property Content: TSubject read GetContent;
   end;
 
@@ -204,6 +211,18 @@ procedure TScaffoldForm.SetTitle(const Value: string);
 begin
   FTitle := Value;
   TitleLabel.Text := FTitle;
+end;
+
+procedure TScaffoldForm.SetTitleDetailContentAsForm<T>(
+  const AConfigProc: TProc<T>);
+begin
+  FContent := FormStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
+end;
+
+procedure TScaffoldForm.SetTitleDetailContentAsFrame<T>(
+  const AConfigProc: TProc<T>);
+begin
+  FContent := FrameStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
 end;
 
 procedure TScaffoldForm.ShowSnackBar(const AText: string;

@@ -42,6 +42,13 @@ object ScaffoldForm: TScaffoldForm
       Opacity = 0.600000023841857900
       ShadowColor = claGray
     end
+    object TitleDetailLayout: TLayout
+      Align = Contents
+      Size.Width = 350.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+    end
   end
   object ContentLayout: TLayout
     Align = Client
