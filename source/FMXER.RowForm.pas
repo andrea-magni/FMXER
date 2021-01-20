@@ -18,6 +18,7 @@ type
   private
     FElements: TList<TSubjectInfoContainer>;
     FElementStand: string;
+    FElementAlign: TAlignLayout;
   public
     const DEFAULT_ELEMENT_WIDTH = 200;
 
@@ -33,6 +34,7 @@ type
     procedure AddForm<T: TForm>(const AColDef: TElementDef<T>); overload;
 
     property ElementStand: string read FElementStand write FElementStand;
+    property ElementAlign: TAlignLayout read FElementAlign write FElementAlign;
     property Elements: TList<TSubjectInfoContainer> read FElements;
   end;
 
@@ -58,7 +60,7 @@ begin
     LElementContainer.Position.X := MaxInt;
     LElementContainer.Parent := ContentLayout;
     LElementContainer.Width := AWidth;
-    LElementContainer.Align := TAlignLayout.Left;
+    LElementContainer.Align := ElementAlign;
 
     LElement := FormStand1.New<T>(LElementContainer, ElementStand);
     LElementContainer.SubjectInfo := LElement;
@@ -86,7 +88,7 @@ begin
     LElementContainer.Position.X := MaxInt;
     LElementContainer.Parent := ContentLayout;
     LElementContainer.Width := AWidth;
-    LElementContainer.Align := TAlignLayout.Left;
+    LElementContainer.Align := ElementAlign;
 
     LElement := FrameStand1.New<T>(LElementContainer, ElementStand);
     LElementContainer.SubjectInfo := LElement;
@@ -113,6 +115,7 @@ begin
   inherited;
   FElements := TList<TSubjectInfoContainer>.Create;
   Width := 0;
+  FElementAlign := TAlignLayout.Left;
 end;
 
 destructor TRowForm.Destroy;

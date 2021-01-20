@@ -42,8 +42,6 @@ object RowForm: TRowForm
     AnimationHide = 'OnHide*'
     CommonActionPrefix = 'ca_'
     DefaultHideAndCloseDeferTimeMS = 100
-    DefaultStyleName = 'fadeIn'
-    DefaultStandName = 'fadeIn'
     StyleBook = Stands
     StandBook = Stands
     Left = 104
@@ -54,8 +52,6 @@ object RowForm: TRowForm
     AnimationHide = 'OnHide*'
     CommonActionPrefix = 'ca_'
     DefaultHideAndCloseDeferTimeMS = 100
-    DefaultStyleName = 'fadeIn'
-    DefaultStandName = 'fadeIn'
     StyleBook = Stands
     StandBook = Stands
     Left = 32
