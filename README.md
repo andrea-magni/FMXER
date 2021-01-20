@@ -31,5 +31,7 @@ Missing something? just open an issue or implement your own (it's easy!) and sub
 
 Contact me if you encounter any problem (just open an issue here) and please provide me some feedback about this project!
 
-Sincerely,
-Andrea
+# Related Links
+Embarcadero Delphi is a modern, powerful and effective language and development tool. Learn more about it at the following links:
+ * https://www.embarcadero.com/
+ * https://learndelphi.org/
