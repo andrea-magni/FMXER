@@ -24,7 +24,9 @@ implementation
 
 {$R *.fmx}
 
-uses FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator, FMXER.ScaffoldForm, FMXER.LogoFrame
+uses
+  FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator, FMXER.ScaffoldForm, FMXER.LogoFrame
+, FMXER.ColumnForm, FMXER.VertScrollFrame
 , Frames.Custom1;
 
 constructor TMainForm.Create(AOwner: TComponent);
@@ -39,7 +41,20 @@ begin
      begin
        AForm.Title := 'Hello, World!';
 
-       AForm.SetContentAsFrame<TCustom1Frame>;
+       AForm.SetContentAsFrame<TVertScrollFrame>(
+         procedure (AVSF: TVertScrollFrame)
+         begin
+           AVSF.SetContentAsForm<TColumnForm>(
+             procedure (ACol: TColumnForm)
+             begin
+               ACol.AddFrame<TCustom1Frame>;
+               ACol.AddFrame<TCustom1Frame>;
+               ACol.AddFrame<TCustom1Frame>;
+             end
+           );
+         end
+       );
+
 
        AForm.AddActionButton('A',
          procedure

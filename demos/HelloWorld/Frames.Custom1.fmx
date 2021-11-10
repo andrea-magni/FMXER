@@ -1,0 +1,18 @@
+object Custom1Frame: TCustom1Frame
+  Size.Width = 320.000000000000000000
+  Size.Height = 240.000000000000000000
+  Size.PlatformDefault = False
+  object Button1: TButton
+    Position.X = 32.000000000000000000
+    Position.Y = 32.000000000000000000
+    TabOrder = 0
+    Text = 'Button1'
+  end
+  object Circle1: TCircle
+    Position.X = 72.000000000000000000
+    Position.Y = 72.000000000000000000
+    Size.Width = 153.000000000000000000
+    Size.Height = 81.000000000000000000
+    Size.PlatformDefault = False
+  end
+end
