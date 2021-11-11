@@ -15,12 +15,6 @@
         <Projects Include="Column\ColumnProject.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="MyTicketing\MyTicketingProject.dproj">
-            <Dependencies/>
-        </Projects>
-        <Projects Include="RemoteMic\RemoteMicProject.dproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -65,32 +59,14 @@
     <Target Name="ColumnProject:Make">
         <MSBuild Projects="Column\ColumnProject.dproj" Targets="Make"/>
     </Target>
-    <Target Name="MyTicketingProject">
-        <MSBuild Projects="MyTicketing\MyTicketingProject.dproj"/>
-    </Target>
-    <Target Name="MyTicketingProject:Clean">
-        <MSBuild Projects="MyTicketing\MyTicketingProject.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="MyTicketingProject:Make">
-        <MSBuild Projects="MyTicketing\MyTicketingProject.dproj" Targets="Make"/>
-    </Target>
-    <Target Name="RemoteMicProject">
-        <MSBuild Projects="RemoteMic\RemoteMicProject.dproj"/>
-    </Target>
-    <Target Name="RemoteMicProject:Clean">
-        <MSBuild Projects="RemoteMic\RemoteMicProject.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="RemoteMicProject:Make">
-        <MSBuild Projects="RemoteMic\RemoteMicProject.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MyTicketingProject;RemoteMicProject"/>
+        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MyTicketingProject:Clean;RemoteMicProject:Clean"/>
+        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MyTicketingProject:Make;RemoteMicProject:Make"/>
+        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

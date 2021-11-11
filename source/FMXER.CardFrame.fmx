@@ -8,14 +8,14 @@ object CardFrame: TCardFrame
   Margins.Top = 3.000000000000000000
   Margins.Right = 3.000000000000000000
   Margins.Bottom = 3.000000000000000000
-  Size.Width = 266.000000000000000000
-  Size.Height = 186.000000000000000000
+  Size.Width = 242.000000000000000000
+  Size.Height = 162.000000000000000000
   Size.PlatformDefault = False
   object TitleLayout: TLayout
     Align = Top
     Position.X = 3.000000000000000000
     Position.Y = 3.000000000000000000
-    Size.Width = 260.000000000000000000
+    Size.Width = 236.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
@@ -24,7 +24,7 @@ object CardFrame: TCardFrame
       Fill.Color = xFF1565C0
       HitTest = False
       Sides = []
-      Size.Width = 260.000000000000000000
+      Size.Width = 236.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
     end
@@ -48,8 +48,8 @@ object CardFrame: TCardFrame
   end
   object ContentLayout: TLayout
     Align = Client
-    Size.Width = 260.000000000000000000
-    Size.Height = 130.000000000000000000
+    Size.Width = 236.000000000000000000
+    Size.Height = 106.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object ContentBackground: TRectangle
@@ -57,8 +57,8 @@ object CardFrame: TCardFrame
       Fill.Color = claSilver
       HitTest = False
       Sides = []
-      Size.Width = 260.000000000000000000
-      Size.Height = 130.000000000000000000
+      Size.Width = 236.000000000000000000
+      Size.Height = 106.000000000000000000
       Size.PlatformDefault = False
     end
   end

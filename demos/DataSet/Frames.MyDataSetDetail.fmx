@@ -13,8 +13,8 @@ object MyDataSetDetailFrame: TMyDataSetDetailFrame
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 296.000000000000000000
-    Viewport.Height = 396.000000000000000000
+    Viewport.Width = 300.000000000000000000
+    Viewport.Height = 400.000000000000000000
     object ListBoxItem1: TListBoxItem
       TabOrder = 0
       Text = 'First name: Roberto'
