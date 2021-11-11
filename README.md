@@ -1,10 +1,14 @@
+![](https://img.shields.io/github/v/release/andrea-magni/FMXER)
+![](https://img.shields.io/github/release-date/andrea-magni/FMXER)
+![](https://img.shields.io/github/commits-since/andrea-magni/FMXER/v.1.0)
+
 # FMXER
 Visual framework (Flutter inspired) for FMX
 
 ![FMXER](media/FMXER_R_256.png)
 
 ## Delphi version:
- - Delphi 10.4 (should have good backward compatibility but not verified yet)
+ - Delphi 11 (Delphi 10.4 should be just fine)
 
 ## Submodules:
  - lib\TFrameStand: [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
@@ -20,7 +24,7 @@ Visual framework (Flutter inspired) for FMX
 ## Quick start
 1. Clone this repository
 2. If you haven't yet, install TFrameStand:
-    - Open lib\TFrameStand\packages\FrameStand_10_3.groupproj group project
+    - Open lib\TFrameStand\packages\FrameStand_11.groupproj group project
     - Build all
     - Install design time package
 3. Open demos\HelloWorld\HelloWorldProject.dproj hit Run.
