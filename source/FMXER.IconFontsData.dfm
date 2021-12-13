@@ -1,13 +1,12 @@
 object IconFonts: TIconFonts
-  OldCreateOrder = False
-  Height = 219
-  Width = 286
+  Height = 329
+  Width = 429
+  PixelsPerInch = 144
   object ImageList: TIconFontsImageList
     Source = <>
     Destination = <>
     FontColor = claBlack
-    Opacity = 1.000000000000000000
-    Left = 128
-    Top = 80
+    Left = 192
+    Top = 120
   end
 end

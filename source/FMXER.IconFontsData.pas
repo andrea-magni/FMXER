@@ -11,9 +11,15 @@ type
     ImageList: TIconFontsImageList;
   private
     FCount: Integer;
+  private
+    class var _Instance: TIconFonts;
+    class function GetIconFonts: TIconFonts; static;
   protected
     function GetMD: TMaterialDesign;
   public
+    class constructor ClassCreate;
+    class destructor ClassDestroy;
+
     constructor Create(AOwner: TComponent); override;
 
     function AddIcon(const AIcon: TIconEntry): Integer; overload;
@@ -22,6 +28,7 @@ type
     function AddIcon(const ACodePoint: Integer; const AColor: TAlphaColor): Integer; overload;
 
     property MD: TMaterialDesign read GetMD;
+    class property Instance: TIconFonts read GetIconFonts;
   end;
 
 function IconFonts: TIconFonts;
@@ -34,13 +41,9 @@ implementation
 
 uses FMX.Forms;
 
-var _Instance: TIconFonts = nil;
-
 function IconFonts: TIconFonts;
 begin
-  if not Assigned(_Instance) then
-    _Instance := TIconFonts.Create(nil);
-  Result := _Instance;
+  Result := TIconFonts.Instance;
 end;
 
 { TIconFontsData }
@@ -68,11 +71,29 @@ begin
   Inc(FCount);
 end;
 
+class constructor TIconFonts.ClassCreate;
+begin
+  TIconFonts._Instance := nil;
+end;
+
+class destructor TIconFonts.ClassDestroy;
+begin
+  if Assigned(TIconFonts._Instance) then
+    FreeAndNil(TIconFonts._Instance);
+end;
+
 constructor TIconFonts.Create(AOwner: TComponent);
 begin
   inherited;
   FCount := 0;
   ImageList.FontName := 'Material Design Icons Desktop';
+end;
+
+class function TIconFonts.GetIconFonts: TIconFonts;
+begin
+  if not Assigned(_Instance) then
+    _Instance := TIconFonts.Create(nil);
+  Result := _Instance;
 end;
 
 function TIconFonts.GetMD: TMaterialDesign;

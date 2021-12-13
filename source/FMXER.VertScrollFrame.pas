@@ -17,7 +17,11 @@ type
     FContentStand: string;
     function GetTouchWidth: Single;
     procedure SetTouchWidth(const Value: Single);
+  protected
+    [SubjectInfo] SI: TSubjectInfo;
   public
+    [Hide]
+    procedure HideHandler;
     //
     procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
     procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
@@ -35,6 +39,13 @@ implementation
 function TVertScrollFrame.GetTouchWidth: Single;
 begin
   Result := VerticalScrollbox.Padding.Right;
+end;
+
+procedure TVertScrollFrame.HideHandler;
+begin
+  FrameStand1.CloseAll;
+  FormStand1.CloseAll;
+  SI.DefaultHide;
 end;
 
 procedure TVertScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
