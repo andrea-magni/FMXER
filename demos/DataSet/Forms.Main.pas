@@ -15,6 +15,7 @@ type
     ImageList1: TImageList;
     procedure FormStand1BeforeStartAnimation(const ASender: TSubjectStand;
       const ASubjectInfo: TSubjectInfo; const AAnimation: TAnimation);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
   public
     constructor Create(AOwner: TComponent); override;
@@ -74,6 +75,16 @@ begin
   ) // route definition
 
   .RouteTo('home'); // initial route
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if Navigator.ActiveRoutes.Count > 0 then
+  begin
+    Action := TCloseAction.caNone;
+    Navigator.OnCloseRoute := procedure (ARoute: string) begin if ARoute = 'home' then Close; end;
+    Navigator.CloseAllRoutes();
+  end;
 end;
 
 procedure TMainForm.FormStand1BeforeStartAnimation(const ASender: TSubjectStand;

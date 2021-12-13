@@ -191,9 +191,9 @@ end;
 procedure TScaffoldForm.HideHandler;
 begin
   // destructor would be too late
-  FrameStand1.CloseAll();
-  FormStand1.CloseAll();
-
+//  FrameStand1.HideAndCloseAll();
+//  FormStand1.HideAndCloseAll();
+{ TODO : Find a way to hide/close everything it the correct order }
   SI.DefaultHide;
 end;
 

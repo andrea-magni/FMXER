@@ -15,6 +15,7 @@ type
     Stands: TStyleBook;
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
   protected
     function GetColumnDefinition: TProc<TColumnForm>;
@@ -38,6 +39,16 @@ uses
 , FMXER.BackgroundFrame, FMXER.BackgroundForm
 , FMXER.HorzDividerFrame, FMXER.VertScrollFrame
 , FMXER.TextFrame, FMXER.LogoFrame, FMXER.CardFrame;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if Navigator.ActiveRoutes.Count > 0 then
+  begin
+    Action := TCloseAction.caNone;
+    Navigator.OnCloseRoute := procedure (ARoute: string) begin if ARoute = 'home' then Close; end;
+    Navigator.CloseAllRoutes();
+  end;
+end;
 
 procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
