@@ -1,0 +1,25 @@
+object WeatherSituationFrame: TWeatherSituationFrame
+  Align = Client
+  Size.Width = 317.000000000000000000
+  Size.Height = 319.000000000000000000
+  Size.PlatformDefault = False
+  object Layout1: TLayout
+    Align = Top
+    Size.Width = 317.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object LocationLabel: TLabel
+      Align = Center
+      AutoSize = True
+      StyledSettings = [Family, Style, FontColor]
+      Size.Width = 110.000000000000000000
+      Size.Height = 24.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 18.000000000000000000
+      TextSettings.WordWrap = False
+      Text = 'LocationLabel'
+      TabOrder = 0
+    end
+  end
+end
