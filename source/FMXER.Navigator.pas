@@ -196,8 +196,8 @@ begin
       FStack.Push(ARouteName);
       if Assigned(FOnCreateRouteProc) then
         FOnCreateRouteProc(ARouteName);
-    end;
-    // TODO: gestire caso non trovato
+    end
+    else raise Exception.CreateFmt('Route definition not found: %s', [ARouteName]);
 
   if Assigned(LSubjectInfo) then
     LSubjectInfo.SubjectShow;

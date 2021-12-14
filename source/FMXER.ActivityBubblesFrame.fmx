@@ -1,0 +1,129 @@
+object ActivityBubblesFrame: TActivityBubblesFrame
+  Align = Client
+  Size.Width = 348.000000000000000000
+  Size.Height = 408.000000000000000000
+  Size.PlatformDefault = False
+  object Layout1: TLayout
+    Align = VertCenter
+    Position.Y = 104.000000000000000000
+    Size.Width = 348.000000000000000000
+    Size.Height = 200.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Layout2: TLayout
+      Align = HorzCenter
+      Position.X = 74.000000000000000000
+      Size.Width = 200.000000000000000000
+      Size.Height = 200.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object Circle3: TCircle
+        Fill.Color = claGold
+        Opacity = 0.500000000000000000
+        Position.X = 150.000000000000000000
+        Position.Y = 75.000000000000000000
+        Size.Width = 50.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claGoldenrod
+        Stroke.Thickness = 3.000000000000000000
+      end
+      object Circle2: TCircle
+        Fill.Color = claGold
+        Opacity = 0.750000000000000000
+        Position.X = 75.000000000000000000
+        Size.Width = 50.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claGoldenrod
+        Stroke.Thickness = 3.000000000000000000
+      end
+      object Circle1: TCircle
+        Fill.Color = claGold
+        Position.Y = 75.000000000000000000
+        Size.Width = 50.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claGoldenrod
+        Stroke.Thickness = 3.000000000000000000
+      end
+      object OnShowAnimation: TFloatAnimation
+        Duration = 0.500000000000000000
+        Interpolation = Quadratic
+        Loop = True
+        PropertyName = 'RotationAngle'
+        StartValue = 0.000000000000000000
+        StopValue = 360.000000000000000000
+      end
+      object Circle4: TCircle
+        Fill.Color = claGold
+        Opacity = 0.250000000000000000
+        Position.X = 75.000000000000000000
+        Position.Y = 150.000000000000000000
+        Size.Width = 50.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claGoldenrod
+        Stroke.Thickness = 3.000000000000000000
+      end
+      object Layout3: TLayout
+        Align = HorzCenter
+        RotationAngle = 45.000000000000000000
+        Size.Width = 200.000000000000000000
+        Size.Height = 200.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object Circle5: TCircle
+          Fill.Color = claGold
+          Opacity = 0.375000000000000000
+          Position.X = 150.000000000000000000
+          Position.Y = 75.000000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claGoldenrod
+          Stroke.Thickness = 3.000000000000000000
+        end
+        object Circle6: TCircle
+          Fill.Color = claGold
+          Opacity = 0.625000000000000000
+          Position.X = 75.000000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claGoldenrod
+          Stroke.Thickness = 3.000000000000000000
+        end
+        object Circle7: TCircle
+          Fill.Color = claGold
+          Opacity = 0.875000000000000000
+          Position.Y = 75.000000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claGoldenrod
+          Stroke.Thickness = 3.000000000000000000
+        end
+        object FloatAnimation1: TFloatAnimation
+          Duration = 0.500000000000000000
+          Interpolation = Quadratic
+          Loop = True
+          PropertyName = 'RotationAngle'
+          StartValue = 0.000000000000000000
+          StopValue = 360.000000000000000000
+        end
+        object Circle8: TCircle
+          Fill.Color = claGold
+          Opacity = 0.100000001490116100
+          Position.X = 75.000000000000000000
+          Position.Y = 150.000000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claGoldenrod
+          Stroke.Thickness = 3.000000000000000000
+        end
+      end
+    end
+  end
+end
