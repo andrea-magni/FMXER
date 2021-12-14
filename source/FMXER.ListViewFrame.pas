@@ -13,20 +13,26 @@ type
     ListView: TListView;
     procedure ListViewItemClick(const Sender: TObject;
       const AItem: TListViewItem);
+    procedure ListViewPullRefresh(Sender: TObject);
   private
     FOnSelectHandlers: TDictionary<TListViewItem, TProc>;
+    FItemBuilderProc: TProc;
     function GetItemAppearance: string;
     procedure SetItemAppearance(const Value: string);
+    procedure SetItemBuilderProc(Value: TProc);
+  protected
+    procedure RebuildItems; virtual;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
 
     procedure AfterConstruction; override;
 
     function AddItem(const AText: string; const ADetailText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
     procedure ClearItems;
+
     property ItemAppearance: string read GetItemAppearance write SetItemAppearance;
+    property ItemBuilderProc: TProc read FItemBuilderProc write SetItemBuilderProc;
   end;
 
 implementation
@@ -94,9 +100,32 @@ begin
     LHandler();
 end;
 
+procedure TListViewFrame.ListViewPullRefresh(Sender: TObject);
+begin
+  RebuildItems;
+end;
+
+procedure TListViewFrame.RebuildItems;
+begin
+  if Assigned(FItemBuilderProc) then
+    FItemBuilderProc()
+  else
+    ListView.Items.Clear;
+end;
+
 procedure TListViewFrame.SetItemAppearance(const Value: string);
 begin
   Listview.ItemAppearance.ItemAppearance := Value;
+end;
+
+procedure TListViewFrame.SetItemBuilderProc(Value: TProc);
+begin
+  if TProc(FItemBuilderProc) <> TProc(Value) then
+  begin
+    FItemBuilderProc := Value;
+
+    RebuildItems;
+  end;
 end;
 
 end.
