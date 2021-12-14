@@ -6,16 +6,18 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
-  FMX.ListView, Generics.Collections;
+  FMX.ListView, Generics.Collections, System.Rtti;
 
 type
+  TListViewItemClickProc = reference to procedure (const AItem: TListViewItem);
+
   TListViewFrame = class(TFrame)
     ListView: TListView;
     procedure ListViewItemClick(const Sender: TObject;
       const AItem: TListViewItem);
     procedure ListViewPullRefresh(Sender: TObject);
   private
-    FOnSelectHandlers: TDictionary<TListViewItem, TProc>;
+    FOnSelectHandlers: TDictionary<TListViewItem, TListViewItemClickProc>;
     FItemBuilderProc: TProc;
     function GetItemAppearance: string;
     procedure SetItemAppearance(const Value: string);
@@ -28,7 +30,8 @@ type
 
     procedure AfterConstruction; override;
 
-    function AddItem(const AText: string; const ADetailText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
+    function AddItem(const AText: string; const ADetailText: string = '';
+      const AImageIndex: Integer = -1; const AOnSelect: TListViewItemClickProc = nil): TListViewItem;
     procedure ClearItems;
 
     property ItemAppearance: string read GetItemAppearance write SetItemAppearance;
@@ -44,7 +47,8 @@ uses
 
 { TListViewFrame }
 
-function TListViewFrame.AddItem(const AText: string; const ADetailText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
+function TListViewFrame.AddItem(const AText: string; const ADetailText: string = '';
+  const AImageIndex: Integer = -1; const AOnSelect: TListViewItemClickProc = nil): TListViewItem;
 begin
   Result := ListView.Items.Add;
 
@@ -78,7 +82,7 @@ end;
 constructor TListViewFrame.Create(AOwner: TComponent);
 begin
   inherited;
-  FOnSelectHandlers := TDictionary<TListViewItem, TProc>.Create();
+  FOnSelectHandlers := TDictionary<TListViewItem, TListViewItemClickProc>.Create();
 end;
 
 destructor TListViewFrame.Destroy;
@@ -95,9 +99,9 @@ end;
 procedure TListViewFrame.ListViewItemClick(const Sender: TObject;
   const AItem: TListViewItem);
 begin
-  var LHandler: TProc := nil;
+  var LHandler: TListViewItemClickProc := nil;
   if FOnSelectHandlers.TryGetValue(AItem, LHandler) and Assigned(LHandler) then
-    LHandler();
+    LHandler(AItem);
 end;
 
 procedure TListViewFrame.ListViewPullRefresh(Sender: TObject);
@@ -107,6 +111,8 @@ end;
 
 procedure TListViewFrame.RebuildItems;
 begin
+  FOnSelectHandlers.Clear;
+
   if Assigned(FItemBuilderProc) then
     FItemBuilderProc()
   else
