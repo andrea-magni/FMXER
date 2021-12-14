@@ -22,6 +22,7 @@ type
     function GetItemAppearance: string;
     procedure SetItemAppearance(const Value: string);
     procedure SetItemBuilderProc(Value: TProc);
+    function GetSelectedItem: TListViewItem;
   protected
     procedure RebuildItems; virtual;
   public
@@ -36,6 +37,7 @@ type
 
     property ItemAppearance: string read GetItemAppearance write SetItemAppearance;
     property ItemBuilderProc: TProc read FItemBuilderProc write SetItemBuilderProc;
+    property SelectedItem: TListViewItem read GetSelectedItem;
   end;
 
 implementation
@@ -94,6 +96,11 @@ end;
 function TListViewFrame.GetItemAppearance: string;
 begin
   Result := Listview.ItemAppearance.ItemAppearance;
+end;
+
+function TListViewFrame.GetSelectedItem: TListViewItem;
+begin
+  Result := ListView.Selected as TListViewItem;
 end;
 
 procedure TListViewFrame.ListViewItemClick(const Sender: TObject;

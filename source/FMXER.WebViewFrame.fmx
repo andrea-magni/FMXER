@@ -1,0 +1,13 @@
+object WebViewFrame: TWebViewFrame
+  Align = Client
+  Size.Width = 398.000000000000000000
+  Size.Height = 442.000000000000000000
+  Size.PlatformDefault = False
+  object WebBrowser1: TWebBrowser
+    Align = Client
+    Size.Width = 398.000000000000000000
+    Size.Height = 442.000000000000000000
+    Size.PlatformDefault = False
+    WindowsEngine = EdgeIfAvailable
+  end
+end

@@ -28,6 +28,7 @@ type
     procedure ActionList1Update(Action: TBasicAction; var Handled: Boolean);
   private
     FContent: TSubjectInfo;
+    FTitleDetailContent: TSubjectInfo;
     FContentStand: string;
     FActionButtonStand: string;
     FActionButtons: TList<TFrameInfo<TActionButtonFrame>>;
@@ -193,6 +194,7 @@ begin
   // destructor would be too late
 //  FrameStand1.HideAndCloseAll();
 //  FormStand1.HideAndCloseAll();
+
 { TODO : Find a way to hide/close everything it the correct order }
   SI.DefaultHide;
 end;
@@ -216,13 +218,13 @@ end;
 procedure TScaffoldForm.SetTitleDetailContentAsForm<T>(
   const AConfigProc: TProc<T>);
 begin
-  FContent := FormStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
+  FTitleDetailContent := FormStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
 end;
 
 procedure TScaffoldForm.SetTitleDetailContentAsFrame<T>(
   const AConfigProc: TProc<T>);
 begin
-  FContent := FrameStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
+  FTitleDetailContent := FrameStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
 end;
 
 procedure TScaffoldForm.ShowSnackBar(const AText: string;
