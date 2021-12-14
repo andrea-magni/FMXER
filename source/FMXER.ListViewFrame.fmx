@@ -1,0 +1,18 @@
+object ListViewFrame: TListViewFrame
+  Align = Client
+  Size.Width = 398.000000000000000000
+  Size.Height = 420.000000000000000000
+  Size.PlatformDefault = False
+  object ListView: TListView
+    ItemAppearanceClassName = 'TListItemAppearance'
+    ItemEditAppearanceClassName = 'TListItemShowCheckAppearance'
+    HeaderAppearanceClassName = 'TListHeaderObjects'
+    FooterAppearanceClassName = 'TListHeaderObjects'
+    Align = Client
+    Size.Width = 398.000000000000000000
+    Size.Height = 420.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnItemClick = ListViewItemClick
+  end
+end

@@ -1,0 +1,92 @@
+unit FMXER.ListViewFrame;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
+  FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
+  FMX.ListView, Generics.Collections;
+
+type
+  TListViewFrame = class(TFrame)
+    ListView: TListView;
+    procedure ListViewItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
+  private
+    FOnSelectHandlers: TDictionary<TListViewItem, TProc>;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
+
+    procedure AfterConstruction; override;
+
+    function AddItem(const AText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
+    procedure ClearItems;
+  end;
+
+implementation
+
+{$R *.fmx}
+
+uses
+  FMXER.IconFontsData;
+
+{ TListViewFrame }
+
+function TListViewFrame.AddItem(const AText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
+begin
+  Result := ListView.Items.Add;
+
+  Result.Text := AText;
+  if AImageIndex <> -1 then
+    Result.ImageIndex := AImageIndex;
+
+  if Assigned(AOnSelect) then
+    FOnSelectHandlers.Add(Result, AOnSelect);
+
+end;
+
+procedure TListViewFrame.AfterConstruction;
+begin
+  inherited;
+  if not Assigned(ListView.Images) then
+  begin
+    ListView.Images := IconFonts.ImageList;
+    ListView.ItemAppearance.ItemAppearance := 'ImageListItem';
+  end;
+
+end;
+
+procedure TListViewFrame.ClearItems;
+begin
+  ListView.Items.BeginUpdate;
+  try
+    ListView.Items.Clear;
+  finally
+    ListView.Items.EndUpdate;
+  end;
+end;
+
+constructor TListViewFrame.Create(AOwner: TComponent);
+begin
+  inherited;
+  FOnSelectHandlers := TDictionary<TListViewItem, TProc>.Create();
+end;
+
+destructor TListViewFrame.Destroy;
+begin
+  FreeAndNil(FOnSelectHandlers);
+  inherited;
+end;
+
+procedure TListViewFrame.ListViewItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  var LHandler: TProc := nil;
+  if FOnSelectHandlers.TryGetValue(AItem, LHandler) and Assigned(LHandler) then
+    LHandler();
+end;
+
+end.

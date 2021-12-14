@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Edit;
+  FMX.Controls.Presentation, FMX.Edit, SubjectStand;
 
 type
   TEditFrame = class(TFrame)
@@ -16,6 +16,7 @@ type
     procedure EditControlChange(Sender: TObject);
   private
     FOnChangeProc: TProc<Boolean>;
+    FFocusOnShow: Boolean;
     function GetTextPrompt: string;
     procedure SetTextPrompt(const Value: string);
     function GetCaption: string;
@@ -26,7 +27,13 @@ type
     procedure SetPassword(const Value: Boolean);
     function GetExtraText: string;
     procedure SetExtraText(const Value: string);
+  protected
+    [SubjectInfo] SI: TSubjectInfo;
   public
+    [Show]
+    procedure ShowHandler;
+
+    property FocusOnShow: Boolean read FFocusOnShow write FFocusOnShow;
     property Password: Boolean read GetPassword write SetPassword;
     property TextPrompt: string read GetTextPrompt write SetTextPrompt;
     property Caption: string read GetCaption write SetCaption;
@@ -101,6 +108,22 @@ end;
 procedure TEditFrame.SetTextPrompt(const Value: string);
 begin
   EditControl.TextPrompt := Value;
+end;
+
+procedure TEditFrame.ShowHandler;
+begin
+  SI.DefaultShow;
+
+  if FocusOnShow and EditControl.CanFocus then
+  begin
+    TDelayedAction.Execute(10
+    , procedure
+      begin
+        EditControl.SetFocus;
+      end
+    );
+
+  end;
 end;
 
 end.
