@@ -15,6 +15,8 @@ type
       const AItem: TListViewItem);
   private
     FOnSelectHandlers: TDictionary<TListViewItem, TProc>;
+    function GetItemAppearance: string;
+    procedure SetItemAppearance(const Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -22,8 +24,9 @@ type
 
     procedure AfterConstruction; override;
 
-    function AddItem(const AText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
+    function AddItem(const AText: string; const ADetailText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
     procedure ClearItems;
+    property ItemAppearance: string read GetItemAppearance write SetItemAppearance;
   end;
 
 implementation
@@ -35,11 +38,12 @@ uses
 
 { TListViewFrame }
 
-function TListViewFrame.AddItem(const AText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
+function TListViewFrame.AddItem(const AText: string; const ADetailText: string = ''; const AImageIndex: Integer = -1; const AOnSelect: TProc = nil): TListViewItem;
 begin
   Result := ListView.Items.Add;
 
   Result.Text := AText;
+  Result.Detail := ADetailText;
   if AImageIndex <> -1 then
     Result.ImageIndex := AImageIndex;
 
@@ -52,11 +56,7 @@ procedure TListViewFrame.AfterConstruction;
 begin
   inherited;
   if not Assigned(ListView.Images) then
-  begin
     ListView.Images := IconFonts.ImageList;
-    ListView.ItemAppearance.ItemAppearance := 'ImageListItem';
-  end;
-
 end;
 
 procedure TListViewFrame.ClearItems;
@@ -81,12 +81,22 @@ begin
   inherited;
 end;
 
+function TListViewFrame.GetItemAppearance: string;
+begin
+  Result := Listview.ItemAppearance.ItemAppearance;
+end;
+
 procedure TListViewFrame.ListViewItemClick(const Sender: TObject;
   const AItem: TListViewItem);
 begin
   var LHandler: TProc := nil;
   if FOnSelectHandlers.TryGetValue(AItem, LHandler) and Assigned(LHandler) then
     LHandler();
+end;
+
+procedure TListViewFrame.SetItemAppearance(const Value: string);
+begin
+  Listview.ItemAppearance.ItemAppearance := Value;
 end;
 
 end.
