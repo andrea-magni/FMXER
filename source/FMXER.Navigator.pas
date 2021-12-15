@@ -25,11 +25,11 @@ type
     //
     procedure CloseAllRoutes(const AFilter: TPredicate<string> = nil);
     procedure CloseAllRoutesExcept(const ARouteName: string);
-    procedure CloseRoute(const ARouteName: string);
-    procedure CloseRouteDelayed(const ARouteName: string; const ADelay_ms: Integer = 100);
+    procedure CloseRoute(const ARouteName: string; const ATransient: Boolean = False);
+    procedure CloseRouteDelayed(const ARouteName: string; const ATransient: Boolean; const ADelay_ms: Integer = 100);
     procedure StackPop;
-    procedure RouteTo(const ARouteName: string);
-    procedure RouteToDelayed(const ARouteName: string; const ADelay_ms: Integer = 100);
+    procedure RouteTo(const ARouteName: string; const ATransient: Boolean = False);
+    procedure RouteToDelayed(const ARouteName: string; const ATransient: Boolean; const ADelay_ms: Integer = 100);
     function DefineRoute(const ARouteName: string;
       const ARouteDef: TFunc<TSubjectInfo>): TNavigator; overload;
     function DefineRoute<T: TForm>(const ARouteName: string;
@@ -81,7 +81,7 @@ begin
   for LRoute in LActiveRoutes do
   begin
     if (not Assigned(AFilter)) or AFilter(LRoute) then
-      CloseRoute(LRoute);
+      CloseRoute(LRoute, False);
   end;
 end;
 
@@ -95,7 +95,7 @@ begin
   );
 end;
 
-procedure TNavigator.CloseRoute(const ARouteName: string);
+procedure TNavigator.CloseRoute(const ARouteName: string; const ATransient: Boolean);
 var
   LSubjectInfo: TSubjectInfo;
 begin
@@ -109,17 +109,18 @@ begin
         end
     );
     ActiveRoutes.Remove(ARouteName);
-    FStack.Pop;
+    if not ATransient then
+      FStack.Pop;
   end;
 end;
 
-procedure TNavigator.CloseRouteDelayed(const ARouteName: string;
+procedure TNavigator.CloseRouteDelayed(const ARouteName: string; const ATransient: Boolean;
   const ADelay_ms: Integer);
 begin
   TDelayedAction.Execute(ADelay_ms
     , procedure
       begin
-        CloseRoute(ARouteName);
+        CloseRoute(ARouteName, ATransient);
       end
   );
 end;
@@ -182,7 +183,7 @@ begin
   _ClassInstance := TNavigator.Create(AFormStand);
 end;
 
-procedure TNavigator.RouteTo(const ARouteName: string);
+procedure TNavigator.RouteTo(const ARouteName: string; const ATransient: Boolean);
 var
   LSubjectInfo: TSubjectInfo;
   LDefinitionFunc: TFunc<TSubjectInfo>;
@@ -193,7 +194,10 @@ begin
     begin
       LSubjectInfo := LDefinitionFunc();
       ActiveRoutes.Add(ARouteName, LSubjectInfo);
-      FStack.Push(ARouteName);
+
+      if not ATransient then
+        FStack.Push(ARouteName);
+
       if Assigned(FOnCreateRouteProc) then
         FOnCreateRouteProc(ARouteName);
     end
@@ -203,13 +207,13 @@ begin
     LSubjectInfo.SubjectShow;
 end;
 
-procedure TNavigator.RouteToDelayed(const ARouteName: string;
+procedure TNavigator.RouteToDelayed(const ARouteName: string; const ATransient: Boolean;
   const ADelay_ms: Integer);
 begin
   TDelayedAction.Execute(ADelay_ms
     , procedure
       begin
-        RouteTo(ARouteName);
+        RouteTo(ARouteName, ATransient);
       end
   );
 end;
@@ -221,7 +225,7 @@ begin
   if Stack.Count > 0 then
   begin
     LRouteName := Stack.Peek;
-    CloseRoute(LRouteName);
+    CloseRoute(LRouteName, False);
   end;
 end;
 
