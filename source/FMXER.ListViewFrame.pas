@@ -23,6 +23,10 @@ type
     procedure SetItemAppearance(const Value: string);
     procedure SetItemBuilderProc(Value: TProc);
     function GetSelectedItem: TListViewItem;
+    function GetAccessoryVisible: Boolean;
+    procedure SetAccessoryVisible(const Value: Boolean);
+    function GetSearchVisible: Boolean;
+    procedure SetSearchVisible(const Value: Boolean);
   protected
     procedure RebuildItems; virtual;
   public
@@ -35,8 +39,10 @@ type
       const AImageIndex: Integer = -1; const AOnSelect: TListViewItemClickProc = nil): TListViewItem;
     procedure ClearItems;
 
+    property AccessoryVisible: Boolean read GetAccessoryVisible write SetAccessoryVisible;
     property ItemAppearance: string read GetItemAppearance write SetItemAppearance;
     property ItemBuilderProc: TProc read FItemBuilderProc write SetItemBuilderProc;
+    property SearchVisible: Boolean read GetSearchVisible write SetSearchVisible;
     property SelectedItem: TListViewItem read GetSelectedItem;
   end;
 
@@ -93,9 +99,23 @@ begin
   inherited;
 end;
 
+function TListViewFrame.GetAccessoryVisible: Boolean;
+begin
+  Result := Assigned(ListView)
+    and ListView.ItemAppearanceObjects.ItemObjects.Accessory.Visible;
+end;
+
 function TListViewFrame.GetItemAppearance: string;
 begin
   Result := Listview.ItemAppearance.ItemAppearance;
+end;
+
+function TListViewFrame.GetSearchVisible: Boolean;
+begin
+  if not Assigned(ListView) then
+    Exit(False);
+
+  Result := ListView.SearchVisible
 end;
 
 function TListViewFrame.GetSelectedItem: TListViewItem;
@@ -126,6 +146,14 @@ begin
     ListView.Items.Clear;
 end;
 
+procedure TListViewFrame.SetAccessoryVisible(const Value: Boolean);
+begin
+  if not Assigned(ListView) then
+    Exit;
+
+  ListView.ItemAppearanceObjects.ItemObjects.Accessory.Visible := Value;
+end;
+
 procedure TListViewFrame.SetItemAppearance(const Value: string);
 begin
   Listview.ItemAppearance.ItemAppearance := Value;
@@ -139,6 +167,14 @@ begin
 
     RebuildItems;
   end;
+end;
+
+procedure TListViewFrame.SetSearchVisible(const Value: Boolean);
+begin
+  if not Assigned(ListView) then
+    Exit;
+
+  ListView.SearchVisible := Value;
 end;
 
 end.
