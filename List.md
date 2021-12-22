@@ -6,6 +6,7 @@
  2. ContainerForm
  3. RowForm
  4. ScaffoldForm
+ 5. VertScrollForm
 
 # Frames:
  1. ActionButtonFrame
@@ -24,5 +25,7 @@
  16. VertScrollFrame
  18. ListViewFrame
  19. LogoFrame
- 20. TextFrame
- 21. WebViewFrame
+ 20. MarginFrame
+ 21. PaddingFrame
+ 22. TextFrame
+ 23. WebViewFrame
