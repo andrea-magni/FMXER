@@ -1,0 +1,31 @@
+object MainForm: TMainForm
+  Left = 0
+  Top = 0
+  Caption = 'MarginAndPaddingDemo'
+  ClientHeight = 744
+  ClientWidth = 404
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  DesignerMasterStyle = 0
+  object Stands: TStyleBook
+    Styles = <
+      item
+      end>
+    Left = 56
+    Top = 128
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    StyleBook = Stands
+    StandBook = Stands
+    Left = 56
+    Top = 64
+  end
+end

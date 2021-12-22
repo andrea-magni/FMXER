@@ -1,0 +1,41 @@
+object VertScrollForm: TVertScrollForm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 398
+  ClientWidth = 480
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object VerticalScrollbox: TVertScrollBox
+    Align = Client
+    Padding.Right = 50.000000000000000000
+    Size.Width = 480.000000000000000000
+    Size.Height = 398.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Viewport.Width = 480.000000000000000000
+    Viewport.Height = 398.000000000000000000
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    Left = 24
+    Top = 136
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 96
+    Top = 136
+  end
+end

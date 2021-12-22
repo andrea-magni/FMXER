@@ -15,6 +15,9 @@
         <Projects Include="Column\ColumnProject.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="MarginAndPadding\MarginAndPaddingDemo.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="ColumnProject:Make">
         <MSBuild Projects="Column\ColumnProject.dproj" Targets="Make"/>
     </Target>
+    <Target Name="MarginAndPaddingDemo">
+        <MSBuild Projects="MarginAndPadding\MarginAndPaddingDemo.dproj"/>
+    </Target>
+    <Target Name="MarginAndPaddingDemo:Clean">
+        <MSBuild Projects="MarginAndPadding\MarginAndPaddingDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MarginAndPaddingDemo:Make">
+        <MSBuild Projects="MarginAndPadding\MarginAndPaddingDemo.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject"/>
+        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean"/>
+        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make"/>
+        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
