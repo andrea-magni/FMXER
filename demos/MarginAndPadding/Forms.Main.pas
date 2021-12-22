@@ -27,7 +27,8 @@ implementation
 
 uses
   FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator, FMXER.ScaffoldForm, FMXER.LogoFrame
-, FMXER.ColumnForm, FMXER.VertScrollFrame, FMXER.VertScrollForm, FMXER.MarginFrame;
+, FMXER.ColumnForm, FMXER.VertScrollFrame, FMXER.VertScrollForm
+, FMXER.ContainerFrame, FMXER.MarginFrame, FMXER.PaddingFrame;
 
 constructor TMainForm.Create(AOwner: TComponent);
 begin
@@ -65,13 +66,30 @@ begin
                ALogo.Height := ACol.Width;
              end);
 
-           ACol.AddFrame<TMarginFrame>(
+           ACol.AddFrame<TPaddingFrame>(
              ACol.Width
-           , procedure (AP: TMarginFrame)
+           , procedure (AP: TPaddingFrame)
              begin
                AP.Padding.Rect := RectF(50, 50, 50, 50);
                AP.SetContentAsFrame<TLogoFrame>;
              end);
+
+           ACol.AddFrame<TLogoFrame>(
+             ACol.Width
+           , procedure (ALogo: TLogoFrame)
+             begin
+               ALogo.Height := ACol.Width;
+             end);
+
+           ACol.AddFrame<TContainerFrame>(
+             ACol.Width
+           , procedure (AMP: TContainerFrame)
+             begin
+               AMP.Margins.Rect := RectF(50, 50, 50, 50);
+               AMP.Padding.Rect := RectF(50, 50, 50, 50);
+               AMP.SetContentAsFrame<TLogoFrame>;
+             end);
+
 
 
          end);

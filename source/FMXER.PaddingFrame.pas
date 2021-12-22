@@ -1,4 +1,4 @@
-unit FMXER.MarginFrame;
+unit FMXER.PaddingFrame;
 
 interface
 
@@ -9,7 +9,7 @@ uses
 
 
 type
-  TMarginFrame = class(TContainerFrame)
+  TPaddingFrame = class(TContainerFrame)
   private
   protected
   public
