@@ -1,0 +1,22 @@
+object MainForm: TMainForm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 544
+  ClientWidth = 376
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 56
+    Top = 200
+  end
+end
