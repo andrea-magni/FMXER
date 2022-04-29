@@ -26,11 +26,13 @@ begin
       AMenu.SetContentAsFrame<TListViewFrame>(
         procedure (AList: TListViewFrame)
         begin
-          AList.AddItem('Item 1', '3 seconds', -1
+          AList.ItemAppearance := 'ListItemRightDetail';
+
+          AList.AddItem('Item spinner 1', '1 second', -1
           , procedure (const AItem: TListViewItem)
             begin
               Navigator.RouteTo('spinner', True);
-              TDelayedAction.Execute(3000
+              TDelayedAction.Execute(1000
               , procedure
                 begin
                   Navigator.CloseRoute('spinner', True);
@@ -39,8 +41,32 @@ begin
             end
           );
 
-          AList.AddItem('Item 2');
-          AList.AddItem('Item 3');
+          AList.AddItem('Item spinner 2', '5 seconds', -1
+          , procedure (const AItem: TListViewItem)
+            begin
+              Navigator.RouteTo('spinner', True);
+              TDelayedAction.Execute(5000
+              , procedure
+                begin
+                  Navigator.CloseRoute('spinner', True);
+                end
+              );
+            end
+          );
+
+          AList.AddItem('Item spinner 3', '10 seconds', -1
+          , procedure (const AItem: TListViewItem)
+            begin
+              Navigator.RouteTo('spinner', True);
+              TDelayedAction.Execute(10000
+              , procedure
+                begin
+                  Navigator.CloseRoute('spinner', True);
+                end
+              );
+            end
+          );
+
         end
       );
     end

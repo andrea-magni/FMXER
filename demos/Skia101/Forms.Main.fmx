@@ -1,9 +1,10 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  Caption = 'Main Form'
   ClientHeight = 544
   ClientWidth = 376
+  Quality = HighQuality
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
