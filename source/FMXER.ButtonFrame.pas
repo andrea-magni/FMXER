@@ -5,20 +5,22 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Edit, System.Actions, FMX.ActnList;
+  FMX.Controls.Presentation, FMX.Edit, System.Actions, FMX.ActnList, Skia,
+  Skia.FMX, FMX.Objects;
 
 type
   TButtonFrame = class(TFrame)
-    CaptionLabel: TLabel;
-    ExtraLabel: TLabel;
     ButtonControl: TButton;
     ActionList1: TActionList;
     ButtonAction: TAction;
+    CaptionLabel: TSkLabel;
+    ExtraLabel: TSkLabel;
+    BackgroundRectangle: TRectangle;
     procedure ButtonActionExecute(Sender: TObject);
     procedure ButtonActionUpdate(Sender: TObject);
   private
-    FOnClickProc: TProc<TButtonFrame>;
-    FOnUpdateProc: TProc<TAction>;
+    FOnClickHandler: TProc;
+    FOnUpdateHandler: TProc<TAction>;
     function GetCaption: string;
     procedure SetCaption(const Value: string);
     function GetText: string;
@@ -27,13 +29,17 @@ type
     procedure SetExtraText(const Value: string);
     function GetIsDefault: Boolean;
     procedure SetIsDefault(const Value: Boolean);
+    function GetBackgroundFill: TBrush;
+    function GetBackgroundStroke: TStrokeBrush;
   public
+    property BackgroundFill: TBrush read GetBackgroundFill;
+    property BackgroundStroke: TStrokeBrush read GetBackgroundStroke;
     property Caption: string read GetCaption write SetCaption;
     property IsDefault: Boolean read GetIsDefault write SetIsDefault;
     property ExtraText: string read GetExtraText write SetExtraText;
     property Text: string read GetText write SetText;
-    property OnClickProc: TProc<TButtonFrame> read FOnClickProc write FOnClickProc;
-    property OnUpdateProc: TProc<TAction> read FOnUpdateProc write FOnUpdateProc;
+    property OnClickHandler: TProc read FOnClickHandler write FOnClickHandler;
+    property OnUpdateHandler: TProc<TAction> read FOnUpdateHandler write FOnUpdateHandler;
   end;
 
 implementation
@@ -44,14 +50,24 @@ implementation
 
 procedure TButtonFrame.ButtonActionExecute(Sender: TObject);
 begin
-  if Assigned(FOnClickProc) then
-    FOnClickProc(Self);
+  if Assigned(FOnClickHandler) then
+    FOnClickHandler();
 end;
 
 procedure TButtonFrame.ButtonActionUpdate(Sender: TObject);
 begin
-  if Assigned(FOnUpdateProc) then
-    FOnUpdateProc(ButtonAction);
+  if Assigned(FOnUpdateHandler) then
+    FOnUpdateHandler(ButtonAction);
+end;
+
+function TButtonFrame.GetBackgroundFill: TBrush;
+begin
+  Result := BackgroundRectangle.Fill;
+end;
+
+function TButtonFrame.GetBackgroundStroke: TStrokeBrush;
+begin
+  Result := BackgroundRectangle.Stroke;
 end;
 
 function TButtonFrame.GetCaption: string;

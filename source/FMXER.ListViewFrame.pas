@@ -27,8 +27,11 @@ type
     procedure SetAccessoryVisible(const Value: Boolean);
     function GetSearchVisible: Boolean;
     procedure SetSearchVisible(const Value: Boolean);
+    function GetCanSwipeDelete: Boolean;
+    procedure SetCanSwipeDelete(const Value: Boolean);
   protected
     procedure RebuildItems; virtual;
+    procedure HitTestChanged; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -40,6 +43,7 @@ type
     procedure ClearItems;
 
     property AccessoryVisible: Boolean read GetAccessoryVisible write SetAccessoryVisible;
+    property CanSwipeDelete: Boolean read GetCanSwipeDelete write SetCanSwipeDelete;
     property ItemAppearance: string read GetItemAppearance write SetItemAppearance;
     property ItemBuilderProc: TProc read FItemBuilderProc write SetItemBuilderProc;
     property SearchVisible: Boolean read GetSearchVisible write SetSearchVisible;
@@ -105,6 +109,14 @@ begin
     and ListView.ItemAppearanceObjects.ItemObjects.Accessory.Visible;
 end;
 
+function TListViewFrame.GetCanSwipeDelete: Boolean;
+begin
+  if not Assigned(ListView) then
+    Exit(False);
+
+  Result := ListView.CanSwipeDelete;
+end;
+
 function TListViewFrame.GetItemAppearance: string;
 begin
   Result := Listview.ItemAppearance.ItemAppearance;
@@ -121,6 +133,13 @@ end;
 function TListViewFrame.GetSelectedItem: TListViewItem;
 begin
   Result := ListView.Selected as TListViewItem;
+end;
+
+procedure TListViewFrame.HitTestChanged;
+begin
+  inherited;
+  if Assigned(ListView) then
+    ListView.HitTest := HitTest;
 end;
 
 procedure TListViewFrame.ListViewItemClick(const Sender: TObject;
@@ -152,6 +171,14 @@ begin
     Exit;
 
   ListView.ItemAppearanceObjects.ItemObjects.Accessory.Visible := Value;
+end;
+
+procedure TListViewFrame.SetCanSwipeDelete(const Value: Boolean);
+begin
+  if not Assigned(ListView) then
+    Exit;
+
+  ListView.CanSwipeDelete := Value;
 end;
 
 procedure TListViewFrame.SetItemAppearance(const Value: string);

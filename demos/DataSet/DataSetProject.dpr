@@ -3,6 +3,7 @@ program DataSetProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
+  Skia.FMX,
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Data.Main in 'Data.Main.pas' {DataModule1: TDataModule},
   Frames.MyDataSetList in 'Frames.MyDataSetList.pas' {MyDatasetListFrame: TFrame},
@@ -11,6 +12,7 @@ uses
 {$R *.res}
 
 begin
+  GlobalUseSkia := True;
   {$IFDEF MSWINDOWS} ReportMemoryLeaksOnShutdown := True; {$ENDIF}
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);

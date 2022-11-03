@@ -7,6 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, FMX.ImgList, System.Rtti,
   Generics.Collections, System.Actions, FMX.ActnList, FMX.Effects
+, Skia, Skia.FMX
 , SubjectStand, FrameStand, FormStand
 , FMXER.UI.Misc, FMXER.ActionButtonFrame, FMXER.TextFrame, FMXER.GlyphFrame
 ;
@@ -15,7 +16,6 @@ type
   TScaffoldForm = class(TForm)
     TitleLayout: TLayout;
     TitleBackground: TRectangle;
-    TitleLabel: TLabel;
     ContentLayout: TLayout;
     OverlayLayout: TLayout;
     ActionButtonsLayout: TLayout;
@@ -25,6 +25,7 @@ type
     FormStand1: TFormStand;
     Stands: TStyleBook;
     TitleDetailLayout: TLayout;
+    TitleLabel: TSkLabel;
     procedure ActionList1Update(Action: TBasicAction; var Handled: Boolean);
   private
     FContent: TSubjectInfo;
@@ -36,6 +37,8 @@ type
     FTitleDetailStand: string;
     procedure SetTitle(const Value: string);
     function GetContent: TSubject;
+    function GetTitleDetailContent: TSubject;
+    function GetTitleDetailContentVisible: Boolean;
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
@@ -63,6 +66,10 @@ type
       const AImageIndex: Integer; const AOnClickProc: TProc); overload;
 
     procedure ShowSnackBar(const AText: string; const ADuration_ms: Integer);
+
+    procedure ShowTitleDetailContent;
+    procedure HideTitleDetailContent(const ADelay: Integer = 0; const AThen: TProc = nil);
+
     //
     [Hide]
     procedure HideHandler;
@@ -72,6 +79,8 @@ type
     property Title: string read FTitle write SetTitle;
     property TitleDetailStand: string read FTitleDetailStand write FTitleDetailStand;
     property Content: TSubject read GetContent;
+    property TitleDetailContent: TSubject read GetTitleDetailContent;
+    property TitleDetailContentVisible: Boolean read GetTitleDetailContentVisible;
   end;
 
 implementation
@@ -186,7 +195,21 @@ end;
 
 function TScaffoldForm.GetContent: TSubject;
 begin
-  Result := FContent.Subject;
+  Result := nil;
+  if Assigned(FContent) then
+    Result := FContent.Subject;
+end;
+
+function TScaffoldForm.GetTitleDetailContent: TSubject;
+begin
+  Result := nil;
+  if Assigned(FTitleDetailContent) then
+    Result := FTitleDetailContent.Subject;
+end;
+
+function TScaffoldForm.GetTitleDetailContentVisible: Boolean;
+begin
+  Result := Assigned(FTitleDetailContent) and FTitleDetailContent.IsVisible;
 end;
 
 procedure TScaffoldForm.HideHandler;
@@ -197,6 +220,12 @@ begin
 
 { TODO : Find a way to hide/close everything it the correct order }
   SI.DefaultHide;
+end;
+
+procedure TScaffoldForm.HideTitleDetailContent(const ADelay: Integer = 0; const AThen: TProc = nil);
+begin
+  if Assigned(FTitleDetailContent) then
+    FTitleDetailContent.Hide(ADelay, AThen);
 end;
 
 procedure TScaffoldForm.SetContentAsForm<T>(const AConfigProc: TProc<T> = nil);
@@ -243,6 +272,12 @@ begin
         FSnackBar.Hide();
       end
   );
+end;
+
+procedure TScaffoldForm.ShowTitleDetailContent;
+begin
+  if Assigned(FTitleDetailContent) then
+    FTitleDetailContent.SubjectShow;
 end;
 
 end.

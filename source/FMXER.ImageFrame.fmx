@@ -4,6 +4,7 @@ object ImageFrame: TImageFrame
   Size.Height = 240.000000000000000000
   Size.PlatformDefault = False
   object ContentImage: TImage
+    OnTap = ContentImageTap
     MultiResBitmap = <
       item
       end>
@@ -11,5 +12,6 @@ object ImageFrame: TImageFrame
     Size.Width = 320.000000000000000000
     Size.Height = 240.000000000000000000
     Size.PlatformDefault = False
+    OnMouseUp = ContentImageMouseUp
   end
 end

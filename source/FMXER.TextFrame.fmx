@@ -3,11 +3,16 @@ object TextFrame: TTextFrame
   Size.Width = 320.000000000000000000
   Size.Height = 80.000000000000000000
   Size.PlatformDefault = False
-  object TextContent: TText
+  OnClick = TextContentClick
+  object TextContent: TSkLabel
     Align = Client
     Size.Width = 320.000000000000000000
     Size.Height = 80.000000000000000000
     Size.PlatformDefault = False
-    OnClick = TextContentClick
+    TextSettings.HorzAlign = Center
+    Words = <
+      item
+        Text = 'TextContent'
+      end>
   end
 end

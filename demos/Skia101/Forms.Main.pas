@@ -31,7 +31,9 @@ uses
 
 , Routes.home
 , Routes.menu
+, Routes.image
 , Routes.Spinner
+, Routes.freeHandDrawing
 ;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -42,7 +44,12 @@ begin
 
   DefineHomeRoute;
   DefineMenuRoute;
+  DefineImageRoute;
+  DefineAnimatedImageRoute;
+  DefineSVGImageRoute;
   DefineSpinnerRoute;
+  DefineQRCodeRoute;
+  DefineFreeHandDrawingRoute;
 
   Navigator.RouteTo('menu');
 end;

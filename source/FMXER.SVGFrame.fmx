@@ -1,0 +1,15 @@
+object SVGFrame: TSVGFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 240.000000000000000000
+  Size.PlatformDefault = False
+  object ContentSvg: TSkSvg
+    OnTap = ContentSvgTap
+    Align = Client
+    HitTest = True
+    Size.Width = 320.000000000000000000
+    Size.Height = 240.000000000000000000
+    Size.PlatformDefault = False
+    OnMouseUp = ContentSvgMouseUp
+  end
+end

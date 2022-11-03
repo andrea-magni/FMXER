@@ -1,0 +1,24 @@
+object StackFrame: TStackFrame
+  Align = Client
+  Size.Width = 400.000000000000000000
+  Size.Height = 386.000000000000000000
+  Size.PlatformDefault = False
+  object ContentLayout: TLayout
+    Align = Client
+    Size.Width = 400.000000000000000000
+    Size.Height = 386.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    DefaultParent = ContentLayout
+    Left = 64
+    Top = 192
+  end
+end

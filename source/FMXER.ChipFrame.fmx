@@ -1,0 +1,21 @@
+object ChipFrame: TChipFrame
+  Align = Client
+  Size.Width = 150.000000000000000000
+  Size.Height = 50.000000000000000000
+  Size.PlatformDefault = False
+  object Shape: TRoundRect
+    Align = Client
+    Size.Width = 150.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    object Button: TSpeedButton
+      Align = Client
+      StyledSettings = [Family, Size, Style]
+      Size.Width = 150.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Button'
+      OnClick = ButtonClick
+    end
+  end
+end

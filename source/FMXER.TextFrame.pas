@@ -5,24 +5,26 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Objects;
+  FMX.Objects
+, Skia, Skia.FMX
+;
 
 type
   TTextFrame = class(TFrame)
-    TextContent: TText;
+    TextContent: TSkLabel;
     procedure TextContentClick(Sender: TObject);
   private
     FContent: string;
     FOnClickProc: TProc;
     procedure SetContent(const Value: string);
-    function GetHorzAlign: TTextAlign;
+    function GetHorzAlign: TSkTextHorzAlign;
     function GetVertAlign: TTextAlign;
-    procedure SetHorzAlign(const Value: TTextAlign);
+    procedure SetHorzAlign(const Value: TSkTextHorzAlign);
     procedure SetVertAlign(const Value: TTextAlign);
   public
     constructor Create(AOwner: TComponent); override;
     property Content: string read FContent write SetContent;
-    property HorzAlign: TTextAlign read GetHorzAlign write SetHorzAlign;
+    property HorzAlign: TSkTextHorzAlign read GetHorzAlign write SetHorzAlign;
     property VertAlign: TTextAlign read GetVertAlign write SetVertAlign;
     property OnClickProc: TProc read FOnClickProc write FOnClickProc;
   end;
@@ -41,7 +43,7 @@ begin
   TextContent.TextSettings.FontColor := TAppColors.PrimaryTextColor;
 end;
 
-function TTextFrame.GetHorzAlign: TTextAlign;
+function TTextFrame.GetHorzAlign: TSkTextHorzAlign;
 begin
   Result := TextContent.TextSettings.HorzAlign;
 end;
@@ -57,7 +59,7 @@ begin
   TextContent.Text := FContent;
 end;
 
-procedure TTextFrame.SetHorzAlign(const Value: TTextAlign);
+procedure TTextFrame.SetHorzAlign(const Value: TSkTextHorzAlign);
 begin
   TextContent.TextSettings.HorzAlign := Value;
 end;

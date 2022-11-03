@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, System.ImageList,
   FMX.ImgList, FMX.Ani
-, SubjectStand, FormStand;
+, SubjectStand, FormStand
+;
 
 type
   TMainForm = class(TForm)
@@ -31,7 +32,8 @@ implementation
 
 uses
   FMXER.Navigator, FMXER.ScaffoldForm, FMXER.GlyphFrame
-, Frames.MyDataSetList, Frames.MyDataSetDetail;
+, Frames.MyDataSetList, Frames.MyDataSetDetail
+;
 
 constructor TMainForm.Create(AOwner: TComponent);
 begin

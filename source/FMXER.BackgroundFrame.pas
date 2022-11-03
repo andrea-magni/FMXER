@@ -19,6 +19,7 @@ type
     FContent: TSubjectInfo;
     function GetFill: TBrush;
     function GetStroke: TStrokeBrush;
+    procedure HitTestChanged; override;
   public
     constructor Create(AOwner: TComponent); override;
     //
@@ -55,6 +56,13 @@ end;
 function TBackgroundFrame.GetStroke: TStrokeBrush;
 begin
   Result := BackgroundRectangle.Stroke;
+end;
+
+procedure TBackgroundFrame.HitTestChanged;
+begin
+  inherited;
+  if Assigned(BackgroundRectangle) then
+    BackgroundRectangle.HitTest := HitTest;
 end;
 
 procedure TBackgroundFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);

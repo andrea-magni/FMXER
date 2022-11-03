@@ -4,6 +4,7 @@ object ScaffoldForm: TScaffoldForm
   Caption = 'Form1'
   ClientHeight = 622
   ClientWidth = 350
+  Quality = HighQuality
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,7 +12,7 @@ object ScaffoldForm: TScaffoldForm
   object TitleLayout: TLayout
     Align = Top
     Size.Width = 350.000000000000000000
-    Size.Height = 50.000000000000000000
+    Size.Height = 64.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object TitleBackground: TRectangle
@@ -19,42 +20,43 @@ object ScaffoldForm: TScaffoldForm
       Fill.Color = xFF1565C0
       Sides = []
       Size.Width = 350.000000000000000000
-      Size.Height = 50.000000000000000000
+      Size.Height = 64.000000000000000000
       Size.PlatformDefault = False
-    end
-    object TitleLabel: TLabel
-      Anchors = [akLeft, akTop, akRight, akBottom]
-      StyledSettings = [Family, Style]
-      Position.X = 5.000000000000000000
-      Position.Y = 5.000000000000000000
-      Size.Width = 340.000000000000000000
-      Size.Height = 40.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.Font.Size = 24.000000000000000000
-      TextSettings.FontColor = claWhite
-      Text = 'Title'
-      TabOrder = 1
     end
     object ShadowEffect2: TShadowEffect
       Distance = 3.000000000000000000
       Direction = 90.000000000000000000
       Softness = 0.300000011920929000
       Opacity = 0.600000023841857900
-      ShadowColor = claGray
+      ShadowColor = claBlack
     end
     object TitleDetailLayout: TLayout
       Align = Contents
       Size.Width = 350.000000000000000000
-      Size.Height = 50.000000000000000000
+      Size.Height = 64.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
+      TabOrder = 1
+    end
+    object TitleLabel: TSkLabel
+      Align = Contents
+      Margins.Left = 5.000000000000000000
+      Size.Width = 345.000000000000000000
+      Size.Height = 64.000000000000000000
+      Size.PlatformDefault = False
+      StyledSettings = [Family, Style]
+      TextSettings.Font.Size = 24.000000000000000000
+      TextSettings.FontColor = claWhite
+      Words = <
+        item
+          Text = 'Title'
+        end>
     end
   end
   object ContentLayout: TLayout
     Align = Client
     Margins.Top = 3.000000000000000000
     Size.Width = 350.000000000000000000
-    Size.Height = 569.000000000000000000
+    Size.Height = 555.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
   end
@@ -74,10 +76,10 @@ object ScaffoldForm: TScaffoldForm
       TabOrder = 0
       object ShadowEffect1: TShadowEffect
         Distance = 3.000000000000000000
-        Direction = 45.000000000000000000
+        Direction = 90.000000000000000000
         Softness = 0.300000011920929000
         Opacity = 0.600000023841857900
-        ShadowColor = claGray
+        ShadowColor = claBlack
       end
     end
   end

@@ -18,6 +18,12 @@
         <Projects Include="MarginAndPadding\MarginAndPaddingDemo.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Skia101\Skia101Project.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="LibraryStore\LibraryStoreProject.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +77,32 @@
     <Target Name="MarginAndPaddingDemo:Make">
         <MSBuild Projects="MarginAndPadding\MarginAndPaddingDemo.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Skia101Project">
+        <MSBuild Projects="Skia101\Skia101Project.dproj"/>
+    </Target>
+    <Target Name="Skia101Project:Clean">
+        <MSBuild Projects="Skia101\Skia101Project.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Skia101Project:Make">
+        <MSBuild Projects="Skia101\Skia101Project.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LibraryStoreProject">
+        <MSBuild Projects="LibraryStore\LibraryStoreProject.dproj"/>
+    </Target>
+    <Target Name="LibraryStoreProject:Clean">
+        <MSBuild Projects="LibraryStore\LibraryStoreProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LibraryStoreProject:Make">
+        <MSBuild Projects="LibraryStore\LibraryStoreProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo"/>
+        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean"/>
+        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make"/>
+        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

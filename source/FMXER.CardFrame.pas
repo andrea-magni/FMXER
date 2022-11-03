@@ -55,7 +55,7 @@ implementation
 
 {$R *.fmx}
 
-uses FMXER.UI.Consts;
+uses FMXER.UI.Consts, Skia.FMX;
 
 { TCardFrame }
 
@@ -69,7 +69,7 @@ begin
   FTitleTextFrame := TTextFrame.Create(Self);
   FTitleTextFrame.Parent := TitleLayout;
   FTitleTextFrame.Align := TAlignLayout.Client;
-  FTitleTextFrame.HorzAlign := TTextAlign.Leading;
+  FTitleTextFrame.HorzAlign := TSkTextHorzAlign.Leading;
   FTitleTextFrame.Margins.Left := 5;
 end;
 

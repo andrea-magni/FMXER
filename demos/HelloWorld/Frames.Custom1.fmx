@@ -1,18 +1,18 @@
 object Custom1Frame: TCustom1Frame
-  Size.Width = 320.000000000000000000
-  Size.Height = 240.000000000000000000
+  Size.Width = 300.000000000000000000
+  Size.Height = 180.000000000000000000
   Size.PlatformDefault = False
-  object Button1: TButton
-    Position.X = 32.000000000000000000
-    Position.Y = 32.000000000000000000
+  object CustomButton: TButton
+    Position.X = 16.000000000000000000
+    Position.Y = 16.000000000000000000
     TabOrder = 0
-    Text = 'Button1'
+    Text = 'Click me!'
+    OnClick = CustomButtonClick
   end
   object Circle1: TCircle
-    Position.X = 72.000000000000000000
-    Position.Y = 72.000000000000000000
-    Size.Width = 153.000000000000000000
-    Size.Height = 81.000000000000000000
+    Align = Center
+    Size.Width = 100.000000000000000000
+    Size.Height = 100.000000000000000000
     Size.PlatformDefault = False
   end
 end

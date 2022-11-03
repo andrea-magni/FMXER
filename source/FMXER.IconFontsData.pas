@@ -6,6 +6,10 @@ uses
   System.SysUtils, System.Classes, System.ImageList, FMX.ImgList,
   FMX.IconFontsImageList, System.UITypes, Icons.MaterialDesign, Icons.Utils;
 
+const
+  ICON_FONTS_FAMILYNAME = 'Material Design Icons Desktop';
+  ICON_FONTS_FILENAME = ICON_FONTS_FAMILYNAME + '.ttf';
+
 type
   TIconFonts = class(TDataModule)
     ImageList: TIconFontsImageList;
@@ -39,7 +43,7 @@ implementation
 
 {$R *.dfm}
 
-uses FMX.Forms;
+uses FMX.Forms, IOUtils, Skia, Skia.FMX;
 
 function IconFonts: TIconFonts;
 begin
@@ -86,7 +90,7 @@ constructor TIconFonts.Create(AOwner: TComponent);
 begin
   inherited;
   FCount := 0;
-  ImageList.FontName := 'Material Design Icons Desktop';
+  ImageList.FontName := ICON_FONTS_FAMILYNAME;
 end;
 
 class function TIconFonts.GetIconFonts: TIconFonts;
@@ -100,5 +104,10 @@ function TIconFonts.GetMD: TMaterialDesign;
 begin
   Result := Icons.MaterialDesign.MD;
 end;
+
+initialization
+  {$IFDEF ANDROID}
+  TSkDefaultProviders.RegisterTypeface(TPath.Combine(TPath.GetDocumentsPath, ICON_FONTS_FILENAME));
+  {$ENDIF}
 
 end.

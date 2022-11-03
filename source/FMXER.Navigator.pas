@@ -3,7 +3,10 @@ unit FMXER.Navigator;
 interface
 
 uses
-  Classes, SysUtils, Generics.Collections, FMX.Types, FMX.Forms, SubjectStand, FormStand;
+  System.Classes, System.SysUtils, System.StrUtils, Generics.Collections
+, FMX.Types, FMX.Forms
+, SubjectStand, FormStand
+;
 
 type
   TNavigator = class
@@ -36,6 +39,9 @@ type
       const AConfigProc: TProc<T> = nil;
       const AParent: TFmxObject = nil;
       const AStandName: string = ''): TNavigator; overload;
+
+    function IsRouteDefined(const ARouteName: string): Boolean;
+    function IsRouteActive(const ARouteName: string): Boolean;
     //
     property ActiveRoutes: TDictionary<string, TSubjectInfo> read FActiveRoutes;
     property RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>> read FRouteDefinitions;
@@ -54,7 +60,6 @@ type
 function Navigator(const AFormStand: TFormStand = nil): TNavigator;
 
 implementation
-
 
 function Navigator(const AFormStand: TFormStand = nil): TNavigator;
 begin
@@ -181,6 +186,16 @@ begin
     raise Exception.Create('Navigator has been already initialized');
 
   _ClassInstance := TNavigator.Create(AFormStand);
+end;
+
+function TNavigator.IsRouteActive(const ARouteName: string): Boolean;
+begin
+  Result := IndexStr(ARouteName, ActiveRoutes.Keys.ToArray) <> -1;
+end;
+
+function TNavigator.IsRouteDefined(const ARouteName: string): Boolean;
+begin
+  Result := IndexStr(ARouteName, RouteDefinitions.Keys.ToArray) <> -1;
 end;
 
 procedure TNavigator.RouteTo(const ARouteName: string; const ATransient: Boolean);

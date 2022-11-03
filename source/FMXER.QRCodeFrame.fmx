@@ -1,0 +1,27 @@
+object QRCodeFrame: TQRCodeFrame
+  Align = Client
+  Size.Width = 444.000000000000000000
+  Size.Height = 394.000000000000000000
+  Size.PlatformDefault = False
+  object QRCode: TSkSvg
+    OnTap = QRCodeTap
+    Align = Client
+    Size.Width = 444.000000000000000000
+    Size.Height = 394.000000000000000000
+    Size.PlatformDefault = False
+    OnMouseUp = QRCodeMouseUp
+    object lytQRCodeLogo: TLayout
+      Align = Center
+      Size.Width = 20.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object QRCodeLogo: TSkAnimatedImage
+        Align = Center
+        Size.Width = 64.000000000000000000
+        Size.Height = 64.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+  end
+end

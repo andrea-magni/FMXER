@@ -1,0 +1,16 @@
+object ChipsFrame: TChipsFrame
+  Align = Client
+  Size.Width = 300.000000000000000000
+  Size.Height = 50.000000000000000000
+  Size.PlatformDefault = False
+  object Flow: TFlowLayout
+    Align = Client
+    Size.Width = 300.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Justify = Left
+    JustifyLastLine = Left
+    FlowDirection = LeftToRight
+  end
+end

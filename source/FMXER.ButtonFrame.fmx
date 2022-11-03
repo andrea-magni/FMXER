@@ -1,35 +1,46 @@
 object ButtonFrame: TButtonFrame
   Align = Client
   Size.Width = 320.000000000000000000
-  Size.Height = 80.000000000000000000
+  Size.Height = 100.000000000000000000
   Size.PlatformDefault = False
-  object CaptionLabel: TLabel
-    Anchors = [akLeft, akTop, akRight]
-    Position.X = 10.000000000000000000
-    Position.Y = 5.000000000000000000
-    Size.Width = 300.000000000000000000
-    Size.Height = 17.000000000000000000
+  object BackgroundRectangle: TRectangle
+    Align = Contents
+    HitTest = False
+    Size.Width = 320.000000000000000000
+    Size.Height = 100.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
-  end
-  object ExtraLabel: TLabel
-    Anchors = [akLeft, akRight, akBottom]
-    StyledSettings = [Family, Size, Style]
-    Position.X = 10.000000000000000000
-    Position.Y = 61.000000000000000000
-    Size.Width = 300.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    TextSettings.FontColor = claGray
-    TextSettings.HorzAlign = Center
-    TabOrder = 0
   end
   object ButtonControl: TButton
     Action = ButtonAction
-    Align = Center
+    Align = Client
     Enabled = True
     ImageIndex = -1
-    TabOrder = 2
+    Size.Width = 320.000000000000000000
+    Size.Height = 100.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+  end
+  object CaptionLabel: TSkLabel
+    Align = Top
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Words = <
+      item
+      end>
+  end
+  object ExtraLabel: TSkLabel
+    Align = Bottom
+    Position.Y = 100.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family, Size, Style]
+    TextSettings.FontColor = claGray
+    TextSettings.HorzAlign = Center
+    Words = <
+      item
+      end>
   end
   object ActionList1: TActionList
     Left = 24

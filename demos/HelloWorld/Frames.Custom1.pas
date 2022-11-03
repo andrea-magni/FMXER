@@ -9,16 +9,23 @@ uses
 
 type
   TCustom1Frame = class(TFrame)
-    Button1: TButton;
+    CustomButton: TButton;
     Circle1: TCircle;
+    procedure CustomButtonClick(Sender: TObject);
   private
-    { Private declarations }
+    FOnButtonClick: TProc;
   public
-    { Public declarations }
+    property OnButtonClick: TProc read FOnButtonClick write FOnButtonClick;
   end;
 
 implementation
 
 {$R *.fmx}
+
+procedure TCustom1Frame.CustomButtonClick(Sender: TObject);
+begin
+  if Assigned(FOnButtonClick) then
+    FOnButtonClick();
+end;
 
 end.

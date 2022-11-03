@@ -7,13 +7,22 @@ procedure DefineMenuRoute;
 implementation
 
 uses
-  FMX.ListView.Appearances
+ System.Types, System.UITypes
+, FMX.Types, FMX.ListView.Appearances
+, Skia, QRCode.Render
 
 , FMXER.Navigator
 , FMXER.ScaffoldForm
 , FMXER.ListViewFrame
-
+, FMXER.QRCodeFrame
+, FMXER.BackgroundFrame
+, FMXER.StackFrame
+, FMXER.SVGFrame
+, FMXER.AnimatedImageFrame
+, FMXER.UI.Consts
 , SubjectStand
+
+, Utils
 ;
 
 procedure DefineMenuRoute;
@@ -23,46 +32,150 @@ begin
     begin
       AMenu.Title := 'Select an entry';
 
-      AMenu.SetContentAsFrame<TListViewFrame>(
-        procedure (AList: TListViewFrame)
+      AMenu.SetTitleDetailContentAsFrame<TBackgroundFrame>(
+        procedure (B: TBackgroundFrame)
         begin
-          AList.ItemAppearance := 'ListItemRightDetail';
+          B.Fill.Color := TAlphaColorRec.Aliceblue;
+          B.Align := TAlignLayout.Right;
+          B.Width := AMenu.TitleLayout.Height - 4;
+          B.Margins.Rect := RectF(2, 2, 2, 2);
 
-          AList.AddItem('Item spinner 1', '1 second', -1
-          , procedure (const AItem: TListViewItem)
+          B.SetContentAsFrame<TQRCodeFrame>(
+            procedure (AQR: TQRCodeFrame)
             begin
-              Navigator.RouteTo('spinner', True);
-              TDelayedAction.Execute(1000
-              , procedure
+              AQR.Margins.Rect := RectF(2, 2, 2, 2);
+              AQR.Content := 'https://github.com/andrea-magni/FMXER';
+
+//              AQR.QRCode.Svg.OverrideColor := TAppColors.PrimaryColor;
+              AQR.OnBeforePaint :=
+                procedure (APaint: ISkPaint; AModules: T2DBooleanArray)
                 begin
-                  Navigator.CloseRoute('spinner', True);
+                  APaint.Shader := TSkShader.MakeColor(TAppColors.PrimaryColor);
+                end;
+
+            end
+          );
+        end
+      );
+
+      AMenu.SetContentAsFrame<TStackFrame>(
+        procedure (Stack: TStackFrame)
+        begin
+          Stack.AddFrame<TListViewFrame>(
+            procedure (AList: TListViewFrame)
+            begin
+//              AList.ListView.Transparent := True;
+              AList.ItemAppearance := 'ListItemRightDetail';
+
+              AList.AddItem('Item spinner 1', '1 second', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('spinner', True);
+                  TDelayedAction.Execute(1000
+                  , procedure
+                    begin
+                      Navigator.CloseRoute('spinner', True);
+                    end
+                  );
+                end
+              );
+
+              AList.AddItem('Item spinner 2', '5 seconds', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('spinner', True);
+                  TDelayedAction.Execute(5000
+                  , procedure
+                    begin
+                      Navigator.CloseRoute('spinner', True);
+                    end
+                  );
+                end
+              );
+
+              AList.AddItem('Item spinner 3', '10 seconds', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('spinner', True);
+                  TDelayedAction.Execute(10000
+                  , procedure
+                    begin
+                      Navigator.CloseRoute('spinner', True);
+                    end
+                  );
+                end
+              );
+
+              AList.AddItem('Image', 'Tap to close', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('image');
+                end
+              );
+
+              AList.AddItem('Animated Image', 'Tap to close', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('animatedImage');
+                end
+              );
+
+              AList.AddItem('SVG Image', 'Tap to close', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('SVGImage');
+                end
+              );
+
+
+              AList.AddItem('QR Code', 'Tap to close', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('QRCode');
+                end
+              );
+
+              AList.AddItem('Free hand drawing', '', -1
+              , procedure (const AItem: TListViewItem)
+                begin
+                  Navigator.RouteTo('freeHandDrawing');
                 end
               );
             end
           );
 
-          AList.AddItem('Item spinner 2', '5 seconds', -1
-          , procedure (const AItem: TListViewItem)
+//          Stack.AddFrame<TSVGFrame>(
+//            procedure (SVG: TSVGFrame)
+//            begin
+//              SVG.HitTest := False;
+//              SVG.Opacity := 0.2;
+//              SVG.LoadFromFile(LocalFile('tesla.svg'));
+//            end
+//          );
+          AMenu.AddActionButton('Spin'
+          , procedure
             begin
-              Navigator.RouteTo('spinner', True);
-              TDelayedAction.Execute(5000
-              , procedure
+              Stack.AddFrame<TAnimatedImageFrame>(
+                procedure (Ani: TAnimatedImageFrame)
                 begin
-                  Navigator.CloseRoute('spinner', True);
-                end
-              );
-            end
-          );
+//                  Ani.HitTest := True;
+                  Ani.Opacity := 0.2;
+                  Ani.ContentImage.LoadFromFile(LocalFile('spinner-loader.json'));
 
-          AList.AddItem('Item spinner 3', '10 seconds', -1
-          , procedure (const AItem: TListViewItem)
-            begin
-              Navigator.RouteTo('spinner', True);
-              TDelayedAction.Execute(10000
-              , procedure
-                begin
-                  Navigator.CloseRoute('spinner', True);
+//                  TDelayedAction.Execute(3000
+//                  , procedure
+//                    begin
+//                      Stack.CloseFrame('spinner');
+//                    end
+//                  );
+                  Ani.OnTapHandler :=
+                    procedure (AObj: TFMXObject; APoint: TPointF)
+                    begin
+                      Stack.CloseFrame('spinner');
+                    end;
+
                 end
+              , 'spinner'
               );
             end
           );
