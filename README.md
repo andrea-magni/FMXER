@@ -1,6 +1,6 @@
 ![](https://img.shields.io/github/v/release/andrea-magni/FMXER)
 ![](https://img.shields.io/github/release-date/andrea-magni/FMXER)
-![](https://img.shields.io/github/commits-since/andrea-magni/FMXER/v.1.0)
+![](https://img.shields.io/github/commits-since/andrea-magni/FMXER/v.1.1)
 
 # FMXER
 Declarative visual framework for FMX.
