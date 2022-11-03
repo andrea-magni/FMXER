@@ -3,12 +3,13 @@
 ![](https://img.shields.io/github/commits-since/andrea-magni/FMXER/v.1.0)
 
 # FMXER
-Visual framework (Flutter inspired) for FMX
+Declarative visual framework for FMX.
+Inspired by Google Flutter's approach.
 
 ![FMXER](media/FMXER_R_256.png)
 
 ## Delphi version:
- - Delphi 11 (Delphi 10.4 should be just fine)
+ - Delphi 11.2 (recent versions should be working, not tested yet)
 
 ## Submodules:
  - lib\TFrameStand: [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
@@ -17,17 +18,17 @@ Visual framework (Flutter inspired) for FMX
  - HelloWorld
  - DataSet
  - Column
+ - MarginAndPadding
+ - Skia101
+ - LibraryStore
 
 ## Video
  - [CodeRage 2019: Introducing FMXER](https://youtu.be/RiK2re19Kyk)
 
-## Quick start
-1. Clone this repository
-2. If you haven't yet, install TFrameStand:
-    - Open lib\TFrameStand\packages\FrameStand_11.groupproj group project
-    - Build all
-    - Install design time package
-3. Open demos\HelloWorld\HelloWorldProject.dproj hit Run.
+## Dependencies
+1. [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
+2. [Skia4Delphi](https://github.com/skia4delphi/skia4delphi)
+3. [IconFontImageList](https://github.com/EtheaDev/IconFontsImageList)
 
 ## Available Forms/Frames
 [List of available elements](List.md)
