@@ -1,31 +1,41 @@
-# Forms:
- 1. BackgroundForm
- 1. ContainerForm
- 1. CenterForm
- 1. ColumnForm  
- 2. ContainerForm
- 3. RowForm
- 4. ScaffoldForm
- 5. VertScrollForm
-
 # Frames:
- 1. ActionButtonFrame
- 2. ActivityBubblesFrame
- 4. BackgroundFrame
- 5. ButtonFrame
- 6. CardFrame
- 8. ContainerFrame
- 9. EditFrame
- 10. ImageFrame
- 11. GlyphFrame
- 12. IconFontsGlyphFrame
- 13. ImageFrame
- 14. HorzDividerFrame
- 15. HorzScrollFrame
- 16. VertScrollFrame
- 18. ListViewFrame
- 19. LogoFrame
- 20. MarginFrame
- 21. PaddingFrame
- 22. TextFrame
- 23. WebViewFrame
+1. ActionButtonFrame
+1. ActivityBubblesFrame
+1. AnimatedImageFrame
+1. BackgroundFrame
+1. ButtonFrame
+1. CardFrame
+1. ChipFrame
+1. ChipsFrame
+1. ContainerFrame
+1. EditFrame
+1. GlyphFrame
+1. HorzDividerFrame
+1. HorzScrollFrame
+1. IconFontsGlyphFrame
+1. ImageFrame
+1. ListViewFrame
+1. LogoFrame
+1. MarginFrame
+1. PaddingFrame
+1. PaintBoxFrame
+1. QRCodeFrame
+1. StackFrame
+1. SVGFrame
+1. TextFrame
+1. VertScrollFrame
+1. WebViewFrame
+
+# Forms:
+1. BackgroundForm
+1. CenterForm
+1. ColumnForm
+1. ContainerForm
+1. RowForm
+1. ScaffoldForm
+1. VertScrollForm
+
+# MISC:
+1. IconFontsData
+1. UI.Consts
+1. UI.Misc
