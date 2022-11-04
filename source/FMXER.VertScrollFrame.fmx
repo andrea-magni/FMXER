@@ -3,6 +3,8 @@ object VertScrollFrame: TVertScrollFrame
   Size.Width = 320.000000000000000000
   Size.Height = 250.000000000000000000
   Size.PlatformDefault = False
+  OnResize = FrameResize
+  OnResized = FrameResized
   object VerticalScrollbox: TVertScrollBox
     Align = Client
     Padding.Right = 50.000000000000000000

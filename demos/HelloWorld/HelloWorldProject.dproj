@@ -5,7 +5,7 @@
         <FrameworkType>FMX</FrameworkType>
         <MainSource>HelloWorldProject.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>693267</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -856,6 +856,34 @@
                         <RemoteDir>.\</RemoteDir>
                         <Operation>0</Operation>
                         <RemoteName>sk4d.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\media\Material Design Icons Desktop.ttf" Configuration="Debug" Class="File">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\media\Material Design Icons Desktop.ttf" Configuration="Release" Class="File">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\media\rect_shadow.svg" Configuration="Debug" Class="File">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>rect_shadow.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\media\rect_shadow.svg" Configuration="Release" Class="File">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>rect_shadow.svg</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

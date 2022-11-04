@@ -12,14 +12,21 @@ type
     FrameStand1: TFrameStand;
     FormStand1: TFormStand;
     VerticalScrollbox: TVertScrollBox;
+    procedure FrameResized(Sender: TObject);
+    procedure FrameResize(Sender: TObject);
   private
     FContent: TSubjectInfo;
     FContentStand: string;
+    FOnResizeProc: TProc<TVertScrollFrame>;
+    FOnResizedProc: TProc<TVertScrollFrame>;
+    FOnShowProc: TProc<TVertScrollFrame>;
     function GetTouchWidth: Single;
     procedure SetTouchWidth(const Value: Single);
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
+    [AfterShow]
+    procedure AfterShow;
     [Hide]
     procedure HideHandler;
     //
@@ -28,6 +35,9 @@ type
     //
     property ContentStand: string read FContentStand write FContentStand;
     property TouchWidth: Single read GetTouchWidth write SetTouchWidth;
+    property OnResizeProc: TProc<TVertScrollFrame> read FOnResizeProc write FOnResizeProc;
+    property OnResizedProc: TProc<TVertScrollFrame> read FOnResizedProc write FOnResizedProc;
+    property OnShowProc: TProc<TVertScrollFrame> read FOnShowProc write FOnShowProc;
   end;
 
 implementation
@@ -35,6 +45,24 @@ implementation
 {$R *.fmx}
 
 { TVertScrollFrame }
+
+procedure TVertScrollFrame.AfterShow;
+begin
+  if Assigned(FOnShowProc) then
+    FOnShowProc(Self);
+end;
+
+procedure TVertScrollFrame.FrameResize(Sender: TObject);
+begin
+  if Assigned(FOnResizeProc) then
+    FOnResizeProc(Self);
+end;
+
+procedure TVertScrollFrame.FrameResized(Sender: TObject);
+begin
+  if Assigned(FOnResizedProc) then
+    FOnResizedProc(Self);
+end;
 
 function TVertScrollFrame.GetTouchWidth: Single;
 begin

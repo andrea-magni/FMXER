@@ -12,9 +12,9 @@ type
   TNavigator = class
   private
     FFormStand: TFormStand;
+  protected
     FOnCloseRouteProc: TProc<string>;
     FOnCreateRouteProc: TProc<string>;
-  protected
     FRouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>>;
     FActiveRoutes: TDictionary<string, TSubjectInfo>;
     FStack: TStack<string>;
@@ -22,6 +22,8 @@ type
     class var _ClassInstance: TNavigator;
     class function GetClassInstance: TNavigator; static;
     class function GetInitialized: Boolean; static;
+  protected
+    procedure DoCloseRouteProc(const ARouteName: string); virtual;
   public
     constructor Create(const AFormStand: TFormStand); virtual;
     destructor Destroy; override;
@@ -106,12 +108,12 @@ var
 begin
   if ActiveRoutes.TryGetValue(ARouteName, LSubjectInfo) then
   begin
-    LSubjectInfo.HideAndClose(0
-      , procedure
-        begin
-          if Assigned(FOnCloseRouteProc) then
-            FOnCloseRouteProc(ARouteName);
-        end
+    LSubjectInfo.HideAndClose(
+      0
+    , procedure
+      begin
+        DoCloseRouteProc(ARouteName);
+      end
     );
     ActiveRoutes.Remove(ARouteName);
     if not ATransient then
@@ -166,6 +168,12 @@ begin
   FreeAndNil(FActiveRoutes);
   FreeAndNil(FRouteDefinitions);
   inherited;
+end;
+
+procedure TNavigator.DoCloseRouteProc(const ARouteName: string);
+begin
+  if Assigned(FOnCloseRouteProc) then
+    FOnCloseRouteProc(ARouteName);
 end;
 
 class function TNavigator.GetClassInstance: TNavigator;

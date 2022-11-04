@@ -2,13 +2,12 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'HelloWorld'
-  ClientHeight = 400
-  ClientWidth = 300
+  ClientHeight = 600
+  ClientWidth = 400
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnClose = FormClose
   DesignerMasterStyle = 0
   object Stands: TStyleBook
     Styles = <

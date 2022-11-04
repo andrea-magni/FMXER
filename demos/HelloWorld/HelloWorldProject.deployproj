@@ -10,17 +10,7 @@
         <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -40,7 +30,17 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -62,16 +62,6 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>HelloWorldProject\</RemoteDir>
-            <RemoteName>sk4d.dll</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
@@ -82,7 +72,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -102,18 +92,18 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Android64'">
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>HelloWorldProject\library\lib\arm64-v8a\</RemoteDir>
-            <RemoteName>libsk4d.so</RemoteName>
+        <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>HelloWorldProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Android64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
@@ -124,7 +114,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -144,8 +134,8 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
-            <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
+        <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>HelloWorldProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -164,7 +154,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -175,6 +165,16 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
+            <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -222,7 +222,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -232,7 +232,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -341,19 +341,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Debug\styles-v21.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HelloWorldProject\res\values-v21\</RemoteDir>
-            <RemoteName>styles.xml</RemoteName>
-            <DeployClass>AndroidSplashStylesV21</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_48x48.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\res\drawable-xhdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon48</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_48x48.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-xhdpi\</RemoteDir>
-            <RemoteName>ic_notification.png</RemoteName>
-            <DeployClass>Android_NotificationIcon48</DeployClass>
+        <DeployFile Include="Android\Debug\styles-v21.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\res\values-v21\</RemoteDir>
+            <RemoteName>styles.xml</RemoteName>
+            <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -386,19 +386,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HelloWorldProject\res\drawable-hdpi\</RemoteDir>
-            <RemoteName>ic_notification.png</RemoteName>
-            <DeployClass>Android_NotificationIcon36</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\res\drawable-ldpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon36</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-ldpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon36</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\res\drawable-hdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon36</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -431,7 +431,25 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon96</DeployClass>
@@ -440,7 +458,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HelloWorldProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon96</DeployClass>
@@ -467,7 +485,25 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\res\drawable-normal\</RemoteDir>
+            <RemoteName>splash_image.png</RemoteName>
+            <DeployClass>Android_SplashImage470</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon72</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon72</DeployClass>
@@ -494,19 +530,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HelloWorldProject\res\drawable-xxxhdpi\</RemoteDir>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon192</DeployClass>
+            <DeployClass>Android_LauncherIcon144</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-xxhdpi\</RemoteDir>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon144</DeployClass>
+            <DeployClass>Android_LauncherIcon192</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -521,25 +557,16 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-normal\</RemoteDir>
-            <RemoteName>splash_image.png</RemoteName>
-            <DeployClass>Android_SplashImage470</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-xxhdpi\</RemoteDir>
-            <RemoteName>ic_notification.png</RemoteName>
-            <DeployClass>Android_NotificationIcon72</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\res\drawable-xhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon96</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon96</DeployClass>
@@ -557,20 +584,29 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-xhdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon96</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="Android\Debug\styles.xml" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HelloWorldProject\res\values\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStyles</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\rect_shadow.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>rect_shadow.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\rect_shadow.svg" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>rect_shadow.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -585,6 +621,15 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon24</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon24</DeployClass>
@@ -611,21 +656,11 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\libHelloWorldProject.so" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libHelloWorldProject.so</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\res\drawable-small\</RemoteDir>
+            <RemoteName>splash_image.png</RemoteName>
+            <DeployClass>Android_SplashImage426</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="Android\Release\HelloWorldProject.classes" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\classes\</RemoteDir>
-            <RemoteName>HelloWorldProject.classes</RemoteName>
-            <DeployClass>AndroidClasses</DeployClass>
-            <Operation>64</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -639,25 +674,26 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-small\</RemoteDir>
-            <RemoteName>splash_image.png</RemoteName>
-            <DeployClass>Android_SplashImage426</DeployClass>
-            <Operation>1</Operation>
+        <DeployFile Include="Android\Release\HelloWorldProject.classes" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\classes\</RemoteDir>
+            <RemoteName>HelloWorldProject.classes</RemoteName>
+            <DeployClass>AndroidClasses</DeployClass>
+            <Operation>64</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject\res\drawable-mdpi\</RemoteDir>
-            <RemoteName>ic_notification.png</RemoteName>
-            <DeployClass>Android_NotificationIcon24</DeployClass>
+        <DeployFile Include="Android\Release\libHelloWorldProject.so" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libHelloWorldProject.so</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -667,7 +703,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -698,16 +734,6 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='OSXARM64'">
-        <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
@@ -718,7 +744,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -738,18 +764,18 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Win64'">
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>HelloWorldProject\</RemoteDir>
-            <RemoteName>sk4d.dll</RemoteName>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>HelloWorldProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Win64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
@@ -760,7 +786,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -780,20 +806,20 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
-    <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
-    <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'">
-        <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>HelloWorldProject.app\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
+        <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>HelloWorldProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
+    <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
+    <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'">
         <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
@@ -804,7 +830,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>HelloWorldProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -815,6 +841,16 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>HelloWorldProject.app\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
