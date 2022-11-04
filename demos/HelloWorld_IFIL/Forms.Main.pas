@@ -96,6 +96,13 @@ begin
     end
   );
 
+  Navigator.OnCloseRoute :=
+    procedure (ARoute: string)
+    begin
+      if ARoute = 'home' then
+        Close;
+    end;
+
   Navigator.RouteTo('home'); // initial route
 end;
 
@@ -104,7 +111,6 @@ begin
   if Navigator.ActiveRoutes.Count > 0 then
   begin
     Action := TCloseAction.caNone;
-    Navigator.OnCloseRoute := procedure (ARoute: string) begin if ARoute = 'home' then Close; end;
     Navigator.CloseAllRoutes();
   end;
 end;

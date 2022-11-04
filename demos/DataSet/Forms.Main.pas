@@ -55,7 +55,7 @@ begin
          end
        );
      end
-  ) // route definition
+  )
 
   .DefineRoute<TScaffoldForm>(
      'detail'
@@ -74,9 +74,16 @@ begin
      end
    , nil
    , 'slideRightLeft'
-  ) // route definition
+  )
 
-  .RouteTo('home'); // initial route
+  .OnCloseRoute :=
+    procedure (ARoute: string)
+    begin
+      if ARoute = 'home' then
+        Close;
+    end;
+
+  Navigator.RouteTo('home'); // initial route
 end;
 
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -84,7 +91,6 @@ begin
   if Navigator.ActiveRoutes.Count > 0 then
   begin
     Action := TCloseAction.caNone;
-    Navigator.OnCloseRoute := procedure (ARoute: string) begin if ARoute = 'home' then Close; end;
     Navigator.CloseAllRoutes();
   end;
 end;

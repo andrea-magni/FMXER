@@ -11,6 +11,7 @@ type
   TMainForm = class(TForm)
     FormStand1: TFormStand;
     Stands: TStyleBook;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
   public
     constructor Create(AOwner: TComponent); override;
@@ -49,6 +50,15 @@ begin
 
   // initial route
   Navigator.RouteTo('home');
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if Navigator.ActiveRoutes.Count > 0 then
+  begin
+    Action := TCloseAction.caNone;
+    Navigator.CloseAllRoutes();
+  end;
 end;
 
 end.
