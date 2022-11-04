@@ -5,7 +5,9 @@ uses
   FMX.Forms,
   Skia.FMX,
   Forms.Main in 'Forms.Main.pas' {MainForm},
-  Frames.Custom1 in 'Frames.Custom1.pas' {Custom1Frame: TFrame};
+  Frames.Custom1 in 'Frames.Custom1.pas' {Custom1Frame: TFrame},
+  Routes.home in 'Routes.home.pas',
+  Routes.bubble in 'Routes.bubble.pas';
 
 {$R *.res}
 

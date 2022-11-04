@@ -467,6 +467,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>TSkSvg.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>TSkSvg.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Debug'">
             <RemoteDir>HelloWorldProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>gdbserver</RemoteName>
