@@ -17,6 +17,7 @@ uses
 , FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm
 , FMXER.VertScrollFrame, FMXER.ButtonFrame, FMXER.ChipFrame, FMXER.ChipsFrame
 , FMXER.SVGFrame, FMXER.StackFrame, FMXER.BackgroundFrame
+, FMXER.AnimatedImageFrame
 
 , Frames.Custom1
 ;
@@ -49,6 +50,20 @@ begin
                SVGF.ContentSvg.Opacity := 0.33;
                SVGF.ContentSvg.Svg.WrapMode := TSkSvgWrapMode.Tile;
                SVGF.ContentSvg.Svg.OverrideColor := TAlphaColorRec.Orange;
+             end
+           );
+
+           Stack.AddFrame<TAnimatedImageFrame>(
+             procedure (AIF: TAnimatedImageFrame)
+             begin
+               AIF.ContentImage.LoadFromFile(TPath.Combine(
+                 {$IFDEF MSWINDOWS} '..\..\..\..\media\' {$ELSE} TPath.GetDocumentsPath {$ENDIF}
+               , '85570-background-animation-for-a-simple-project.json')
+               );
+               AIF.ContentImage.WrapMode := TSkAnimatedImageWrapMode.FitCrop;
+               AIF.ContentImage.Animation.Speed := 0.75;
+               AIF.ContentImage.Opacity := 0.33;
+
              end
            );
 

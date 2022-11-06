@@ -4,11 +4,13 @@ object RemoteData: TRemoteData
   Width = 640
   object netClient: TMARSNetClient
     MARSEngineURL = 'http://localhost:8080/rest'
-    ConnectTimeout = 60000
-    ReadTimeout = 60000
+    ConnectTimeout = 15000
+    ReadTimeout = 30000
     AuthCookieName = 'access_token'
     ProxyConfig.Enabled = False
     ProxyConfig.Port = 0
+    HttpClient.ConnectionTimeout = 15000
+    HttpClient.ResponseTimeout = 30000
     HttpClient.Accept = 'application/json'
     HttpClient.ContentType = 'application/json'
     HttpClient.UserAgent = 'Embarcadero URI Client/1.0'
