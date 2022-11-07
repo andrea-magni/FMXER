@@ -44,15 +44,16 @@ begin
           B.SetContentAsFrame<TQRCodeFrame>(
             procedure (AQR: TQRCodeFrame)
             begin
-              AQR.SetMargin(2);
-              AQR.Content := 'https://github.com/andrea-magni/FMXER';
+              AQR
+              .SetContent('https://github.com/andrea-magni/FMXER')
+//              .SetOverrideColor(TAppColors.PrimaryColor)
+              .SetMargin(2);
 
-//              AQR.QRCode.Svg.OverrideColor := TAppColors.PrimaryColor;
-              AQR.OnBeforePaint :=
-                procedure (APaint: ISkPaint; AModules: T2DBooleanArray)
-                begin
-                  APaint.Shader := TSkShader.MakeColor(TAppColors.PrimaryColor);
-                end;
+//              AQR.OnBeforePaint :=
+//                procedure (APaint: ISkPaint; AModules: T2DBooleanArray)
+//                begin
+//                  APaint.Shader := TSkShader.MakeColor(TAppColors.PrimaryColor);
+//                end;
 
             end
           );

@@ -21,6 +21,10 @@ type
     procedure HitTestChanged; override;
   public
     function LoadFromFile(const AFileName: string): TAnimatedImageFrame;
+    function SetWrapMode(const AWrapMode: TSkAnimatedImageWrapMode): TAnimatedImageFrame;
+    function SetOpacity(const AOpacity: Single): TAnimatedImageFrame;
+    function SetAnimationSpeed(const ASpeed: Single): TAnimatedImageFrame;
+
     property Image: TSkAnimatedImage read ContentImage;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;
@@ -56,6 +60,27 @@ function TAnimatedImageFrame.LoadFromFile(
 begin
   Result := Self;
   Result.Image.LoadFromFile(AFileName);
+end;
+
+function TAnimatedImageFrame.SetAnimationSpeed(
+  const ASpeed: Single): TAnimatedImageFrame;
+begin
+  Result := Self;
+  ContentImage.Animation.Speed := ASpeed;
+end;
+
+function TAnimatedImageFrame.SetOpacity(
+  const AOpacity: Single): TAnimatedImageFrame;
+begin
+  Result := Self;
+  ContentImage.Opacity := AOpacity;
+end;
+
+function TAnimatedImageFrame.SetWrapMode(
+  const AWrapMode: TSkAnimatedImageWrapMode): TAnimatedImageFrame;
+begin
+  Result := Self;
+  ContentImage.WrapMode := AWrapMode;
 end;
 
 end.

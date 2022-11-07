@@ -25,19 +25,23 @@ type
     FOnBeforePaint: TOnBeforePaintHandler;
     FRadiusFactor: Single;
     procedure SetOnTapHandler(const Value: TOnTapHandler);
-    procedure SetRadiusFactor(const Value: Single);
   protected
-    function GetSVGSource: string; inline;
-    procedure SetSVGSource(const Value: string); inline;
-    procedure SetContent(const Value: string);
     procedure SetOnBeforePaint(const Value: TOnBeforePaintHandler);
     procedure UpdateQRCode;
     procedure HitTestChanged; override;
   public
     constructor Create(AOwner: TComponent); override;
-    property Content: string read FContent write SetContent;
-    property RadiusFactor: Single read FRadiusFactor write SetRadiusFactor;
-    property SVGSource: string read GetSVGSource write SetSVGSource;
+
+    function SetContent(const AContent: string): TQRCodeFrame;
+    function SetRadiusFactor(const ARadiusFactor: Single): TQRCodeFrame;
+    function SetSVGSource(const ASource: string): TQRCodeFrame;
+    function SetOverrideColor(const AColor: TAlphaColor): TQRCodeFrame;
+
+    function LoadLogoContentFromFile(const AFileName: string): TQRCodeFrame;
+    function SetLogoWidth(const AWidth: Single): TQRCodeFrame;
+    function SetLogoHeight(const AHeight: Single): TQRCodeFrame;
+    function SetLogoVisible(const AVisible: Boolean): TQRCodeFrame;
+
     property OnBeforePaint: TOnBeforePaintHandler read FOnBeforePaint write SetOnBeforePaint;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write SetOnTapHandler;
   end;
@@ -56,11 +60,6 @@ begin
   FOnTapHandler := nil;
 end;
 
-function TQRCodeFrame.GetSVGSource: string;
-begin
-  Result := QRCode.Svg.Source;
-end;
-
 procedure TQRCodeFrame.HitTestChanged;
 begin
   inherited;
@@ -70,6 +69,13 @@ begin
 //    lytQRCodeLogo.HitTest := HitTest;
 //  if Assigned(QRCodeLogo) then
 //    QRCodeLogo.HitTest := HitTest;
+end;
+
+function TQRCodeFrame.LoadLogoContentFromFile(
+  const AFileName: string): TQRCodeFrame;
+begin
+  Result := Self;
+  QRCodeLogo.LoadFromFile(AFileName);
 end;
 
 procedure TQRCodeFrame.QRCodeMouseUp(Sender: TObject; Button: TMouseButton;
@@ -86,13 +92,32 @@ begin
     FOnTapHandler(QRCode, Point);
 end;
 
-procedure TQRCodeFrame.SetContent(const Value: string);
+function TQRCodeFrame.SetContent(const AContent: string): TQRCodeFrame;
 begin
-  if FContent <> Value then
+  Result := Self;
+  if FContent <> AContent then
   begin
-    FContent := Value;
+    FContent := AContent;
     UpdateQRCode;
   end;
+end;
+
+function TQRCodeFrame.SetLogoHeight(const AHeight: Single): TQRCodeFrame;
+begin
+  Result := Self;
+  QRCodeLogo.Height := AHeight;
+end;
+
+function TQRCodeFrame.SetLogoVisible(const AVisible: Boolean): TQRCodeFrame;
+begin
+  Result := Self;
+  QRCodeLogo.Visible := AVisible;
+end;
+
+function TQRCodeFrame.SetLogoWidth(const AWidth: Single): TQRCodeFrame;
+begin
+  Result := Self;
+  QRCodeLogo.Width := AWidth;
 end;
 
 procedure TQRCodeFrame.SetOnBeforePaint(const Value: TOnBeforePaintHandler);
@@ -109,23 +134,31 @@ begin
   FOnTapHandler := Value;
 end;
 
-procedure TQRCodeFrame.SetRadiusFactor(const Value: Single);
+function TQRCodeFrame.SetOverrideColor(const AColor: TAlphaColor): TQRCodeFrame;
 begin
-  if FRadiusFactor <> Value then
+  Result := Self;
+  QRCode.Svg.OverrideColor := AColor;
+end;
+
+function TQRCodeFrame.SetRadiusFactor(const ARadiusFactor: Single): TQRCodeFrame;
+begin
+  Result := Self;
+  if FRadiusFactor <> ARadiusFactor then
   begin
-    FRadiusFactor := Value;
+    FRadiusFactor := ARadiusFactor;
     UpdateQRCode;
   end;
 end;
 
-procedure TQRCodeFrame.SetSVGSource(const Value: string);
+function TQRCodeFrame.SetSVGSource(const ASource: string): TQRCodeFrame;
 begin
-  QRCode.Svg.Source := Value;
+  Result := Self;
+  QRCode.Svg.Source := ASource;
 end;
 
 procedure TQRCodeFrame.UpdateQRCode;
 begin
-  SVGSource := TQRCode.TextToSvg(FContent, FOnBeforePaint, FRadiusFactor);
+  SetSVGSource(TQRCode.TextToSvg(FContent, FOnBeforePaint, FRadiusFactor));
 end;
 
 end.

@@ -55,6 +55,8 @@ type
     function SetAlignClient: TControl;
     function SetAlignContents: TControl;
 
+    function SetHitTest(const AHitTest: Boolean): TControl;
+
     function SetWidth(const AWidth: Single): TControl;
     function SetHeight(const AHeight: Single): TControl;
   end;
@@ -66,8 +68,19 @@ type
   function Param(const AName: string; const AValue: TFunc<Boolean>): TNameValueParam; overload;
   function OnClickProc(const AValue: TProc): TNameValueParam; overload;
 
+  function LocalFile(const AFileName: string): string;
+
 
 implementation
+
+uses IOUtils;
+
+function LocalFile(const AFileName: string): string;
+begin
+  Result := TPath.Combine(
+   {$IFDEF MSWINDOWS} '..\..\..\..\media\' {$ELSE} TPath.GetDocumentsPath {$ENDIF}
+  , AFileName);
+end;
 
 { TElementDef<T> }
 
@@ -213,6 +226,12 @@ function TFMXERFrameHelper.SetHeight(const AHeight: Single): TControl;
 begin
   Result := Self;
   Result.Height := AHeight;
+end;
+
+function TFMXERFrameHelper.SetHitTest(const AHitTest: Boolean): TControl;
+begin
+  Result := Self;
+  Result.HitTest := AHitTest;
 end;
 
 function TFMXERFrameHelper.SetMargin(const ALeft, ATop, ARight,

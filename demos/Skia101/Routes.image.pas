@@ -22,7 +22,7 @@ uses
 , FMXER.BackgroundForm
 , FMXER.BackgroundFrame
 , FMXER.QRCodeFrame
-, FMXER.UI.Consts
+, FMXER.UI.Consts, FMXER.UI.Misc
 
 , System.UITypes
 , Skia, QRCode.Render
@@ -77,7 +77,6 @@ begin
   );
 end;
 
-
 procedure DefineSVGImageRoute;
 begin
   Navigator.DefineRoute<TScaffoldForm>('SVGImage'
@@ -101,9 +100,6 @@ begin
   );
 end;
 
-
-
-
 procedure DefineQRCodeRoute;
 begin
   Navigator.DefineRoute<TScaffoldForm>('QRCode'
@@ -114,20 +110,21 @@ begin
       .SetContentAsFrame<TBackgroundFrame>(
         procedure (B: TBackgroundFrame)
         begin
-          B.Fill.Color := TAlphaColorRec.Aliceblue;
-          B.SetContentAsFrame<TQRCodeFrame>(
+          B
+          .SetFillColor(TAlphaColorRec.Aliceblue)
+          .SetContentAsFrame<TQRCodeFrame>(
             procedure (QRF: TQRCodeFrame)
             begin
-              QRF.Margins.Rect := RectF(25, 25, 25, 25);
-              QRF.HitTest := True; // prevents click-through
+              QRF
+              .SetContent('')
+              .SetRadiusFactor(0.1)
+              .LoadLogoContentFromFile(LocalFile('FMXER_R_256.png'))
+              .SetLogoWidth(128)
+              .SetLogoHeight(128)
+              .SetLogoVisible(True)
+              .SetMargin(25)
+              .SetHitTest(True); // prevents click-through
 
-              QRF.Content := '';
-              QRF.RadiusFactor := 0.1;
-
-              QRF.QRCodeLogo.LoadFromFile(LocalFile('FMXER_R_256.png'));
-              QRF.QRCodeLogo.Width := 128;
-              QRF.QRCodeLogo.Height := 128;
-              QRF.QRCodeLogo.Visible := True;
 
               TTask.Run(
                 procedure
@@ -139,8 +136,9 @@ begin
                       begin
                         if not Navigator.IsRouteActive('QRCode') then
                           Exit;
-                        QRF.Content := 'Time: ' + TimeToStr(Now);
-                        S.SetTitle('QRCode ' + QRF.Content);
+                        var LContent := 'Time: ' + TimeToStr(Now);
+                        QRF.SetContent(LContent);
+                        S.SetTitle('QRCode ' + LContent);
                       end
                     );
 

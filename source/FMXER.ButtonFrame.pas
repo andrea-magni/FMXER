@@ -29,6 +29,11 @@ type
     function SetCaption(const ACaption: string): TButtonFrame;
     function SetExtraText(const AExtraText: string): TButtonFrame;
     function SetText(const AText: string): TButtonFrame;
+    function SetBackgroundFillColor(const AColor: TAlphaColor): TButtonFrame;
+    function SetBackgroundStrokeColor(const AColor: TAlphaColor): TButtonFrame;
+    function SetBackgroundStrokeThickness(const AThickness: Single): TButtonFrame;
+    function SetBackgroundVisible(const AVisible: Boolean): TButtonFrame;
+    function SetBackgroundOpacity(const AOpacity: Single): TButtonFrame;
 
     property BackgroundFill: TBrush read GetBackgroundFill;
     property BackgroundStroke: TStrokeBrush read GetBackgroundStroke;
@@ -74,6 +79,41 @@ end;
 function TButtonFrame.GetIsDefault: Boolean;
 begin
   Result := ButtonControl.Default;
+end;
+
+function TButtonFrame.SetBackgroundFillColor(
+  const AColor: TAlphaColor): TButtonFrame;
+begin
+  Result := Self;
+  BackgroundRectangle.Fill.Color := AColor;
+end;
+
+function TButtonFrame.SetBackgroundOpacity(
+  const AOpacity: Single): TButtonFrame;
+begin
+  Result := Self;
+  BackgroundRectangle.Opacity := AOpacity;
+end;
+
+function TButtonFrame.SetBackgroundStrokeColor(
+  const AColor: TAlphaColor): TButtonFrame;
+begin
+  Result := Self;
+  BackgroundRectangle.Stroke.Color := AColor;
+end;
+
+function TButtonFrame.SetBackgroundStrokeThickness(
+  const AThickness: Single): TButtonFrame;
+begin
+  Result := Self;
+  BackgroundRectangle.Stroke.Thickness := AThickness;
+end;
+
+function TButtonFrame.SetBackgroundVisible(
+  const AVisible: Boolean): TButtonFrame;
+begin
+  Result := Self;
+  BackgroundRectangle.Visible := AVisible;
 end;
 
 function TButtonFrame.SetCaption(const ACaption: string): TButtonFrame;

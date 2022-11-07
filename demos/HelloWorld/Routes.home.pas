@@ -34,13 +34,11 @@ begin
          procedure (ButtonF: TButtonFrame)
          begin
            ButtonF
-             .SetCaption('Caption')
              .SetText('Popup')
+             .SetBackgroundVisible(False)
              .SetAlignRight
              .SetPadding(10)
              .SetWidth(100);
-
-           ButtonF.BackgroundFill.Kind := TBrushKind.None;
          end
        )
        .SetContentAsFrame<TStackFrame>(
@@ -56,25 +54,21 @@ begin
            .AddFrame<TSVGFrame>(
              procedure (SVGF: TSVGFrame)
              begin
-               SVGF.LoadFromFile(TPath.Combine(
-                 {$IFDEF MSWINDOWS} '..\..\..\..\media\' {$ELSE} TPath.GetDocumentsPath {$ENDIF}
-               , 'TSkSvg.svg')
-               );
-               SVGF.ContentSvg.Opacity := 0.33;
-               SVGF.ContentSvg.Svg.WrapMode := TSkSvgWrapMode.Tile;
-               SVGF.ContentSvg.Svg.OverrideColor := TAlphaColorRec.Orange;
+               SVGF
+               .LoadFromFile(LocalFile('TSkSvg.svg'))
+               .SetOpacity(0.33)
+               .SetWrapMode(TSkSvgWrapMode.Tile)
+               .SetOverrideColor(TAlphaColorRec.Orange);
              end
            )
            .AddFrame<TAnimatedImageFrame>(
              procedure (AIF: TAnimatedImageFrame)
              begin
-               AIF.ContentImage.LoadFromFile(TPath.Combine(
-                 {$IFDEF MSWINDOWS} '..\..\..\..\media\' {$ELSE} TPath.GetDocumentsPath {$ENDIF}
-               , '85570-background-animation-for-a-simple-project.json')
-               );
-               AIF.ContentImage.WrapMode := TSkAnimatedImageWrapMode.FitCrop;
-               AIF.ContentImage.Animation.Speed := 0.75;
-               AIF.ContentImage.Opacity := 0.33;
+               AIF
+               .LoadFromFile(LocalFile('85570-background-animation-for-a-simple-project.json'))
+               .SetWrapMode(TSkAnimatedImageWrapMode.FitCrop)
+               .SetAnimationSpeed(0.75)
+               .SetOpacity(0.33);
              end
            )
            .AddFrame<TVertScrollFrame>(
@@ -101,11 +95,11 @@ begin
                    .AddFrame<TChipFrame>(50
                    , procedure (ChipF: TChipFrame)
                      begin
-                       ChipF.SetMargin(0, 5, 0, 0);
                        ChipF
                          .SetText('Login')
                          .SetBackgroundColor(TAlphaColorRec.Blue)
-                         .SetForegroundColor(TAlphaColorRec.White);
+                         .SetForegroundColor(TAlphaColorRec.White)
+                         .SetMargin(0, 5, 0, 0);
                        ChipF.OnClickHandler :=
                          procedure
                          begin
