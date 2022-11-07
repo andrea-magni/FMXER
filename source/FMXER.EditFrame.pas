@@ -17,28 +17,26 @@ type
   private
     FOnChangeProc: TProc<Boolean>;
     FFocusOnShow: Boolean;
-    function GetTextPrompt: string;
-    procedure SetTextPrompt(const Value: string);
-    function GetCaption: string;
-    procedure SetCaption(const Value: string);
-    function GetText: string;
-    procedure SetText(const Value: string);
-    function GetPassword: Boolean;
-    procedure SetPassword(const Value: Boolean);
-    function GetExtraText: string;
-    procedure SetExtraText(const Value: string);
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
     [Show]
     procedure ShowHandler;
 
-    property FocusOnShow: Boolean read FFocusOnShow write FFocusOnShow;
-    property Password: Boolean read GetPassword write SetPassword;
-    property TextPrompt: string read GetTextPrompt write SetTextPrompt;
-    property Caption: string read GetCaption write SetCaption;
-    property Text: string read GetText write SetText;
-    property ExtraText: string read GetExtraText write SetExtraText;
+    function GetTextPrompt: string;
+    function GetCaption: string;
+    function GetText: string;
+    function GetPassword: Boolean;
+    function GetExtraText: string;
+    function GetFocusOnShow: Boolean;
+
+    function SetCaption(const ACaption: string): TEditFrame;
+    function SetTextPrompt(const ATextPrompt: string): TEditFrame;
+    function SetText(const AText: string): TEditFrame;
+    function SetExtraText(const AExtraText: string): TEditFrame;
+    function SetPassword(const AIsPassword: Boolean): TEditFrame;
+    function SetFocusOnShow(const AFocusOnShow: Boolean): TEditFrame;
+
     property OnChangeProc: TProc<Boolean> read FOnChangeProc write FOnChangeProc;
   end;
 
@@ -70,6 +68,11 @@ begin
   Result := ExtraLabel.Text;
 end;
 
+function TEditFrame.GetFocusOnShow: Boolean;
+begin
+  Result := FFocusOnShow;
+end;
+
 function TEditFrame.GetPassword: Boolean;
 begin
   Result := EditControl.Password;
@@ -85,36 +88,47 @@ begin
   Result := EditControl.TextPrompt;
 end;
 
-procedure TEditFrame.SetCaption(const Value: string);
+function TEditFrame.SetCaption(const ACaption: string): TEditFrame;
 begin
-  CaptionLabel.Text := Value;
+  Result := Self;
+  CaptionLabel.Text := ACaption;
 end;
 
-procedure TEditFrame.SetExtraText(const Value: string);
+function TEditFrame.SetExtraText(const AExtraText: string): TEditFrame;
 begin
-  ExtraLabel.Text := Value;
+  Result := Self;
+  ExtraLabel.Text := AExtraText;
 end;
 
-procedure TEditFrame.SetPassword(const Value: Boolean);
+function TEditFrame.SetFocusOnShow(const AFocusOnShow: Boolean): TEditFrame;
 begin
-  EditControl.Password := Value;
+  Result := Self;
+  FFocusOnShow := AFocusOnShow;
 end;
 
-procedure TEditFrame.SetText(const Value: string);
+function TEditFrame.SetPassword(const AIsPassword: Boolean): TEditFrame;
 begin
-  EditControl.Text := Value;
+  Result := Self;
+  EditControl.Password := AIsPassword;
 end;
 
-procedure TEditFrame.SetTextPrompt(const Value: string);
+function TEditFrame.SetText(const AText: string): TEditFrame;
 begin
-  EditControl.TextPrompt := Value;
+  Result := Self;
+  EditControl.Text := AText;
+end;
+
+function TEditFrame.SetTextPrompt(const ATextPrompt: string): TEditFrame;
+begin
+  Result := Self;
+  EditControl.TextPrompt := ATextPrompt;
 end;
 
 procedure TEditFrame.ShowHandler;
 begin
   SI.DefaultShow;
 
-  if FocusOnShow and EditControl.CanFocus then
+  if GetFocusOnShow and EditControl.CanFocus then
   begin
     TDelayedAction.Execute(10
     , procedure

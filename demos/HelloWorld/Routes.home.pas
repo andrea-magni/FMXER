@@ -3,7 +3,8 @@ unit Routes.home;
 interface
 
 uses
-  Classes, SysUtils, Types, UITypes, IOUtils, FMX.Dialogs, FMX.Types, FMX.Graphics
+  Classes, SysUtils, Types, UITypes, IOUtils, FMX.Dialogs, FMX.Types, FMX.Graphics,
+  System.Messaging
 , FMXER.Navigator;
 
 function DefineHomeRoute(const ARouteName: string = 'home'): TNavigator;
@@ -17,10 +18,10 @@ uses
 , FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm
 , FMXER.VertScrollFrame, FMXER.ButtonFrame, FMXER.ChipFrame, FMXER.ChipsFrame
 , FMXER.SVGFrame, FMXER.StackFrame, FMXER.BackgroundFrame
-, FMXER.AnimatedImageFrame, FMXER.EditFrame
+, FMXER.AnimatedImageFrame, FMXER.EditFrame, FMXER.QRCodeFrame
 
 , Frames.Custom1
-;
+, Data.AppState;
 
 function GetColumnDefinition(const AHost: TScaffoldForm): TProc<TColumnForm>;
 begin
@@ -40,7 +41,7 @@ begin
          , procedure (ButtonF: TButtonFrame)
            begin
              ButtonF
-             .SetText('Say hello 1!')
+             .SetText('Hello 1!')
              .SetPadding<TButtonFrame>(5)
              .SetBackgroundVisible(False)
              .OnClickHandler :=
@@ -54,7 +55,7 @@ begin
          , procedure (ButtonF: TButtonFrame)
            begin
              ButtonF
-             .SetText('Say hello 2!')
+             .SetText('Hello 2!')
              .SetPadding<TButtonFrame>(5)
              .SetBackgroundVisible(False)
              .OnClickHandler :=
@@ -68,15 +69,13 @@ begin
          , procedure (ButtonF: TButtonFrame)
            begin
              ButtonF
-             .SetText('Say hello 3!')
-//             .SetCaption('Caption 3')
-//             .SetExtraText('Extra 3')
+             .SetText('Hello 3!')
              .SetPadding<TButtonFrame>(5)
              .SetBackgroundVisible(False)
              .OnClickHandler :=
                procedure
                begin
-                 ShowMessage('Hello 3!');
+                 ShowMessage('Hello 3!' + ButtonF.ButtonControl.Text);
                end;
            end
          );
@@ -135,24 +134,38 @@ begin
        100
      , procedure (Frame: TEditFrame)
        begin
-         Frame.Margins.Top := 10;
-         Frame.Caption := 'Name';
-         Frame.TextPrompt := 'Write your name here';
-         Frame.Text := '';
-         Frame.ExtraText := 'Choose wisely!';
+         Frame
+         .SetCaption('Name')
+         .SetTextPrompt('Write your name here')
+         .SetText('')
+         .SetExtraText('Choose wisely!')
+         .SetMarginT(10);
+
+         Frame.OnChangeProc :=
+           procedure (ATracking: Boolean)
+           begin
+             AppState.Something := Frame.GetText;
+           end;
+
+         // save the reference for future (local) use // FANCY CAPTURING
          LEditFrame := Frame;
        end
      )
+
      .AddFrame<TCustom1Frame>(
        150 // height
      , procedure (Frame: TCustom1Frame)
        begin
+         Frame.SetAlignClient;
          Frame.OnButtonClick :=
            procedure
            begin
-             ShowMessage(LEditFrame.Text);
              Navigator.RouteTo('bubble', True);
              Navigator.CloseRouteDelayed('bubble', True, 3000);
+
+             var LText := LEditFrame.GetText; // FANCY CAPTURING
+             if LText <> '' then
+               ShowMessage(LText);
            end;
        end
      );
@@ -168,17 +181,36 @@ begin
      begin
        Home
        .SetTitle('Hello, World!')
-       .SetTitleDetailContentAsFrame<TButtonFrame>(
-         procedure (ButtonF: TButtonFrame)
-         begin
-           ButtonF
-           .SetText('Popup')
-           .SetBackgroundVisible(False)
-           .SetAlignRight
-           .SetPadding(10)
-           .SetWidth(100);
-         end
-       )
+       .SetTitleDetailContentAsFrame<TQRCodeFrame>(
+          procedure (AQR: TQRCodeFrame)
+          begin
+            AQR
+            .SetContent('https://github.com/andrea-magni/FMXER')
+            .SetOverrideColor(TAlphaColorRec.Navy)
+            .SetAlignRight
+            .SetMargin(2)
+            .SetHitTest(True);
+
+            TMessageManager.DefaultManager.SubscribeToMessage(TSomethingChangedMsg
+            , procedure (const Sender: TObject; const M: TMessage)
+              begin
+                var Msg := M as TSomethingChangedMsg;
+                var LValue := Msg.Value;
+                if LValue = '' then
+                  LValue := 'No text available';
+                AQR.SetContent(LValue);
+              end
+            );
+
+            AQR.OnTapHandler :=
+              procedure(AImage: TFMXObject; APoint: TPointF)
+              begin
+                if AppState.Something <> '' then
+                  Navigator.RouteTo('qrcode');
+              end;
+
+          end
+        )
        .SetContentAsFrame<TStackFrame>(
          procedure (Stack: TStackFrame)
          begin

@@ -50,12 +50,13 @@ type
     function SetPaddingLR(const APadding: Single): TControl;
     function SetPaddingTB(const APadding: Single): TControl;
 
-
     function SetMargin(const AMargin: Single): TControl; overload;
     function SetMargin<T: TControl>(const AMargin: Single): T; overload;
     function SetMargin(const ALeft, ATop, ARight, ABottom: Single): TControl; overload;
     function SetMargin<T: TControl>(const ALeft, ATop, ARight, ABottom: Single): T; overload;
     function SetMarginLR(const AMargin: Single): TControl;
+    function SetMarginT(const AMarginTop: Single): TControl;
+    function SetMarginB(const AMarginBottom: Single): TControl;
     function SetMarginTB(const AMargin: Single): TControl;
 
     function SetAlignRight: TControl;
@@ -257,6 +258,12 @@ begin
   Result := SetMargin(ALeft, ATop, ARight, ABottom) as T;
 end;
 
+function TFMXERFrameHelper.SetMarginB(const AMarginBottom: Single): TControl;
+begin
+  Result := Self;
+  Result.Margins.Bottom := AMarginBottom;
+end;
+
 function TFMXERFrameHelper.SetMargin<T>(const AMargin: Single): T;
 begin
   Result := SetMargin(AMargin) as T;
@@ -267,6 +274,12 @@ begin
   Result := Self;
   Result.Margins.Left := AMargin;
   Result.Margins.Right := AMargin;
+end;
+
+function TFMXERFrameHelper.SetMarginT(const AMarginTop: Single): TControl;
+begin
+  Result := Self;
+  Result.Margins.Top := AMarginTop;
 end;
 
 function TFMXERFrameHelper.SetMarginTB(const AMargin: Single): TControl;

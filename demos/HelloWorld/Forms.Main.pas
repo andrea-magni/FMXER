@@ -30,6 +30,7 @@ implementation
 uses
   FMXER.UI.Consts, FMXER.UI.Misc, FMXER.Navigator
 , Routes.bubble
+, Routes.qrcode
 , Routes.home
 ;
 
@@ -41,6 +42,7 @@ begin
 
   // Route definitions
   DefineHomeRoute();
+  DefineQRCodeRoute();
   DefineBubbleRoute();
 
   Navigator.OnCloseRoute :=

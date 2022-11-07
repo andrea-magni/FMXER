@@ -1,10 +1,13 @@
 object Custom1Frame: TCustom1Frame
   Size.Width = 300.000000000000000000
-  Size.Height = 180.000000000000000000
+  Size.Height = 193.000000000000000000
   Size.PlatformDefault = False
   object CustomButton: TButton
-    Position.X = 16.000000000000000000
-    Position.Y = 16.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 30.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 0
     Text = 'Click me!'
     OnClick = CustomButtonClick
@@ -14,5 +17,12 @@ object Custom1Frame: TCustom1Frame
     Size.Width = 100.000000000000000000
     Size.Height = 100.000000000000000000
     Size.PlatformDefault = False
+    object ShadowEffect1: TShadowEffect
+      Distance = 3.000000000000000000
+      Direction = 45.000000000000000000
+      Softness = 0.300000011920929000
+      Opacity = 0.600000023841857900
+      ShadowColor = claBlack
+    end
   end
 end

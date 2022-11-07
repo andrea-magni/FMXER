@@ -17,7 +17,6 @@ type
       Shift: TShiftState; X, Y: Single);
   private
     FOnTapHandler: TOnTapHandler;
-    function GetSVGSource: string;
    protected
      procedure HitTestChanged; override;
   public
@@ -51,11 +50,6 @@ procedure TSVGFrame.SVGTap(Sender: TObject; const Point: TPointF);
 begin
   if Assigned(FOnTapHandler) then
     FOnTapHandler(SVG, Point);
-end;
-
-function TSVGFrame.GetSVGSource: string;
-begin
-  Result := SVG.Svg.Source;
 end;
 
 procedure TSVGFrame.HitTestChanged;

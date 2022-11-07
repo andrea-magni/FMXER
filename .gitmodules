@@ -1,3 +1,7 @@
 [submodule "lib/TFrameStand"]
 	path = lib/TFrameStand
 	url = https://github.com/andrea-magni/TFrameStand
+
+[submodule "lib/DelphiZXingQRCode"]
+	path = lib/DelphiZXingQRCode
+    url = https://github.com/foxitsoftware/DelphiZXingQRCode

@@ -5,12 +5,13 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Objects, FMX.Controls.Presentation;
+  FMX.Objects, FMX.Controls.Presentation, FMX.Effects;
 
 type
   TCustom1Frame = class(TFrame)
     CustomButton: TButton;
     Circle1: TCircle;
+    ShadowEffect1: TShadowEffect;
     procedure CustomButtonClick(Sender: TObject);
   private
     FOnButtonClick: TProc;

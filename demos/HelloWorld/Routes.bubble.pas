@@ -11,7 +11,7 @@ function DefineBubbleRoute(const ARouteName: string = 'bubble'): TNavigator;
 implementation
 
 uses
-  FMXER.ContainerForm, FMXER.ActivityBubblesFrame
+  FMXER.ContainerForm, FMXER.ActivityBubblesFrame, FMXER.UI.Misc
 ;
 
 function DefineBubbleRoute(const ARouteName: string): TNavigator;
@@ -23,9 +23,9 @@ begin
       ContainerF.SetContentAsFrame<TActivityBubblesFrame>(
         procedure (ActivityBubbles: TActivityBubblesFrame)
         begin
-          ActivityBubbles.HitTest := False; // click through
-          ActivityBubbles.Padding.Rect := RectF(
-            ContainerF.Width * 0.10
+          ActivityBubbles
+          .SetHitTest(False) // click through
+          .SetPadding(ContainerF.Width * 0.10
           , ContainerF.Height * 0.10
           , ContainerF.Width * 0.10
           , ContainerF.Height * 0.10
