@@ -25,13 +25,13 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure AddFrame<T: TFrame>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
-      const AConfigProc: TProc<T> = nil); overload;
-    procedure AddFrame<T: TFrame>(const AColDef: TElementDef<T>); overload;
+    function AddFrame<T: TFrame>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
+      const AConfigProc: TProc<T> = nil): TRowForm; overload;
+    function AddFrame<T: TFrame>(const AColDef: TElementDef<T>): TRowForm; overload;
 
-    procedure AddForm<T: TForm>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
-      const AConfigProc: TProc<T> = nil); overload;
-    procedure AddForm<T: TForm>(const AColDef: TElementDef<T>); overload;
+    function AddForm<T: TForm>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
+      const AConfigProc: TProc<T> = nil): TRowForm; overload;
+    function AddForm<T: TForm>(const AColDef: TElementDef<T>): TRowForm; overload;
 
     property ElementStand: string read FElementStand write FElementStand;
     property ElementAlign: TAlignLayout read FElementAlign write FElementAlign;
@@ -47,12 +47,13 @@ implementation
 
 { TRowForm }
 
-procedure TRowForm.AddForm<T>(const AWidth: Integer;
-  const AConfigProc: TProc<T>);
+function TRowForm.AddForm<T>(const AWidth: Integer;
+  const AConfigProc: TProc<T>): TRowForm;
 var
   LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
 begin
+  Result := Self;
   Width := Width + AWidth;
 
   LElementContainer := TSubjectInfoContainer.Create(Self);
@@ -75,12 +76,13 @@ begin
   end;
 end;
 
-procedure TRowForm.AddFrame<T>(const AWidth: Integer;
-  const AConfigProc: TProc<T>);
+function TRowForm.AddFrame<T>(const AWidth: Integer;
+  const AConfigProc: TProc<T>): TRowForm;
 var
   LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
 begin
+  Result := Self;
   Width := Width + AWidth;
 
   LElementContainer := TSubjectInfoContainer.Create(Self);
@@ -103,11 +105,13 @@ begin
   end;
 end;
 
-procedure TRowForm.AddFrame<T>(const AColDef: TElementDef<T>);
+function TRowForm.AddFrame<T>(const AColDef: TElementDef<T>): TRowForm;
 begin
-  AddFrame<T>(
-    AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
-  , AColDef.ConfigProc);
+  Result :=
+    AddFrame<T>(
+      AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
+    , AColDef.ConfigProc
+    );
 end;
 
 constructor TRowForm.Create(AOwner: TComponent);
@@ -125,11 +129,13 @@ begin
   inherited;
 end;
 
-procedure TRowForm.AddForm<T>(const AColDef: TElementDef<T>);
+function TRowForm.AddForm<T>(const AColDef: TElementDef<T>): TRowForm;
 begin
-  AddForm<T>(
-    AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
-  , AColDef.ConfigProc);
+  Result :=
+    AddForm<T>(
+      AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
+    , AColDef.ConfigProc
+    );
 end;
 
 end.

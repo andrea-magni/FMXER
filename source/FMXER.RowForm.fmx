@@ -42,6 +42,8 @@ object RowForm: TRowForm
     AnimationHide = 'OnHide*'
     CommonActionPrefix = 'ca_'
     DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
     StyleBook = Stands
     StandBook = Stands
     Left = 104
@@ -52,6 +54,8 @@ object RowForm: TRowForm
     AnimationHide = 'OnHide*'
     CommonActionPrefix = 'ca_'
     DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
     StyleBook = Stands
     StandBook = Stands
     Left = 32

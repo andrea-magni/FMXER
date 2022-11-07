@@ -37,14 +37,24 @@ type
     property SubjectInfo: TSubjectInfo read FSubjectInfo write FSubjectInfo;
   end;
 
+  TFMXERFormHelper = class helper for TCommonCustomForm
+    function SetPadding(const APadding: Single): TCommonCustomForm; overload;
+    function SetPadding<T: TControl>(const APadding: Single): T; overload;
+  end;
+
   TFMXERFrameHelper = class helper for TControl
     function SetPadding(const APadding: Single): TControl; overload;
+    function SetPadding<T: TControl>(const APadding: Single): T; overload;
     function SetPadding(const ALeft, ATop, ARight, ABottom: Single): TControl; overload;
+    function SetPadding<T: TControl>(const ALeft, ATop, ARight, ABottom: Single): T; overload;
     function SetPaddingLR(const APadding: Single): TControl;
     function SetPaddingTB(const APadding: Single): TControl;
 
+
     function SetMargin(const AMargin: Single): TControl; overload;
+    function SetMargin<T: TControl>(const AMargin: Single): T; overload;
     function SetMargin(const ALeft, ATop, ARight, ABottom: Single): TControl; overload;
+    function SetMargin<T: TControl>(const ALeft, ATop, ARight, ABottom: Single): T; overload;
     function SetMarginLR(const AMargin: Single): TControl;
     function SetMarginTB(const AMargin: Single): TControl;
 
@@ -241,6 +251,17 @@ begin
   Result.Margins.Rect := RectF(ALeft, ATop, ARight, ABottom);
 end;
 
+function TFMXERFrameHelper.SetMargin<T>(const ALeft, ATop, ARight,
+  ABottom: Single): T;
+begin
+  Result := SetMargin(ALeft, ATop, ARight, ABottom) as T;
+end;
+
+function TFMXERFrameHelper.SetMargin<T>(const AMargin: Single): T;
+begin
+  Result := SetMargin(AMargin) as T;
+end;
+
 function TFMXERFrameHelper.SetMarginLR(const AMargin: Single): TControl;
 begin
   Result := Self;
@@ -262,6 +283,17 @@ begin
   Result.Padding.Rect := RectF(ALeft, ATop, ARight, ABottom);
 end;
 
+function TFMXERFrameHelper.SetPadding<T>(const ALeft, ATop, ARight,
+  ABottom: Single): T;
+begin
+  Result := SetPadding(ALeft, ATop, ARight, ABottom) as T;
+end;
+
+function TFMXERFrameHelper.SetPadding<T>(const APadding: Single): T;
+begin
+  Result := SetPadding(APadding) as T;
+end;
+
 function TFMXERFrameHelper.SetPaddingLR(const APadding: Single): TControl;
 begin
   Result := Self;
@@ -280,6 +312,19 @@ function TFMXERFrameHelper.SetWidth(const AWidth: Single): TControl;
 begin
   Result := Self;
   Result.Width := AWidth;
+end;
+
+{ TFMXERFormHelper }
+
+function TFMXERFormHelper.SetPadding(const APadding: Single): TCommonCustomForm;
+begin
+  Result := Self;
+  Result.Padding.Rect := RectF(APadding, APadding, APadding, APadding);
+end;
+
+function TFMXERFormHelper.SetPadding<T>(const APadding: Single): T;
+begin
+  Result := SetPadding(APadding) as T;
 end;
 
 end.
