@@ -27,7 +27,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    function AddFrame<T: TFrame>(const AConfigProc: TProc<T> = nil; const AName: string = ''): string;
+    function AddFrame<T: TFrame>(const AConfigProc: TProc<T> = nil; const AName: string = ''): TStackFrame;
     procedure CloseFrame(const AName: string);
     property DefaultStand: string read GetDefaultStand write SetDefaultStand;
   end;
@@ -38,15 +38,16 @@ implementation
 
 { TStackFrame }
 
-function TStackFrame.AddFrame<T>(const AConfigProc: TProc<T>; const AName: string): string;
+function TStackFrame.AddFrame<T>(const AConfigProc: TProc<T>; const AName: string): TStackFrame;
 begin
+  Result := Self;
+
   var LSubjectInfo: TSubjectInfo := FrameStand1.NewAndShow<T>(ContentLayout, DefaultStand, AConfigProc);
+  var LName := AName;
+  if LName = '' then
+    LName := 'layer' + FStack.Count.ToString;
 
-  Result := AName;
-  if Result = '' then
-    Result := 'layer' + FStack.Count.ToString;
-
-  FStack.Add(TStackInfo.Create(Result, LSubjectInfo));
+  FStack.Add(TStackInfo.Create(LName, LSubjectInfo));
 end;
 
 procedure TStackFrame.CloseFrame(const AName: string);

@@ -16,17 +16,14 @@ type
     FOnClickHandler: TProc;
     FForegroundColor: TAlphaColor;
     FBackgroundColor: TAlphaColor;
-    function GetText: string;
-    procedure SetText(const Value: string);
-    procedure SetBackgroundColor(const Value: TAlphaColor);
-    procedure SetForegroundColor(const Value: TAlphaColor);
   public
     constructor Create(AOwner: TComponent); override;
 
-    property Text: string read GetText write SetText;
+    function SetText(const AText: string): TChipFrame;
+    function SetBackgroundColor(const AColor: TAlphaColor): TChipFrame;
+    function SetForegroundColor(const AColor: TAlphaColor): TChipFrame;
+
     property OnClickHandler: TProc read FOnClickHandler write FOnClickHandler;
-    property BackgroundColor: TAlphaColor read FBackgroundColor write SetBackgroundColor;
-    property ForegroundColor: TAlphaColor read FForegroundColor write SetForegroundColor;
   end;
 
 implementation
@@ -40,31 +37,30 @@ uses
 constructor TChipFrame.Create(AOwner: TComponent);
 begin
   inherited;
-  BackgroundColor := TAppColors.SolidBackgroundColor;
-  ForegroundColor := TAppColors.PrimaryColor;
+  SetBackgroundColor(TAppColors.SolidBackgroundColor);
+  SetForegroundColor(TAppColors.PrimaryColor);
 end;
 
-function TChipFrame.GetText: string;
-begin
-  Result := Button.Text;
-end;
 
-procedure TChipFrame.SetBackgroundColor(const Value: TAlphaColor);
+function TChipFrame.SetBackgroundColor(const AColor: TAlphaColor): TChipFrame;
 begin
-  FBackgroundColor := Value;
+  Result := Self;
+  FBackgroundColor := AColor;
   Shape.Fill.Color := FBackgroundColor;
 end;
 
-procedure TChipFrame.SetForegroundColor(const Value: TAlphaColor);
+function TChipFrame.SetForegroundColor(const AColor: TAlphaColor): TChipFrame;
 begin
-  FForegroundColor := Value;
+  Result := Self;
+  FForegroundColor := AColor;
   Shape.Stroke.Color := FForegroundColor;
   Button.TextSettings.FontColor := FForegroundColor;
 end;
 
-procedure TChipFrame.SetText(const Value: string);
+function TChipFrame.SetText(const AText: string): TChipFrame;
 begin
-  Button.Text := Value;
+  Result := Self;
+  Button.Text := AText;
 end;
 
 procedure TChipFrame.ButtonClick(Sender: TObject);

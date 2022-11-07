@@ -22,8 +22,8 @@ type
    protected
      procedure HitTestChanged; override;
   public
-    procedure LoadFromFile(const AFileName: string); overload;
-    procedure LoadFromFile(const AFileName: string; const AEncoding: TEncoding); overload;
+    function LoadFromFile(const AFileName: string): TSVGFrame; overload;
+    function LoadFromFile(const AFileName: string; const AEncoding: TEncoding): TSVGFrame; overload;
     property SVG: TSkSvg read ContentSVG;
     property SVGSource: string read GetSVGSource write SetSVGSource;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
@@ -63,13 +63,15 @@ begin
     ContentSvg.HitTest := HitTest;
 end;
 
-procedure TSVGFrame.LoadFromFile(const AFileName: string);
+function TSVGFrame.LoadFromFile(const AFileName: string): TSVGFrame;
 begin
+  Result := Self;
   SVG.Svg.Source := TFile.ReadAllText(AFileName);
 end;
 
-procedure TSVGFrame.LoadFromFile(const AFileName: string; const AEncoding: TEncoding);
+function TSVGFrame.LoadFromFile(const AFileName: string; const AEncoding: TEncoding): TSVGFrame;
 begin
+  Result := Self;
   SVGSource := TFile.ReadAllText(AFileName, AEncoding);
 end;
 

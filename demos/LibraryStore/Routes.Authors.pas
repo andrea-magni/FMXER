@@ -28,20 +28,13 @@ begin
    AUTHORS_ROUTE_NAME
   , procedure (SF: TScaffoldForm)
     begin
-      SF.Title := AUTHORS_ROUTE_TITLE;
-
-      SF.SetTitleDetailContentAsFrame<TBackgroundFrame>(
+      SF
+      .SetTitle(AUTHORS_ROUTE_TITLE)
+      .SetTitleDetailContentAsFrame<TBackgroundFrame>(
         procedure (BF: TBackgroundFrame)
         begin
-          BF.Margins.Rect := RectF(5, 2, 5, 2);
-          BF.Align := TAlignLayout.Right;
-          BF.Width := 64;
-
-          BF.Fill.Color := TAlphaColorRec.White;
-          BF.Stroke.Color := TAppColors.MATERIAL_RED_400;
-          BF.Stroke.Thickness := 1;
-
-          BF.SetContentAsFrame<TActivityBubblesFrame>(
+          BF
+          .SetContentAsFrame<TActivityBubblesFrame>(
             procedure (ABF: TActivityBubblesFrame)
             begin
               TRetrieveMsg.Subscribe(
@@ -55,12 +48,16 @@ begin
               );
 
             end
-          );
+          )
+          .SetFillColor(TAlphaColorRec.White)
+          .SetStrokeColor(TAppColors.MATERIAL_RED_400)
+          .SetStrokeThickness(1)
+          .SetMargin(5, 2, 5, 2)
+          .SetAlignRight
+          .SetWidth(64);
         end
-      );
-
-
-      SF.SetContentAsFrame<TListViewFrame>(
+      )
+      .SetContentAsFrame<TListViewFrame>(
         procedure (AListFrame: TListViewFrame)
         begin
           AListFrame.ItemAppearance := 'ImageListItemBottomDetail';
@@ -75,11 +72,11 @@ begin
                 begin
                   var LAuthorCount := Length(AAuthors);
                   if LAuthorCount = 0 then
-                    SF.Title := 'No authors available'
+                    SF.SetTitle('No authors available')
                   else if LAuthorCount = 1 then
-                    SF.Title := 'An author found'
+                    SF.SetTitle('An author found')
                   else
-                    SF.Title := Format('%d authors found', [LAuthorCount]);
+                    SF.SetTitle(Format('%d authors found', [LAuthorCount]));
 
                   AListFrame.SearchVisible := LAuthorCount > 3;
 
@@ -96,9 +93,7 @@ begin
                       end
                     );
                     LItem.Tag := LAuthor.id;
-
                   end;
-
                 end
               , procedure (AError: string)
                 begin
@@ -107,15 +102,13 @@ begin
               );
             end;
         end
-      );
-
-      SF.AddActionButton(IconFonts.ImageList, UIUtils.BackImageIndex
+      )
+      .AddActionButton(IconFonts.ImageList, UIUtils.BackImageIndex
       , procedure
         begin
           Navigator.CloseRoute(AUTHORS_ROUTE_NAME);
         end
       );
-
     end
   );
 

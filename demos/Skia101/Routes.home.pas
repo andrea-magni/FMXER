@@ -17,9 +17,9 @@ begin
   Navigator.DefineRoute<TScaffoldForm>('home'
   , procedure (AHome: TScaffoldForm)
     begin
-      AHome.Title := 'Welcome home!';
-
-      AHome.SetContentAsFrame<TSpinnerFrame>;
+      AHome
+      .SetTitle('Welcome home!')
+      .SetContentAsFrame<TSpinnerFrame>;
     end
   );
 end;

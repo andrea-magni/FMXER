@@ -45,7 +45,6 @@ begin
   if Navigator.ActiveRoutes.Count > 0 then
   begin
     Action := TCloseAction.caNone;
-    Navigator.OnCloseRoute := procedure (ARoute: string) begin if ARoute = 'home' then Close; end;
     Navigator.CloseAllRoutes();
   end;
 end;
@@ -120,12 +119,13 @@ begin
   .DefineRoute<TBackgroundForm>('home'
    , procedure (ABackground: TBackgroundForm)
      begin
-       ABackground.Fill.Color := $FF1565c0;
-
-       ABackground.SetContentAsForm<TColumnForm>(
+       ABackground
+       .SetFillColor($FF1565c0)
+       .SetContentAsForm<TColumnForm>(
          procedure(AColumn: TColumnForm)
          begin
-           AColumn.AddFrame<TTextFrame>(100
+           AColumn
+           .AddFrame<TTextFrame>(100
              , procedure (AText: TTextFrame)
                begin
                  AText.Content := 'Column route';
@@ -133,11 +133,10 @@ begin
                                       begin
                                         Navigator.RouteTo('column')
                                       end;
-               end);
-
-           AColumn.AddFrame<THorzDividerFrame>(1); // ----------------------
-
-           AColumn.AddFrame<TTextFrame>(100
+               end
+           )
+           .AddFrame<THorzDividerFrame>(1) // ----------------------
+           .AddFrame<TTextFrame>(100
              , procedure (AText: TTextFrame)
                begin
                  AText.Content := 'Column with vert scroll route';
@@ -145,31 +144,39 @@ begin
                                       begin
                                         Navigator.RouteTo('vertScrollColumn')
                                       end;
-               end);
-         end);
-     end)
-
+               end
+           );
+         end
+       );
+     end
+  )
   .DefineRoute<TBackgroundForm>('column'
    , procedure(ABackground: TBackgroundForm)
      begin
-       ABackground.Fill.Color := TAppColors.MATERIAL_AMBER_800;
-       ABackground.SetContentAsForm<TColumnForm>(
-         GetColumnDefinition()
-       );
-     end)
-
+       ABackground
+       .SetFillColor(TAppColors.MATERIAL_AMBER_800)
+       .SetContentAsForm<TColumnForm>( GetColumnDefinition() );
+     end
+  )
   .DefineRoute<TBackgroundForm>('vertScrollColumn'
    , procedure(ABackground: TBackgroundForm)
      begin
-       ABackground.Fill.Color := TAppColors.MATERIAL_INDIGO_800;
-       ABackground.SetContentAsFrame<TVertScrollFrame>(
+       ABackground
+       .SetFillColor(TAppColors.MATERIAL_INDIGO_800)
+       .SetContentAsFrame<TVertScrollFrame>(
          procedure (AScroll: TVertScrollFrame)
          begin
-           AScroll.SetContentAsForm<TColumnForm>(
-             GetColumnDefinition()
-           );
-         end);
-     end);
+           AScroll.SetContentAsForm<TColumnForm>( GetColumnDefinition() );
+         end
+       );
+     end
+  )
+  .OnCloseRoute :=
+    procedure (ARoute: string)
+    begin
+      if ARoute = 'home' then
+      Close;
+    end;
 
   Navigator.RouteTo('home'); // initial route
 end;

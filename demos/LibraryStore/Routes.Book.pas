@@ -30,9 +30,9 @@ begin
     BOOK_ROUTE_NAME
   , procedure (SF: TScaffoldForm)
     begin
-      SF.Title := BOOK_ROUTE_TITLE;
-
-      SF.SetContentAsFrame<TListViewFrame>(
+      SF
+      .SetTitle(BOOK_ROUTE_TITLE)
+      .SetContentAsFrame<TListViewFrame>(
         procedure (AListFrame: TListViewFrame)
         begin
           AListFrame.ItemAppearance := 'ListItemRightDetail';
@@ -40,9 +40,8 @@ begin
           AListFrame.CanSwipeDelete := False;
           ABuilder(SF, AListFrame);
         end
-      );
-
-      SF.AddActionButton(IconFonts.ImageList, UIUtils.BackImageIndex
+      )
+      .AddActionButton(IconFonts.ImageList, UIUtils.BackImageIndex
       , procedure
         begin
           Navigator.CloseRoute(BOOK_ROUTE_NAME);
@@ -66,7 +65,8 @@ begin
             procedure (ABooks: TArray<TBook>)
             begin
               var LBook := ABooks[0];
-              AForm.Title := LBook.Title;
+              AForm
+              .SetTitle(LBook.Title);
 
               var LItem := AFrame.AddItem(
                 LBook.Title

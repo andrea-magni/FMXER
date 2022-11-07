@@ -43,57 +43,66 @@ begin
        AForm.SetContentAsForm<TColumnForm>(
          procedure (ACol: TColumnForm)
          begin
-           ACol.AddFrame<TLogoFrame>(
+           ACol
+           .AddFrame<TLogoFrame>(
              ACol.Width
            , procedure (ALogo: TLogoFrame)
              begin
                ALogo.Height := ACol.Width;
-             end);
-
-           ACol.AddFrame<TMarginFrame>(
+             end
+           )
+           .AddFrame<TMarginFrame>(
              ACol.Width
            , procedure (AM: TMarginFrame)
              begin
-               AM.Margins.Rect := RectF(50, 50, 50, 50);
-               AM.SetContentAsFrame<TLogoFrame>;
-             end);
-
-
-           ACol.AddFrame<TLogoFrame>(
+               AM
+               .SetContentAsFrame<TLogoFrame>
+               .SetMargin(50);
+             end
+           )
+           .AddFrame<TLogoFrame>(
              ACol.Width
            , procedure (ALogo: TLogoFrame)
              begin
                ALogo.Height := ACol.Width;
-             end);
-
-           ACol.AddFrame<TPaddingFrame>(
+             end
+           )
+           .AddFrame<TPaddingFrame>(
              ACol.Width
            , procedure (AP: TPaddingFrame)
              begin
-               AP.Padding.Rect := RectF(50, 50, 50, 50);
-               AP.SetContentAsFrame<TLogoFrame>;
-             end);
-
-           ACol.AddFrame<TLogoFrame>(
+               AP
+               .SetContentAsFrame<TLogoFrame>
+               .SetPadding(50);
+             end
+           )
+           .AddFrame<TLogoFrame>(
              ACol.Width
            , procedure (ALogo: TLogoFrame)
              begin
                ALogo.Height := ACol.Width;
-             end);
-
-           ACol.AddFrame<TContainerFrame>(
+             end
+           )
+           .AddFrame<TContainerFrame>(
              ACol.Width
            , procedure (AMP: TContainerFrame)
              begin
-               AMP.Margins.Rect := RectF(50, 50, 50, 50);
-               AMP.Padding.Rect := RectF(50, 50, 50, 50);
-               AMP.SetContentAsFrame<TLogoFrame>;
-             end);
-
-
-
-         end);
-     end);
+               AMP
+               .SetContentAsFrame<TLogoFrame>
+               .SetMargin(50)
+               .SetPadding(50);
+             end
+           );
+         end
+       );
+     end
+  )
+  .OnCloseRoute :=
+    procedure (ARoute: string)
+    begin
+      if ARoute = 'home' then
+        Close;
+    end;
 
   Navigator.RouteTo('home'); // initial route
 end;
@@ -103,7 +112,6 @@ begin
   if Navigator.ActiveRoutes.Count > 0 then
   begin
     Action := TCloseAction.caNone;
-    Navigator.OnCloseRoute := procedure (ARoute: string) begin if ARoute = 'home' then Close; end;
     Navigator.CloseAllRoutes();
   end;
 end;

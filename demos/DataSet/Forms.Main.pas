@@ -44,11 +44,10 @@ begin
      'home'
    , procedure (AForm: TScaffoldForm)
      begin
-       AForm.Title := 'Hello, World!';
-
-       AForm.SetContentAsFrame<TMyDatasetListFrame>;
-
-       AForm.AddActionButton(ImageList1, 1
+       AForm
+       .SetTitle('Hello, World!')
+       .SetContentAsFrame<TMyDatasetListFrame>
+       .AddActionButton(ImageList1, 1
        , procedure
          begin
            ShowMessage('Clicked the star!');
@@ -61,11 +60,10 @@ begin
      'detail'
    , procedure (AForm: TScaffoldForm)
      begin
-       AForm.Title := 'Employee';
-
-       AForm.SetContentAsFrame<TMyDataSetDetailFrame>;
-
-       AForm.AddActionButton(ImageList1, 0
+       AForm
+       .SetTitle('Employee')
+       .SetContentAsFrame<TMyDataSetDetailFrame>
+       .AddActionButton(ImageList1, 0
        , procedure
          begin
            Navigator.CloseRoute('detail');

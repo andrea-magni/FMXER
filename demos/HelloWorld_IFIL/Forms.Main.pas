@@ -43,38 +43,38 @@ begin
      'home'
    , procedure (AForm: TScaffoldForm)
      begin
-       AForm.Title := 'Hello, World!';
-
-       AForm.SetContentAsFrame<TLogoFrame>;
 
        IconFontsImageList1.InsertIcon(0
        , MD.account_clock.codepoint, ''
        , TAlphaColorRec.Red
        );
 
-       AForm.AddActionButton(IconFontsImageList1, 0
-       , procedure
-         begin
-           Navigator.RouteTo('Icon1');
-         end
-       );
-
-       AForm.AddActionButton('A',
-         procedure
-         begin
-           AForm.ShowSnackBar('This is a transient message', 3000);
-         end);
-
        IconFontsImageList1.InsertIcon(1
        , MD.access_point.codepoint, ''
        , TAlphaColorRec.Red
        );
 
-       AForm.AddActionButton(IconFontsImageList1, 1,
+       AForm
+       .SetTitle('Hello, World!')
+       .SetContentAsFrame<TLogoFrame>
+       .AddActionButton(IconFontsImageList1, 0
+       , procedure
+         begin
+           Navigator.RouteTo('Icon1');
+         end
+       )
+       .AddActionButton('A',
+         procedure
+         begin
+           AForm.ShowSnackBar('This is a transient message', 3000);
+         end
+       )
+       .AddActionButton(IconFontsImageList1, 1,
          procedure
          begin
            Navigator.CloseRoute('home');
-         end);
+         end
+       );
      end
   )
   .DefineRoute<TBackgroundForm>(

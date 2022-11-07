@@ -5,7 +5,9 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, SubjectStand,
-  FormStand, FMX.MobilePreview;
+  FormStand
+//, FMX.MobilePreview
+;
 
 type
   TMainForm = class(TForm)

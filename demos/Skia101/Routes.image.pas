@@ -36,9 +36,9 @@ begin
   Navigator.DefineRoute<TScaffoldForm>('image'
   , procedure (S: TScaffoldForm)
     begin
-      S.Title := 'Image (PNG)';
-
-      S.SetContentAsFrame<TImageFrame>(
+      S
+      .SetTitle('Image (PNG)')
+      .SetContentAsFrame<TImageFrame>(
         procedure (ImgF: TImageFrame)
         begin
           ImgF.ContentImage.Bitmap.LoadFromFile(LocalFile('FMXER_256.png'));
@@ -59,12 +59,12 @@ begin
   Navigator.DefineRoute<TScaffoldForm>('animatedImage'
   , procedure (S: TScaffoldForm)
     begin
-      S.Title := 'Animated image (Lottie)';
-
-      S.SetContentAsFrame<TAnimatedImageFrame>(
+      S
+      .SetTitle('Animated image (Lottie)')
+      .SetContentAsFrame<TAnimatedImageFrame>(
         procedure (ImgF: TAnimatedImageFrame)
         begin
-          ImgF.Image.LoadFromFile(LocalFile('lottie_bubbles_MATERIAL_AMBER_800.json'));
+          ImgF.LoadFromFile(LocalFile('lottie_bubbles_MATERIAL_AMBER_800.json'));
           ImgF.OnTapHandler :=
             procedure (AImg: TFMXObject; APoint: TPointF)
             begin
@@ -83,9 +83,9 @@ begin
   Navigator.DefineRoute<TScaffoldForm>('SVGImage'
   , procedure (S: TScaffoldForm)
     begin
-      S.Title := 'SVG image';
-
-      S.SetContentAsFrame<TSVGFrame>(
+      S
+      .SetTitle('SVG image')
+      .SetContentAsFrame<TSVGFrame>(
         procedure (ImgF: TSVGFrame)
         begin
           ImgF.LoadFromFile(LocalFile('tesla.svg'));
@@ -109,9 +109,9 @@ begin
   Navigator.DefineRoute<TScaffoldForm>('QRCode'
   , procedure (S: TScaffoldForm)
     begin
-      S.Title := 'QRCode';
-
-      S.SetContentAsFrame<TBackgroundFrame>(
+      S
+      .SetTitle('QRCode')
+      .SetContentAsFrame<TBackgroundFrame>(
         procedure (B: TBackgroundFrame)
         begin
           B.Fill.Color := TAlphaColorRec.Aliceblue;
@@ -140,7 +140,7 @@ begin
                         if not Navigator.IsRouteActive('QRCode') then
                           Exit;
                         QRF.Content := 'Time: ' + TimeToStr(Now);
-                        S.Title := 'QRCode ' + QRF.Content;
+                        S.SetTitle('QRCode ' + QRF.Content);
                       end
                     );
 

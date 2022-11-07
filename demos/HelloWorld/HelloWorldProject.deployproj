@@ -5,7 +5,7 @@
     </ProjectExtensions>
     <PropertyGroup>
         <DeviceId Condition="'$(Platform)'=='Android'">94NAY0R89N</DeviceId>
-        <DeviceId Condition="'$(Platform)'=='Android64'"/>
+        <DeviceId Condition="'$(Platform)'=='Android64'">94NAY0R89N</DeviceId>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>
@@ -53,6 +53,16 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win32'">
         <DeployFile Include="Win32\Debug\HelloWorldProject.exe" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\</RemoteDir>
+            <RemoteName>HelloWorldProject.exe</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="Win32\Release\HelloWorldProject.exe" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\</RemoteDir>
             <RemoteName>HelloWorldProject.exe</RemoteName>
             <DeployClass>ProjectOutput</DeployClass>
@@ -449,6 +459,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>TSkSvg.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
@@ -463,15 +482,6 @@
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon96</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
-            <RemoteName>TSkSvg.svg</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -623,6 +633,24 @@
         <DeployFile Include="..\..\media\rect_shadow.svg" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
             <RemoteName>rect_shadow.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>

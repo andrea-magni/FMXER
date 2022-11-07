@@ -3,7 +3,7 @@ unit FMXER.ButtonFrame;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, System.Actions, FMX.ActnList, Skia,
   Skia.FMX, FMX.Objects;
@@ -21,23 +21,18 @@ type
   private
     FOnClickHandler: TProc;
     FOnUpdateHandler: TProc<TAction>;
-    function GetCaption: string;
-    procedure SetCaption(const Value: string);
-    function GetText: string;
-    procedure SetText(const Value: string);
-    function GetExtraText: string;
-    procedure SetExtraText(const Value: string);
     function GetIsDefault: Boolean;
     procedure SetIsDefault(const Value: Boolean);
     function GetBackgroundFill: TBrush;
     function GetBackgroundStroke: TStrokeBrush;
   public
+    function SetCaption(const ACaption: string): TButtonFrame;
+    function SetExtraText(const AExtraText: string): TButtonFrame;
+    function SetText(const AText: string): TButtonFrame;
+
     property BackgroundFill: TBrush read GetBackgroundFill;
     property BackgroundStroke: TStrokeBrush read GetBackgroundStroke;
-    property Caption: string read GetCaption write SetCaption;
     property IsDefault: Boolean read GetIsDefault write SetIsDefault;
-    property ExtraText: string read GetExtraText write SetExtraText;
-    property Text: string read GetText write SetText;
     property OnClickHandler: TProc read FOnClickHandler write FOnClickHandler;
     property OnUpdateHandler: TProc<TAction> read FOnUpdateHandler write FOnUpdateHandler;
   end;
@@ -60,6 +55,12 @@ begin
     FOnUpdateHandler(ButtonAction);
 end;
 
+function TButtonFrame.SetExtraText(const AExtraText: string): TButtonFrame;
+begin
+  Result := Self;
+  ExtraLabel.Text := AExtraText;
+end;
+
 function TButtonFrame.GetBackgroundFill: TBrush;
 begin
   Result := BackgroundRectangle.Fill;
@@ -70,34 +71,15 @@ begin
   Result := BackgroundRectangle.Stroke;
 end;
 
-function TButtonFrame.GetCaption: string;
-begin
-  Result := CaptionLabel.Text;
-end;
-
-function TButtonFrame.GetExtraText: string;
-begin
-  Result := ExtraLabel.Text;
-end;
-
 function TButtonFrame.GetIsDefault: Boolean;
 begin
   Result := ButtonControl.Default;
 end;
 
-function TButtonFrame.GetText: string;
+function TButtonFrame.SetCaption(const ACaption: string): TButtonFrame;
 begin
-  Result := ButtonAction.Caption;
-end;
-
-procedure TButtonFrame.SetCaption(const Value: string);
-begin
-  CaptionLabel.Text := Value;
-end;
-
-procedure TButtonFrame.SetExtraText(const Value: string);
-begin
-  ExtraLabel.Text := Value;
+  Result := Self;
+  CaptionLabel.Text := ACaption;
 end;
 
 procedure TButtonFrame.SetIsDefault(const Value: Boolean);
@@ -105,9 +87,10 @@ begin
   ButtonControl.Default := Value;
 end;
 
-procedure TButtonFrame.SetText(const Value: string);
+function TButtonFrame.SetText(const AText: string): TButtonFrame;
 begin
-  ButtonAction.Caption := Value;
+  Result := Self;
+  ButtonAction.Caption := AText;
 end;
 
 end.

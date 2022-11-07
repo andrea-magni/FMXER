@@ -22,11 +22,9 @@ begin
    'home'
   , procedure (Home: TScaffoldForm)
     begin
-      Home.Title := 'Library Store';
-//      Home.TitleLabel.TextSettings.Font.Families := 'Material Design Icons Desktop';
-//      Home.TitleLabel.Text := #$F0004;
-
-      Home.SetContentAsFrame<TListViewFrame>(
+      Home
+      .SetTitle('Library Store')
+      .SetContentAsFrame<TListViewFrame>(
         procedure (AListFrame: TListViewFrame)
         begin
           AListFrame.ItemAppearance := 'ImageListItem';

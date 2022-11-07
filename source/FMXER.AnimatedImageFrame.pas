@@ -20,6 +20,7 @@ type
   protected
     procedure HitTestChanged; override;
   public
+    function LoadFromFile(const AFileName: string): TAnimatedImageFrame;
     property Image: TSkAnimatedImage read ContentImage;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;
@@ -48,6 +49,13 @@ begin
   inherited;
   if Assigned(ContentImage) then
     ContentImage.HitTest := HitTest;
+end;
+
+function TAnimatedImageFrame.LoadFromFile(
+  const AFileName: string): TAnimatedImageFrame;
+begin
+  Result := Self;
+  Result.Image.LoadFromFile(AFileName);
 end;
 
 end.

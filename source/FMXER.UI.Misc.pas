@@ -3,14 +3,14 @@ unit FMXER.UI.Misc;
 interface
 
 uses
-  Classes, SysUtils, System.Rtti, FMX.Forms, FMX.Layouts,
+  Classes, SysUtils, System.Rtti, FMX.Forms, FMX.Layouts, Types, FMX.Types,
+  FMX.Controls,
   SubjectStand;
 
 type
   TNameValueParam = record
     Name: string;
     Value: TValue;
-
     constructor Create(const AName: string; const AValue: TValue);
   end;
 
@@ -27,7 +27,6 @@ type
     class operator Implicit(AConfigProc: TProc<T>): TElementDef<T>;
   end;
 
-
   TSubjectInfoContainer = class(TLayout)
   private
     FSubjectInfo: TSubjectInfo;
@@ -37,6 +36,29 @@ type
     function ContainedForm<T: TForm>: T;
     property SubjectInfo: TSubjectInfo read FSubjectInfo write FSubjectInfo;
   end;
+
+  TFMXERFrameHelper = class helper for TControl
+    function SetPadding(const APadding: Single): TControl; overload;
+    function SetPadding(const ALeft, ATop, ARight, ABottom: Single): TControl; overload;
+    function SetPaddingLR(const APadding: Single): TControl;
+    function SetPaddingTB(const APadding: Single): TControl;
+
+    function SetMargin(const AMargin: Single): TControl; overload;
+    function SetMargin(const ALeft, ATop, ARight, ABottom: Single): TControl; overload;
+    function SetMarginLR(const AMargin: Single): TControl;
+    function SetMarginTB(const AMargin: Single): TControl;
+
+    function SetAlignRight: TControl;
+    function SetAlignLeft: TControl;
+    function SetAlignTop: TControl;
+    function SetAlignBottom: TControl;
+    function SetAlignClient: TControl;
+    function SetAlignContents: TControl;
+
+    function SetWidth(const AWidth: Single): TControl;
+    function SetHeight(const AHeight: Single): TControl;
+  end;
+
 
   // shortcut function
   function Param(const AName: string; const AValue: TValue): TNameValueParam; overload;
@@ -135,6 +157,110 @@ begin
   Result := nil;
   if Assigned(SubjectInfo) and (SubjectInfo.Subject is TFrame) then
     Result := SubjectInfo.Subject as T;
+end;
+
+{ TFMXERFrameHelper }
+
+function TFMXERFrameHelper.SetPadding(const APadding: Single): TControl;
+begin
+  Result := Self;
+  Result.Padding.Rect := RectF(APadding, APadding, APadding, APadding);
+end;
+
+function TFMXERFrameHelper.SetMargin(const AMargin: Single): TControl;
+begin
+  Result := Self;
+  Result.Margins.Rect := RectF(AMargin, AMargin, AMargin, AMargin);
+end;
+
+function TFMXERFrameHelper.SetAlignBottom: TControl;
+begin
+  Result := Self;
+  Result.Align := TAlignLayout.Bottom;
+end;
+
+function TFMXERFrameHelper.SetAlignClient: TControl;
+begin
+  Result := Self;
+  Result.Align := TAlignLayout.Client;
+end;
+
+function TFMXERFrameHelper.SetAlignContents: TControl;
+begin
+  Result := Self;
+  Result.Align := TAlignLayout.Contents;
+end;
+
+function TFMXERFrameHelper.SetAlignLeft: TControl;
+begin
+  Result := Self;
+  Result.Align := TAlignLayout.Left;
+end;
+
+function TFMXERFrameHelper.SetAlignRight: TControl;
+begin
+  Result := Self;
+  Result.Align := TAlignLayout.Right;
+end;
+
+function TFMXERFrameHelper.SetAlignTop: TControl;
+begin
+  Result := Self;
+  Result.Align := TAlignLayout.Top;
+end;
+
+function TFMXERFrameHelper.SetHeight(const AHeight: Single): TControl;
+begin
+  Result := Self;
+  Result.Height := AHeight;
+end;
+
+function TFMXERFrameHelper.SetMargin(const ALeft, ATop, ARight,
+  ABottom: Single): TControl;
+begin
+  Result := Self;
+  Result.Margins.Rect := RectF(ALeft, ATop, ARight, ABottom);
+end;
+
+function TFMXERFrameHelper.SetMarginLR(const AMargin: Single): TControl;
+begin
+  Result := Self;
+  Result.Margins.Left := AMargin;
+  Result.Margins.Right := AMargin;
+end;
+
+function TFMXERFrameHelper.SetMarginTB(const AMargin: Single): TControl;
+begin
+  Result := Self;
+  Result.Margins.Top := AMargin;
+  Result.Margins.Bottom := AMargin;
+end;
+
+function TFMXERFrameHelper.SetPadding(const ALeft, ATop, ARight,
+  ABottom: Single): TControl;
+begin
+  Result := Self;
+  Result.Padding.Rect := RectF(ALeft, ATop, ARight, ABottom);
+end;
+
+function TFMXERFrameHelper.SetPaddingLR(const APadding: Single): TControl;
+begin
+  Result := Self;
+  Result.Padding.Left := APadding;
+  Result.Padding.Right := APadding;
+end;
+
+function TFMXERFrameHelper.SetPaddingTB(const APadding: Single): TControl;
+begin
+  Result := Self;
+  Result.Padding.Top := APadding;
+  Result.Padding.Bottom := APadding;
+end;
+
+function TFMXERFrameHelper.SetWidth(const AWidth: Single): TControl;
+begin
+  Result := Self;
+  Result.Width := AWidth;
 end;
 
 end.

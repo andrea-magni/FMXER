@@ -24,13 +24,13 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure AddFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
-      const AConfigProc: TProc<T> = nil); overload;
-    procedure AddFrame<T: TFrame>(const AColDef: TElementDef<T>); overload;
+    function AddFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
+      const AConfigProc: TProc<T> = nil): TColumnForm; overload;
+    function AddFrame<T: TFrame>(const AColDef: TElementDef<T>): TColumnForm; overload;
 
-    procedure AddForm<T: TForm>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
-      const AConfigProc: TProc<T> = nil); overload;
-    procedure AddForm<T: TForm>(const AColDef: TElementDef<T>); overload;
+    function AddForm<T: TForm>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
+      const AConfigProc: TProc<T> = nil): TColumnForm; overload;
+    function AddForm<T: TForm>(const AColDef: TElementDef<T>): TColumnForm; overload;
 
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -43,14 +43,15 @@ implementation
 
 { TCenterForm }
 
-procedure TColumnForm.AddForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>);
+function TColumnForm.AddForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
 var
   LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
 begin
+  Result := Self;
   Height := Height + AHeight;
 
-  LElementContainer := TSubjectInfoContainer.Create(Self);
+  LElementContainer := TSubjectInfoContainer.Create(Result);
   try
     LElementContainer.Position.Y := 10000;
     LElementContainer.Parent := ContentLayout;
@@ -74,13 +75,14 @@ begin
 end;
 
 
-procedure TColumnForm.AddFrame<T>(const AHeight: Integer; const AConfigProc: TProc<T>);
+function TColumnForm.AddFrame<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
 var
   LElementContainer: TSubjectInfoContainer;
 begin
+  Result := Self;
   Height := Height + AHeight;
 
-  LElementContainer := TSubjectInfoContainer.Create(Self);
+  LElementContainer := TSubjectInfoContainer.Create(Result);
   try
     LElementContainer.Position.Y := 10000;
     LElementContainer.Parent := ContentLayout;
@@ -103,16 +105,16 @@ begin
   end;
 end;
 
-procedure TColumnForm.AddForm<T>(const AColDef: TElementDef<T>);
+function TColumnForm.AddForm<T>(const AColDef: TElementDef<T>): TColumnForm;
 begin
-  AddForm<T>(
+  Result := AddForm<T>(
     AColDef.ParamByName('Height', DEFAULT_ELEMENT_HEIGHT).AsInteger
   , AColDef.ConfigProc);
 end;
 
-procedure TColumnForm.AddFrame<T>(const AColDef: TElementDef<T>);
+function TColumnForm.AddFrame<T>(const AColDef: TElementDef<T>): TColumnForm;
 begin
-  AddFrame<T>(
+  Result := AddFrame<T>(
     AColDef.ParamByName('Height', DEFAULT_ELEMENT_HEIGHT).AsInteger
   , AColDef.ConfigProc);
 end;

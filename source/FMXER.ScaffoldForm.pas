@@ -26,7 +26,6 @@ type
     Stands: TStyleBook;
     TitleDetailLayout: TLayout;
     TitleLabel: TSkLabel;
-    procedure ActionList1Update(Action: TBasicAction; var Handled: Boolean);
   private
     FContent: TSubjectInfo;
     FTitleDetailContent: TSubjectInfo;
@@ -35,7 +34,6 @@ type
     FActionButtons: TList<TFrameInfo<TActionButtonFrame>>;
     FTitle: string;
     FTitleDetailStand: string;
-    procedure SetTitle(const Value: string);
     function GetContent: TSubject;
     function GetTitleDetailContent: TSubject;
     function GetTitleDetailContentVisible: Boolean;
@@ -45,12 +43,12 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     // Content
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TScaffoldForm;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TScaffoldForm;
 
     // Title detail
-    procedure SetTitleDetailContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetTitleDetailContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetTitleDetailContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TScaffoldForm;
+    function SetTitleDetailContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TScaffoldForm;
 
     // Action buttons
     procedure AddActionButtonOverlayFrame<T: TFrame>(const AOverlayConfigProc: TProc<T>;
@@ -60,15 +58,17 @@ type
       const AOnClickProc: TProc);
 
     // shortcuts
-    procedure AddActionButton(const ACaption: string; const AParams: TParams); overload;
-    procedure AddActionButton(const ACaption: string; const AOnClickProc: TProc); overload;
-    procedure AddActionButton(const AImageList: TCustomImageList;
-      const AImageIndex: Integer; const AOnClickProc: TProc); overload;
+    function AddActionButton(const ACaption: string; const AParams: TParams): TScaffoldForm; overload;
+    function AddActionButton(const ACaption: string; const AOnClickProc: TProc): TScaffoldForm; overload;
+    function AddActionButton(const AImageList: TCustomImageList;
+      const AImageIndex: Integer; const AOnClickProc: TProc): TScaffoldForm; overload;
 
-    procedure ShowSnackBar(const AText: string; const ADuration_ms: Integer);
+    function ShowSnackBar(const AText: string; const ADuration_ms: Integer): TScaffoldForm;
 
     procedure ShowTitleDetailContent;
     procedure HideTitleDetailContent(const ADelay: Integer = 0; const AThen: TProc = nil);
+
+    function SetTitle(const ATitle: string): TScaffoldForm;
 
     //
     [Hide]
@@ -76,7 +76,6 @@ type
     //
     property ActionButtonStand: string read FActionButtonStand write FActionButtonStand;
     property ContentStand: string read FContentStand write FContentStand;
-    property Title: string read FTitle write SetTitle;
     property TitleDetailStand: string read FTitleDetailStand write FTitleDetailStand;
     property Content: TSubject read GetContent;
     property TitleDetailContent: TSubject read GetTitleDetailContent;
@@ -92,15 +91,10 @@ uses FMXER.UI.Consts;
 
 { TScaffoldForm }
 
-procedure TScaffoldForm.ActionList1Update(Action: TBasicAction;
-  var Handled: Boolean);
+function TScaffoldForm.AddActionButton(const ACaption: string;
+  const AParams: TParams): TScaffoldForm;
 begin
-  Title := TimeToStr(Now);
-end;
-
-procedure TScaffoldForm.AddActionButton(const ACaption: string;
-  const AParams: TParams);
-begin
+  Result := Self;
   AddActionButtonOverlayFrame<TTextFrame>(
     TElementDef<TTextFrame>.Create(
       procedure (ATextFrame: TTextFrame)
@@ -112,9 +106,11 @@ begin
   );
 end;
 
-procedure TScaffoldForm.AddActionButton(const AImageList: TCustomImageList;
-  const AImageIndex: Integer; const AOnClickProc: TProc);
+function TScaffoldForm.AddActionButton(const AImageList: TCustomImageList;
+  const AImageIndex: Integer; const AOnClickProc: TProc): TScaffoldForm;
 begin
+  Result := Self;
+
   AddActionButtonOverlayFrame<TGlyphFrame>(
    procedure (AGlyph: TGlyphFrame)
    begin
@@ -125,10 +121,10 @@ begin
   );
 end;
 
-procedure TScaffoldForm.AddActionButton(const ACaption: string;
-  const AOnClickProc: TProc);
+function TScaffoldForm.AddActionButton(const ACaption: string;
+  const AOnClickProc: TProc): TScaffoldForm;
 begin
-  AddActionButton(ACaption, [ OnClickProc(AOnClickProc) ]);
+  Result := AddActionButton(ACaption, [ OnClickProc(AOnClickProc) ]);
 end;
 
 procedure TScaffoldForm.AddActionButtonOverlayForm<T>(
@@ -228,39 +224,46 @@ begin
     FTitleDetailContent.Hide(ADelay, AThen);
 end;
 
-procedure TScaffoldForm.SetContentAsForm<T>(const AConfigProc: TProc<T> = nil);
+function TScaffoldForm.SetContentAsForm<T>(const AConfigProc: TProc<T> = nil): TScaffoldForm;
 begin
+  Result := Self;
   FContent := FormStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
 end;
 
-procedure TScaffoldForm.SetContentAsFrame<T>(const AConfigProc: TProc<T> = nil);
+function TScaffoldForm.SetContentAsFrame<T>(const AConfigProc: TProc<T> = nil): TScaffoldForm;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
 end;
 
-procedure TScaffoldForm.SetTitle(const Value: string);
+function TScaffoldForm.SetTitle(const ATitle: string): TScaffoldForm;
 begin
-  FTitle := Value;
+  Result := Self;
+  FTitle := ATitle;
   TitleLabel.Text := FTitle;
 end;
 
-procedure TScaffoldForm.SetTitleDetailContentAsForm<T>(
-  const AConfigProc: TProc<T>);
+function TScaffoldForm.SetTitleDetailContentAsForm<T>(
+  const AConfigProc: TProc<T>): TScaffoldForm;
 begin
+  Result := Self;
   FTitleDetailContent := FormStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
 end;
 
-procedure TScaffoldForm.SetTitleDetailContentAsFrame<T>(
-  const AConfigProc: TProc<T>);
+function TScaffoldForm.SetTitleDetailContentAsFrame<T>(
+  const AConfigProc: TProc<T>): TScaffoldForm;
 begin
+  Result := Self;
   FTitleDetailContent := FrameStand1.NewAndShow<T>(TitleDetailLayout, TitleDetailStand, AConfigProc);
 end;
 
-procedure TScaffoldForm.ShowSnackBar(const AText: string;
-  const ADuration_ms: Integer);
+function TScaffoldForm.ShowSnackBar(const AText: string;
+  const ADuration_ms: Integer): TScaffoldForm;
 var
   FSnackbar: TFrameInfo<TTextFrame>;
 begin
+  Result := Self;
+
   FSnackbar := FrameStand1.New<TTextFrame>(OverlayLayout, 'snackbar');
 
   FSnackbar.Frame.Content := AText;

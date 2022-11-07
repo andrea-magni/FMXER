@@ -18,9 +18,9 @@ type
     FContentStand: string;
   public
     //
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAs<T: TFmxObject>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TContainerFrame;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TContainerFrame;
+    function SetContentAs<T: TFmxObject>(const AConfigProc: TProc<T> = nil): TContainerFrame;
     //
     property ContentStand: string read FContentStand write FContentStand;
     property Content: TSubjectInfo read FContent;
@@ -32,8 +32,9 @@ implementation
 
 { TContainerFrame }
 
-procedure TContainerFrame.SetContentAs<T>(const AConfigProc: TProc<T>);
+function TContainerFrame.SetContentAs<T>(const AConfigProc: TProc<T>): TContainerFrame;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<TFrame>(ContentLayout, ContentStand
   , procedure (AFrame: TFrame)
     var
@@ -53,13 +54,15 @@ begin
     end);
 end;
 
-procedure TContainerFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function TContainerFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): TContainerFrame;
 begin
+  Result := Self;
   FContent := FormStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
 end;
 
-procedure TContainerFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function TContainerFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): TContainerFrame;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
 end;
 

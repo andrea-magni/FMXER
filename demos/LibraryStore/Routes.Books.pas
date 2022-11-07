@@ -33,20 +33,13 @@ begin
     ARouteName
   , procedure (SF: TScaffoldForm)
     begin
-      SF.Title := BOOKS_ROUTE_TITLE;
-
-      SF.SetTitleDetailContentAsFrame<TBackgroundFrame>(
+      SF
+      .SetTitle(BOOKS_ROUTE_TITLE)
+      .SetTitleDetailContentAsFrame<TBackgroundFrame>(
         procedure (BF: TBackgroundFrame)
         begin
-          BF.Margins.Rect := RectF(5, 2, 5, 2);
-          BF.Align := TAlignLayout.Right;
-          BF.Width := 64;
-
-          BF.Fill.Color := TAlphaColorRec.White;
-          BF.Stroke.Color := TAppColors.MATERIAL_RED_400;
-          BF.Stroke.Thickness := 1;
-
-          BF.SetContentAsFrame<TActivityBubblesFrame>(
+          BF
+          .SetContentAsFrame<TActivityBubblesFrame>(
             procedure (ABF: TActivityBubblesFrame)
             begin
               TRetrieveMsg.Subscribe(
@@ -58,9 +51,14 @@ begin
                     SF.ShowTitleDetailContent();
                 end
               );
-
             end
-          );
+          )
+          .SetFillColor(TAlphaColorRec.White)
+          .SetStrokeColor(TAppColors.MATERIAL_RED_400)
+          .SetStrokeThickness(1)
+          .SetMargin(5, 2, 5, 2)
+          .SetAlignRight
+          .SetWidth(64);
         end
       );
 
@@ -101,11 +99,11 @@ begin
             begin
               var LBookCount := Length(ABooks);
               if LBookCount = 0 then
-                AForm.Title := 'No books available'
+                AForm.SetTitle('No books available')
               else if LBookCount = 1 then
-                AForm.Title := 'A book found'
+                AForm.SetTitle('A book found')
               else
-                AForm.Title := Format('%d books found', [LBookCount]);
+                AForm.SetTitle(Format('%d books found', [LBookCount]));
 
               AFrame.SearchVisible := LBookCount > 3;
 
@@ -149,11 +147,11 @@ begin
             begin
               var LBookCount := Length(ABooks);
               if LBookCount = 0 then
-                AForm.Title := 'No books available'
+                AForm.SetTitle('No books available')
               else if LBookCount = 1 then
-                AForm.Title := 'A book found'
+                AForm.SetTitle('A book found')
               else
-                AForm.Title := Format('%d books found', [LBookCount]);
+                AForm.SetTitle(Format('%d books found', [LBookCount]));
 
               AFrame.SearchVisible := LBookCount > 3;
 

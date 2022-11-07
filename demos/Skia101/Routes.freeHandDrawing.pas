@@ -16,7 +16,7 @@ uses
 , FMXER.BackgroundForm
 , FMXER.BackgroundFrame
 , FMXER.ButtonFrame
-, FMXER.UI.Consts
+, FMXER.UI.Consts, FMXER.UI.Misc
 
 , System.UITypes
 , Skia, QRCode.Render, FMX.Types
@@ -28,15 +28,16 @@ begin
   Navigator.DefineRoute<TScaffoldForm>('freeHandDrawing'
   , procedure (S: TScaffoldForm)
     begin
-      S.Title := 'Free Hand Drawing';
-
-      S.SetTitleDetailContentAsFrame<TButtonFrame>(
+      S
+      .SetTitle('Free Hand Drawing')
+      .SetTitleDetailContentAsFrame<TButtonFrame>(
         procedure (B: TButtonFrame)
         begin
-          B.Width := S.TitleLayout.Height;
-          B.Align := TAlignLayout.Right;
-          B.Text := 'Back';
-          B.Margins.Rect := RectF(0, 5, 0, 5);
+          B
+          .SetText('Back')
+          .SetWidth(S.TitleLayout.Height)
+          .SetAlignRight
+          .SetMarginTB(5);
           B.OnClickHandler :=
             procedure
             begin

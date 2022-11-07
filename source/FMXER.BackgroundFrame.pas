@@ -23,9 +23,13 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     //
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TBackgroundFrame;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TBackgroundFrame;
     //
+    function SetFillColor(const AColor: TAlphaColor): TBackgroundFrame;
+    function SetStrokeColor(const AColor: TAlphaColor): TBackgroundFrame;
+    function SetStrokeThickness(const AThickness: Single): TBackgroundFrame;
+
     property ContentStand: string read FContentStand write FContentStand;
     property Content: TSubjectInfo read FContent;
 
@@ -65,14 +69,37 @@ begin
     BackgroundRectangle.HitTest := HitTest;
 end;
 
-procedure TBackgroundFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function TBackgroundFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): TBackgroundFrame;
 begin
+  Result := Self;
   FContent := FormStand1.NewAndShow<T>(BackgroundRectangle, ContentStand, AConfigProc);
 end;
 
-procedure TBackgroundFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function TBackgroundFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): TBackgroundFrame;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<T>(BackgroundRectangle, ContentStand, AConfigProc);
+end;
+
+function TBackgroundFrame.SetFillColor(
+  const AColor: TAlphaColor): TBackgroundFrame;
+begin
+  Result := Self;
+  Fill.Color := AColor;
+end;
+
+function TBackgroundFrame.SetStrokeColor(
+  const AColor: TAlphaColor): TBackgroundFrame;
+begin
+  Result := Self;
+  Stroke.Color := AColor;
+end;
+
+function TBackgroundFrame.SetStrokeThickness(
+  const AThickness: Single): TBackgroundFrame;
+begin
+  Result := Self;
+  Stroke.Thickness := AThickness;
 end;
 
 end.

@@ -3,7 +3,7 @@ unit Routes.home;
 interface
 
 uses
-  Classes, SysUtils, Types, UITypes, IOUtils, FMX.Dialogs
+  Classes, SysUtils, Types, UITypes, IOUtils, FMX.Dialogs, FMX.Types, FMX.Graphics
 , FMXER.Navigator;
 
 function DefineHomeRoute(const ARouteName: string = 'home'): TNavigator;
@@ -28,19 +28,32 @@ begin
      ARouteName
    , procedure (Home: TScaffoldForm)
      begin
-       Home.Title := 'Hello, World!';
+       Home
+       .SetTitle('Hello, World!')
+       .SetTitleDetailContentAsFrame<TButtonFrame>(
+         procedure (ButtonF: TButtonFrame)
+         begin
+           ButtonF
+             .SetCaption('Caption')
+             .SetText('Popup')
+             .SetAlignRight
+             .SetPadding(10)
+             .SetWidth(100);
 
-       Home.SetContentAsFrame<TStackFrame>(
+           ButtonF.BackgroundFill.Kind := TBrushKind.None;
+         end
+       )
+       .SetContentAsFrame<TStackFrame>(
          procedure (Stack: TStackFrame)
          begin
-           Stack.AddFrame<TBackgroundFrame>(
+           Stack
+           .AddFrame<TBackgroundFrame>(
              procedure (Backg: TBackgroundFrame)
              begin
                Backg.Fill.Color := TAlphaColorRec.White;
              end
-           );
-
-           Stack.AddFrame<TSVGFrame>(
+           )
+           .AddFrame<TSVGFrame>(
              procedure (SVGF: TSVGFrame)
              begin
                SVGF.LoadFromFile(TPath.Combine(
@@ -51,9 +64,8 @@ begin
                SVGF.ContentSvg.Svg.WrapMode := TSkSvgWrapMode.Tile;
                SVGF.ContentSvg.Svg.OverrideColor := TAlphaColorRec.Orange;
              end
-           );
-
-           Stack.AddFrame<TAnimatedImageFrame>(
+           )
+           .AddFrame<TAnimatedImageFrame>(
              procedure (AIF: TAnimatedImageFrame)
              begin
                AIF.ContentImage.LoadFromFile(TPath.Combine(
@@ -63,51 +75,51 @@ begin
                AIF.ContentImage.WrapMode := TSkAnimatedImageWrapMode.FitCrop;
                AIF.ContentImage.Animation.Speed := 0.75;
                AIF.ContentImage.Opacity := 0.33;
-
              end
-           );
-
-           Stack.AddFrame<TVertScrollFrame>(
+           )
+           .AddFrame<TVertScrollFrame>(
              procedure (VertScrollF: TVertScrollFrame)
              begin
                VertScrollF.SetContentAsForm<TColumnForm>(
                  procedure (Col: TColumnForm)
                  begin
-                   Col.ContentLayout.Padding.Rect := RectF(5, 5, 5, 5);
+                   Col.ContentLayout.SetPadding(5);
 
-                   Col.AddFrame<TButtonFrame>(50
+                   Col
+                   .AddFrame<TButtonFrame>(50
                    , procedure (ButtonF: TButtonFrame)
                      begin
-                       ButtonF.Text := 'Say hello!';
-                       ButtonF.OnClickHandler :=
-                         procedure
-                         begin
-                           ShowMessage('Hello!');
-                         end;
+                       ButtonF
+                         .SetText('Say hello!')
+                         .OnClickHandler :=
+                           procedure
+                           begin
+                             ShowMessage('Hello!');
+                           end;
                      end
-                   );
-
-                   Col.AddFrame<TChipFrame>(50
+                   )
+                   .AddFrame<TChipFrame>(50
                    , procedure (ChipF: TChipFrame)
                      begin
-                       ChipF.Margins.Top := 5;
-                       ChipF.Text := 'Login';
-                       ChipF.BackgroundColor := TAlphaColorRec.Blue;
-                       ChipF.ForegroundColor := TAlphaColorRec.White;
+                       ChipF.SetMargin(0, 5, 0, 0);
+                       ChipF
+                         .SetText('Login')
+                         .SetBackgroundColor(TAlphaColorRec.Blue)
+                         .SetForegroundColor(TAlphaColorRec.White);
                        ChipF.OnClickHandler :=
                          procedure
                          begin
                            ShowMessage('Login unavailable!');
                          end;
                      end
-                   );
-
-                   Col.AddFrame<TChipsFrame>(50
+                   )
+                   .AddFrame<TChipsFrame>(50
                    , procedure (ChipsF: TChipsFrame)
                      begin
-                       ChipsF.Margins.Top := 5;
-                       ChipsF.Flow.HorizontalGap := 5;
-                       ChipsF.Flow.VerticalGap := 5;
+                       ChipsF
+                       .SetHorizontalGap(5)
+                       .SetVerticalGap(5)
+                       .SetMargin(0, 5, 0, 0);
 
                        ChipsF.DefaultConfig :=
                          procedure (Chip: TChipFrame)
@@ -120,12 +132,13 @@ begin
                              end;
                          end;
 
-                       ChipsF.AddChip('One');
-                       ChipsF.AddChip('Two');
-                       ChipsF.AddChip('Three'
+                       ChipsF
+                       .AddChip('One')
+                       .AddChip('Two')
+                       .AddChip('Three'
                        , procedure (Chip: TChipFrame)
                          begin
-                           Chip.Width := 65;
+                           Chip.SetWidth(65);
                            Chip.OnClickHandler :=
                              procedure
                              begin
@@ -134,9 +147,8 @@ begin
                          end
                        );
                      end
-                   );
-
-                   Col.AddFrame<TCustom1Frame>(
+                   )
+                   .AddFrame<TCustom1Frame>(
                      150 // height
                    , procedure (Frame: TCustom1Frame)
                      begin
@@ -158,17 +170,19 @@ begin
          end
        );
 
-       Home.AddActionButton('A'
+       Home
+       .AddActionButton('A'
        , procedure
          begin
            Home.ShowSnackBar('This is a transient message', 3000);
-         end);
-
-       Home.AddActionButton('X'
+         end
+       )
+       .AddActionButton('X'
        , procedure
          begin
            Navigator.CloseRoute('home');
-         end);
+         end
+       );
      end
   );
 end;
