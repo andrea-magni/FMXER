@@ -13,6 +13,7 @@ Inspired by Google Flutter's approach.
 
 ## Submodules:
  - lib\TFrameStand: [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
+ - lib\DelphiZXingQRCode: [DelphiZXingQRCode](https://github.com/foxitsoftware/DelphiZXingQRCode)
   
 ## Demos
  - HelloWorld
@@ -21,6 +22,7 @@ Inspired by Google Flutter's approach.
  - MarginAndPadding
  - Skia101
  - LibraryStore
+ - WebView
 
 ## Video
  - [CodeRage 2019: Introducing FMXER](https://youtu.be/RiK2re19Kyk)
@@ -29,6 +31,7 @@ Inspired by Google Flutter's approach.
 1. [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
 2. [Skia4Delphi](https://github.com/skia4delphi/skia4delphi)
 3. [IconFontImageList](https://github.com/EtheaDev/IconFontsImageList)
+4. [DelphiZXingQRCode](https://github.com/foxitsoftware/DelphiZXingQRCode)
 
 ## Available Forms/Frames
 [List of available elements](List.md)
