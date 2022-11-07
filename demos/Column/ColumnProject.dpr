@@ -10,7 +10,6 @@ uses
 
 begin
   GlobalUseSkia := True;
-  {$IFDEF MSWINDOWS} ReportMemoryLeaksOnShutdown := True; {$ENDIF}
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);
   Application.Run;

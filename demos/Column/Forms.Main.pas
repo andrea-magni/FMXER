@@ -23,7 +23,6 @@ type
 
   public
     constructor Create(AOwner: TComponent); override;
-
   end;
 
 var
@@ -60,48 +59,48 @@ function TMainForm.GetColumnDefinition: TProc<TColumnForm>;
 begin
   Result := procedure (AColumn: TColumnForm)
      begin
-       AColumn.AddFrame<TContainerFrame>(100,
-       procedure (AContainer: TContainerFrame)
-       begin
-         AContainer.SetContentAs<TButton>(
-           procedure (AButton: TButton)
-           begin
-             AButton.Text := 'Close me';
-             AButton.OnClick := NavigatorStackPopkHandler;
-             AButton.Align := TAlignLayout.Center;
-           end);
-       end);
-
-       AColumn.AddFrame<TLogoFrame>(100);
-       AColumn.AddFrame<TLogoFrame>(200);
-
-       AColumn.AddFrame<THorzDividerFrame>(1); // ----------------------
-
-       AColumn.AddFrame<TLogoFrame>(
-         TElementDef<TLogoFrame>.Create(nil, [
-           Param('Height', 100)
-         ]));
-       AColumn.AddFrame<TLogoFrame>(
-         TElementDef<TLogoFrame>.Create(nil, [
-           Param('Height', 200)
-         ]));
-
-       AColumn.AddFrame<TCardFrame>(
-        TElementDef<TCardFrame>.Create(
-         procedure (Card: TCardFrame)
+       AColumn
+       .AddFrame<TContainerFrame>(100
+       , procedure (AContainer: TContainerFrame)
          begin
-           Card.Title := 'Delphi Live 13/5';
-           Card.SetContentAsFrame<TLogoFrame>(
-             procedure (ALogo: TLogoFrame)
+           AContainer.SetContentAs<TButton>(
+             procedure (AButton: TButton)
              begin
-               ALogo.Height := 150;
+               AButton.Text := 'Close me';
+               AButton.OnClick := NavigatorStackPopkHandler;
+               AButton.Align := TAlignLayout.Center;
              end
            );
          end
-        , []
-        )
-      );
+       )
 
+       .AddFrame<TLogoFrame>(100)
+       .AddFrame<TLogoFrame>(200)
+       .AddFrame<THorzDividerFrame>(1) // ----------------------
+
+       .AddFrame<TLogoFrame>(
+         TElementDef<TLogoFrame>.Create(nil, [
+           Param('Height', 100)
+         ])
+       )
+       .AddFrame<TLogoFrame>(
+         TElementDef<TLogoFrame>.Create(nil, [
+           Param('Height', 200)
+         ])
+       )
+
+       .AddFrame<TCardFrame>(150
+        , procedure (Card: TCardFrame)
+          begin
+            Card.Title := 'Title here!';
+            Card.SetContentAsFrame<TLogoFrame>(
+              procedure (ALogo: TLogoFrame)
+              begin
+                ALogo.Height := 150;
+              end
+            );
+          end
+        );
      end
 end;
 

@@ -10,27 +10,17 @@
         <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
-        <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -50,18 +40,18 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Win32'">
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>DataSetProject\</RemoteDir>
-            <RemoteName>sk4d.dll</RemoteName>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Win32'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
@@ -72,7 +62,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -92,18 +82,18 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Android64'">
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>DataSetProject\library\lib\arm64-v8a\</RemoteDir>
-            <RemoteName>libsk4d.so</RemoteName>
+        <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>DataSetProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Android64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
@@ -114,7 +104,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -134,8 +124,8 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
-            <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
+        <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>DataSetProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -154,7 +144,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
             <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -165,6 +155,16 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
+            <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
             <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -185,7 +185,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -195,7 +195,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -209,15 +209,6 @@
             <RemoteDir>DataSetProject\res\values\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStyles</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Release'">
-            <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>gdbserver</RemoteName>
-            <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -241,29 +232,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\libDataSetProject.so" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Release'">
             <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libDataSetProject.so</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
+            <RemoteName>gdbserver</RemoteName>
+            <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
-            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>DataSetProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon72</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>DataSetProject\res\drawable-mdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -278,28 +259,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\strings.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>DataSetProject\res\values\</RemoteDir>
-            <RemoteName>strings.xml</RemoteName>
-            <DeployClass>Android_Strings</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="Android\Release\styles-v21.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>DataSetProject\res\values-v21\</RemoteDir>
-            <RemoteName>styles.xml</RemoteName>
-            <DeployClass>AndroidSplashStylesV21</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>DataSetProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon192</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>DataSetProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -318,6 +290,34 @@
             <RemoteDir>DataSetProject\res\drawable-xlarge\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage960</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Release\libDataSetProject.so" Condition="'$(Config)'=='Release'">
+            <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libDataSetProject.so</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="Android\Release\strings.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>DataSetProject\res\values\</RemoteDir>
+            <RemoteName>strings.xml</RemoteName>
+            <DeployClass>Android_Strings</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Release\styles-v21.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>DataSetProject\res\values-v21\</RemoteDir>
+            <RemoteName>styles.xml</RemoteName>
+            <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -350,6 +350,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>DataSetProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon24</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\lib\android\debug\mips\libnative-activity.so" Condition="'$(Config)'=='Release'">
             <RemoteDir>DataSetProject\library\lib\mips\</RemoteDir>
             <RemoteName>libDataSetProject.so</RemoteName>
@@ -377,15 +386,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>DataSetProject\res\drawable-mdpi\</RemoteDir>
-            <RemoteName>ic_notification.png</RemoteName>
-            <DeployClass>Android_NotificationIcon24</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>DataSetProject\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
@@ -404,14 +404,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\colors.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>DataSetProject\res\values\</RemoteDir>
-            <RemoteName>colors.xml</RemoteName>
-            <DeployClass>Android_Colors</DeployClass>
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
@@ -423,15 +424,14 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>DataSetProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libsk4d.so</RemoteName>
-            <DeployClass>Skia</DeployClass>
+        <DeployFile Include="Android\Release\colors.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>DataSetProject\res\values\</RemoteDir>
+            <RemoteName>colors.xml</RemoteName>
+            <DeployClass>Android_Colors</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
-            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="Android\Release\splash_image_def.xml" Condition="'$(Config)'=='Release'">
             <RemoteDir>DataSetProject\res\drawable\</RemoteDir>
@@ -453,16 +453,6 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='OSXARM64'">
-        <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
@@ -473,7 +463,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -493,18 +483,18 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Win64'">
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>DataSetProject\</RemoteDir>
-            <RemoteName>sk4d.dll</RemoteName>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>DataSetProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Win64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
@@ -515,7 +505,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -535,20 +525,20 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
-    <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
-    <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'">
-        <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>DataSetProject.app\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
+        <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>DataSetProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
+    <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
+    <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'">
         <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>DataSetProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
@@ -559,7 +549,7 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+        <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
             <RemoteDir>DataSetProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -570,6 +560,16 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>DataSetProject.app\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>DataSetProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>

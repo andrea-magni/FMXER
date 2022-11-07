@@ -97,6 +97,7 @@ begin
                 end
               , procedure (AError: string)
                 begin
+                  SF.ShowSnackBar(AError, 3000);
                   AListFrame.ClearItems;
                 end
               );

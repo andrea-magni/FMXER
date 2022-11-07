@@ -5,7 +5,7 @@ interface
 uses
   System.Classes, System.SysUtils, System.Types
 , Skia
-, DelphiZXIngQRCode  // C:\Sviluppo\Librerie\DelphiZXingQRCode\Source
+, DelphiZXIngQRCode  // ../lib/DelphiZXingQRCode/Source
 , QRCode.Render // skia4Delphi Samples (webinar)
 ;
 
