@@ -24,6 +24,9 @@
         <Projects Include="LibraryStore\LibraryStoreProject.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="WebView\WebViewProject.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -95,14 +98,23 @@
     <Target Name="LibraryStoreProject:Make">
         <MSBuild Projects="LibraryStore\LibraryStoreProject.dproj" Targets="Make"/>
     </Target>
+    <Target Name="WebViewProject">
+        <MSBuild Projects="WebView\WebViewProject.dproj"/>
+    </Target>
+    <Target Name="WebViewProject:Clean">
+        <MSBuild Projects="WebView\WebViewProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WebViewProject:Make">
+        <MSBuild Projects="WebView\WebViewProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject"/>
+        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean"/>
+        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make"/>
+        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
