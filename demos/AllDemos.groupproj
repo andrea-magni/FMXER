@@ -27,6 +27,9 @@
         <Projects Include="WebView\WebViewProject.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="QRCode\QRCodeProject.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -107,14 +110,23 @@
     <Target Name="WebViewProject:Make">
         <MSBuild Projects="WebView\WebViewProject.dproj" Targets="Make"/>
     </Target>
+    <Target Name="QRCodeProject">
+        <MSBuild Projects="QRCode\QRCodeProject.dproj"/>
+    </Target>
+    <Target Name="QRCodeProject:Clean">
+        <MSBuild Projects="QRCode\QRCodeProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="QRCodeProject:Make">
+        <MSBuild Projects="QRCode\QRCodeProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject"/>
+        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject;QRCodeProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean"/>
+        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean;QRCodeProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make"/>
+        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make;QRCodeProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

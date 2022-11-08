@@ -151,7 +151,36 @@ begin
          LEditFrame := Frame;
        end
      )
+     .AddFrame<TQRCodeFrame>(
+       200
+     , procedure (AQR: TQRCodeFrame)
+       begin
+         AQR
+         .SetContent('https://github.com/andrea-magni/FMXER')
+         .SetOverrideColor(TAlphaColorRec.Navy)
+         .SetAlignClient
+         .SetMargin(2)
+         .SetHitTest(True);
 
+         TMessageManager.DefaultManager.SubscribeToMessage(TSomethingChangedMsg
+         , procedure (const Sender: TObject; const M: TMessage)
+           begin
+             var Msg := M as TSomethingChangedMsg;
+             var LValue := Msg.Value;
+             if LValue = '' then
+               LValue := 'No text available';
+             AQR.SetContent(LValue);
+           end
+         );
+
+         AQR.OnTapHandler :=
+           procedure(AImage: TFMXObject; APoint: TPointF)
+           begin
+             if AppState.Something <> '' then
+               Navigator.RouteTo('qrcode');
+           end;
+       end
+     )
      .AddFrame<TCustom1Frame>(
        150 // height
      , procedure (Frame: TCustom1Frame)

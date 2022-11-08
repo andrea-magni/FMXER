@@ -3,9 +3,10 @@ unit QRCode.Utils;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.Types
-, Skia
-, DelphiZXIngQRCode  // ../lib/DelphiZXingQRCode/Source
+  System.Classes, System.SysUtils, System.Types, UITypes
+, FMX.Graphics, FMX.Types
+, Skia, Skia.FMX
+, DelphiZXIngQRCode  // ../../lib/DelphiZXingQRCode/Source
 , QRCode.Render // skia4Delphi Samples (webinar)
 ;
 
@@ -18,9 +19,43 @@ type
       const ABeforePaint: TOnBeforePaintHandler = nil; const ARadiusFactor: Single = 0.1): string;
   end;
 
-
+  procedure SvgToBitmap(const ASvg: string; const AWidth, AHeight: Integer; const AOnReady: TProc<TBitmap>);
 
 implementation
+
+
+procedure SvgToBitmap(const ASvg: string; const AWidth, AHeight: Integer; const AOnReady: TProc<TBitmap>);
+const MARGIN = 20;
+var
+  LBitmap: TBitmap;
+begin
+  LBitmap := TBitmap.Create(AWidth + MARGIN, AHeight + MARGIN);
+  try
+    LBitmap.SkiaDraw(
+      procedure (const ACanvas: ISKCanvas)
+      var
+        LSvgBrush: TSkSvgBrush;
+      begin
+        ACanvas.Clear(TAlphaColorRec.White);
+
+        LSvgBrush := TSkSvgBrush.Create;
+        try
+          LSvgBrush.Source := ASvg;
+          LSvgBrush.OverrideColor := TAlphaColorRec.Black;
+          LSvgBrush.Render(ACanvas, RectF(MARGIN, MARGIN, AWidth, AHeight), 1);
+        finally
+          LSvgBrush.Free;
+        end;
+      end
+    );
+
+    if Assigned(AOnReady) then
+      AOnReady(LBitmap);
+
+  finally
+    LBitmap.Free;
+  end;
+end;
 
 
 { TQRCode }
@@ -56,7 +91,11 @@ begin
   LPaint := TSkPaint.Create;
   if Assigned(ABeforePaint) then
     ABeforePaint(LPaint, LModules);
-  Result := TQRCodeRender.MakeRounded(LModules, LogoModules, LogoSize, ARadiusFactor).AsSVG(LPaint);
+
+  Result :=
+    TQRCodeRender
+    .MakeRounded(LModules, LogoModules, LogoSize, ARadiusFactor)
+    .AsSVG(LPaint);
 end;
 
 end.

@@ -11,7 +11,7 @@
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
         <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -21,7 +21,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -31,7 +31,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -41,7 +41,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -53,7 +53,7 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win32'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -63,7 +63,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -73,7 +73,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -83,7 +83,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -92,9 +92,9 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="Win32\Debug\LibraryStoreProject.exe" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
-            <RemoteName>LibraryStoreProject.exe</RemoteName>
+        <DeployFile Include="Win32\Debug\QRCodeProject.exe" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>QRCodeProject.exe</RemoteName>
             <DeployClass>ProjectOutput</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
@@ -105,7 +105,7 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -115,7 +115,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -125,7 +125,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -135,7 +135,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -145,7 +145,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -155,7 +155,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -165,7 +165,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -175,7 +175,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -187,7 +187,7 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android'">
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-large\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-large\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage640</DeployClass>
             <Operation>1</Operation>
@@ -196,7 +196,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-large\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-large\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage640</DeployClass>
             <Operation>1</Operation>
@@ -205,7 +205,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Debug\strings.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\values\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
             <RemoteName>strings.xml</RemoteName>
             <DeployClass>Android_Strings</DeployClass>
             <Operation>1</Operation>
@@ -214,7 +214,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Debug\colors.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\values\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
             <RemoteName>colors.xml</RemoteName>
             <DeployClass>Android_Colors</DeployClass>
             <Operation>1</Operation>
@@ -223,7 +223,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -233,7 +233,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -243,7 +243,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="Android\Debug\splash_image_def.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
             <RemoteName>splash_image_def.xml</RemoteName>
             <DeployClass>AndroidSplashImageDef</DeployClass>
             <Operation>1</Operation>
@@ -251,18 +251,8 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\libLibraryStoreProject.so" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libLibraryStoreProject.so</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="Android\Release\styles.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\values\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStyles</DeployClass>
             <Operation>1</Operation>
@@ -270,8 +260,17 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Android\Release\QRCodeProject.classes" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\classes\</RemoteDir>
+            <RemoteName>QRCodeProject.classes</RemoteName>
+            <DeployClass>AndroidClasses</DeployClass>
+            <Operation>64</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_72x72.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-hdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon72</DeployClass>
             <Operation>1</Operation>
@@ -280,7 +279,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_72x72.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-hdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon72</DeployClass>
             <Operation>1</Operation>
@@ -289,7 +288,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-normal\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-normal\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage470</DeployClass>
             <Operation>1</Operation>
@@ -298,7 +297,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon72</DeployClass>
             <Operation>1</Operation>
@@ -307,7 +306,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon72</DeployClass>
             <Operation>1</Operation>
@@ -316,7 +315,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-normal\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-normal\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage470</DeployClass>
             <Operation>1</Operation>
@@ -325,7 +324,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>gdbserver</RemoteName>
             <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
@@ -334,7 +333,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>gdbserver</RemoteName>
             <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
@@ -343,7 +342,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon144</DeployClass>
             <Operation>1</Operation>
@@ -352,7 +351,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon144</DeployClass>
             <Operation>1</Operation>
@@ -361,7 +360,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon192</DeployClass>
             <Operation>1</Operation>
@@ -370,7 +369,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon192</DeployClass>
             <Operation>1</Operation>
@@ -379,7 +378,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
@@ -388,7 +387,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon48</DeployClass>
             <Operation>1</Operation>
@@ -397,7 +396,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon96</DeployClass>
             <Operation>1</Operation>
@@ -406,7 +405,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon96</DeployClass>
             <Operation>1</Operation>
@@ -415,7 +414,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_960x720.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xlarge\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xlarge\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage960</DeployClass>
             <Operation>1</Operation>
@@ -424,7 +423,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_960x720.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xlarge\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xlarge\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage960</DeployClass>
             <Operation>1</Operation>
@@ -433,7 +432,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Debug\AndroidManifest.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>AndroidManifest.xml</RemoteName>
             <DeployClass>ProjectAndroidManifest</DeployClass>
             <Operation>1</Operation>
@@ -441,18 +440,8 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Debug\libLibraryStoreProject.so" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libLibraryStoreProject.so</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="Android\Debug\styles.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\values\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStyles</DeployClass>
             <Operation>1</Operation>
@@ -461,7 +450,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Release\strings.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\values\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
             <RemoteName>strings.xml</RemoteName>
             <DeployClass>Android_Strings</DeployClass>
             <Operation>1</Operation>
@@ -470,7 +459,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Release\styles-v21.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\values-v21\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values-v21\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
@@ -478,26 +467,8 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\..\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\..\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_48x48.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon48</DeployClass>
             <Operation>1</Operation>
@@ -506,7 +477,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_48x48.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon48</DeployClass>
             <Operation>1</Operation>
@@ -515,7 +486,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Debug\styles-v21.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\values-v21\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values-v21\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
@@ -524,7 +495,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Release\AndroidManifest.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>AndroidManifest.xml</RemoteName>
             <DeployClass>ProjectAndroidManifest</DeployClass>
             <Operation>1</Operation>
@@ -532,9 +503,18 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Android\Debug\provider_paths.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\xml\</RemoteDir>
+            <RemoteName>provider_paths.xml</RemoteName>
+            <DeployClass>AndroidFileProvider</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\lib\android\debug\armeabi\libnative-activity.so" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi\</RemoteDir>
-            <RemoteName>libLibraryStoreProject.so</RemoteName>
+            <RemoteDir>QRCodeProject\library\lib\armeabi\</RemoteDir>
+            <RemoteName>libQRCodeProject.so</RemoteName>
             <DeployClass>AndroidLibnativeArmeabiFile</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
@@ -542,8 +522,8 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\lib\android\debug\armeabi\libnative-activity.so" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi\</RemoteDir>
-            <RemoteName>libLibraryStoreProject.so</RemoteName>
+            <RemoteDir>QRCodeProject\library\lib\armeabi\</RemoteDir>
+            <RemoteName>libQRCodeProject.so</RemoteName>
             <DeployClass>AndroidLibnativeArmeabiFile</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
@@ -551,7 +531,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon24</DeployClass>
             <Operation>1</Operation>
@@ -560,7 +540,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon24</DeployClass>
             <Operation>1</Operation>
@@ -569,8 +549,8 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\lib\android\debug\mips\libnative-activity.so" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\library\lib\mips\</RemoteDir>
-            <RemoteName>libLibraryStoreProject.so</RemoteName>
+            <RemoteDir>QRCodeProject\library\lib\mips\</RemoteDir>
+            <RemoteName>libQRCodeProject.so</RemoteName>
             <DeployClass>AndroidLibnativeMipsFile</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
@@ -578,7 +558,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-small\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-small\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage426</DeployClass>
             <Operation>1</Operation>
@@ -587,7 +567,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_426x320.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-small\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-small\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <DeployClass>Android_SplashImage426</DeployClass>
             <Operation>1</Operation>
@@ -596,7 +576,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-ldpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-ldpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon36</DeployClass>
             <Operation>1</Operation>
@@ -605,7 +585,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-ldpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-ldpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon36</DeployClass>
             <Operation>1</Operation>
@@ -614,7 +594,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-hdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon36</DeployClass>
             <Operation>1</Operation>
@@ -623,7 +603,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-hdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon36</DeployClass>
             <Operation>1</Operation>
@@ -632,25 +612,26 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\lib\android\debug\mips\libnative-activity.so" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\library\lib\mips\</RemoteDir>
-            <RemoteName>libLibraryStoreProject.so</RemoteName>
+            <RemoteDir>QRCodeProject\library\lib\mips\</RemoteDir>
+            <RemoteName>libQRCodeProject.so</RemoteName>
             <DeployClass>AndroidLibnativeMipsFile</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\LibraryStoreProject.classes" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\classes\</RemoteDir>
-            <RemoteName>LibraryStoreProject.classes</RemoteName>
-            <DeployClass>AndroidClasses</DeployClass>
-            <Operation>64</Operation>
+        <DeployFile Include="Android\Debug\libQRCodeProject.so" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libQRCodeProject.so</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -660,7 +641,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -670,7 +651,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="Android\Release\colors.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\values\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
             <RemoteName>colors.xml</RemoteName>
             <DeployClass>Android_Colors</DeployClass>
             <Operation>1</Operation>
@@ -679,7 +660,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Release\splash_image_def.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
             <RemoteName>splash_image_def.xml</RemoteName>
             <DeployClass>AndroidSplashImageDef</DeployClass>
             <Operation>1</Operation>
@@ -687,17 +668,27 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Debug\LibraryStoreProject.classes" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\classes\</RemoteDir>
-            <RemoteName>LibraryStoreProject.classes</RemoteName>
+        <DeployFile Include="Android\Debug\QRCodeProject.classes" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\classes\</RemoteDir>
+            <RemoteName>QRCodeProject.classes</RemoteName>
             <DeployClass>AndroidClasses</DeployClass>
             <Operation>64</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Android\Release\libQRCodeProject.so" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libQRCodeProject.so</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon96</DeployClass>
             <Operation>1</Operation>
@@ -706,7 +697,7 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>LibraryStoreProject\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteDir>QRCodeProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon96</DeployClass>
             <Operation>1</Operation>
@@ -717,7 +708,7 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='OSXARM64'">
         <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -727,7 +718,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -737,7 +728,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -747,7 +738,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -759,7 +750,7 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -769,7 +760,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -779,7 +770,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -789,7 +780,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject\</RemoteDir>
+            <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>0</Operation>
@@ -803,7 +794,7 @@
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
     <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'">
         <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject.app\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -813,7 +804,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\biniossimarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
-            <RemoteDir>LibraryStoreProject.app\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -823,7 +814,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject.app\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
@@ -833,7 +824,7 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
-            <RemoteDir>LibraryStoreProject.app\</RemoteDir>
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>

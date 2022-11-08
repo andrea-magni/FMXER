@@ -57,7 +57,7 @@ uses Utils.Msg;
 procedure TRemoteData.DataModuleCreate(Sender: TObject);
 begin
   {$IFDEF ANDROID}
-  netClient.MARSEngineURL := 'http://192.168.229.28:8080/rest';
+  netClient.MARSEngineURL := 'http://192.168.62.28:8080/rest';
   {$ENDIF}
 end;
 
