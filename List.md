@@ -7,6 +7,7 @@
 1. CardFrame
 1. ChipFrame
 1. ChipsFrame
+1. ColorPickerFrame
 1. ContainerFrame
 1. EditFrame
 1. GlyphFrame
