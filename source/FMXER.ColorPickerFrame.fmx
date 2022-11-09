@@ -1,0 +1,43 @@
+object ColorPickerFrame: TColorPickerFrame
+  Align = Client
+  Size.Width = 310.000000000000000000
+  Size.Height = 55.000000000000000000
+  Size.PlatformDefault = False
+  object CaptionLabel: TLabel
+    Align = Scale
+    Position.X = 5.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 150.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object ExtraLabel: TLabel
+    Align = Scale
+    StyledSettings = [Family, Size, Style]
+    Position.X = 5.000000000000000000
+    Position.Y = 30.000000000000000000
+    Size.Width = 300.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.FontColor = claGray
+    TextSettings.HorzAlign = Center
+    TabOrder = 0
+  end
+  object ComboColorBox1: TComboColorBox
+    Align = Scale
+    Color = claWhite
+    Position.X = 155.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 150.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    OnChange = ComboColorBox1Change
+  end
+  object ColorAnimation1: TColorAnimation
+    Duration = 0.200000002980232200
+    StartValue = claWhite
+    StopValue = claWhite
+  end
+end

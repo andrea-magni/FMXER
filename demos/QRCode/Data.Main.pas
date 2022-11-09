@@ -4,25 +4,29 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.StdActns,
-  FMX.MediaLibrary.Actions, FMX.Graphics;
+  FMX.MediaLibrary.Actions, FMX.Graphics, UITypes;
 
 type
-  TQRCodeContentListener = reference to procedure (const AContent: string);
+  TQRCodeChangeListener = reference to procedure (const AContent: string; const AColor: TAlphaColor);
 
   TMainData = class(TDataModule)
     ActionList1: TActionList;
     ShowShareSheetAction1: TShowShareSheetAction;
+    procedure DataModuleCreate(Sender: TObject);
   private
-    FQRCodeContentListeners: TArray<TQRCodeContentListener>;
+    FQRCodeChangeListeners: TArray<TQRCodeChangeListener>;
     FQRCodeContent: string;
+    FQRCodeColor: TAlphaColor;
+    procedure SetQRCodeColor(const Value: TAlphaColor);
   protected
-    procedure NotifyQRCodeContent;
+    procedure NotifyQRCodeChange;
     procedure SetQRCodeContent(const Value: string);
   public
-    procedure SubscribeQRCodeContent(const AProc: TQRCodeContentListener);
+    procedure SubscribeQRCodeChange(const AProc: TQRCodeChangeListener);
     procedure ShareQRCodeContent;
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
+    property QRCodeColor: TAlphaColor read FQRCodeColor write SetQRCodeColor;
   end;
 
   function MainData: TMainData;
@@ -33,7 +37,7 @@ implementation
 
 {$R *.dfm}
 
-uses QRCode.Utils, Forms.Main;
+uses QRCode.Utils, Forms.Main, FMXER.UI.Consts, QRCode.Render, Skia;
 
 var
   _Instance: TMainData = nil;
@@ -47,10 +51,25 @@ end;
 
 { TMainData }
 
-procedure TMainData.NotifyQRCodeContent;
+procedure TMainData.DataModuleCreate(Sender: TObject);
 begin
-  for var LListener in FQRCodeContentListeners do
-    LListener(FQRCodeContent);
+  FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
+  FQRCodeColor := TAppColors.PrimaryColor;
+end;
+
+procedure TMainData.NotifyQRCodeChange;
+begin
+  for var LListener in FQRCodeChangeListeners do
+    LListener(FQRCodeContent, FQRCodeColor);
+end;
+
+procedure TMainData.SetQRCodeColor(const Value: TAlphaColor);
+begin
+  if FQRCodeColor <> Value then
+  begin
+    FQRCodeColor := Value;
+    NotifyQRCodeChange;
+  end;
 end;
 
 procedure TMainData.SetQRCodeContent(const Value: string);
@@ -58,7 +77,7 @@ begin
   if FQRCodeContent <> Value then
   begin
     FQRCodeContent := Value;
-    NotifyQRCodeContent;
+    NotifyQRCodeChange;
   end;
 end;
 
@@ -66,6 +85,7 @@ procedure TMainData.ShareQRCodeContent;
 begin
   SvgToBitmap(
     TQRCode.TextToSvg(QRCodeContent)
+  , QRCodeColor
   , 300, 300
   , procedure (ABitmap: TBitmap)
     begin
@@ -81,9 +101,9 @@ begin
   ShowShareSheetAction1.Execute;
 end;
 
-procedure TMainData.SubscribeQRCodeContent(const AProc: TQRCodeContentListener);
+procedure TMainData.SubscribeQRCodeChange(const AProc: TQRCodeChangeListener);
 begin
-  FQRCodeContentListeners := FQRCodeContentListeners + [AProc];
+  FQRCodeChangeListeners := FQRCodeChangeListeners + [AProc];
 end;
 
 end.

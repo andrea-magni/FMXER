@@ -1,4 +1,5 @@
 object MainData: TMainData
+  OnCreate = DataModuleCreate
   Height = 480
   Width = 640
   object ActionList1: TActionList

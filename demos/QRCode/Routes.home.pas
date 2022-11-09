@@ -12,7 +12,7 @@ implementation
 uses
   FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc,
   FMXER.ScaffoldForm, FMXER.ColumnForm,
-  FMXER.QRCodeFrame, FMXER.EditFrame
+  FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ColorPickerFrame
 
 , Data.Main
 ;
@@ -45,29 +45,48 @@ begin
                 end;
             end
           )
+
+          .AddFrame<TColorPickerFrame>(
+            100
+          , procedure (Frame: TColorPickerFrame)
+            begin
+              Frame
+              .SetCaption('Color')
+              .SetColor(MainData.QRCodeColor)
+              .SetMarginT(10);
+
+              Frame.OnChangeProc :=
+                procedure (AColor: TAlphaColor)
+                begin
+                  MainData.QRCodeColor := AColor;
+                end;
+            end
+          )
           .AddFrame<TQRCodeFrame>(
             Col.Width
           , procedure (AQR: TQRCodeFrame)
             begin
               AQR
-              .SetContent('https://github.com/andrea-magni/FMXER')
-              .SetOverrideColor(TAlphaColorRec.Navy)
+              .SetContent(MainData.QRCodeContent)
+              .SetOverrideColor(MainData.QRCodeColor)
               .SetAlignClient
               .SetMargin(2)
               .SetHitTest(True);
 
-              MainData.SubscribeQRCodeContent(
-                procedure (const AContent: string)
+              MainData.SubscribeQRCodeChange(
+                procedure (const AContent: string; const AColor: TAlphaColor)
                 begin
-                  AQR.SetContent(AContent);
+                  AQR
+                  .SetContent(AContent)
+                  .SetOverrideColor(AColor);
                 end
               );
 
-              AQR.OnTapHandler :=
-                procedure(AImage: TFMXObject; APoint: TPointF)
-                begin
-                  Navigator.RouteTo('qrcode');
-                end;
+//              AQR.OnTapHandler :=
+//                procedure(AImage: TFMXObject; APoint: TPointF)
+//                begin
+//                  Navigator.RouteTo('qrcode');
+//                end;
             end
           );
         end
