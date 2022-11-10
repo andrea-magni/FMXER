@@ -7,26 +7,27 @@ uses
   FMX.MediaLibrary.Actions, FMX.Graphics, UITypes;
 
 type
-  TQRCodeChangeListener = reference to procedure (const AContent: string; const AColor: TAlphaColor);
-
   TMainData = class(TDataModule)
     ActionList1: TActionList;
     ShowShareSheetAction1: TShowShareSheetAction;
     procedure DataModuleCreate(Sender: TObject);
   private
-    FQRCodeChangeListeners: TArray<TQRCodeChangeListener>;
+    FQRCodeChangeListeners: TArray<TProc>;
     FQRCodeContent: string;
     FQRCodeColor: TAlphaColor;
+    FQRRadiusFactor: Single;
     procedure SetQRCodeColor(const Value: TAlphaColor);
+    procedure SetQRRadiusFactor(const Value: Single);
   protected
     procedure NotifyQRCodeChange;
     procedure SetQRCodeContent(const Value: string);
   public
-    procedure SubscribeQRCodeChange(const AProc: TQRCodeChangeListener);
+    procedure SubscribeQRCodeChange(const AProc: TProc);
     procedure ShareQRCodeContent;
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
     property QRCodeColor: TAlphaColor read FQRCodeColor write SetQRCodeColor;
+    property QRRadiusFactor: Single read FQRRadiusFactor write SetQRRadiusFactor;
   end;
 
   function MainData: TMainData;
@@ -37,7 +38,9 @@ implementation
 
 {$R *.dfm}
 
-uses QRCode.Utils, Forms.Main, FMXER.UI.Consts, QRCode.Render, Skia;
+uses
+  Math, Skia,
+  QRCode.Utils, FMXER.UI.Consts, QRCode.Render;
 
 var
   _Instance: TMainData = nil;
@@ -55,12 +58,13 @@ procedure TMainData.DataModuleCreate(Sender: TObject);
 begin
   FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
   FQRCodeColor := TAppColors.PrimaryColor;
+  FQRRadiusFactor := 0.1;
 end;
 
 procedure TMainData.NotifyQRCodeChange;
 begin
   for var LListener in FQRCodeChangeListeners do
-    LListener(FQRCodeContent, FQRCodeColor);
+    LListener();
 end;
 
 procedure TMainData.SetQRCodeColor(const Value: TAlphaColor);
@@ -77,6 +81,18 @@ begin
   if FQRCodeContent <> Value then
   begin
     FQRCodeContent := Value;
+    NotifyQRCodeChange;
+  end;
+end;
+
+procedure TMainData.SetQRRadiusFactor(const Value: Single);
+var
+  LValue: Single;
+begin
+  LValue := RoundTo(Value, -2);
+  if (FQRRadiusFactor <> LValue) then
+  begin
+    FQRRadiusFactor := LValue;
     NotifyQRCodeChange;
   end;
 end;
@@ -101,7 +117,7 @@ begin
   ShowShareSheetAction1.Execute;
 end;
 
-procedure TMainData.SubscribeQRCodeChange(const AProc: TQRCodeChangeListener);
+procedure TMainData.SubscribeQRCodeChange(const AProc: TProc);
 begin
   FQRCodeChangeListeners := FQRCodeChangeListeners + [AProc];
 end;

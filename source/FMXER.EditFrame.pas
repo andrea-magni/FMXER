@@ -5,13 +5,13 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Edit, SubjectStand;
+  FMX.Controls.Presentation, FMX.Edit, SubjectStand, Skia, Skia.FMX;
 
 type
   TEditFrame = class(TFrame)
     EditControl: TEdit;
-    CaptionLabel: TLabel;
-    ExtraLabel: TLabel;
+    ExtraLabel: TSkLabel;
+    CaptionLabel: TSkLabel;
     procedure EditControlChangeTracking(Sender: TObject);
     procedure EditControlChange(Sender: TObject);
   private
@@ -98,6 +98,7 @@ function TEditFrame.SetExtraText(const AExtraText: string): TEditFrame;
 begin
   Result := Self;
   ExtraLabel.Text := AExtraText;
+  ExtraLabel.Visible := not ExtraLabel.Text.IsEmpty;
 end;
 
 function TEditFrame.SetFocusOnShow(const AFocusOnShow: Boolean): TEditFrame;

@@ -1,28 +1,15 @@
-object EditFrame: TEditFrame
+object TrackbarFrame: TTrackbarFrame
   Align = Client
   Size.Width = 320.000000000000000000
-  Size.Height = 80.000000000000000000
+  Size.Height = 90.000000000000000000
   Size.PlatformDefault = False
-  object EditControl: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    Align = Client
-    TabOrder = 0
-    Margins.Left = 5.000000000000000000
-    Margins.Right = 5.000000000000000000
-    Margins.Bottom = 5.000000000000000000
-    Size.Width = 310.000000000000000000
-    Size.Height = 40.000000000000000000
-    Size.PlatformDefault = False
-    OnChange = EditControlChange
-    OnChangeTracking = EditControlChangeTracking
-  end
   object ExtraLabel: TSkLabel
     Align = Bottom
     Margins.Left = 5.000000000000000000
     Margins.Right = 5.000000000000000000
     Margins.Bottom = 5.000000000000000000
     Position.X = 5.000000000000000000
-    Position.Y = 75.000000000000000000
+    Position.Y = 55.000000000000000000
     Size.Width = 310.000000000000000000
     Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
@@ -31,6 +18,11 @@ object EditFrame: TEditFrame
     Words = <
       item
       end>
+  end
+  object ColorAnimation1: TColorAnimation
+    Duration = 0.200000002980232200
+    StartValue = claWhite
+    StopValue = claWhite
   end
   object CaptionLabel: TSkLabel
     Align = Top
@@ -46,5 +38,19 @@ object EditFrame: TEditFrame
     Words = <
       item
       end>
+  end
+  object TrackBar1: TTrackBar
+    Align = Client
+    CanParentFocus = True
+    Orientation = Horizontal
+    Margins.Left = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Margins.Bottom = 5.000000000000000000
+    Size.Width = 310.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    OnChange = TrackBar1Change
+    OnTracking = TrackBar1Change
   end
 end

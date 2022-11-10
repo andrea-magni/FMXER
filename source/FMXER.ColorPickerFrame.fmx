@@ -1,43 +1,51 @@
 object ColorPickerFrame: TColorPickerFrame
-  Align = Client
-  Size.Width = 310.000000000000000000
-  Size.Height = 55.000000000000000000
+  Size.Width = 320.000000000000000000
+  Size.Height = 100.000000000000000000
   Size.PlatformDefault = False
-  object CaptionLabel: TLabel
-    Align = Scale
+  object ExtraLabel: TSkLabel
+    Align = Bottom
+    Margins.Left = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Margins.Bottom = 5.000000000000000000
     Position.X = 5.000000000000000000
-    Position.Y = 5.000000000000000000
-    Size.Width = 150.000000000000000000
-    Size.Height = 25.000000000000000000
+    Position.Y = 65.000000000000000000
+    Size.Width = 310.000000000000000000
+    Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
-  end
-  object ExtraLabel: TLabel
-    Align = Scale
-    StyledSettings = [Family, Size, Style]
-    Position.X = 5.000000000000000000
-    Position.Y = 30.000000000000000000
-    Size.Width = 300.000000000000000000
-    Size.Height = 25.000000000000000000
-    Size.PlatformDefault = False
-    TextSettings.FontColor = claGray
-    TextSettings.HorzAlign = Center
-    TabOrder = 0
+    AutoSize = False
+    Words = <
+      item
+      end>
   end
   object ComboColorBox1: TComboColorBox
-    Align = Scale
+    Align = Client
     Color = claWhite
-    Position.X = 155.000000000000000000
-    Position.Y = 5.000000000000000000
-    Size.Width = 150.000000000000000000
-    Size.Height = 25.000000000000000000
+    Margins.Left = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Size.Width = 310.000000000000000000
+    Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 2
+    TabOrder = 1
     OnChange = ComboColorBox1Change
   end
   object ColorAnimation1: TColorAnimation
     Duration = 0.200000002980232200
     StartValue = claWhite
     StopValue = claWhite
+  end
+  object CaptionLabel: TSkLabel
+    Align = Top
+    Margins.Left = 5.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Position.X = 5.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 310.000000000000000000
+    Size.Height = 30.000000000000000000
+    Size.PlatformDefault = False
+    AutoSize = False
+    Words = <
+      item
+      end>
   end
 end

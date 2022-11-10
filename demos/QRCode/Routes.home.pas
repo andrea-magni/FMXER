@@ -12,8 +12,8 @@ implementation
 uses
   FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc,
   FMXER.ScaffoldForm, FMXER.ColumnForm,
-  FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ColorPickerFrame
-
+  FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ColorPickerFrame,
+  FMXER.TrackbarFrame
 , Data.Main
 ;
 
@@ -30,13 +30,13 @@ begin
         begin
           Col
           .AddFrame<TEditFrame>(
-            100
+            90
           , procedure (Frame: TEditFrame)
             begin
               Frame
               .SetCaption('Content')
               .SetTextPrompt('QRCode content here')
-              .SetMarginT(10);
+              .SetMarginT(5);
 
               Frame.OnChangeProc :=
                 procedure (ATracking: Boolean)
@@ -45,20 +45,38 @@ begin
                 end;
             end
           )
-
           .AddFrame<TColorPickerFrame>(
-            100
+            60
           , procedure (Frame: TColorPickerFrame)
             begin
               Frame
               .SetCaption('Color')
               .SetColor(MainData.QRCodeColor)
-              .SetMarginT(10);
+              .SetMarginT(5);
 
               Frame.OnChangeProc :=
                 procedure (AColor: TAlphaColor)
                 begin
                   MainData.QRCodeColor := AColor;
+                end;
+            end
+          )
+          .AddFrame<TTrackbarFrame>(
+            60
+          , procedure (Frame: TTrackbarFrame)
+            begin
+              Frame
+              .SetCaption('Radius factor')
+              .SetValue(MainData.QRRadiusFactor)
+              .SetMin(0.001)
+              .SetMax(0.5)
+              .SetFrequency(0.01)
+              .SetMarginT(5);
+
+              Frame.OnChangeProc :=
+                procedure (ARadiusFactor: Single)
+                begin
+                  MainData.QRRadiusFactor := ARadiusFactor;
                 end;
             end
           )
@@ -69,16 +87,18 @@ begin
               AQR
               .SetContent(MainData.QRCodeContent)
               .SetOverrideColor(MainData.QRCodeColor)
+              .SetRadiusFactor(MainData.QRRadiusFactor)
               .SetAlignClient
-              .SetMargin(2)
+              .SetMargin(20)
               .SetHitTest(True);
 
               MainData.SubscribeQRCodeChange(
-                procedure (const AContent: string; const AColor: TAlphaColor)
+                procedure
                 begin
                   AQR
-                  .SetContent(AContent)
-                  .SetOverrideColor(AColor);
+                  .SetContent(MainData.QRCodeContent)
+                  .SetOverrideColor(MainData.QRCodeColor)
+                  .SetRadiusFactor(MainData.QRRadiusFactor);
                 end
               );
 

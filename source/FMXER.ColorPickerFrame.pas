@@ -6,14 +6,14 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, SubjectStand, FMX.Ani, FMX.Layouts,
-  FMX.ListBox, FMX.Colors;
+  FMX.ListBox, FMX.Colors, Skia, Skia.FMX;
 
 type
   TColorPickerFrame = class(TFrame)
-    CaptionLabel: TLabel;
-    ExtraLabel: TLabel;
+    ExtraLabel: TSkLabel;
     ComboColorBox1: TComboColorBox;
     ColorAnimation1: TColorAnimation;
+    CaptionLabel: TSkLabel;
     procedure ComboColorBox1Change(Sender: TObject);
   private
     FOnChangeProc: TProc<TAlphaColor>;
