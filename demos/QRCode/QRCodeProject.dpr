@@ -6,7 +6,8 @@ uses
   Skia.FMX,
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Routes.home in 'Routes.home.pas',
-  Data.Main in 'Data.Main.pas' {MainData: TDataModule};
+  Data.Main in 'Data.Main.pas' {MainData: TDataModule},
+  Routes.colorPicker in 'Routes.colorPicker.pas';
 
 {$R *.res}
 

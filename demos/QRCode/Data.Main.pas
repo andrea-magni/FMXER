@@ -15,9 +15,11 @@ type
     FQRCodeChangeListeners: TArray<TProc>;
     FQRCodeContent: string;
     FQRCodeColor: TAlphaColor;
+    FQRCodeBGColor: TAlphaColor;
     FQRRadiusFactor: Single;
     procedure SetQRCodeColor(const Value: TAlphaColor);
     procedure SetQRRadiusFactor(const Value: Single);
+    procedure SetQRCodeBGColor(const Value: TAlphaColor);
   protected
     procedure NotifyQRCodeChange;
     procedure SetQRCodeContent(const Value: string);
@@ -27,6 +29,7 @@ type
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
     property QRCodeColor: TAlphaColor read FQRCodeColor write SetQRCodeColor;
+    property QRCodeBGColor: TAlphaColor read FQRCodeBGColor write SetQRCodeBGColor;
     property QRRadiusFactor: Single read FQRRadiusFactor write SetQRRadiusFactor;
   end;
 
@@ -58,6 +61,7 @@ procedure TMainData.DataModuleCreate(Sender: TObject);
 begin
   FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
   FQRCodeColor := TAppColors.PrimaryColor;
+  FQRCodeBGColor := TAlphaColorRec.White;
   FQRRadiusFactor := 0.1;
 end;
 
@@ -65,6 +69,15 @@ procedure TMainData.NotifyQRCodeChange;
 begin
   for var LListener in FQRCodeChangeListeners do
     LListener();
+end;
+
+procedure TMainData.SetQRCodeBGColor(const Value: TAlphaColor);
+begin
+  if FQRCodeBGColor <> Value then
+  begin
+    FQRCodeBGColor := Value;
+    NotifyQRCodeChange;
+  end;
 end;
 
 procedure TMainData.SetQRCodeColor(const Value: TAlphaColor);
@@ -101,6 +114,7 @@ procedure TMainData.ShareQRCodeContent;
 begin
   SvgToBitmap(
     TQRCode.TextToSvg(QRCodeContent)
+  , QRCodeBGColor
   , QRCodeColor
   , 300, 300
   , procedure (ABitmap: TBitmap)

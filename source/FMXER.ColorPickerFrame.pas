@@ -11,10 +11,10 @@ uses
 type
   TColorPickerFrame = class(TFrame)
     ExtraLabel: TSkLabel;
-    ComboColorBox1: TComboColorBox;
     ColorAnimation1: TColorAnimation;
     CaptionLabel: TSkLabel;
-    procedure ComboColorBox1Change(Sender: TObject);
+    ColorPicker: TColorPanel;
+    procedure ColorPickerChange(Sender: TObject);
   private
     FOnChangeProc: TProc<TAlphaColor>;
   protected
@@ -36,10 +36,10 @@ implementation
 
 { TColorPickerFrame }
 
-procedure TColorPickerFrame.ComboColorBox1Change(Sender: TObject);
+procedure TColorPickerFrame.ColorPickerChange(Sender: TObject);
 begin
   if Assigned(FOnChangeProc) then
-    FOnChangeProc(ComboColorBox1.Color);
+    FOnChangeProc(ColorPicker.Color);
 end;
 
 function TColorPickerFrame.GetCaption: string;
@@ -49,7 +49,7 @@ end;
 
 function TColorPickerFrame.GetColor: TAlphaColor;
 begin
-  Result := ComboColorBox1.Color;
+  Result := ColorPicker.Color;
 end;
 
 function TColorPickerFrame.GetExtraText: string;
@@ -67,7 +67,7 @@ function TColorPickerFrame.SetColor(
   const AColor: TAlphaColor): TColorPickerFrame;
 begin
   Result := Self;
-  ComboColorBox1.Color := AColor;
+  ColorPicker.Color := AColor;
 end;
 
 function TColorPickerFrame.SetExtraText(const AExtraText: string): TColorPickerFrame;

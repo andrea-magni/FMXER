@@ -26,7 +26,8 @@ implementation
 
 uses
   FMXER.Navigator
-, Routes.home
+, Routes.home, Routes.colorPicker
+, Data.Main
 ;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -34,6 +35,28 @@ begin
   Navigator(FormStand1);
 
   DefineHomeRoute('home');
+  DefineColorPickerRoute('QRCodeColorSelection'
+  , 'Foreground color'
+  , function : TAlphaColor
+    begin
+      Result := MainData.QRCodeColor;
+    end
+  , procedure (AColor: TAlphaColor)
+    begin
+      MainData.QRCodeColor := AColor;
+    end
+  );
+  DefineColorPickerRoute('QRCodeBGColorSelection'
+  , 'Background color'
+  , function : TAlphaColor
+    begin
+      Result := MainData.QRCodeBGColor;
+    end
+  , procedure (AColor: TAlphaColor)
+    begin
+      MainData.QRCodeBGColor := AColor;
+    end
+  );
 
   Navigator.OnCloseRoute :=
     procedure (ARouteName: string)

@@ -19,13 +19,13 @@ type
       const ABeforePaint: TOnBeforePaintHandler = nil; const ARadiusFactor: Single = 0.1): string;
   end;
 
-  procedure SvgToBitmap(const ASvg: string; const AColor: TAlphaColor;
+  procedure SvgToBitmap(const ASvg: string; const ABGColor, AColor: TAlphaColor;
     const AWidth, AHeight: Integer; const AOnReady: TProc<TBitmap>);
 
 implementation
 
 
-procedure SvgToBitmap(const ASvg: string; const AColor: TAlphaColor;
+procedure SvgToBitmap(const ASvg: string; const ABGColor, AColor: TAlphaColor;
   const AWidth, AHeight: Integer; const AOnReady: TProc<TBitmap>);
 const MARGIN = 20;
 var
@@ -38,7 +38,7 @@ begin
       var
         LSvgBrush: TSkSvgBrush;
       begin
-        ACanvas.Clear(TAlphaColorRec.White);
+        ACanvas.Clear(ABGColor);
 
         LSvgBrush := TSkSvgBrush.Create;
         try
