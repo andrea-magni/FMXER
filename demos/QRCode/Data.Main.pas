@@ -116,7 +116,7 @@ begin
     TQRCode.TextToSvg(QRCodeContent)
   , QRCodeBGColor
   , QRCodeColor
-  , 300, 300
+  , 1024, 1024
   , procedure (ABitmap: TBitmap)
     begin
       {$IFDEF MSWINDOWS} ABitmap.SaveToFile('C:\temp\qrcode.jpg'); {$ENDIF}
