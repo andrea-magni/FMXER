@@ -8,10 +8,11 @@ object EditFrame: TEditFrame
     Align = Client
     TabOrder = 0
     Margins.Left = 5.000000000000000000
+    Margins.Top = 5.000000000000000000
     Margins.Right = 5.000000000000000000
     Margins.Bottom = 5.000000000000000000
     Size.Width = 310.000000000000000000
-    Size.Height = 40.000000000000000000
+    Size.Height = 70.000000000000000000
     Size.PlatformDefault = False
     OnChange = EditControlChange
     OnChangeTracking = EditControlChangeTracking
@@ -40,9 +41,9 @@ object EditFrame: TEditFrame
     Position.X = 5.000000000000000000
     Position.Y = 5.000000000000000000
     Size.Width = 310.000000000000000000
-    Size.Height = 30.000000000000000000
+    Size.Height = 0.000000000000000000
     Size.PlatformDefault = False
-    AutoSize = False
+    Visible = False
     Words = <
       item
       end>

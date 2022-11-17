@@ -92,6 +92,7 @@ function TEditFrame.SetCaption(const ACaption: string): TEditFrame;
 begin
   Result := Self;
   CaptionLabel.Text := ACaption;
+  CaptionLabel.Visible := not CaptionLabel.Text.IsEmpty;
 end;
 
 function TEditFrame.SetExtraText(const AExtraText: string): TEditFrame;

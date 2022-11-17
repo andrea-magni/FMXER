@@ -13,7 +13,8 @@ uses
   FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc,
   FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm,
   FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ButtonFrame,
-  FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame
+  FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame,
+  FMXER.HorzPairFrame
 , Data.Main
 ;
 
@@ -30,13 +31,12 @@ begin
         begin
           Col
           .AddFrame<TEditFrame>(
-            90
+            50
           , procedure (Frame: TEditFrame)
             begin
               Frame
 //              .SetCaption('Content')
               .SetTextPrompt('QRCode content here')
-//              .SetMarginT(5)
               ;
 
               Frame.OnChangeProc :=
@@ -46,60 +46,56 @@ begin
                 end;
             end
           )
-          .AddForm<TRowForm>(
-            75
-          , procedure (Row: TRowForm)
+          .AddFrame<THorzPairFrame>(
+            50
+          , procedure (Pair: THorzPairFrame)
             begin
-              Row
-              .AddFrame<TButtonFrame>(
-                100
-              , procedure (Frame: TButtonFrame)
+              Pair
+              .SetContentAsFrame<TButtonFrame, TButtonFrame>(
+                procedure (Button: TButtonFrame)
                 begin
-                  Frame
+                  Button
                   .SetText('QR color')
-                  .SetMargin(5, 0, 0, 0);
+                  .SetMargin(5);
 
-                  Frame.OnClickHandler :=
+                  Button.OnClickHandler :=
                     procedure
                     begin
                       Navigator.RouteTo('QRCodeColorSelection');
                     end;
                 end
-              )
-              .AddFrame<TButtonFrame>(
-                100
-              , procedure (Frame: TButtonFrame)
+              , procedure (Button: TButtonFrame)
                 begin
-                  Frame
+                  Button
                   .SetText('BG color')
-                  .SetMargin(5, 0, 0, 0);
+                  .SetMargin(5);
 
-                  Frame.OnClickHandler :=
+                  Button.OnClickHandler :=
                     procedure
                     begin
                       Navigator.RouteTo('QRCodeBGColorSelection');
                     end;
                 end
-              )
-              .AddFrame<TTrackbarFrame>(
-                150
-              , procedure (Frame: TTrackbarFrame)
-                begin
-                  Frame
-                  .SetCaption('Radius factor')
-                  .SetValue(MainData.QRRadiusFactor)
-                  .SetMin(0.001)
-                  .SetMax(0.5)
-                  .SetFrequency(0.01)
-                  .SetMargin(5, 0, 0, 0);
-
-                  Frame.OnChangeProc :=
-                    procedure (ARadiusFactor: Single)
-                    begin
-                      MainData.QRRadiusFactor := ARadiusFactor;
-                    end;
-                end
               );
+            end
+          )
+          .AddFrame<TTrackbarFrame>(
+            75
+          , procedure (Frame: TTrackbarFrame)
+            begin
+              Frame
+              .SetCaption('Radius factor')
+              .SetValue(MainData.QRRadiusFactor)
+              .SetMin(0.001)
+              .SetMax(0.5)
+              .SetFrequency(0.01)
+              .SetMargin(5, 0, 5, 0);
+
+              Frame.OnChangeProc :=
+                procedure (ARadiusFactor: Single)
+                begin
+                  MainData.QRRadiusFactor := ARadiusFactor;
+                end;
             end
           )
           .AddFrame<TStackFrame>(
@@ -141,7 +137,7 @@ begin
                   );
                 end
               )
-              .SetMarginT(10);
+              .SetMarginT(5);
             end
           )
         end

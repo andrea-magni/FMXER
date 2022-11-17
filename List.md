@@ -12,6 +12,7 @@
 1. EditFrame
 1. GlyphFrame
 1. HorzDividerFrame
+1. HorzPairFrame
 1. HorzScrollFrame
 1. IconFontsGlyphFrame
 1. ImageFrame

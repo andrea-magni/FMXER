@@ -1,0 +1,48 @@
+object HorzPairFrame: THorzPairFrame
+  Align = Client
+  Size.Width = 400.000000000000000000
+  Size.Height = 200.000000000000000000
+  Size.PlatformDefault = False
+  object ContentLayout: TLayout
+    Align = Client
+    Size.Width = 400.000000000000000000
+    Size.Height = 200.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    object LeftContentLayout: TLayout
+      Align = Scale
+      Size.Width = 200.000000000000000000
+      Size.Height = 200.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    object RightContentLayout: TLayout
+      Align = Scale
+      Position.X = 200.000000000000000000
+      Size.Width = 200.000000000000000000
+      Size.Height = 200.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+    end
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    Left = 24
+    Top = 8
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 24
+    Top = 56
+  end
+end
