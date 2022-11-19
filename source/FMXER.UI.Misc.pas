@@ -72,6 +72,7 @@ type
     function SetHeight(const AHeight: Single): TControl;
   end;
 
+  TCaptionPosition = (Left, Right, Top, Bottom);
 
   // shortcut function
   function Param(const AName: string; const AValue: TValue): TNameValueParam; overload;

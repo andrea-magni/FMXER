@@ -6,12 +6,11 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, SubjectStand, FMX.Ani, FMX.Layouts,
-  FMX.ListBox, FMX.Colors, Skia, Skia.FMX;
+  FMX.ListBox, FMX.Colors, Skia, Skia.FMX, FMXER.UI.Misc;
 
 type
   TTrackbarFrame = class(TFrame)
     ExtraLabel: TSkLabel;
-    ColorAnimation1: TColorAnimation;
     CaptionLabel: TSkLabel;
     TrackBar1: TTrackBar;
     procedure TrackBar1Change(Sender: TObject);
@@ -28,12 +27,14 @@ type
     function GetFrequency: Single;
 
     function SetCaption(const ACaption: string): TTrackbarFrame;
+    function SetCaptionPosition(const ACaptionPosition: TCaptionPosition; const AMargin: Single = 5): TTrackbarFrame;
     function SetFrequency(const AFrequency: Single): TTrackbarFrame;
     function SetValue(const AValue: Single): TTrackbarFrame;
     function SetMax(const AMax: Single): TTrackbarFrame;
     function SetMin(const AMin: Single): TTrackbarFrame;
     function SetTracking(const ATracking: Boolean): TTrackbarFrame;
     function SetExtraText(const AExtraText: string): TTrackbarFrame;
+    function SetOnChangeProc(const AOnChangeProc: TProc<Single>): TTrackbarFrame;
 
     property OnChangeProc: TProc<Single> read FOnChangeProc write FOnChangeProc;
   end;
@@ -83,6 +84,35 @@ function TTrackbarFrame.SetCaption(const ACaption: string): TTrackbarFrame;
 begin
   Result := Self;
   CaptionLabel.Text := ACaption;
+  CaptionLabel.Visible := not CaptionLabel.Text.IsEmpty;
+end;
+
+function TTrackbarFrame.SetCaptionPosition(
+  const ACaptionPosition: TCaptionPosition; const AMargin: Single): TTrackbarFrame;
+begin
+  Result := Self;
+  case ACaptionPosition of
+    TCaptionPosition.Left:
+      begin
+        CaptionLabel.Align := TAlignLayout.Left;
+        CaptionLabel.SetMargin(0, 0, AMargin, 0);
+      end;
+    TCaptionPosition.Right:
+      begin
+        CaptionLabel.Align := TAlignLayout.Right;
+        CaptionLabel.SetMargin(AMargin, 0, 0, 0);
+      end;
+    TCaptionPosition.Top:
+      begin
+        CaptionLabel.Align := TAlignLayout.Top;
+        CaptionLabel.SetMargin(0, 0, 0, AMargin);
+      end;
+    TCaptionPosition.Bottom:
+      begin
+        CaptionLabel.Align := TAlignLayout.Bottom;
+        CaptionLabel.SetMargin(0, AMargin, 0, 0);
+      end;
+  end;
 end;
 
 function TTrackbarFrame.SetExtraText(const AExtraText: string): TTrackbarFrame;
@@ -108,6 +138,13 @@ function TTrackbarFrame.SetMin(const AMin: Single): TTrackbarFrame;
 begin
   Result := Self;
   Trackbar1.Min := AMin;
+end;
+
+function TTrackbarFrame.SetOnChangeProc(
+  const AOnChangeProc: TProc<Single>): TTrackbarFrame;
+begin
+  Result := Self;
+  OnChangeProc := AOnChangeProc;
 end;
 
 function TTrackbarFrame.SetTracking(const ATracking: Boolean): TTrackbarFrame;

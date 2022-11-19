@@ -14,7 +14,7 @@ uses
   FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm,
   FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ButtonFrame,
   FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame,
-  FMXER.HorzPairFrame
+  FMXER.HorzPairFrame, FMXER.AccessoryFrame, FMXER.LogoFrame
 , Data.Main
 ;
 
@@ -35,8 +35,8 @@ begin
           , procedure (Frame: TEditFrame)
             begin
               Frame
-//              .SetCaption('Content')
               .SetTextPrompt('QRCode content here')
+              .SetPadding(5)
               ;
 
               Frame.OnChangeProc :=
@@ -56,7 +56,7 @@ begin
                 begin
                   Button
                   .SetText('QR color')
-                  .SetMargin(5);
+                  .SetMargin(0, 0, 2.5, 0);
 
                   Button.OnClickHandler :=
                     procedure
@@ -68,7 +68,7 @@ begin
                 begin
                   Button
                   .SetText('BG color')
-                  .SetMargin(5);
+                  .SetMargin(2.5, 0, 0, 0);
 
                   Button.OnClickHandler :=
                     procedure
@@ -76,26 +76,37 @@ begin
                       Navigator.RouteTo('QRCodeBGColorSelection');
                     end;
                 end
-              );
+              )
+              .SetPadding(5);
             end
           )
+//          .AddFrame<TAccessoryFrame>(
+//            50
+//          , procedure (Frame: TAccessoryFrame)
+//            begin
+//              Frame.SetContentAsFrame<TTrackbarFrame>;
+//              Frame.SetLeftAsFrame<TLogoFrame>(50);
+//              Frame.SetRightAsFrame<TLogoFrame>(50);
+//            end
+//          )
           .AddFrame<TTrackbarFrame>(
-            75
+            50
           , procedure (Frame: TTrackbarFrame)
             begin
               Frame
               .SetCaption('Radius factor')
+              .SetCaptionPosition(TCaptionPosition.Left)
               .SetValue(MainData.QRRadiusFactor)
               .SetMin(0.001)
               .SetMax(0.5)
               .SetFrequency(0.01)
-              .SetMargin(5, 0, 5, 0);
-
-              Frame.OnChangeProc :=
+              .SetPadding<TTrackbarFrame>(5)
+              .SetOnChangeProc(
                 procedure (ARadiusFactor: Single)
                 begin
                   MainData.QRRadiusFactor := ARadiusFactor;
-                end;
+                end
+              );
             end
           )
           .AddFrame<TStackFrame>(
@@ -137,9 +148,10 @@ begin
                   );
                 end
               )
-              .SetMarginT(5);
+              .SetPadding(5);
             end
           )
+          ;
         end
       )
       .AddActionButton('Share'

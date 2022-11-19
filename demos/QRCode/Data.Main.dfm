@@ -1,12 +1,20 @@
 object MainData: TMainData
   OnCreate = DataModuleCreate
-  Height = 480
-  Width = 640
+  Height = 960
+  Width = 1280
+  PixelsPerInch = 192
   object ActionList1: TActionList
-    Left = 56
-    Top = 40
+    Left = 112
+    Top = 80
     object ShowShareSheetAction1: TShowShareSheetAction
       Category = 'Media Library'
     end
+  end
+  object RadiusFactorDeferTimer: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = RadiusFactorDeferTimerTimer
+    Left = 120
+    Top = 216
   end
 end

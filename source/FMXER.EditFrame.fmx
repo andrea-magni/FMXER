@@ -7,21 +7,14 @@ object EditFrame: TEditFrame
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     Align = Client
     TabOrder = 0
-    Margins.Left = 5.000000000000000000
-    Margins.Top = 5.000000000000000000
-    Margins.Right = 5.000000000000000000
-    Margins.Bottom = 5.000000000000000000
-    Size.Width = 310.000000000000000000
-    Size.Height = 70.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 80.000000000000000000
     Size.PlatformDefault = False
     OnChange = EditControlChange
     OnChangeTracking = EditControlChangeTracking
   end
   object ExtraLabel: TSkLabel
     Align = Bottom
-    Margins.Left = 5.000000000000000000
-    Margins.Right = 5.000000000000000000
-    Margins.Bottom = 5.000000000000000000
     Position.X = 5.000000000000000000
     Position.Y = 75.000000000000000000
     Size.Width = 310.000000000000000000
@@ -35,9 +28,6 @@ object EditFrame: TEditFrame
   end
   object CaptionLabel: TSkLabel
     Align = Top
-    Margins.Left = 5.000000000000000000
-    Margins.Top = 5.000000000000000000
-    Margins.Right = 5.000000000000000000
     Position.X = 5.000000000000000000
     Position.Y = 5.000000000000000000
     Size.Width = 310.000000000000000000

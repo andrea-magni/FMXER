@@ -4,13 +4,15 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.Actions, FMX.ActnList, FMX.StdActns,
-  FMX.MediaLibrary.Actions, FMX.Graphics, UITypes;
+  FMX.MediaLibrary.Actions, FMX.Graphics, UITypes, FMX.Types;
 
 type
   TMainData = class(TDataModule)
     ActionList1: TActionList;
     ShowShareSheetAction1: TShowShareSheetAction;
+    RadiusFactorDeferTimer: TTimer;
     procedure DataModuleCreate(Sender: TObject);
+    procedure RadiusFactorDeferTimerTimer(Sender: TObject);
   private
     FQRCodeChangeListeners: TArray<TProc>;
     FQRCodeContent: string;
@@ -71,6 +73,12 @@ begin
     LListener();
 end;
 
+procedure TMainData.RadiusFactorDeferTimerTimer(Sender: TObject);
+begin
+  RadiusFactorDeferTimer.Enabled := False;
+  NotifyQRCodeChange;
+end;
+
 procedure TMainData.SetQRCodeBGColor(const Value: TAlphaColor);
 begin
   if FQRCodeBGColor <> Value then
@@ -99,14 +107,12 @@ begin
 end;
 
 procedure TMainData.SetQRRadiusFactor(const Value: Single);
-var
-  LValue: Single;
 begin
-  LValue := RoundTo(Value, -2);
-  if (FQRRadiusFactor <> LValue) then
+  if (FQRRadiusFactor <> Value) then
   begin
-    FQRRadiusFactor := LValue;
-    NotifyQRCodeChange;
+    FQRRadiusFactor := Value;
+    RadiusFactorDeferTimer.Enabled := False;
+    RadiusFactorDeferTimer.Enabled := True;
   end;
 end;
 

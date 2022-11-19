@@ -1,0 +1,50 @@
+object AccessoryFrame: TAccessoryFrame
+  Align = Client
+  Size.Width = 600.000000000000000000
+  Size.Height = 150.000000000000000000
+  Size.PlatformDefault = False
+  object LeftLayout: TLayout
+    Align = Left
+    Size.Width = 100.000000000000000000
+    Size.Height = 150.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    TabOrder = 0
+  end
+  object ContentLayout: TLayout
+    Align = Client
+    Size.Width = 600.000000000000000000
+    Size.Height = 150.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object RightLayout: TLayout
+    Align = Right
+    Position.X = 500.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 150.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    TabOrder = 2
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    Left = 50
+    Top = 8
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 50
+    Top = 64
+  end
+end

@@ -1,4 +1,5 @@
 # Frames:
+1. AccessoryFrame
 1. ActionButtonFrame
 1. ActivityBubblesFrame
 1. AnimatedImageFrame

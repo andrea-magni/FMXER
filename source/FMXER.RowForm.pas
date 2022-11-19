@@ -33,6 +33,8 @@ type
       const AConfigProc: TProc<T> = nil): TRowForm; overload;
     function AddForm<T: TForm>(const AColDef: TElementDef<T>): TRowForm; overload;
 
+    function GetContent: TLayout; virtual;
+
     property ElementStand: string read FElementStand write FElementStand;
     property ElementAlign: TAlignLayout read FElementAlign write FElementAlign;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -127,6 +129,11 @@ begin
   FrameStand1.CloseAll();
   FreeAndNil(FElements);
   inherited;
+end;
+
+function TRowForm.GetContent: TLayout;
+begin
+  Result := ContentLayout;
 end;
 
 function TRowForm.AddForm<T>(const AColDef: TElementDef<T>): TRowForm;

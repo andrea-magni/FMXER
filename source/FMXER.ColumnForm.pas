@@ -32,6 +32,8 @@ type
       const AConfigProc: TProc<T> = nil): TColumnForm; overload;
     function AddForm<T: TForm>(const AColDef: TElementDef<T>): TColumnForm; overload;
 
+    function GetContent: TLayout; virtual;
+
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
   end;
@@ -131,6 +133,11 @@ begin
   FrameStand1.CloseAll();
   FreeAndNil(FElements);
   inherited;
+end;
+
+function TColumnForm.GetContent: TLayout;
+begin
+  Result := ContentLayout;
 end;
 
 end.
