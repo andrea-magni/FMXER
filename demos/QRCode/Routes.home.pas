@@ -30,134 +30,38 @@ begin
         procedure (Col: TColumnForm)
         begin
           Col
-          .AddFrame<TEditFrame>(
+          .AddFrame<TButtonFrame>(
             50
-          , procedure (Frame: TEditFrame)
+          , procedure (Button: TButtonFrame)
             begin
-              Frame
-              .SetTextPrompt('QRCode content here')
-              .SetPadding(5)
-              ;
-
-              Frame.OnChangeProc :=
-                procedure (ATracking: Boolean)
+              Button
+              .SetText('Generator')
+              .SetOnClickHandler(
+                procedure
                 begin
-                  MainData.QRCodeContent := Frame.GetText;
-                end;
-            end
-          )
-          .AddFrame<THorzPairFrame>(
-            50
-          , procedure (Pair: THorzPairFrame)
-            begin
-              Pair
-              .SetContentAsFrame<TButtonFrame, TButtonFrame>(
-                procedure (Button: TButtonFrame)
-                begin
-                  Button
-                  .SetText('QR color')
-                  .SetMargin(0, 0, 2.5, 0);
-
-                  Button.OnClickHandler :=
-                    procedure
-                    begin
-                      Navigator.RouteTo('QRCodeColorSelection');
-                    end;
-                end
-              , procedure (Button: TButtonFrame)
-                begin
-                  Button
-                  .SetText('BG color')
-                  .SetMargin(2.5, 0, 0, 0);
-
-                  Button.OnClickHandler :=
-                    procedure
-                    begin
-                      Navigator.RouteTo('QRCodeBGColorSelection');
-                    end;
+                  Navigator.RouteTo('QRGenerator');
                 end
               )
-              .SetPadding(5);
+              .SetMargin(5);
             end
           )
-//          .AddFrame<TAccessoryFrame>(
-//            50
-//          , procedure (Frame: TAccessoryFrame)
-//            begin
-//              Frame.SetContentAsFrame<TTrackbarFrame>;
-//              Frame.SetLeftAsFrame<TLogoFrame>(50);
-//              Frame.SetRightAsFrame<TLogoFrame>(50);
-//            end
-//          )
-          .AddFrame<TTrackbarFrame>(
+          .AddFrame<TButtonFrame>(
             50
-          , procedure (Frame: TTrackbarFrame)
+          , procedure (Button: TButtonFrame)
             begin
-              Frame
-              .SetCaption('Radius factor')
-              .SetCaptionPosition(TCaptionPosition.Left)
-              .SetValue(MainData.QRRadiusFactor)
-              .SetMin(0.001)
-              .SetMax(0.5)
-              .SetFrequency(0.01)
-              .SetPadding<TTrackbarFrame>(5)
-              .SetOnChangeProc(
-                procedure (ARadiusFactor: Single)
+              Button
+              .SetText('Reader')
+              .SetOnClickHandler(
+                procedure
                 begin
-                  MainData.QRRadiusFactor := ARadiusFactor;
-                end
-              );
-            end
-          )
-          .AddFrame<TStackFrame>(
-            Home.Width
-          , procedure (Stack: TStackFrame)
-            begin
-              var LBGFrame: TBackgroundFrame;
-
-              Stack
-              .AddFrame<TBackgroundFrame>(
-                procedure (BGFrame: TBackgroundFrame)
-                begin
-                  BGFrame.SetFillColor(MainData.QRCodeBGColor);
-                  LBGFrame := BGFrame;
+                  MainData.CameraStart;
+                  Navigator.RouteTo('QRReader');
                 end
               )
-              .AddFrame<TQRCodeFrame>(
-                procedure (AQR: TQRCodeFrame)
-                begin
-                  AQR
-                  .SetContent(MainData.QRCodeContent)
-                  .SetOverrideColor(MainData.QRCodeColor)
-                  .SetRadiusFactor(MainData.QRRadiusFactor)
-                  .SetAlignClient
-                  .SetMargin(20)
-                  .SetHitTest(True);
-
-                  MainData.SubscribeQRCodeChange(
-                    procedure
-                    begin
-                      AQR
-                      .SetContent(MainData.QRCodeContent)
-                      .SetOverrideColor(MainData.QRCodeColor)
-                      .SetRadiusFactor(MainData.QRRadiusFactor);
-
-                      LBGFrame
-                      .SetFillColor(MainData.QRCodeBGColor);
-                    end
-                  );
-                end
-              )
-              .SetPadding(5);
+              .SetMargin(5);
             end
           )
-          ;
-        end
-      )
-      .AddActionButton('Share'
-      , procedure
-        begin
-          MainData.ShareQRCodeContent;
+          .SetPadding(5);
         end
       );
     end

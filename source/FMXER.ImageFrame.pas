@@ -20,6 +20,7 @@ type
    protected
        procedure HitTestChanged; override;
   public
+
     property Image: TImage read ContentImage;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;

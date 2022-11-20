@@ -7,7 +7,9 @@ uses
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Routes.home in 'Routes.home.pas',
   Data.Main in 'Data.Main.pas' {MainData: TDataModule},
-  Routes.colorPicker in 'Routes.colorPicker.pas';
+  Routes.colorPicker in 'Routes.colorPicker.pas',
+  Routes.QRGenerator in 'Routes.QRGenerator.pas',
+  Routes.QRReader in 'Routes.QRReader.pas';
 
 {$R *.res}
 

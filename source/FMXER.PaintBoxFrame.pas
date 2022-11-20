@@ -22,6 +22,9 @@ type
     FOnTapHandler: TOnTapHandler;
     FOnDrawHandler: TOnDrawHandler;
   public
+    function SetOnDrawHandler(const ADrawHandler: TOnDrawHandler): TPaintBoxFrame;
+    function SetOnTapHandler(const ATapHandler: TOnTapHandler): TPaintBoxFrame;
+
     property OnDrawHandler: TOnDrawHandler read FOnDrawHandler write FOnDrawHandler;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;
@@ -49,6 +52,20 @@ procedure TPaintBoxFrame.PaintBoxTap(Sender: TObject; const Point: TPointF);
 begin
   if Assigned(FOnTapHandler) then
     FOnTapHandler(PaintBox, Point);
+end;
+
+function TPaintBoxFrame.SetOnDrawHandler(
+  const ADrawHandler: TOnDrawHandler): TPaintBoxFrame;
+begin
+  Result := Self;
+  OnDrawHandler := ADrawHandler;
+end;
+
+function TPaintBoxFrame.SetOnTapHandler(
+  const ATapHandler: TOnTapHandler): TPaintBoxFrame;
+begin
+  Result := Self;
+  OnTapHandler := ATapHandler;
 end;
 
 end.

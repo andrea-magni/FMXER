@@ -12,9 +12,7 @@ type
     FormStand1: TFormStand;
     procedure FormCreate(Sender: TObject);
   private
-    { Private declarations }
   public
-    { Public declarations }
   end;
 
 var
@@ -26,7 +24,10 @@ implementation
 
 uses
   FMXER.Navigator
-, Routes.home, Routes.colorPicker
+, Routes.home
+, Routes.colorPicker
+, Routes.QRGenerator
+, Routes.QRReader
 , Data.Main
 ;
 
@@ -35,6 +36,10 @@ begin
   Navigator(FormStand1);
 
   DefineHomeRoute('home');
+
+  DefineQRGeneratorRoute('QRGenerator');
+  DefineQRReaderRoute('QRReader');
+
   DefineColorPickerRoute('QRCodeColorSelection'
   , 'Foreground color'
   , function : TAlphaColor

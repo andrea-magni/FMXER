@@ -303,6 +303,8 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="Routes.colorPicker.pas"/>
+        <DCCReference Include="Routes.QRGenerator.pas"/>
+        <DCCReference Include="Routes.QRReader.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
