@@ -3,28 +3,36 @@ unit Routes.QRReader;
 interface
 
 uses
-  Classes, SysUtils, Types, UITypes, FMX.Types, FMX.Graphics;
+  Classes, SysUtils, Types, UITypes;
 
 procedure DefineQRReaderRoute(const ARouteName: string);
 
 implementation
 
 uses
-  FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc,
-  FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm,
-  FMXER.PaintBoxFrame, FMXER.ButtonFrame, FMXER.StackFrame, FMXER.BackgroundFrame,
-  FMXER.HorzPairFrame, FMXER.AccessoryFrame, FMXER.LogoFrame
-, Data.Main, Skia, Skia.FMX, Skia.FMX.Graphics
+  DateUtils, FMX.Types, FMX.Graphics, FMX.DialogService
+, ZXing.ReadResult
+, Skia, Skia.FMX, Skia.FMX.Graphics
+, FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
+, FMXER.ScaffoldForm, FMXER.ColumnForm
+, FMXER.PaintBoxFrame, FMXER.ButtonFrame, FMXER.StackFrame, FMXER.BackgroundFrame
+, FMXER.HorzPairFrame
+, Data.Main
+//, CodeSiteLogging
 ;
+
+const QUEUE_INTERVAL = 100;
 
 
 procedure DefineQRReaderRoute(const ARouteName: string);
 begin
+  var LLastQueueOp := Now;
+
   Navigator.DefineRoute<TScaffoldForm>(
     ARouteName
-  , procedure (Home: TScaffoldForm)
+  , procedure (Scaffold: TScaffoldForm)
     begin
-      Home
+      Scaffold
       .SetTitle('Reader')
       .SetContentAsFrame<TBackgroundFrame>(
         procedure (BGFrame: TBackgroundFrame)
@@ -69,17 +77,8 @@ begin
                   .SetPadding(5);
                 end
               )
-    //          .AddFrame<TAccessoryFrame>(
-    //            50
-    //          , procedure (Frame: TAccessoryFrame)
-    //            begin
-    //              Frame.SetContentAsFrame<TTrackbarFrame>;
-    //              Frame.SetLeftAsFrame<TLogoFrame>(50);
-    //              Frame.SetRightAsFrame<TLogoFrame>(50);
-    //            end
-    //          )
               .AddFrame<TStackFrame>(
-                Home.Width
+                Scaffold.Width
               , procedure (Stack: TStackFrame)
                 begin
                   var LBGFrame: TBackgroundFrame;
@@ -101,11 +100,22 @@ begin
                       .SetOnDrawHandler(
                         procedure(const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single)
                         begin
+                          var LOffsetX := -((MainData.ImageFrame.Width - ADest.Width) / 2);
+                          var LOffsetY := -((MainData.ImageFrame.Height - ADest.Height) / 2);
+
+                          var LPaint: ISkPaint := TSkPaint.Create;
+                          var LSkImage := MainData.ImageFrame.ToSkImage();
                           ACanvas.DrawImage(
-                            MainData.ImageFrame.ToSkImage()
-                          , -((MainData.ImageFrame.Width - ADest.Width) / 2)
-                          , -((MainData.ImageFrame.Height - ADest.Height) / 2)
+                            LSkImage, LOffsetX, LOffsetY, LPaint
                           );
+
+                          for var LPoint in MainData.ScanPoints do
+                          begin
+                            LPoint.Offset(LOffsetX, LOffsetY);
+                            LPaint.Color := TAlphaColorRec.Red;
+                            LPaint.Alpha := $80;
+                            ACanvas.DrawCircle(LPoint, 10, LPaint);
+                          end;
                         end
                       );
 
@@ -113,8 +123,19 @@ begin
                         procedure (ABitmap: TBitmap)
                         begin
                           PaintBoxFrame.PaintBox.Redraw;
+                          if MillisecondsBetween(LLastQueueOp, Now) > QUEUE_INTERVAL then
+                          begin
+                            MainData.QueueFrameForScan(ABitmap);
+                            LLastQueueOp := Now;
+                          end;
                         end
                       );
+
+                      MainData.OnScanResult :=
+                        procedure (AResult: TReadResult)
+                        begin
+                          Scaffold.ShowSnackBar(AResult.Text, 3000);
+                        end;
                     end
                   )
                   .SetPadding(5);
@@ -127,8 +148,7 @@ begin
       .AddActionButton('Back'
       , procedure
         begin
-          MainData.ClearImageFrameSubscribers;
-          MainData.CameraStop;
+          MainData.CameraStop(True);
           Navigator.CloseRoute(ARouteName);
         end
       );

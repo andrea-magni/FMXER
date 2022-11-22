@@ -4,8 +4,12 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.Actions, System.Permissions, System.Types,
+  Generics.Collections, SyncObjs,
   FMX.ActnList, FMX.StdActns, FMX.MediaLibrary.Actions, FMX.Graphics, UITypes,
-  FMX.Types, FMX.Media;
+  FMX.Types, FMX.Media
+, ZXing.ScanManager, ZXing.BarcodeFormat, ZXing.ReadResult, ZXing.ResultPoint
+, Threads.Scanner
+;
 
 type
   TMainData = class(TDataModule)
@@ -19,6 +23,7 @@ type
       const ATime: TMediaTime);
     procedure DataModuleDestroy(Sender: TObject);
   private
+    FScannerCS: TCriticalSection;
     FQRCodeChangeListeners: TArray<TProc>;
     FImageFrameAvailableListeners: TArray<TProc<TBitmap>>;
     FQRCodeContent: string;
@@ -27,6 +32,10 @@ type
     FQRRadiusFactor: Single;
     FImageFrame: TBitmap;
     FPermissionCamera: string;
+    FScanner: TScannerThread;
+    FFrameToScanQueue: TQueue<TBitmap>;
+    FScanPoints: TList<TPointF>;
+    FOnScanResult: TProc<TReadResult>;
     procedure SetQRCodeColor(const Value: TAlphaColor);
     procedure SetQRRadiusFactor(const Value: Single);
     procedure SetQRCodeBGColor(const Value: TAlphaColor);
@@ -42,13 +51,28 @@ type
     procedure ClearImageFrameSubscribers;
     procedure ShareQRCodeContent;
     procedure CameraStart;
-    procedure CameraStop;
+    procedure CameraStop(const AClearSubscribers: Boolean);
+
+    // non trivial thread procedures -------------------------------------------
+    procedure AddScanPoint(const APoint: TPointF);
+    function ScanPoints: TArray<TPointF>;
+
+    // NB: the caller is now the owner of the TBitmap instance
+    // NB: if no frame is present in the queue, returns nil
+    function DequeueFrameToScan: TBitmap;
+    procedure QueueFrameForScan(const ABitmap: TBitmap);
+    procedure CollectScanResult(const AResult: TReadResult);
+    // -------------------------------------------------------------------------
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
     property QRCodeColor: TAlphaColor read FQRCodeColor write SetQRCodeColor;
     property QRCodeBGColor: TAlphaColor read FQRCodeBGColor write SetQRCodeBGColor;
     property QRRadiusFactor: Single read FQRRadiusFactor write SetQRRadiusFactor;
     property ImageFrame: TBitmap read FImageFrame;
+    property FrameToScanQueue: TQueue<TBitmap> read FFrameToScanQueue;
+    property OnScanResult: TProc<TReadResult> read FOnScanResult write FOnScanResult;
+
+    const MAX_SCAN_POINTS = 10;
   end;
 
   function MainData: TMainData;
@@ -60,15 +84,14 @@ implementation
 {$R *.dfm}
 
 uses
-  Math,
+  Math, FMX.Platform, FMX.DialogService
 {$IFDEF ANDROID}
-  Androidapi.Helpers,
-  Androidapi.JNI.JavaTypes,
-  Androidapi.JNI.Os,
+, Androidapi.Helpers, Androidapi.JNI.JavaTypes, Androidapi.JNI.Os
 {$ENDIF}
-  FMX.Platform, FMX.DialogService,
-  Skia, Skia.FMX.Graphics,
-  QRCode.Utils, FMXER.UI.Consts, QRCode.Render;
+, Skia, Skia.FMX.Graphics
+, QRCode.Utils, FMXER.UI.Consts, QRCode.Render
+//, CodeSiteLogging
+;
 
 var
   _Instance: TMainData = nil;
@@ -81,6 +104,19 @@ begin
 end;
 
 { TMainData }
+
+procedure TMainData.AddScanPoint(const APoint: TPointF);
+begin
+  FScannerCS.Enter;
+  try
+    while FScanPoints.Count > MAX_SCAN_POINTS do
+      FScanPoints.Delete(0);
+
+    FScanPoints.Add(APoint);
+  finally
+    FScannerCS.Leave;
+  end;
+end;
 
 procedure TMainData.CameraComponent1SampleBufferReady(Sender: TObject;
   const ATime: TMediaTime);
@@ -107,8 +143,11 @@ begin
   CameraComponent1.Active := True;
 end;
 
-procedure TMainData.CameraStop;
+procedure TMainData.CameraStop(const AClearSubscribers: Boolean);
 begin
+  if AClearSubscribers then
+    ClearImageFrameSubscribers;
+
   CameraComponent1.Active := False;
 end;
 
@@ -117,12 +156,28 @@ begin
   FImageFrameAvailableListeners := [];
 end;
 
+procedure TMainData.CollectScanResult(const AResult: TReadResult);
+begin
+  if not Assigned(FOnScanResult) then
+    Exit;
+
+  TThread.Synchronize(
+    nil
+  , procedure
+    begin
+      FOnScanResult(AResult);
+    end
+  );
+end;
+
 procedure TMainData.DataModuleCreate(Sender: TObject);
 begin
 {$IFDEF ANDROID}
   FPermissionCamera := JStringToString(TJManifest_permission.JavaClass.CAMERA);
 {$ENDIF}
-
+  FOnScanResult := nil;
+  FScanPoints := TList<TPointF>.Create;
+  FScannerCS := TCriticalSection.Create;
   FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
   FQRCodeColor := TAppColors.PrimaryColor;
   FQRCodeBGColor := TAlphaColorRec.White;
@@ -130,11 +185,35 @@ begin
   FQRCodeChangeListeners := [];
   FImageFrameAvailableListeners := [];
   FImageFrame := TBitmap.Create(512, 512);
+  FFrameToScanQueue := TQueue<TBitmap>.Create;
+  FScanner := TScannerThread.Create(False);
 end;
 
 procedure TMainData.DataModuleDestroy(Sender: TObject);
 begin
+  if Assigned(FScanner) then
+  begin
+    FScanner.Terminate;
+    FScanner.WaitFor;
+  end;
   FImageFrame.Free;
+  FFrameToScanQueue.Free;
+  FScanPoints.Free;
+  FScannerCS.Free;
+end;
+
+function TMainData.DequeueFrameToScan: TBitmap;
+begin
+  Result := nil;
+  if FFrameToScanQueue.Count > 0 then
+  begin
+    FScannerCS.Enter;
+    try
+      Result := FFrameToScanQueue.Dequeue;
+    finally
+      FScannerCS.Leave;
+    end;
+  end;
 end;
 
 procedure TMainData.DisplayRationale(Sender: TObject;
@@ -150,7 +229,7 @@ end;
 procedure TMainData.NotifyImageFrameAvailable;
 begin
   for var LListener in FImageFrameAvailableListeners do
-    LListener(nil);
+    LListener(FImageFrame);
 end;
 
 procedure TMainData.NotifyQRCodeChange;
@@ -177,6 +256,32 @@ procedure TMainData.RadiusFactorDeferTimerTimer(Sender: TObject);
 begin
   RadiusFactorDeferTimer.Enabled := False;
   NotifyQRCodeChange;
+end;
+
+procedure TMainData.QueueFrameForScan(const ABitmap: TBitmap);
+begin
+  if not Assigned(ABitmap) then
+    Exit;
+
+  FScannerCS.Enter;
+  try
+    FFrameToScanQueue.Enqueue(ABitmap);
+  finally
+    FScannerCS.Leave;
+  end;
+end;
+
+function TMainData.ScanPoints: TArray<TPointF>;
+begin
+  if not Assigned(FScanner) then
+    Exit;
+
+  FScannerCS.Enter;
+  try
+    Result := FScanPoints.ToArray;
+  finally
+    FScannerCS.Leave;
+  end;
 end;
 
 procedure TMainData.SetQRCodeBGColor(const Value: TAlphaColor);

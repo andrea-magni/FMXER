@@ -3,18 +3,17 @@ unit Routes.home;
 interface
 
 uses
-  Classes, SysUtils, Types, UITypes, FMX.Types;
+  Classes, SysUtils, Types, UITypes;
 
 procedure DefineHomeRoute(const AName: string);
 
 implementation
 
 uses
-  FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc,
-  FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm,
-  FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ButtonFrame,
-  FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame,
-  FMXER.HorzPairFrame, FMXER.AccessoryFrame, FMXER.LogoFrame
+  FMX.Types
+, FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
+, FMXER.ScaffoldForm, FMXER.ColumnForm
+, FMXER.ButtonFrame
 , Data.Main
 ;
 

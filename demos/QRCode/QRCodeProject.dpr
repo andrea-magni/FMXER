@@ -9,7 +9,8 @@ uses
   Data.Main in 'Data.Main.pas' {MainData: TDataModule},
   Routes.colorPicker in 'Routes.colorPicker.pas',
   Routes.QRGenerator in 'Routes.QRGenerator.pas',
-  Routes.QRReader in 'Routes.QRReader.pas';
+  Routes.QRReader in 'Routes.QRReader.pas',
+  Threads.Scanner in 'Threads.Scanner.pas';
 
 {$R *.res}
 

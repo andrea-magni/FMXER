@@ -3,18 +3,19 @@ unit Routes.QRGenerator;
 interface
 
 uses
-  Classes, SysUtils, Types, UITypes, FMX.Types;
+  Classes, SysUtils, Types, UITypes;
 
 procedure DefineQRGeneratorRoute(const ARouteName: string);
 
 implementation
 
 uses
-  FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc,
-  FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm,
-  FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ButtonFrame,
-  FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame,
-  FMXER.HorzPairFrame, FMXER.AccessoryFrame, FMXER.LogoFrame
+  FMX.Types
+, FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
+, FMXER.ScaffoldForm, FMXER.ColumnForm
+, FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ButtonFrame
+, FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame
+, FMXER.HorzPairFrame
 , Data.Main
 ;
 
@@ -86,15 +87,6 @@ begin
                   .SetPadding(5);
                 end
               )
-    //          .AddFrame<TAccessoryFrame>(
-    //            50
-    //          , procedure (Frame: TAccessoryFrame)
-    //            begin
-    //              Frame.SetContentAsFrame<TTrackbarFrame>;
-    //              Frame.SetLeftAsFrame<TLogoFrame>(50);
-    //              Frame.SetRightAsFrame<TLogoFrame>(50);
-    //            end
-    //          )
               .AddFrame<TTrackbarFrame>(
                 50
               , procedure (Frame: TTrackbarFrame)
