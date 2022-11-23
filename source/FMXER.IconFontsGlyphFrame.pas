@@ -15,9 +15,6 @@ type
     procedure AfterConstruction; override;
   end;
 
-var
-  IconFontsGlyphFrame: TIconFontsGlyphFrame;
-
 implementation
 
 {$R *.fmx}
