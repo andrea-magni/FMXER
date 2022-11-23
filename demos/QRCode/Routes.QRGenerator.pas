@@ -13,7 +13,7 @@ uses
   FMX.Types
 , FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.ColumnForm
-, FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ButtonFrame
+, FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ColorButtonFrame
 , FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame
 , FMXER.HorzPairFrame
 , Data.Main
@@ -26,6 +26,8 @@ begin
     ARouteName
   , procedure (Scaffold: TScaffoldForm)
     begin
+      MainData.ClearQRCodeChangeSubscribers;
+
       Scaffold
       .SetTitle('Generator')
       .SetContentAsFrame<TBackgroundFrame>(
@@ -59,10 +61,11 @@ begin
               , procedure (Pair: THorzPairFrame)
                 begin
                   Pair
-                  .SetContentAsFrame<TButtonFrame, TButtonFrame>(
-                    procedure (Button: TButtonFrame)
+                  .SetContentAsFrame<TColorButtonFrame, TColorButtonFrame>(
+                    procedure (Button: TColorButtonFrame)
                     begin
                       Button
+                      .SetColorValue(MainData.QRCodeColor)
                       .SetText('QR color')
                       .SetOnClickHandler(
                         procedure
@@ -71,10 +74,19 @@ begin
                         end
                       )
                       .SetMargin(0, 0, 2.5, 0);
+
+                      MainData.SubscribeQRCodeChange(
+                        procedure
+                        begin
+                          Button
+                          .SetColorValue(MainData.QRCodeColor);
+                        end
+                      );
                     end
-                  , procedure (Button: TButtonFrame)
+                  , procedure (Button: TColorButtonFrame)
                     begin
                       Button
+                      .SetColorValue(MainData.QRCodeBGColor)
                       .SetText('BG color')
                       .SetOnClickHandler(
                         procedure
@@ -83,6 +95,15 @@ begin
                         end
                       )
                       .SetMargin(2.5, 0, 0, 0);
+
+                      MainData.SubscribeQRCodeChange(
+                        procedure
+                        begin
+                          Button
+                          .SetColorValue(MainData.QRCodeBGColor);
+                        end
+                      );
+
                     end
                   )
                   .SetPadding(5);
@@ -132,8 +153,6 @@ begin
                       .SetAlignClient
                       .SetMargin(20)
                       .SetHitTest(True);
-
-                      MainData.ClearQRCodeChangeSubscribers;
 
                       MainData.SubscribeQRCodeChange(
                         procedure

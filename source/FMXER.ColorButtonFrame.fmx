@@ -1,0 +1,17 @@
+inherited ColorButtonFrame: TColorButtonFrame
+  inherited ButtonControl: TButton
+    object ColorRect: TRoundRect
+      Align = Right
+      HitTest = False
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 305.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 10.000000000000000000
+      Size.Height = 90.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+end
