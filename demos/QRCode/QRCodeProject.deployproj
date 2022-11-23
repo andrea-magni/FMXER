@@ -441,6 +441,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android\Debug\AndroidManifest.xml" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>AndroidManifest.xml</RemoteName>
@@ -473,24 +491,6 @@
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
