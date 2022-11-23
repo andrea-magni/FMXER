@@ -127,22 +127,28 @@ begin
            .AddFrame<TTextFrame>(100
              , procedure (AText: TTextFrame)
                begin
-                 AText.Content := 'Column route';
-                 AText.OnClickProc := procedure
-                                      begin
-                                        Navigator.RouteTo('column')
-                                      end;
+                 AText
+                 .SetContent('Column route')
+                 .SetOnClick(
+                   procedure
+                   begin
+                     Navigator.RouteTo('column')
+                   end
+                 );
                end
            )
            .AddFrame<THorzDividerFrame>(1) // ----------------------
            .AddFrame<TTextFrame>(100
              , procedure (AText: TTextFrame)
                begin
-                 AText.Content := 'Column with vert scroll route';
-                 AText.OnClickProc := procedure
-                                      begin
-                                        Navigator.RouteTo('vertScrollColumn')
-                                      end;
+                 AText
+                 .SetContent('Column with vert scroll route')
+                 .SetOnClick(
+                   procedure
+                   begin
+                     Navigator.RouteTo('vertScrollColumn')
+                   end
+                 );
                end
            );
          end

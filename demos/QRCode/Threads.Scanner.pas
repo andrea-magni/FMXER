@@ -35,15 +35,13 @@ begin
     while not Terminated do
     begin
 
-      var LFrameBitmap := MainData.DequeueFrameToScan;
+      var LFrameBitmap := MainData.DequeueFrame;
       if Assigned(LFrameBitmap) then
       begin
         var LReadResult := LScanManager.Scan(LFrameBitmap);
         try
           if Assigned(LReadResult) then
-          begin
-            MainData.CollectScanResult(LReadResult);
-          end;
+            MainData.NotifyScanResult(LReadResult, LFrameBitmap, True);
         finally
           FreeAndNil(LReadResult);
         end;

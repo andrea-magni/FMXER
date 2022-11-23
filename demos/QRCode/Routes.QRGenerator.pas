@@ -24,9 +24,9 @@ procedure DefineQRGeneratorRoute(const ARouteName: string);
 begin
   Navigator.DefineRoute<TScaffoldForm>(
     ARouteName
-  , procedure (Home: TScaffoldForm)
+  , procedure (Scaffold: TScaffoldForm)
     begin
-      Home
+      Scaffold
       .SetTitle('Generator')
       .SetContentAsFrame<TBackgroundFrame>(
         procedure (BGFrame: TBackgroundFrame)
@@ -42,6 +42,7 @@ begin
               , procedure (Frame: TEditFrame)
                 begin
                   Frame
+                  .SetText(MainData.QRCodeContent)
                   .SetTextPrompt('QRCode content here')
                   .SetPadding(5)
                   ;
@@ -108,7 +109,7 @@ begin
                 end
               )
               .AddFrame<TStackFrame>(
-                Home.Width
+                Scaffold.Width
               , procedure (Stack: TStackFrame)
                 begin
                   var LBGFrame: TBackgroundFrame;
@@ -131,6 +132,8 @@ begin
                       .SetAlignClient
                       .SetMargin(20)
                       .SetHitTest(True);
+
+                      MainData.ClearQRCodeChangeSubscribers;
 
                       MainData.SubscribeQRCodeChange(
                         procedure
@@ -162,6 +165,7 @@ begin
       .AddActionButton('Back'
       , procedure
         begin
+          MainData.ClearQRCodeChangeSubscribers;
           Navigator.CloseRoute(ARouteName);
         end
       );

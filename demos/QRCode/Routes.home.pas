@@ -13,7 +13,8 @@ uses
   FMX.Types
 , FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.ColumnForm
-, FMXER.ButtonFrame
+, FMXER.ButtonFrame, FMXER.AccessoryFrame
+, FMXER.IconFontsGlyphFrame, FMXER.IconFontsData
 , Data.Main
 ;
 
@@ -21,45 +22,77 @@ uses
 procedure DefineHomeRoute(const AName: string);
 begin
   Navigator.DefineRoute<TScaffoldForm>(AName
-  , procedure (Home: TScaffoldForm)
+  , procedure (Scaffold: TScaffoldForm)
     begin
-      Home
+      Scaffold
       .SetTitle('QRCode demo')
       .SetContentAsForm<TColumnForm>(
         procedure (Col: TColumnForm)
         begin
           Col
-          .AddFrame<TButtonFrame>(
-            50
-          , procedure (Button: TButtonFrame)
+
+          .AddFrame<TAccessoryFrame>(
+            70
+          , procedure (Accessory: TAccessoryFrame)
             begin
-              Button
-              .SetText('Generator')
-              .SetOnClickHandler(
-                procedure
+              Accessory
+              .SetContentAsFrame<TButtonFrame>(
+                procedure (Button: TButtonFrame)
                 begin
-                  Navigator.RouteTo('QRGenerator');
+                  Button
+                  .SetText('Generate')
+                  .SetOnClickHandler(
+                    procedure
+                    begin
+                      Navigator.RouteTo('QRGenerator');
+                    end
+                  )
+                  .SetMargin(5);
                 end
               )
-              .SetMargin(5);
-            end
-          )
-          .AddFrame<TButtonFrame>(
-            50
-          , procedure (Button: TButtonFrame)
-            begin
-              Button
-              .SetText('Reader')
-              .SetOnClickHandler(
-                procedure
+              .SetLeftAsFrame<TIconFontsGlyphFrame>(
+                50
+              , procedure (Glyph: TIconFontsGlyphFrame)
                 begin
-                  MainData.CameraStart;
-                  Navigator.RouteTo('QRReader');
+                  Glyph.ImageIndex := IconFonts.AddIcon(IconFonts.MD.qrcode_edit);
+                  Glyph.SetPadding(5);
                 end
               )
-              .SetMargin(5);
+              .SetPadding(10);
             end
           )
+
+          .AddFrame<TAccessoryFrame>(
+            70
+          , procedure (Accessory: TAccessoryFrame)
+            begin
+              Accessory
+              .SetContentAsFrame<TButtonFrame>(
+                procedure (Button: TButtonFrame)
+                begin
+                  Button
+                  .SetText('Read')
+                  .SetOnClickHandler(
+                    procedure
+                    begin
+                      Navigator.RouteTo('QRReader');
+                    end
+                  )
+                  .SetMargin(5);
+                end
+              )
+              .SetLeftAsFrame<TIconFontsGlyphFrame>(
+                50
+              , procedure (Glyph: TIconFontsGlyphFrame)
+                begin
+                  Glyph.ImageIndex := IconFonts.AddIcon(IconFonts.MD.qrcode_scan);
+                  Glyph.SetPadding(5);
+                end
+              )
+              .SetPadding(10);
+            end
+          )
+
           .SetPadding(5);
         end
       );

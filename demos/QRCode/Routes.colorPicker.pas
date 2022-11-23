@@ -25,9 +25,9 @@ procedure DefineColorPickerRoute(const ARouteName: string;
 );
 begin
   Navigator.DefineRoute<TScaffoldForm>(ARouteName
-  , procedure (Home: TScaffoldForm)
+  , procedure (Scaffold: TScaffoldForm)
     begin
-      Home
+      Scaffold
       .SetTitle(ATitle)
       .SetContentAsFrame<TBackgroundFrame>(
         procedure (BGFrame: TBackgroundFrame)

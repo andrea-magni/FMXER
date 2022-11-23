@@ -99,7 +99,7 @@ begin
     TElementDef<TTextFrame>.Create(
       procedure (ATextFrame: TTextFrame)
       begin
-        ATextFrame.Content := ACaption;
+        ATextFrame.SetContent(ACaption);
       end
     , AParams
     )
@@ -266,7 +266,7 @@ begin
 
   FSnackbar := FrameStand1.New<TTextFrame>(OverlayLayout, 'snackbar');
 
-  FSnackbar.Frame.Content := AText;
+  FSnackbar.Frame.SetContent(AText);
   FSnackbar.Show();
 
   TDelayedAction.Execute(ADuration_ms

@@ -12,6 +12,12 @@ uses
 ;
 
 type
+  TScanPoint = record
+    PointF: TPointF;
+    TimeStamp: TDatetime;
+    constructor Create(APointF: TPointF; ATimeStamp: TDateTime);
+  end;
+
   TMainData = class(TDataModule)
     ActionList1: TActionList;
     ShowShareSheetAction1: TShowShareSheetAction;
@@ -26,6 +32,7 @@ type
     FScannerCS: TCriticalSection;
     FQRCodeChangeListeners: TArray<TProc>;
     FImageFrameAvailableListeners: TArray<TProc<TBitmap>>;
+    FScanResultListeners: TArray<TProc<TReadResult, TBitmap>>;
     FQRCodeContent: string;
     FQRCodeColor: TAlphaColor;
     FQRCodeBGColor: TAlphaColor;
@@ -33,9 +40,9 @@ type
     FImageFrame: TBitmap;
     FPermissionCamera: string;
     FScanner: TScannerThread;
-    FFrameToScanQueue: TQueue<TBitmap>;
-    FScanPoints: TList<TPointF>;
-    FOnScanResult: TProc<TReadResult>;
+    FFrameQueue: TQueue<TBitmap>;
+    FScanPoints: TList<TScanPoint>;
+    FLastQueued: TDateTime;
     procedure SetQRCodeColor(const Value: TAlphaColor);
     procedure SetQRRadiusFactor(const Value: Single);
     procedure SetQRCodeBGColor(const Value: TAlphaColor);
@@ -43,25 +50,40 @@ type
     procedure NotifyQRCodeChange;
     procedure NotifyImageFrameAvailable;
     procedure SetQRCodeContent(const Value: string);
-    procedure PermissionRequestResult(Sender: TObject; const APermissions: TClassicStringDynArray; const AGrantResults: TClassicPermissionStatusDynArray);
-    procedure DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
+    procedure PermissionRequestResult(Sender: TObject;
+      const APermissions: TClassicStringDynArray;
+      const AGrantResults: TClassicPermissionStatusDynArray);
+    procedure DisplayRationale(Sender: TObject;
+      const APermissions: TClassicStringDynArray;
+      const APostRationaleProc: TProc);
   public
-    procedure SubscribeQRCodeChange(const AProc: TProc);
-    procedure SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>);
     procedure ClearImageFrameSubscribers;
-    procedure ShareQRCodeContent;
-    procedure CameraStart;
-    procedure CameraStop(const AClearSubscribers: Boolean);
+    procedure ClearScanResultSubscribers;
+    procedure ClearQRCodeChangeSubscribers;
 
-    // non trivial thread procedures -------------------------------------------
+    procedure NotifyScanResult(const AScanResult: TReadResult;
+      const AFrame: TBitmap; const ASync: Boolean);
+
+    procedure ShareQRCodeContent;
+
+    procedure StartScanning(const AImageFrameAvailable: TProc<TBitmap>;
+      const AScanResult: TProc<TReadResult, TBitmap>);
+    procedure StopScanning(const AClearSubscribers: Boolean);
+
+    function SubscribeQRCodeChange(const AProc: TProc): TMainData;
+    function SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>): TMainData;
+    function SubscribeScanResult(const AProc: TProc<TReadResult, TBitmap>): TMainData;
+
+    // thread shared manipulation procedures -----------------------------------
     procedure AddScanPoint(const APoint: TPointF);
-    function ScanPoints: TArray<TPointF>;
+    function ScanPoints: TArray<TScanPoint>;
+    procedure ClearScanPoints;
 
     // NB: the caller is now the owner of the TBitmap instance
     // NB: if no frame is present in the queue, returns nil
-    function DequeueFrameToScan: TBitmap;
-    procedure QueueFrameForScan(const ABitmap: TBitmap);
-    procedure CollectScanResult(const AResult: TReadResult);
+    function DequeueFrame: TBitmap;
+    procedure QueueFrame(const ABitmap: TBitmap);
+    procedure ClearFrameQueue;
     // -------------------------------------------------------------------------
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
@@ -69,10 +91,10 @@ type
     property QRCodeBGColor: TAlphaColor read FQRCodeBGColor write SetQRCodeBGColor;
     property QRRadiusFactor: Single read FQRRadiusFactor write SetQRRadiusFactor;
     property ImageFrame: TBitmap read FImageFrame;
-    property FrameToScanQueue: TQueue<TBitmap> read FFrameToScanQueue;
-    property OnScanResult: TProc<TReadResult> read FOnScanResult write FOnScanResult;
+//    property FrameQueue: TQueue<TBitmap> read FFrameQueue;
 
-    const MAX_SCAN_POINTS = 10;
+    const MAX_SCAN_POINTS = 4;
+    const QUEUE_MAX_FREQ = 10; // 10 frames per second
   end;
 
   function MainData: TMainData;
@@ -84,13 +106,12 @@ implementation
 {$R *.dfm}
 
 uses
-  Math, FMX.Platform, FMX.DialogService
+  Math, DateUtils, FMX.Platform, FMX.DialogService
 {$IFDEF ANDROID}
 , Androidapi.Helpers, Androidapi.JNI.JavaTypes, Androidapi.JNI.Os
 {$ENDIF}
 , Skia, Skia.FMX.Graphics
 , QRCode.Utils, FMXER.UI.Consts, QRCode.Render
-//, CodeSiteLogging
 ;
 
 var
@@ -112,7 +133,7 @@ begin
     while FScanPoints.Count > MAX_SCAN_POINTS do
       FScanPoints.Delete(0);
 
-    FScanPoints.Add(APoint);
+    FScanPoints.Add(TScanPoint.Create(APoint, Now));
   finally
     FScannerCS.Leave;
   end;
@@ -130,25 +151,47 @@ begin
   NotifyImageFrameAvailable;
 end;
 
-procedure TMainData.CameraStart;
+procedure TMainData.StartScanning(const AImageFrameAvailable: TProc<TBitmap>;
+  const AScanResult: TProc<TReadResult, TBitmap>);
 begin
+  // permissions
   if not PermissionsService.IsPermissionGranted(FPermissionCamera) then
   begin
     PermissionsService.RequestPermissions([FPermissionCamera], PermissionRequestResult, DisplayRationale);
     Exit;
   end;
+
+  // listeners
+  SubscribeImageFrameAvailable(AImageFrameAvailable);
+  SubscribeScanResult(AScanResult);
+
+  // setup camera
   CameraComponent1.Quality := TVideoCaptureQuality.MediumQuality;
-//  CameraComponent1.Kind := TCameraKind.BackCamera;
   CameraComponent1.FocusMode := TFocusMode.ContinuousAutoFocus;
   CameraComponent1.Active := True;
 end;
 
-procedure TMainData.CameraStop(const AClearSubscribers: Boolean);
+procedure TMainData.StopScanning(const AClearSubscribers: Boolean);
 begin
   if AClearSubscribers then
+  begin
     ClearImageFrameSubscribers;
+    ClearScanResultSubscribers;
+  end;
 
   CameraComponent1.Active := False;
+  ClearFrameQueue;
+  ClearScanPoints;
+end;
+
+procedure TMainData.ClearFrameQueue;
+begin
+  FScannerCS.Enter;
+  try
+    FFrameQueue.Clear;
+  finally
+    FScannerCS.Leave;
+  end;
 end;
 
 procedure TMainData.ClearImageFrameSubscribers;
@@ -156,18 +199,27 @@ begin
   FImageFrameAvailableListeners := [];
 end;
 
-procedure TMainData.CollectScanResult(const AResult: TReadResult);
+procedure TMainData.ClearQRCodeChangeSubscribers;
 begin
-  if not Assigned(FOnScanResult) then
+  FQRCodeChangeListeners := [];
+end;
+
+procedure TMainData.ClearScanPoints;
+begin
+  if not Assigned(FScanner) then
     Exit;
 
-  TThread.Synchronize(
-    nil
-  , procedure
-    begin
-      FOnScanResult(AResult);
-    end
-  );
+  FScannerCS.Enter;
+  try
+    FScanPoints.Clear;
+  finally
+    FScannerCS.Leave;
+  end;
+end;
+
+procedure TMainData.ClearScanResultSubscribers;
+begin
+  FScanResultListeners := [];
 end;
 
 procedure TMainData.DataModuleCreate(Sender: TObject);
@@ -175,17 +227,22 @@ begin
 {$IFDEF ANDROID}
   FPermissionCamera := JStringToString(TJManifest_permission.JavaClass.CAMERA);
 {$ENDIF}
-  FOnScanResult := nil;
-  FScanPoints := TList<TPointF>.Create;
+  FScanPoints := TList<TScanPoint>.Create;
   FScannerCS := TCriticalSection.Create;
+
   FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
   FQRCodeColor := TAppColors.PrimaryColor;
   FQRCodeBGColor := TAlphaColorRec.White;
   FQRRadiusFactor := 0.1;
+
   FQRCodeChangeListeners := [];
   FImageFrameAvailableListeners := [];
+  FScanResultListeners := [];
+
   FImageFrame := TBitmap.Create(512, 512);
-  FFrameToScanQueue := TQueue<TBitmap>.Create;
+
+  FLastQueued := Now;
+  FFrameQueue := TQueue<TBitmap>.Create;
   FScanner := TScannerThread.Create(False);
 end;
 
@@ -197,19 +254,19 @@ begin
     FScanner.WaitFor;
   end;
   FImageFrame.Free;
-  FFrameToScanQueue.Free;
+  FFrameQueue.Free;
   FScanPoints.Free;
   FScannerCS.Free;
 end;
 
-function TMainData.DequeueFrameToScan: TBitmap;
+function TMainData.DequeueFrame: TBitmap;
 begin
   Result := nil;
-  if FFrameToScanQueue.Count > 0 then
+  if FFrameQueue.Count > 0 then
   begin
     FScannerCS.Enter;
     try
-      Result := FFrameToScanQueue.Dequeue;
+      Result := FFrameQueue.Dequeue;
     finally
       FScannerCS.Leave;
     end;
@@ -238,6 +295,23 @@ begin
     LListener();
 end;
 
+procedure TMainData.NotifyScanResult(const AScanResult: TReadResult;
+  const AFrame: TBitmap; const ASync: Boolean);
+begin
+  if ASync then
+    TThread.Synchronize(
+      nil
+    , procedure
+      begin
+        for var LListener in FScanResultListeners do
+          LListener(AScanResult, AFrame);
+      end
+    )
+  else
+    for var LListener in FScanResultListeners do
+      LListener(AScanResult, AFrame);
+end;
+
 procedure TMainData.PermissionRequestResult(Sender: TObject;
   const APermissions: TClassicStringDynArray;
   const AGrantResults: TClassicPermissionStatusDynArray);
@@ -258,20 +332,24 @@ begin
   NotifyQRCodeChange;
 end;
 
-procedure TMainData.QueueFrameForScan(const ABitmap: TBitmap);
+procedure TMainData.QueueFrame(const ABitmap: TBitmap);
 begin
   if not Assigned(ABitmap) then
     Exit;
 
+  if MillisecondsBetween(FLastQueued, Now) < (1000 / QUEUE_MAX_FREQ) then
+    Exit;
+
   FScannerCS.Enter;
   try
-    FFrameToScanQueue.Enqueue(ABitmap);
+    FLastQueued := Now;
+    FFrameQueue.Enqueue(ABitmap);
   finally
     FScannerCS.Leave;
   end;
 end;
 
-function TMainData.ScanPoints: TArray<TPointF>;
+function TMainData.ScanPoints: TArray<TScanPoint>;
 begin
   if not Assigned(FScanner) then
     Exit;
@@ -342,14 +420,34 @@ begin
   ShowShareSheetAction1.Execute;
 end;
 
-procedure TMainData.SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>);
+function TMainData.SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>): TMainData;
 begin
-  FImageFrameAvailableListeners := FImageFrameAvailableListeners + [AProc];
+  Result := Self;
+  if Assigned(AProc) then
+    FImageFrameAvailableListeners := FImageFrameAvailableListeners + [AProc];
 end;
 
-procedure TMainData.SubscribeQRCodeChange(const AProc: TProc);
+function TMainData.SubscribeQRCodeChange(const AProc: TProc): TMainData;
 begin
-  FQRCodeChangeListeners := FQRCodeChangeListeners + [AProc];
+  Result := Self;
+  if Assigned(AProc) then
+    FQRCodeChangeListeners := FQRCodeChangeListeners + [AProc];
+end;
+
+function TMainData.SubscribeScanResult(
+  const AProc: TProc<TReadResult, TBitmap>): TMainData;
+begin
+  Result := Self;
+  if Assigned(AProc) then
+    FScanResultListeners := FScanResultListeners + [AProc];
+end;
+
+{ TScanPoint }
+
+constructor TScanPoint.Create(APointF: TPointF; ATimeStamp: TDateTime);
+begin
+  PointF := APointF;
+  TimeStamp := ATimeStamp;
 end;
 
 end.

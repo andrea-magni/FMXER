@@ -7,3 +7,6 @@
 [submodule "lib/ZXing.Delphi"]
 	path = lib/ZXing.Delphi
 	url = https://github.com/Spelt/ZXing.Delphi.git
+[submodule "lib/IconFontsImageList"]
+	path = lib/IconFontsImageList
+	url = https://github.com/EtheaDev/IconFontsImageList.git

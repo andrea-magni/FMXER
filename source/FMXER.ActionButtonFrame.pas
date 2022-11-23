@@ -74,7 +74,7 @@ begin
   SetOverlayAsFrame<TTextFrame>(
     procedure (ATextFrame: TTextFrame)
     begin
-      ATextFrame.Content := AText;
+      ATextFrame.SetContent(AText);
       if Assigned(AConfigProc) then
         AConfigProc(ATextFrame);
     end

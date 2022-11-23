@@ -113,7 +113,7 @@
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <SanitizedProjectName>QRCodeProject</SanitizedProjectName>
-        <DCC_UnitSearchPath>../../lib/DelphiZXingQRCode/Source;../../lib/ZXing.Delphi/Lib/Classes;../../lib/ZXing.Delphi/Lib/Classes/Common;../../lib/ZXing.Delphi/Lib/Classes/Common/Detector;../../lib/ZXing.Delphi/Lib/Classes/Common/ReedSolomon;../../lib/ZXing.Delphi/Lib/Classes/Filtering;../../lib/ZXing.Delphi/Lib/Classes/1D Barcodes;../../lib/ZXing.Delphi/Lib/Classes/2D Barcodes;../../lib/ZXing.Delphi/Lib/Classes/2D Barcodes/Detector;../../lib/ZXing.Delphi/Lib/Classes/2D Barcodes/Decoder;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>../../lib/DelphiZXingQRCode/Source;../../lib/ZXing.Delphi/Lib/Classes;../../lib/ZXing.Delphi/Lib/Classes/Common;../../lib/ZXing.Delphi/Lib/Classes/Common/Detector;../../lib/ZXing.Delphi/Lib/Classes/Common/ReedSolomon;../../lib/ZXing.Delphi/Lib/Classes/Filtering;../../lib/ZXing.Delphi/Lib/Classes/1D Barcodes;../../lib/ZXing.Delphi/Lib/Classes/2D Barcodes;../../lib/ZXing.Delphi/Lib/Classes/2D Barcodes/Detector;../../lib/ZXing.Delphi/Lib/Classes/2D Barcodes/Decoder;../../lib/IconFontsImageList/Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Define>SKIA;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
@@ -817,6 +817,20 @@
                         <RemoteDir>.\</RemoteDir>
                         <Operation>0</Operation>
                         <RemoteName>sk4d.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Configuration="Debug" Class="File">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Configuration="Release" Class="File">
+                    <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
