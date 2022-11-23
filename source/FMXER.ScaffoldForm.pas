@@ -114,8 +114,9 @@ begin
   AddActionButtonOverlayFrame<TGlyphFrame>(
    procedure (AGlyph: TGlyphFrame)
    begin
-     AGlyph.Images := AImageList;
-     AGlyph.ImageIndex := AImageIndex;
+     AGlyph
+     .SetImages(AImageList)
+     .SetImageIndex(AImageIndex);
    end
   , AOnClickProc
   );

@@ -84,13 +84,15 @@ begin
       BckgForm.SetContentAsFrame<TGlyphFrame>(
         procedure (GlyphFrame: TGlyphFrame)
         begin
-          GlyphFrame.Images := IconFontsImageList1;
-          GlyphFrame.ImageIndex := 0;
-          GlyphFrame.OnClickProc :=
+          GlyphFrame
+          .SetImages( IconFontsImageList1 )
+          .SetImageIndex(0)
+          .SetOnClickProc(
             procedure
             begin
               Navigator.CloseRoute('Icon1');
-            end;
+            end
+          );
         end
       );
     end

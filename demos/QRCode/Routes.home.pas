@@ -54,8 +54,9 @@ begin
                 50
               , procedure (Glyph: TIconFontsGlyphFrame)
                 begin
-                  Glyph.ImageIndex := IconFonts.AddIcon(IconFonts.MD.qrcode_edit);
-                  Glyph.SetPadding(5);
+                  Glyph
+                  .SetIcon(IconFonts.MD.qrcode_edit)
+                  .SetPadding(5);
                 end
               )
               .SetPadding(10);
@@ -85,8 +86,9 @@ begin
                 50
               , procedure (Glyph: TIconFontsGlyphFrame)
                 begin
-                  Glyph.ImageIndex := IconFonts.AddIcon(IconFonts.MD.qrcode_scan);
-                  Glyph.SetPadding(5);
+                  Glyph
+                  .SetIcon(IconFonts.MD.qrcode_scan)
+                  .SetPadding(5);
                 end
               )
               .SetPadding(10);

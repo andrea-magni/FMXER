@@ -13,16 +13,22 @@ type
     ClickLayout: TLayout;
     procedure ClickLayoutClick(Sender: TObject);
   private
-    FImages: TCustomImageList;
-    FImageIndex: Integer;
     FOnClickProc: TProc;
-    procedure SetImageIndex(const Value: Integer);
-    procedure SetImages(const Value: TCustomImageList);
-    procedure SetOnClickProc(const Value: TProc);
+//    procedure SetImageIndex(const Value: Integer);
+//    procedure SetImages(const Value: TCustomImageList);
+//    procedure SetOnClickProc(const Value: TProc);
   public
-    property ImageIndex: Integer read FImageIndex write SetImageIndex;
-    property Images: TCustomImageList read FImages write SetImages;
-    property OnClickProc: TProc read FOnClickProc write SetOnClickProc;
+    function SetImageIndex(const AIndex: Integer): TGlyphFrame;
+    function SetImages(AImageList: TCustomImageList): TGlyphFrame;
+    function SetOnClickProc(const AOnClickProc: TProc): TGlyphFrame;
+
+    function GetImageIndex: Integer;
+    function GetImages: TCustomImageList;
+    function GetOnClickProc: TProc;
+
+//    property ImageIndex: Integer read FImageIndex write SetImageIndex;
+//    property Images: TCustomImageList read FImages write SetImages;
+//    property OnClickProc: TProc read FOnClickProc write SetOnClickProc;
   end;
 
 implementation
@@ -35,21 +41,37 @@ begin
     FOnClickProc();
 end;
 
-procedure TGlyphFrame.SetImageIndex(const Value: Integer);
+function TGlyphFrame.GetImageIndex: Integer;
 begin
-  FImageIndex := Value;
-  ContentGlyph.ImageIndex := FImageIndex;
+  Result := ContentGlyph.ImageIndex;
 end;
 
-procedure TGlyphFrame.SetImages(const Value: TCustomImageList);
+function TGlyphFrame.GetImages: TCustomImageList;
 begin
-  FImages := Value;
-  ContentGlyph.Images := FImages;
+  Result := ContentGlyph.Images;
 end;
 
-procedure TGlyphFrame.SetOnClickProc(const Value: TProc);
+function TGlyphFrame.GetOnClickProc: TProc;
 begin
-  FOnClickProc := Value;
+  Result := FOnClickProc;
+end;
+
+function TGlyphFrame.SetImageIndex(const AIndex: Integer): TGlyphFrame;
+begin
+  Result := Self;
+  ContentGlyph.ImageIndex := AIndex;
+end;
+
+function TGlyphFrame.SetImages(AImageList: TCustomImageList): TGlyphFrame;
+begin
+  Result := Self;
+  ContentGlyph.Images := AImageList;
+end;
+
+function TGlyphFrame.SetOnClickProc(const AOnClickProc: TProc): TGlyphFrame;
+begin
+  Result := Self;
+  FOnClickProc := AOnClickProc;
   ClickLayout.HitTest := Assigned(FOnClickProc);
 end;
 
