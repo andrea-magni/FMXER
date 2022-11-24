@@ -17,7 +17,8 @@ uses
 , FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.ColumnForm
 , FMXER.PaintBoxFrame, FMXER.ButtonFrame, FMXER.StackFrame, FMXER.BackgroundFrame
-, FMXER.TextFrame
+, FMXER.TextFrame, FMXER.AccessoryFrame, FMXER.IconFontsGlyphFrame
+, FMXER.IconFontsData
 , Data.Main
 ;
 
@@ -46,6 +47,7 @@ begin
             begin
               var LResultTextFrame: TTextFrame := nil;
               var LFormatTextFrame: TTextFrame := nil;
+              var LResultGlyphFrame: TIconFontsGlyphFrame := nil;
 
               Col
               .AddFrame<TStackFrame>(
@@ -66,17 +68,20 @@ begin
                     procedure (PaintBoxFrame: TPaintBoxFrame)
                     begin
                       MainData.StartScanning(
+                        // IMAGE FRAME AVAILABLE
                         procedure (ABitmap: TBitmap)
                         begin
                           PaintBoxFrame.PaintBox.Redraw;
                           MainData.QueueFrame(ABitmap);
                         end
+                        // SCAN RESULT AVAILABLE
                       , procedure (AResult: TReadResult; AFrame: TBitmap)
                         begin
                           MainData.StopScanning(True);
 
                           LResultTextFrame.SetContent(AResult.text);
                           LFormatTextFrame.SetContent(AResult.BarcodeFormat.ToString);
+//                          LResultGlyphFrame.Visible := not AResult.text.IsEmpty;
                         end
                       );
 
@@ -117,27 +122,53 @@ begin
                   .SetPadding(5);
                 end
               ) // StackFrame
-              .AddFrame<TTextFrame>(
+
+              .AddFrame<TAccessoryFrame>(
                 75
-              , procedure (Frame: TTextFrame)
+              , procedure (Accessory: TAccessoryFrame)
                 begin
-                  Frame
-                  .SetContent('')
-                  .SetFontSize(16)
-                  .SetFontWeight(TFontWeight.Bold)
-                  .SetFontColor(TAlphaColorRec.Black)
-                  .SetOnClick(
-                    procedure
+                  Accessory
+                  .SetContentAsFrame<TTextFrame>(
+                    procedure (Frame: TTextFrame)
                     begin
-                      MainData.QRCodeContent := Frame.GetContent;
-                      Navigator.CloseRoute(ARouteName);
-                      Navigator.RouteTo('QRGenerator');
+                      Frame
+                      .SetContent('')
+                      .SetFontSize(16)
+                      .SetFontWeight(TFontWeight.Bold)
+                      .SetFontColor(TAlphaColorRec.Black)
+                      .SetOnClick(
+                        procedure
+                        begin
+                          MainData.QRCodeContent := Frame.GetContent;
+                          Navigator.StackPop;
+                          Navigator.RouteTo('QRGenerator');
+                        end
+                      );
+
+                      LResultTextFrame := Frame;
+                    end
+                  )
+                  .SetRightAsFrame<TIconFontsGlyphFrame>(
+                    75
+                  , procedure (Glyph: TIconFontsGlyphFrame)
+                    begin
+                      Glyph
+                      .SetIcon(IconFonts.MD.qrcode_edit)
+                      .SetOnClickProc(
+                        procedure
+                        begin
+                          MainData.QRCodeContent := LResultTextFrame.GetContent;
+                          Navigator.StackPop;
+                          Navigator.RouteTo('QRGenerator');
+                        end
+                      )
+                      .SetPadding(5);
+
+                      LResultGlyphFrame := Glyph;
                     end
                   );
-
-                  LResultTextFrame := Frame;
                 end
-              )
+             )
               .AddFrame<TTextFrame>(
                 50
               , procedure (Frame: TTextFrame)
@@ -149,8 +180,7 @@ begin
 
                   LFormatTextFrame := Frame;
                 end
-              )
-              ;
+              );
             end
           );
         end
