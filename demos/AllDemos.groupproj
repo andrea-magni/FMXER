@@ -3,6 +3,9 @@
         <ProjectGuid>{58065874-F875-4A84-A4F6-5A13B8936B59}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
+        <Projects Include="NewProjectTemplate\NewProject.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="HelloWorld\HelloWorldProject.dproj">
             <Dependencies/>
         </Projects>
@@ -38,6 +41,15 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
+    <Target Name="NewProject">
+        <MSBuild Projects="NewProjectTemplate\NewProject.dproj"/>
+    </Target>
+    <Target Name="NewProject:Clean">
+        <MSBuild Projects="NewProjectTemplate\NewProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="NewProject:Make">
+        <MSBuild Projects="NewProjectTemplate\NewProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="HelloWorldProject">
         <MSBuild Projects="HelloWorld\HelloWorldProject.dproj"/>
     </Target>
@@ -120,13 +132,13 @@
         <MSBuild Projects="QRCode\QRCodeProject.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject;QRCodeProject"/>
+        <CallTarget Targets="NewProject;HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject;QRCodeProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean;QRCodeProject:Clean"/>
+        <CallTarget Targets="NewProject:Clean;HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean;QRCodeProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make;QRCodeProject:Make"/>
+        <CallTarget Targets="NewProject:Make;HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make;QRCodeProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
