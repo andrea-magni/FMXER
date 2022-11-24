@@ -7,7 +7,7 @@
         <DeviceId Condition="'$(Platform)'=='Android'"/>
         <DeviceId Condition="'$(Platform)'=='Android64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">5D059B8D-4D8D-49AB-9EDC-8E163BE498F0</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">B5A4D729-ACE1-42A6-8945-A10E2DC326FD</DeviceId>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
         <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
@@ -459,15 +459,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
-            <RemoteName>TSkSvg.svg</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
@@ -482,6 +473,15 @@
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon96</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>TSkSvg.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -875,19 +875,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
-            <DeployClass>iOS_AppStore1024</DeployClass>
+            <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
+            <DeployClass>iPhone_Notification40</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
-            <DeployClass>iPhone_Notification40</DeployClass>
+            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
+            <DeployClass>iOS_AppStore1024</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -913,15 +913,14 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="iOSSimARM64\Release\HelloWorldProject" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject.app\</RemoteDir>
-            <RemoteName>HelloWorldProject</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPad@2x.png</RemoteName>
+            <DeployClass>iPad_Launch2x</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
-            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
@@ -941,14 +940,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPad@2x.png</RemoteName>
-            <DeployClass>iPad_Launch2x</DeployClass>
+        <DeployFile Include="iOSSimARM64\Release\HelloWorldProject" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject.app\</RemoteDir>
+            <RemoteName>HelloWorldProject</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_87x87.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
@@ -977,19 +977,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_120x120.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_SpotlightSearchIcon_120x120.png</RemoteName>
-            <DeployClass>iPhone_Spotlight120</DeployClass>
+            <RemoteName>FM_ApplicationIcon_167x167.png</RemoteName>
+            <DeployClass>iPad_AppIcon167</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_120x120.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_ApplicationIcon_167x167.png</RemoteName>
-            <DeployClass>iPad_AppIcon167</DeployClass>
+            <RemoteName>FM_SpotlightSearchIcon_120x120.png</RemoteName>
+            <DeployClass>iPhone_Spotlight120</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -1049,15 +1049,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="iOSSimARM64\Release\HelloWorldProject.launchscreen" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\</RemoteDir>
-            <RemoteName>HelloWorldProject.launchscreen</RemoteName>
-            <DeployClass>ProjectiOSLaunchScreen</DeployClass>
-            <Operation>64</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_180x180.png</RemoteName>
@@ -1072,6 +1063,15 @@
             <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
             <DeployClass>iPhone_Launch2x</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="iOSSimARM64\Release\HelloWorldProject.launchscreen" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\</RemoteDir>
+            <RemoteName>HelloWorldProject.launchscreen</RemoteName>
+            <DeployClass>ProjectiOSLaunchScreen</DeployClass>
+            <Operation>64</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -1095,6 +1095,15 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
+            <DeployClass>iPhone_LaunchDark3x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
@@ -1104,15 +1113,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>HelloWorldProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
-            <DeployClass>iPhone_LaunchDark3x</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="iOSSimARM64\Release\HelloWorldProject.entitlements" Condition="'$(Config)'=='Release'">
             <RemoteDir>HelloWorldProject.app\..\</RemoteDir>

@@ -7,7 +7,7 @@
         <DeviceId Condition="'$(Platform)'=='Android'"/>
         <DeviceId Condition="'$(Platform)'=='Android64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">5D059B8D-4D8D-49AB-9EDC-8E163BE498F0</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">B5A4D729-ACE1-42A6-8945-A10E2DC326FD</DeviceId>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
@@ -900,6 +900,24 @@
             <RemoteName>FM_LaunchScreenImage_iPhoneDark@2x.png</RemoteName>
             <DeployClass>iPhone_LaunchDark2x</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\lib\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
