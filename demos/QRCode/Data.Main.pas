@@ -38,18 +38,23 @@ type
     FQRCodeBGColor: TAlphaColor;
     FQRRadiusFactor: Single;
     FImageFrame: TBitmap;
+    FScanResultFrame: TBitmap;
+    FScanResultPoints: TArray<TPointF>;
     FPermissionCamera: string;
     FScanner: TScannerThread;
     FFrameQueue: TQueue<TBitmap>;
     FScanPoints: TList<TScanPoint>;
     FLastQueued: TDateTime;
+    FScanning: Boolean;
     procedure SetQRCodeColor(const Value: TAlphaColor);
     procedure SetQRRadiusFactor(const Value: Single);
     procedure SetQRCodeBGColor(const Value: TAlphaColor);
   protected
     procedure NotifyQRCodeChange;
     procedure NotifyImageFrameAvailable;
+
     procedure SetQRCodeContent(const Value: string);
+
     procedure PermissionRequestResult(Sender: TObject;
       const APermissions: TClassicStringDynArray;
       const AGrantResults: TClassicPermissionStatusDynArray);
@@ -62,7 +67,7 @@ type
     procedure ClearQRCodeChangeSubscribers;
 
     procedure NotifyScanResult(const AScanResult: TReadResult;
-      const AFrame: TBitmap; const ASync: Boolean);
+      const AFrame: TBitmap);
 
     procedure ShareQRCodeContent;
 
@@ -91,7 +96,9 @@ type
     property QRCodeBGColor: TAlphaColor read FQRCodeBGColor write SetQRCodeBGColor;
     property QRRadiusFactor: Single read FQRRadiusFactor write SetQRRadiusFactor;
     property ImageFrame: TBitmap read FImageFrame;
-//    property FrameQueue: TQueue<TBitmap> read FFrameQueue;
+    property ScanResultFrame: TBitmap read FScanResultFrame;
+    property ScanResultPoints: TArray<TPointF> read FScanResultPoints;
+    property Scanning: Boolean read FScanning;
 
     const MAX_SCAN_POINTS = 4;
     const QUEUE_MAX_FREQ = 10; // 10 frames per second
@@ -169,10 +176,12 @@ begin
   CameraComponent1.Quality := TVideoCaptureQuality.MediumQuality;
   CameraComponent1.FocusMode := TFocusMode.ContinuousAutoFocus;
   CameraComponent1.Active := True;
+  FScanning := True;
 end;
 
 procedure TMainData.StopScanning(const AClearSubscribers: Boolean);
 begin
+  FScanning := False;
   if AClearSubscribers then
   begin
     ClearImageFrameSubscribers;
@@ -229,6 +238,10 @@ begin
 {$ENDIF}
   FScanPoints := TList<TScanPoint>.Create;
   FScannerCS := TCriticalSection.Create;
+  FScanning := False;
+
+  FScanResultFrame := TBitmap.Create(512, 512);
+  FScanResultPoints := [];
 
   FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
   FQRCodeColor := TAppColors.PrimaryColor;
@@ -296,20 +309,22 @@ begin
 end;
 
 procedure TMainData.NotifyScanResult(const AScanResult: TReadResult;
-  const AFrame: TBitmap; const ASync: Boolean);
+  const AFrame: TBitmap);
 begin
-  if ASync then
-    TThread.Synchronize(
-      nil
-    , procedure
-      begin
-        for var LListener in FScanResultListeners do
-          LListener(AScanResult, AFrame);
-      end
-    )
-  else
-    for var LListener in FScanResultListeners do
-      LListener(AScanResult, AFrame);
+  TThread.Synchronize(
+    nil
+  , procedure
+    begin
+      FScanResultFrame.Assign(AFrame);
+
+      FScanResultPoints := [];
+      for var LresultPoint in AScanResult.resultPoints do
+        FScanResultPoints := FScanResultPoints + [PointF(LresultPoint.x, LresultPoint.y)];
+
+      for var LListener in FScanResultListeners do
+        LListener(AScanResult, AFrame);
+    end
+  );
 end;
 
 procedure TMainData.PermissionRequestResult(Sender: TObject;

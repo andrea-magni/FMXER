@@ -29,6 +29,37 @@ type
     function ToString: string;
   end;
 
+
+procedure DrawPointsScanning(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
+begin
+  var LNow := Now;
+  for var LScanPoint in MainData.ScanPoints do
+  begin
+    var LPoint := LScanPoint.PointF;
+    var LAge := MillisecondsBetween(LScanPoint.TimeStamp, LNow);
+    var LAlpha := Round(((SCAN_POINT_DURATION - LAge)/SCAN_POINT_DURATION) * 255);
+    if LAlpha < 0 then
+      LAlpha := 0;
+
+    LPoint.Offset(AOffsetX, AOffsetY);
+    APaint.Color := TAlphaColorRec.Red;
+    APaint.Alpha := LAlpha;
+    ACanvas.DrawCircle(LPoint, 5, APaint);
+  end;
+end;
+
+procedure DrawPointsResult(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
+begin
+  for var LPoint in MainData.ScanResultPoints do
+  begin
+    LPoint.Offset(AOffsetX, AOffsetY);
+    APaint.Color := TAppColors.PrimaryColor;
+    APaint.Alpha := $FF;
+    ACanvas.DrawRect(RectF(LPoint.x - 5, LPoint.y - 5, LPoint.x + 5, LPoint.y + 5), APaint);
+  end;
+end;
+
+
 procedure DefineQRReaderRoute(const ARouteName: string);
 begin
   Navigator.DefineRoute<TScaffoldForm>(
@@ -82,6 +113,7 @@ begin
                           LResultTextFrame.SetContent(AResult.text);
                           LFormatTextFrame.SetContent(AResult.BarcodeFormat.ToString);
 //                          LResultGlyphFrame.Visible := not AResult.text.IsEmpty;
+                          PaintBoxFrame.PaintBox.Redraw;
                         end
                       );
 
@@ -95,25 +127,20 @@ begin
                           var LOffsetY := -((MainData.ImageFrame.Height - ADest.Height) / 2);
 
                           var LPaint: ISkPaint := TSkPaint.Create;
-                          var LSkImage := MainData.ImageFrame.ToSkImage();
-                          ACanvas.DrawImage(
-                            LSkImage, LOffsetX, LOffsetY, LPaint
-                          );
 
-                          var LNow := Now;
-                          for var LScanPoint in MainData.ScanPoints do
+                          if MainData.Scanning then
                           begin
-                            var LPoint := LScanPoint.PointF;
-                            var LAge := MillisecondsBetween(LScanPoint.TimeStamp, LNow);
-                            var LAlpha := Round(((SCAN_POINT_DURATION - LAge)/SCAN_POINT_DURATION) * 255);
-                            if LAlpha < 0 then
-                              LAlpha := 0;
-
-                            LPoint.Offset(LOffsetX, LOffsetY);
-                            LPaint.Color := TAlphaColorRec.Red;
-                            LPaint.Alpha := LAlpha;
-                            ACanvas.DrawCircle(LPoint, 5, LPaint);
+                            ACanvas.DrawImage(MainData.ImageFrame.ToSkImage()
+                              , LOffsetX, LOffsetY, LPaint);
+                            DrawPointsScanning(ACanvas, LPaint, LOffsetX, LOffsetY);
+                          end
+                          else
+                          begin
+                            ACanvas.DrawImage(MainData.ScanResultFrame.ToSkImage()
+                              , LOffsetX, LOffsetY, LPaint);
+                            DrawPointsResult(ACanvas, LPaint, LOffsetX, LOffsetY);
                           end;
+
                         end
                       );
 

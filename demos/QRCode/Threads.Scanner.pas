@@ -41,7 +41,7 @@ begin
         var LReadResult := LScanManager.Scan(LFrameBitmap);
         try
           if Assigned(LReadResult) then
-            MainData.NotifyScanResult(LReadResult, LFrameBitmap, True);
+            MainData.NotifyScanResult(LReadResult, LFrameBitmap);
         finally
           FreeAndNil(LReadResult);
         end;
