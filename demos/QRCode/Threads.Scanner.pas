@@ -28,7 +28,7 @@ procedure TScannerThread.Execute;
 begin
   inherited;
   // Init ZXing
-  var LScanManager := TScanManager.Create(TBarcodeFormat.Auto, nil);
+  var LScanManager := TScanManager.Create(TBarcodeFormat.QR_CODE, nil);
   try
     // set handler for on-scanning point tracking
     LScanManager.OnResultPoint := OnResultPointHandler;
@@ -41,13 +41,17 @@ begin
       begin
         // extract the frame
         var LFrameBitmap := MainData.DequeueFrame;
-        // process the frame
-        var LReadResult := LScanManager.Scan(LFrameBitmap);
         try
+          // process the frame
+          var LReadResult := LScanManager.Scan(LFrameBitmap);
           if Assigned(LReadResult) then
-            MainData.NotifyScanResult(LReadResult, LFrameBitmap);
+            try
+              MainData.NotifyScanResult(LReadResult, LFrameBitmap);
+            finally
+              FreeAndNil(LReadResult);
+            end;
         finally
-          FreeAndNil(LReadResult);
+          LFrameBitmap.Free;
         end;
       end
       else

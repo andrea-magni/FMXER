@@ -363,8 +363,15 @@ begin
 
   FScannerCS.Enter;
   try
-    FLastQueued := Now;
-    FFrameQueue.Enqueue(ABitmap);
+    var LBitmapCopy := TBitmap.Create(0, 0);
+    try
+      LBitmapCopy.Assign(ABitmap);
+      FLastQueued := Now;
+      FFrameQueue.Enqueue(LBitmapCopy);
+    except
+      LBitmapCopy.Free;
+      raise;
+    end;
   finally
     FScannerCS.Leave;
   end;
