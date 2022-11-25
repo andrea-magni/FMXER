@@ -89,6 +89,7 @@ type
     function DequeueFrame: TBitmap;
     procedure QueueFrame(const ABitmap: TBitmap);
     procedure ClearFrameQueue;
+    function HasFramesInQueue: Boolean;
     // -------------------------------------------------------------------------
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
@@ -244,7 +245,7 @@ begin
   FScanResultPoints := [];
 
   FQRCodeContent := 'https://github.com/andrea-magni/FMXER';
-  FQRCodeColor := TAppColors.PrimaryColor;
+  FQRCodeColor := TAlphaColorRec.Black;
   FQRCodeBGColor := TAlphaColorRec.White;
   FQRRadiusFactor := 0.1;
 
@@ -294,6 +295,11 @@ begin
     begin
       APostRationaleProc;
     end)
+end;
+
+function TMainData.HasFramesInQueue: Boolean;
+begin
+  Result := FFrameQueue.Count <> 0;
 end;
 
 procedure TMainData.NotifyImageFrameAvailable;

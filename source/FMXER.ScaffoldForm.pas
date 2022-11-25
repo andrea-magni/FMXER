@@ -10,6 +10,7 @@ uses
 , Skia, Skia.FMX
 , SubjectStand, FrameStand, FormStand
 , FMXER.UI.Misc, FMXER.ActionButtonFrame, FMXER.TextFrame, FMXER.GlyphFrame
+, FMXER.IconFontsData, Icons.Utils
 ;
 
 type
@@ -62,6 +63,8 @@ type
     function AddActionButton(const ACaption: string; const AOnClickProc: TProc): TScaffoldForm; overload;
     function AddActionButton(const AImageList: TCustomImageList;
       const AImageIndex: Integer; const AOnClickProc: TProc): TScaffoldForm; overload;
+    function AddActionButton(const AIcon: TIconEntry; const AColor: TAlphaColor;
+      const AOnClickProc: TProc): TScaffoldForm; overload;
 
     function ShowSnackBar(const AText: string; const ADuration_ms: Integer): TScaffoldForm;
 
@@ -126,6 +129,15 @@ function TScaffoldForm.AddActionButton(const ACaption: string;
   const AOnClickProc: TProc): TScaffoldForm;
 begin
   Result := AddActionButton(ACaption, [ OnClickProc(AOnClickProc) ]);
+end;
+
+function TScaffoldForm.AddActionButton(const AIcon: TIconEntry;
+  const AColor: TAlphaColor; const AOnClickProc: TProc): TScaffoldForm;
+begin
+  Result := AddActionButton(
+      IconFonts.ImageList
+    , IconFonts.AddIcon(AIcon, AColor)
+    , AOnClickProc);
 end;
 
 procedure TScaffoldForm.AddActionButtonOverlayForm<T>(

@@ -30,7 +30,7 @@ begin
         procedure (Col: TColumnForm)
         begin
           Col
-
+          // Accessory: Glyph | Button
           .AddFrame<TAccessoryFrame>(
             70
           , procedure (Accessory: TAccessoryFrame)
@@ -62,7 +62,7 @@ begin
               .SetPadding(10);
             end
           )
-
+          // Accessory: Glyph | Button
           .AddFrame<TAccessoryFrame>(
             70
           , procedure (Accessory: TAccessoryFrame)
@@ -94,7 +94,7 @@ begin
               .SetPadding(10);
             end
           )
-
+          // Column
           .SetPadding(5);
         end
       );

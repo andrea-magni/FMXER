@@ -15,7 +15,7 @@ uses
 , FMXER.ScaffoldForm, FMXER.ColumnForm
 , FMXER.QRCodeFrame, FMXER.EditFrame, FMXER.ColorButtonFrame
 , FMXER.TrackbarFrame, FMXER.StackFrame, FMXER.BackgroundFrame
-, FMXER.HorzPairFrame
+, FMXER.HorzPairFrame, FMXER.IconFontsData, Icons.Utils
 , Data.Main
 ;
 
@@ -30,15 +30,20 @@ begin
 
       Scaffold
       .SetTitle('Generator')
+
+      // Solid background
       .SetContentAsFrame<TBackgroundFrame>(
         procedure (BGFrame: TBackgroundFrame)
         begin
           BGFrame
           .SetFillColor(TAlphaColorRec.White)
+          // COLUMN
           .SetContentAsForm<TColumnForm>(
             procedure (Col: TColumnForm)
             begin
               Col
+
+              // Edit (QRCodeContent)
               .AddFrame<TEditFrame>(
                 50
               , procedure (Frame: TEditFrame)
@@ -56,12 +61,15 @@ begin
                     end;
                 end
               )
+
+              // Pair: ColorButton | ColorButton
               .AddFrame<THorzPairFrame>(
                 50
               , procedure (Pair: THorzPairFrame)
                 begin
                   Pair
                   .SetContentAsFrame<TColorButtonFrame, TColorButtonFrame>(
+                    // Left: QRCode color
                     procedure (Button: TColorButtonFrame)
                     begin
                       Button
@@ -83,6 +91,7 @@ begin
                         end
                       );
                     end
+                    // Right: QRCode background color
                   , procedure (Button: TColorButtonFrame)
                     begin
                       Button
@@ -106,9 +115,12 @@ begin
 
                     end
                   )
+                  // Pair
                   .SetPadding(5);
                 end
               )
+
+              // Trackbar (Radius factor)
               .AddFrame<TTrackbarFrame>(
                 50
               , procedure (Frame: TTrackbarFrame)
@@ -129,6 +141,8 @@ begin
                   .SetPadding(5);
                 end
               )
+
+              // Stack: Background | QRCode
               .AddFrame<TStackFrame>(
                 Scaffold.Width
               , procedure (Stack: TStackFrame)
@@ -136,6 +150,7 @@ begin
                   var LBGFrame: TBackgroundFrame;
 
                   Stack
+                  // Background
                   .AddFrame<TBackgroundFrame>(
                     procedure (BGFrame: TBackgroundFrame)
                     begin
@@ -143,6 +158,7 @@ begin
                       LBGFrame := BGFrame;
                     end
                   )
+                  // QRCode
                   .AddFrame<TQRCodeFrame>(
                     procedure (AQR: TQRCodeFrame)
                     begin
@@ -168,6 +184,7 @@ begin
                       );
                     end
                   )
+                  // Stack
                   .SetPadding(5);
                 end
               );
@@ -175,13 +192,21 @@ begin
           );
         end
       )
-      .AddActionButton('Share'
+
+      // Action buttons
+
+      .AddActionButton(
+        IconFonts.MD.share
+      , TAppColors.PrimaryTextColor
       , procedure
         begin
           MainData.ShareQRCodeContent;
         end
       )
-      .AddActionButton('Back'
+
+      .AddActionButton(
+        IconFonts.MD.close
+      , TAppColors.PrimaryTextColor
       , procedure
         begin
           MainData.ClearQRCodeChangeSubscribers;

@@ -4,23 +4,13 @@
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
     <PropertyGroup>
-        <DeviceId Condition="'$(Platform)'=='Android'"/>
-        <DeviceId Condition="'$(Platform)'=='Android64'"/>
+        <DeviceId Condition="'$(Platform)'=='Android'">94NAY0R89N</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android64'">94NAY0R89N</DeviceId>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">B5A4D729-ACE1-42A6-8945-A10E2DC326FD</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
         <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
-            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libsk4d.dylib</RemoteName>
-            <DeployClass>Skia</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -41,6 +31,16 @@
             <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
             <DeployClass>Skia</DeployClass>
@@ -839,19 +839,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
-            <DeployClass>iOS_AppStore1024</DeployClass>
+            <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
+            <DeployClass>iPhone_Notification40</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
-            <DeployClass>iPhone_Notification40</DeployClass>
+            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
+            <DeployClass>iOS_AppStore1024</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -1030,10 +1030,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="iOSSimARM64\Release\QRCodeProject.entitlements" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\..\</RemoteDir>
-            <RemoteName>QRCodeProject.entitlements</RemoteName>
-            <DeployClass>ProjectiOSEntitlements</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
+            <DeployClass>iPhone_Launch2x</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -1048,10 +1048,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
-            <DeployClass>iPhone_Launch2x</DeployClass>
+        <DeployFile Include="iOSSimARM64\Release\QRCodeProject.entitlements" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\..\</RemoteDir>
+            <RemoteName>QRCodeProject.entitlements</RemoteName>
+            <DeployClass>ProjectiOSEntitlements</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -1086,6 +1086,15 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
+            <DeployClass>iPhone_LaunchDark3x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\iOSSimARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
             <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>libsk4d.dylib</RemoteName>
@@ -1095,15 +1104,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
-            <DeployClass>iPhone_LaunchDark3x</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
         </DeployFile>
     </ItemGroup>
 </Project>

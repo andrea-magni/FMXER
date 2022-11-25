@@ -29,7 +29,7 @@ type
     function ToString: string;
   end;
 
-
+// Draws points on image frame when Scanning = True
 procedure DrawPointsScanning(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
 begin
   var LNow := Now;
@@ -48,6 +48,7 @@ begin
   end;
 end;
 
+// Draws points on image frame when Scanning = False
 procedure DrawPointsResult(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
 begin
   for var LPoint in MainData.ScanResultPoints do
@@ -68,11 +69,14 @@ begin
     begin
       Scaffold
       .SetTitle('Reader')
+
+      // Solid background
       .SetContentAsFrame<TBackgroundFrame>(
         procedure (BGFrame: TBackgroundFrame)
         begin
           BGFrame
           .SetFillColor(TAlphaColorRec.White)
+          // Column
           .SetContentAsForm<TColumnForm>(
             procedure (Col: TColumnForm)
             begin
@@ -81,6 +85,7 @@ begin
               var LResultGlyphFrame: TIconFontsGlyphFrame := nil;
 
               Col
+              // Stack: Background | PaintBox
               .AddFrame<TStackFrame>(
                 Scaffold.Width
               , procedure (Stack: TStackFrame)
@@ -88,6 +93,7 @@ begin
                   var LBGFrame: TBackgroundFrame;
 
                   Stack
+                  // Background
                   .AddFrame<TBackgroundFrame>(
                     procedure (BGFrame: TBackgroundFrame)
                     begin
@@ -95,17 +101,20 @@ begin
                       LBGFrame := BGFrame;
                     end
                   )
+                  // PaintBox
                   .AddFrame<TPaintBoxFrame>(
                     procedure (PaintBoxFrame: TPaintBoxFrame)
                     begin
+
+                      // Start scanning with camera and set related event handlers
                       MainData.StartScanning(
-                        // IMAGE FRAME AVAILABLE
+                        // IMAGE FRAME AVAILABLE Handler
                         procedure (ABitmap: TBitmap)
                         begin
                           PaintBoxFrame.PaintBox.Redraw;
                           MainData.QueueFrame(ABitmap);
                         end
-                        // SCAN RESULT AVAILABLE
+                        // SCAN RESULT AVAILABLE Handler
                       , procedure (AResult: TReadResult; AFrame: TBitmap)
                         begin
                           MainData.StopScanning(True);
@@ -113,13 +122,16 @@ begin
                           LResultTextFrame.SetContent(AResult.text);
                           LFormatTextFrame.SetContent(AResult.BarcodeFormat.ToString);
 //                          LResultGlyphFrame.Visible := not AResult.text.IsEmpty;
+
+                          // force last redraw in order to show acquired scan result
                           PaintBoxFrame.PaintBox.Redraw;
                         end
                       );
 
+                      // Setup PaintBox
                       PaintBoxFrame
                       .SetAlignClient
-                      .SetMargin<TPaintBoxFrame>(20)
+                      .SetMargin<TPaintBoxFrame>(10)
                       .SetOnDrawHandler(
                         procedure(const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single)
                         begin
@@ -140,21 +152,23 @@ begin
                               , LOffsetX, LOffsetY, LPaint);
                             DrawPointsResult(ACanvas, LPaint, LOffsetX, LOffsetY);
                           end;
-
                         end
                       );
 
                     end
                   )
+                  // Stack
                   .SetPadding(5);
                 end
-              ) // StackFrame
+              )
 
+              // Accessory: Text | Glyph
               .AddFrame<TAccessoryFrame>(
-                75
+                50
               , procedure (Accessory: TAccessoryFrame)
                 begin
                   Accessory
+                  // Text (ResultTextFrame)
                   .SetContentAsFrame<TTextFrame>(
                     procedure (Frame: TTextFrame)
                     begin
@@ -166,8 +180,9 @@ begin
                       .SetOnClick(
                         procedure
                         begin
+                          MainData.StopScanning(True);
                           MainData.QRCodeContent := Frame.GetContent;
-                          Navigator.StackPop;
+                          Navigator.CloseRoute(ARouteName);
                           Navigator.RouteTo('QRGenerator');
                         end
                       );
@@ -175,8 +190,9 @@ begin
                       LResultTextFrame := Frame;
                     end
                   )
+                  // Glyph (ResultGlyphFrame)
                   .SetRightAsFrame<TIconFontsGlyphFrame>(
-                    75
+                    50
                   , procedure (Glyph: TIconFontsGlyphFrame)
                     begin
                       Glyph
@@ -184,18 +200,21 @@ begin
                       .SetOnClickProc(
                         procedure
                         begin
+                          MainData.StopScanning(True);
                           MainData.QRCodeContent := LResultTextFrame.GetContent;
-                          Navigator.StackPop;
+                          Navigator.CloseRoute(ARouteName);
                           Navigator.RouteTo('QRGenerator');
                         end
                       )
-                      .SetPadding(5);
+                      .SetMargin(5);
 
                       LResultGlyphFrame := Glyph;
                     end
                   );
                 end
-             )
+              )
+
+              // Text (ScanResultFormat)
               .AddFrame<TTextFrame>(
                 50
               , procedure (Frame: TTextFrame)
@@ -212,14 +231,23 @@ begin
           );
         end
       )
-      .AddActionButton('Restart'
+
+      // Action buttons
+
+      .AddActionButton(
+        IconFonts.MD.refresh
+      , TAppColors.PrimaryTextColor
       , procedure
         begin
+          MainData.StopScanning(True);
           Navigator.CloseRoute(ARouteName);
           Navigator.RouteTo(ARouteName);
         end
       )
-      .AddActionButton('Back'
+
+      .AddActionButton(
+        IconFonts.MD.close
+      , TAppColors.PrimaryTextColor
       , procedure
         begin
           MainData.StopScanning(True);

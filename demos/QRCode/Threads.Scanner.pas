@@ -27,17 +27,21 @@ uses
 procedure TScannerThread.Execute;
 begin
   inherited;
-
+  // Init ZXing
   var LScanManager := TScanManager.Create(TBarcodeFormat.Auto, nil);
   try
+    // set handler for on-scanning point tracking
     LScanManager.OnResultPoint := OnResultPointHandler;
 
+    // this thread runs forever, waiting for frames to process
     while not Terminated do
     begin
-
-      var LFrameBitmap := MainData.DequeueFrame;
-      if Assigned(LFrameBitmap) then
+      // check if there's a frame to process
+      if MainData.HasFramesInQueue then
       begin
+        // extract the frame
+        var LFrameBitmap := MainData.DequeueFrame;
+        // process the frame
         var LReadResult := LScanManager.Scan(LFrameBitmap);
         try
           if Assigned(LReadResult) then
@@ -47,7 +51,7 @@ begin
         end;
       end
       else
-        Sleep(50);
+        Sleep(25);
     end;
 
   finally
