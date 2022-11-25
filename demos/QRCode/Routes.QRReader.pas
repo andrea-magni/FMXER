@@ -18,7 +18,7 @@ uses
 , FMXER.ScaffoldForm, FMXER.ColumnForm
 , FMXER.PaintBoxFrame, FMXER.ButtonFrame, FMXER.StackFrame, FMXER.BackgroundFrame
 , FMXER.TextFrame, FMXER.AccessoryFrame, FMXER.IconFontsGlyphFrame
-, FMXER.IconFontsData
+, FMXER.IconFontsData, FMXER.AnimatedImageFrame, FMXER.HorzPairFrame
 , Data.Main
 ;
 
@@ -90,7 +90,8 @@ begin
                 Scaffold.Width
               , procedure (Stack: TStackFrame)
                 begin
-                  var LBGFrame: TBackgroundFrame;
+                  var LBGFrame: TBackgroundFrame := nil;
+                  var LAniFrame: TAnimatedImageFrame := nil;
 
                   Stack
                   // Background
@@ -111,6 +112,7 @@ begin
                         // IMAGE FRAME AVAILABLE Handler
                         procedure (ABitmap: TBitmap)
                         begin
+                          LAniFrame.SetOpacity(0);
                           PaintBoxFrame.PaintBox.Redraw;
                           MainData.QueueFrame(ABitmap);
                         end
@@ -154,7 +156,16 @@ begin
                           end;
                         end
                       );
+                    end
+                  )
+                  .AddFrame<TAnimatedImageFrame>(
+                    procedure (Frame: TAnimatedImageFrame)
+                    begin
+                      Frame
+                      .LoadFromFile( LocalFile('125704-blue-loading.json') )
+                      .SetMargin(20);
 
+                      LAniFrame := Frame;
                     end
                   )
                   // Stack
@@ -190,25 +201,52 @@ begin
                       LResultTextFrame := Frame;
                     end
                   )
-                  // Glyph (ResultGlyphFrame)
-                  .SetRightAsFrame<TIconFontsGlyphFrame>(
-                    50
-                  , procedure (Glyph: TIconFontsGlyphFrame)
+                  .SetRightAsFrame<THorzPairFrame>(
+                    100
+                  , procedure (Pair: THorzPairFrame)
                     begin
-                      Glyph
-                      .SetIcon(IconFonts.MD.qrcode_edit)
-                      .SetOnClickProc(
-                        procedure
+                      Pair
+                      // Glyph (ResultGlyphFrame)
+                      .SetLeftContentAsFrame<TIconFontsGlyphFrame>(
+                        procedure (Glyph: TIconFontsGlyphFrame)
                         begin
-                          MainData.StopScanning(True);
-                          MainData.QRCodeContent := LResultTextFrame.GetContent;
-                          Navigator.CloseRoute(ARouteName);
-                          Navigator.RouteTo('QRGenerator');
+                          Glyph
+                          .SetIcon(IconFonts.MD.qrcode_edit, TAppColors.PrimaryColor)
+                          .SetOnClickProc(
+                            procedure
+                            begin
+                              MainData.StopScanning(True);
+                              MainData.QRCodeContent := LResultTextFrame.GetContent;
+                              Navigator.CloseRoute(ARouteName);
+                              Navigator.RouteTo('QRGenerator');
+                            end
+                          )
+                          .SetMargin(5);
+
+                          LResultGlyphFrame := Glyph;
                         end
                       )
-                      .SetMargin(5);
+                      // Glyph (ResultGlyphFrame)
+                      .SetRightContentAsFrame<TIconFontsGlyphFrame>(
+                        procedure (Glyph: TIconFontsGlyphFrame)
+                        begin
+                          Glyph
+                          .SetIcon(IconFonts.MD.open_in_app, TAppColors.PrimaryColor)
+                          .SetOnClickProc(
+                            procedure
+                            begin
+                              MainData.StopScanning(True);
+                              MainData.QRCodeContent := LResultTextFrame.GetContent;
+                              Navigator.CloseRoute(ARouteName);
+                              Navigator.RouteTo('Webview');
+                            end
+                          )
+                          .SetMargin(5);
 
-                      LResultGlyphFrame := Glyph;
+                          LResultGlyphFrame := Glyph;
+                        end
+                      );
+
                     end
                   );
                 end
@@ -246,7 +284,7 @@ begin
       )
 
       .AddActionButton(
-        IconFonts.MD.close
+        IconFonts.MD.arrow_left
       , TAppColors.PrimaryTextColor
       , procedure
         begin

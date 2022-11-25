@@ -10,7 +10,8 @@ uses
   Routes.colorPicker in 'Routes.colorPicker.pas',
   Routes.QRGenerator in 'Routes.QRGenerator.pas',
   Routes.QRReader in 'Routes.QRReader.pas',
-  Threads.Scanner in 'Threads.Scanner.pas';
+  Threads.Scanner in 'Threads.Scanner.pas',
+  Routes.Webview in 'Routes.Webview.pas';
 
 {$R *.res}
 

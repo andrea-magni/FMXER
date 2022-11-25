@@ -28,6 +28,7 @@ uses
 , Routes.colorPicker
 , Routes.QRGenerator
 , Routes.QRReader
+, Routes.Webview
 , Data.Main
 ;
 
@@ -39,6 +40,7 @@ begin
 
   DefineQRGeneratorRoute('QRGenerator');
   DefineQRReaderRoute('QRReader');
+  DefineWebviewRoute('Webview');
 
   DefineColorPickerRoute('QRCodeColorSelection'
   , 'Foreground color'

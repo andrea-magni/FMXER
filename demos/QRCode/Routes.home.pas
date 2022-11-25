@@ -5,7 +5,7 @@ interface
 uses
   Classes, SysUtils, Types, UITypes;
 
-procedure DefineHomeRoute(const AName: string);
+procedure DefineHomeRoute(const ARouteName: string);
 
 implementation
 
@@ -20,9 +20,10 @@ uses
 ;
 
 
-procedure DefineHomeRoute(const AName: string);
+procedure DefineHomeRoute(const ARouteName: string);
 begin
-  Navigator.DefineRoute<TScaffoldForm>(AName
+  Navigator.DefineRoute<TScaffoldForm>(
+    ARouteName
   , procedure (Scaffold: TScaffoldForm)
     begin
       Scaffold
@@ -81,7 +82,7 @@ begin
                       , procedure (Glyph: TIconFontsGlyphFrame)
                         begin
                           Glyph
-                          .SetIcon(IconFonts.MD.qrcode_edit)
+                          .SetIcon(IconFonts.MD.qrcode_edit, TAppColors.PrimaryColor)
                           .SetPadding(5);
                         end
                       )
@@ -113,7 +114,7 @@ begin
                       , procedure (Glyph: TIconFontsGlyphFrame)
                         begin
                           Glyph
-                          .SetIcon(IconFonts.MD.qrcode_scan)
+                          .SetIcon(IconFonts.MD.qrcode_scan, TAppColors.PrimaryColor)
                           .SetPadding(5);
                         end
                       )

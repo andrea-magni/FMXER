@@ -205,7 +205,7 @@ begin
       )
 
       .AddActionButton(
-        IconFonts.MD.close
+        IconFonts.MD.arrow_left
       , TAppColors.PrimaryTextColor
       , procedure
         begin
