@@ -631,6 +631,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android\Release\AndroidManifest.xml" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>AndroidManifest.xml</RemoteName>

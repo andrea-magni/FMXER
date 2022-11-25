@@ -10,11 +10,12 @@ procedure DefineHomeRoute(const AName: string);
 implementation
 
 uses
-  FMX.Types
+  FMX.Types, Skia.FMX
 , FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.ColumnForm
 , FMXER.ButtonFrame, FMXER.AccessoryFrame
 , FMXER.IconFontsGlyphFrame, FMXER.IconFontsData
+, FMXER.StackFrame, FMXER.AnimatedImageFrame, FMXER.BackgroundFrame, FMXER.VertScrollFrame
 , Data.Main
 ;
 
@@ -26,76 +27,105 @@ begin
     begin
       Scaffold
       .SetTitle('QRCode demo')
-      .SetContentAsForm<TColumnForm>(
-        procedure (Col: TColumnForm)
+
+      .SetContentAsFrame<TStackFrame>(
+        procedure (Stack: TStackFrame)
         begin
-          Col
-          // Accessory: Glyph | Button
-          .AddFrame<TAccessoryFrame>(
-            70
-          , procedure (Accessory: TAccessoryFrame)
+          Stack
+          .AddFrame<TBackgroundFrame>(
+            procedure (Background: TBackgroundFrame)
             begin
-              Accessory
-              .SetContentAsFrame<TButtonFrame>(
-                procedure (Button: TButtonFrame)
-                begin
-                  Button
-                  .SetText('Generate')
-                  .SetOnClickHandler(
-                    procedure
-                    begin
-                      Navigator.RouteTo('QRGenerator');
-                    end
-                  )
-                  .SetMargin(5);
-                end
-              )
-              .SetLeftAsFrame<TIconFontsGlyphFrame>(
-                50
-              , procedure (Glyph: TIconFontsGlyphFrame)
-                begin
-                  Glyph
-                  .SetIcon(IconFonts.MD.qrcode_edit)
-                  .SetPadding(5);
-                end
-              )
-              .SetPadding(10);
+              Background.SetFillColor(TAlphaColorRec.White);
             end
           )
-          // Accessory: Glyph | Button
-          .AddFrame<TAccessoryFrame>(
-            70
-          , procedure (Accessory: TAccessoryFrame)
+          .AddFrame<TAnimatedImageFrame>(
+            procedure (AIF: TAnimatedImageFrame)
             begin
-              Accessory
-              .SetContentAsFrame<TButtonFrame>(
-                procedure (Button: TButtonFrame)
-                begin
-                  Button
-                  .SetText('Read')
-                  .SetOnClickHandler(
-                    procedure
-                    begin
-                      Navigator.RouteTo('QRReader');
-                    end
-                  )
-                  .SetMargin(5);
-                end
-              )
-              .SetLeftAsFrame<TIconFontsGlyphFrame>(
-                50
-              , procedure (Glyph: TIconFontsGlyphFrame)
-                begin
-                  Glyph
-                  .SetIcon(IconFonts.MD.qrcode_scan)
-                  .SetPadding(5);
-                end
-              )
-              .SetPadding(10);
+              AIF
+              .LoadFromFile(LocalFile('85570-background-animation-for-a-simple-project.json'))
+              .SetWrapMode(TSkAnimatedImageWrapMode.FitCrop)
+              .SetAnimationSpeed(0.75)
+              .SetOpacity(0.33);
             end
           )
-          // Column
-          .SetPadding(5);
+          .AddFrame<TVertScrollFrame>(
+            procedure (VertScrollF: TVertScrollFrame)
+            begin
+              VertScrollF
+              .SetContentAsForm<TColumnForm>(
+                procedure (Col: TColumnForm)
+                begin
+                  Col
+                  // Accessory: Glyph | Button
+                  .AddFrame<TAccessoryFrame>(
+                    70
+                  , procedure (Accessory: TAccessoryFrame)
+                    begin
+                      Accessory
+                      .SetContentAsFrame<TButtonFrame>(
+                        procedure (Button: TButtonFrame)
+                        begin
+                          Button
+                          .SetText('Generate')
+                          .SetOnClickHandler(
+                            procedure
+                            begin
+                              Navigator.RouteTo('QRGenerator');
+                            end
+                          )
+                          .SetMargin(5);
+                        end
+                      )
+                      .SetLeftAsFrame<TIconFontsGlyphFrame>(
+                        50
+                      , procedure (Glyph: TIconFontsGlyphFrame)
+                        begin
+                          Glyph
+                          .SetIcon(IconFonts.MD.qrcode_edit)
+                          .SetPadding(5);
+                        end
+                      )
+                      .SetPadding(10);
+                    end
+                  )
+                  // Accessory: Glyph | Button
+                  .AddFrame<TAccessoryFrame>(
+                    70
+                  , procedure (Accessory: TAccessoryFrame)
+                    begin
+                      Accessory
+                      .SetContentAsFrame<TButtonFrame>(
+                        procedure (Button: TButtonFrame)
+                        begin
+                          Button
+                          .SetText('Read')
+                          .SetOnClickHandler(
+                            procedure
+                            begin
+                              Navigator.RouteTo('QRReader');
+                            end
+                          )
+                          .SetMargin(5);
+                        end
+                      )
+                      .SetLeftAsFrame<TIconFontsGlyphFrame>(
+                        50
+                      , procedure (Glyph: TIconFontsGlyphFrame)
+                        begin
+                          Glyph
+                          .SetIcon(IconFonts.MD.qrcode_scan)
+                          .SetPadding(5);
+                        end
+                      )
+                      .SetPadding(10);
+                    end
+                  )
+                  // Column
+                  .SetPadding(5);
+                end
+              );
+            end
+          )
         end
       );
     end

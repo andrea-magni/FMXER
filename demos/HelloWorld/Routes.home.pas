@@ -247,7 +247,7 @@ begin
            .AddFrame<TBackgroundFrame>(
              procedure (Backg: TBackgroundFrame)
              begin
-               Backg.Fill.Color := TAlphaColorRec.White;
+               Backg.SetFillColor(TAlphaColorRec.White);
              end
            )
            .AddFrame<TSVGFrame>(
