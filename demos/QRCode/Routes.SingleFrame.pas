@@ -1,11 +1,11 @@
-unit Routes.QRReader;
+unit Routes.SingleFrame;
 
 interface
 
 uses
   Classes, SysUtils, Types, UITypes;
 
-procedure DefineQRReaderRoute(const ARouteName: string);
+procedure DefineSingleFrameRoute(const ARouteName: string);
 
 implementation
 
@@ -22,32 +22,6 @@ uses
 , Data.Main
 ;
 
-const SCAN_POINT_DURATION = 2000;
-
-type
-  TBarcodeFormatHelper = record helper for TBarcodeFormat
-    function ToString: string;
-  end;
-
-// Draws points on image frame when Scanning = True
-procedure DrawPointsScanning(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
-begin
-  var LNow := Now;
-  for var LScanPoint in MainData.ScanPoints do
-  begin
-    var LPoint := LScanPoint.PointF;
-    var LAge := MillisecondsBetween(LScanPoint.TimeStamp, LNow);
-    var LAlpha := Round(((SCAN_POINT_DURATION - LAge)/SCAN_POINT_DURATION) * 255);
-    if LAlpha < 0 then
-      LAlpha := 0;
-
-    LPoint.Offset(AOffsetX, AOffsetY);
-    APaint.Color := TAlphaColorRec.Red;
-    APaint.Alpha := LAlpha;
-    ACanvas.DrawCircle(LPoint, 5, APaint);
-  end;
-end;
-
 // Draws points on image frame when Scanning = False
 procedure DrawPointsResult(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
 begin
@@ -60,15 +34,14 @@ begin
   end;
 end;
 
-
-procedure DefineQRReaderRoute(const ARouteName: string);
+procedure DefineSingleFrameRoute(const ARouteName: string);
 begin
   Navigator.DefineRoute<TScaffoldForm>(
     ARouteName
   , procedure (Scaffold: TScaffoldForm)
     begin
       Scaffold
-      .SetTitle('Reader')
+      .SetTitle('Single frame')
 
       // Solid background
       .SetContentAsFrame<TBackgroundFrame>(
@@ -91,7 +64,6 @@ begin
               , procedure (Stack: TStackFrame)
                 begin
                   var LBGFrame: TBackgroundFrame := nil;
-                  var LAniFrame: TAnimatedImageFrame := nil;
 
                   Stack
                   // Background
@@ -108,27 +80,27 @@ begin
                     begin
 
                       // Start scanning with camera and set related event handlers
-                      MainData.StartCameraScanning(
-                        // IMAGE FRAME AVAILABLE Handler
-                        procedure (ABitmap: TBitmap)
-                        begin
-                          LAniFrame.SetOpacity(0);
-                          PaintBoxFrame.PaintBox.Redraw;
-                          MainData.QueueFrame(ABitmap);
-                        end
-                        // SCAN RESULT AVAILABLE Handler
-                      , procedure (AResult: TReadResult; AFrame: TBitmap)
-                        begin
-                          MainData.StopCameraScanning(True);
-
-                          LResultTextFrame.SetContent(AResult.text);
-                          LFormatTextFrame.SetContent(AResult.BarcodeFormat.ToString);
-//                          LResultGlyphFrame.Visible := not AResult.text.IsEmpty;
-
-                          // force last redraw in order to show acquired scan result
-                          PaintBoxFrame.PaintBox.Redraw;
-                        end
-                      );
+//                      MainData.StartCameraScanning(
+//                        // IMAGE FRAME AVAILABLE Handler
+//                        procedure (ABitmap: TBitmap)
+//                        begin
+//                          LAniFrame.SetOpacity(0);
+//                          PaintBoxFrame.PaintBox.Redraw;
+//                          MainData.QueueFrame(ABitmap);
+//                        end
+//                        // SCAN RESULT AVAILABLE Handler
+//                      , procedure (AResult: TReadResult; AFrame: TBitmap)
+//                        begin
+//                          MainData.StopCameraScanning(True);
+//
+//                          LResultTextFrame.SetContent(AResult.text);
+//                          LFormatTextFrame.SetContent('QRCODE');
+////                          LResultGlyphFrame.Visible := not AResult.text.IsEmpty;
+//
+//                          // force last redraw in order to show acquired scan result
+//                          PaintBoxFrame.PaintBox.Redraw;
+//                        end
+//                      );
 
                       // Setup PaintBox
                       PaintBoxFrame
@@ -146,7 +118,6 @@ begin
                           begin
                             ACanvas.DrawImage(MainData.ImageFrame.ToSkImage()
                               , LOffsetX, LOffsetY, LPaint);
-                            DrawPointsScanning(ACanvas, LPaint, LOffsetX, LOffsetY);
                           end
                           else
                           begin
@@ -158,16 +129,28 @@ begin
                       );
                     end
                   )
-                  .AddFrame<TAnimatedImageFrame>(
-                    procedure (Frame: TAnimatedImageFrame)
-                    begin
-                      Frame
-                      .LoadFromFile( LocalFile('125704-blue-loading.json') )
-                      .SetMargin(20);
 
-                      LAniFrame := Frame;
+                  // Icon glyph
+                  .AddFrame<TIconFontsGlyphFrame>(
+                    procedure (Glyph: TIconFontsGlyphFrame)
+                    begin
+                      Glyph
+                      .SetIcon(IconFonts.MD.image_plus, TAppColors.PrimaryTextColor)
+                      .SetOnClickProc(
+                        procedure
+                        begin
+                          Scaffold.ShowSnackBar('Not yet implemented', 3000
+//                          , procedure
+//                            begin
+//                              Navigator.CloseRoute(ARouteName);
+//                            end
+                          );
+                        end
+                      )
+                      .SetMargin(20);
                     end
                   )
+
                   // Stack
                   .SetPadding(5);
                 end
@@ -290,34 +273,6 @@ begin
 
     end
   );
-end;
-
-{ TBarcodeFormatHelper }
-
-function TBarcodeFormatHelper.ToString: string;
-begin
-  case Self of
-    Auto: Result := 'Auto';
-    AZTEC: Result := 'AZTEC';
-    CODABAR: Result := 'CODABAR';
-    CODE_39: Result := 'CODE_39';
-    CODE_93: Result := 'CODE_93';
-    CODE_128: Result := 'CODE_128';
-    DATA_MATRIX: Result := 'DATA_MATRIX';
-    EAN_8: Result := 'EAN_8';
-    EAN_13: Result := 'EAN_13';
-    ITF: Result := 'ITF';
-    MAXICODE: Result := 'MAXICODE';
-    PDF_417: Result := 'PDF_417';
-    QR_CODE: Result := 'QR_CODE';
-    RSS_14: Result := 'RSS_14';
-    RSS_EXPANDED: Result := 'RSS_EXPANDED';
-    UPC_A: Result := 'UPC_A';
-    UPC_E: Result := 'UPC_E';
-    UPC_EAN_EXTENSION: Result := 'UPC_EAN_EXTENSION';
-    MSI: Result := 'MSI';
-    PLESSEY: Result := 'PLESSEY';
-  end;
 end;
 
 end.

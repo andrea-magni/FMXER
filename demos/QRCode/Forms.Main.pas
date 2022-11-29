@@ -30,18 +30,19 @@ uses
 , Routes.QRReader
 , Routes.Webview
 , Data.Main
-;
+, Routes.SingleFrame;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  // Initialization ------------------------------------------------------------
   Navigator(FormStand1);
 
+  // Route definitions ---------------------------------------------------------
   DefineHomeRoute('home');
-
   DefineQRGeneratorRoute('QRGenerator');
   DefineQRReaderRoute('QRReader');
   DefineWebviewRoute('Webview');
-
+  DefineSingleFrameRoute('SingleFrame');
   DefineColorPickerRoute('QRCodeColorSelection'
   , 'Foreground color'
   , function : TAlphaColor
@@ -65,13 +66,25 @@ begin
     end
   );
 
-  Navigator.OnCloseRoute :=
+  // Navigation events ---------------------------------------------------------
+  Navigator.SetOnCloseRoute(
     procedure (ARouteName: string)
     begin
+      if ARouteName = 'QRReader' then
+        MainData.StopCameraScanning(True);
       if ARouteName = 'home' then
         Close;
-    end;
 
+      Caption := string.Join(' - ', Navigator.Breadcrumb);
+    end
+  ).SetOnCreateRoute(
+    procedure (ARouteName: string)
+    begin
+      Caption := string.Join(' - ', Navigator.Breadcrumb);
+    end
+  );
+
+  // Start ---------------------------------------------------------------------
   Navigator.RouteTo('home');
 end;
 

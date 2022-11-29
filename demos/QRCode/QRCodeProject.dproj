@@ -347,6 +347,7 @@
         <DCCReference Include="Routes.QRReader.pas"/>
         <DCCReference Include="Threads.Scanner.pas"/>
         <DCCReference Include="Routes.Webview.pas"/>
+        <DCCReference Include="Routes.SingleFrame.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -1156,12 +1157,14 @@
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\125704-blue-loading.json" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>125704-blue-loading.json</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\125704-blue-loading.json" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>125704-blue-loading.json</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -1280,6 +1283,7 @@
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\85570-background-animation-for-a-simple-project.json" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>

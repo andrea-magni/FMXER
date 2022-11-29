@@ -7,10 +7,28 @@
         <DeviceId Condition="'$(Platform)'=='Android'"/>
         <DeviceId Condition="'$(Platform)'=='Android64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">B5A4D729-ACE1-42A6-8945-A10E2DC326FD</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
         <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
             <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
             <DeployClass>File</DeployClass>
@@ -55,16 +73,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="OSX64\Release\QRCodeProject" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>QRCodeProject</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-            <Required>True</Required>
-        </DeployFile>
         <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
             <RemoteName>125704-blue-loading.json</RemoteName>
@@ -83,23 +91,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
+        <DeployFile Include="OSX64\Release\QRCodeProject" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>QRCodeProject</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>QRCodeProject.app\Contents\MacOS\</RemoteDir>
@@ -163,6 +163,24 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>125704-blue-loading.json</RemoteName>
@@ -201,24 +219,6 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>sk4d.dll</RemoteName>
@@ -241,6 +241,15 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android64'">
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>QRCodeProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>
@@ -260,6 +269,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>QRCodeProject\library\lib\arm64-v8a\</RemoteDir>
@@ -318,24 +336,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
             <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
@@ -415,11 +415,11 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="Android\Debug\splash_image_def.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
-            <RemoteName>splash_image_def.xml</RemoteName>
-            <DeployClass>AndroidSplashImageDef</DeployClass>
-            <Operation>1</Operation>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -460,11 +460,11 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="Android\Release\strings.xml" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
-            <RemoteName>strings.xml</RemoteName>
-            <DeployClass>Android_Strings</DeployClass>
-            <Operation>1</Operation>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -487,6 +487,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="Android\Debug\splash_image_def.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>splash_image_def.xml</RemoteName>
+            <DeployClass>AndroidSplashImageDef</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Release\strings.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\values\</RemoteDir>
+            <RemoteName>strings.xml</RemoteName>
+            <DeployClass>Android_Strings</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android\Release\styles-v21.xml" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\values-v21\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
@@ -501,6 +519,24 @@
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStyles</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -528,24 +564,6 @@
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -659,24 +677,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\res\drawable-normal\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -714,15 +714,6 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>gdbserver</RemoteName>
-            <DeployClass>AndroidGDBServer</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>gdbserver</RemoteName>
             <DeployClass>AndroidGDBServer</DeployClass>
@@ -780,6 +771,15 @@
             <RemoteDir>QRCodeProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon96</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>gdbserver</RemoteName>
+            <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -929,6 +929,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Android\Debug\libQRCodeProject.so" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libQRCodeProject.so</RemoteName>
@@ -938,15 +947,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
             <RemoteDir>QRCodeProject\library\lib\armeabi-v7a\</RemoteDir>
@@ -988,6 +988,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
@@ -1082,24 +1100,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\Contents\Resources\StartUp\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject.app\Contents\Resources\</RemoteDir>
             <RemoteName>QRCodeProject.icns</RemoteName>
@@ -1149,24 +1149,6 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win64'">
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
@@ -1179,6 +1161,24 @@
         <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\</RemoteDir>
             <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
@@ -1228,24 +1228,6 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'">
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject.app\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
@@ -1258,6 +1240,24 @@
         <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject.app\</RemoteDir>
             <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
@@ -1336,6 +1336,15 @@
             <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
             <DeployClass>iPhone_Notification40</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -1430,11 +1439,38 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="iOSSimARM64\Debug\QRCodeProject.launchscreen" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject.app\..\$(PROJECTNAME).launchscreen\</RemoteDir>
             <RemoteName>QRCodeProject.launchscreen</RemoteName>
             <DeployClass>ProjectiOSLaunchScreen</DeployClass>
             <Operation>64</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject.app\</RemoteDir>
+            <RemoteName>125704-blue-loading.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -1507,24 +1543,6 @@
             <RemoteName>FM_SpotlightSearchIcon_120x120.png</RemoteName>
             <DeployClass>iPhone_Spotlight120</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject.app\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\125704-blue-loading.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\</RemoteDir>
-            <RemoteName>125704-blue-loading.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -1624,24 +1642,6 @@
             <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
             <DeployClass>iPhone_Spotlight80</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>QRCodeProject.app\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
-            <RemoteDir>QRCodeProject.app\</RemoteDir>
-            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
-            <DeployClass>File</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>

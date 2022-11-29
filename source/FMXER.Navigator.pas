@@ -44,6 +44,9 @@ type
 
     function IsRouteDefined(const ARouteName: string): Boolean;
     function IsRouteActive(const ARouteName: string): Boolean;
+    function SetOnCreateRoute(const AOnCreateRouteProc: TProc<string>): TNavigator;
+    function SetOnCloseRoute(const AOnCloseRouteProc: TProc<string>): TNavigator;
+    function Breadcrumb: TArray<string>;
     //
     property ActiveRoutes: TDictionary<string, TSubjectInfo> read FActiveRoutes;
     property RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>> read FRouteDefinitions;
@@ -72,6 +75,13 @@ begin
 end;
 
 { TNavigator }
+
+function TNavigator.Breadcrumb: TArray<string>;
+begin
+  Result := [];
+  if Assigned(FStack) then
+    Result := FStack.ToArray;
+end;
 
 class destructor TNavigator.ClassDestroy;
 begin
@@ -239,6 +249,20 @@ begin
         RouteTo(ARouteName, ATransient);
       end
   );
+end;
+
+function TNavigator.SetOnCloseRoute(
+  const AOnCloseRouteProc: TProc<string>): TNavigator;
+begin
+  Result := Self;
+  FOnCloseRouteProc := AOnCloseRouteProc;
+end;
+
+function TNavigator.SetOnCreateRoute(
+  const AOnCreateRouteProc: TProc<string>): TNavigator;
+begin
+  Result := Self;
+  FOnCreateRouteProc := AOnCreateRouteProc;
 end;
 
 procedure TNavigator.StackPop;

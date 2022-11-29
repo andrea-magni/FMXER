@@ -53,6 +53,7 @@ begin
             procedure (VertScrollF: TVertScrollFrame)
             begin
               VertScrollF
+              .SetTouchWidth(0)
               .SetContentAsForm<TColumnForm>(
                 procedure (Col: TColumnForm)
                 begin
@@ -121,6 +122,40 @@ begin
                       .SetPadding(10);
                     end
                   )
+
+                  // Accessory: Glyph | Button
+                  .AddFrame<TAccessoryFrame>(
+                    70
+                  , procedure (Accessory: TAccessoryFrame)
+                    begin
+                      Accessory
+                      .SetContentAsFrame<TButtonFrame>(
+                        procedure (Button: TButtonFrame)
+                        begin
+                          Button
+                          .SetText('Single frame')
+                          .SetOnClickHandler(
+                            procedure
+                            begin
+                              Navigator.RouteTo('SingleFrame');
+                            end
+                          )
+                          .SetMargin(5);
+                        end
+                      )
+                      .SetLeftAsFrame<TIconFontsGlyphFrame>(
+                        50
+                      , procedure (Glyph: TIconFontsGlyphFrame)
+                        begin
+                          Glyph
+                          .SetIcon(IconFonts.MD.image_frame, TAppColors.PrimaryColor)
+                          .SetPadding(5);
+                        end
+                      )
+                      .SetPadding(10);
+                    end
+                  )
+
                   // Column
                   .SetPadding(5);
                 end

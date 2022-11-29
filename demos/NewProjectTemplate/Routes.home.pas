@@ -21,7 +21,12 @@ begin
     begin
       Scaffold
       .SetTitle('New Project')
-      .SetContentAsFrame<TLogoFrame>
+      .SetContentAsFrame<TLogoFrame>(
+        procedure (Frame: TLogoFrame)
+        begin
+          Frame.Opacity := 0.10;
+        end
+      )
       .AddActionButton('X'
       , procedure
         begin

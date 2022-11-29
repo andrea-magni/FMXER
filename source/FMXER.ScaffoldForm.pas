@@ -66,7 +66,9 @@ type
     function AddActionButton(const AIcon: TIconEntry; const AColor: TAlphaColor;
       const AOnClickProc: TProc): TScaffoldForm; overload;
 
-    function ShowSnackBar(const AText: string; const ADuration_ms: Integer): TScaffoldForm;
+    function ShowSnackBar(const AText: string; const ADuration_ms: Integer): TScaffoldForm; overload;
+    function ShowSnackBar(const AText: string; const ADuration_ms: Integer;
+      const AThen: TProc): TScaffoldForm; overload;
 
     procedure ShowTitleDetailContent;
     procedure HideTitleDetailContent(const ADelay: Integer = 0; const AThen: TProc = nil);
@@ -272,6 +274,12 @@ end;
 
 function TScaffoldForm.ShowSnackBar(const AText: string;
   const ADuration_ms: Integer): TScaffoldForm;
+begin
+  Result := ShowSnackBar(AText, ADuration_ms, nil);
+end;
+
+function TScaffoldForm.ShowSnackBar(const AText: string;
+  const ADuration_ms: Integer; const AThen: TProc): TScaffoldForm;
 var
   FSnackbar: TFrameInfo<TTextFrame>;
 begin
@@ -285,7 +293,7 @@ begin
   TDelayedAction.Execute(ADuration_ms
     , procedure
       begin
-        FSnackBar.Hide();
+        FSnackBar.Hide(0, AThen);
       end
   );
 end;

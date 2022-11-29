@@ -20,8 +20,6 @@ type
     FOnResizeProc: TProc<TVertScrollFrame>;
     FOnResizedProc: TProc<TVertScrollFrame>;
     FOnShowProc: TProc<TVertScrollFrame>;
-    function GetTouchWidth: Single;
-    procedure SetTouchWidth(const Value: Single);
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
@@ -29,12 +27,14 @@ type
     procedure AfterShow;
     [Hide]
     procedure HideHandler;
-    //
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
-    //
+
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TVertScrollFrame;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TVertScrollFrame;
+
+    function GetTouchWidth: Single;
+    function SetTouchWidth(const ATouchWidth: Single): TVertScrollFrame;
+
     property ContentStand: string read FContentStand write FContentStand;
-    property TouchWidth: Single read GetTouchWidth write SetTouchWidth;
     property OnResizeProc: TProc<TVertScrollFrame> read FOnResizeProc write FOnResizeProc;
     property OnResizedProc: TProc<TVertScrollFrame> read FOnResizedProc write FOnResizedProc;
     property OnShowProc: TProc<TVertScrollFrame> read FOnShowProc write FOnShowProc;
@@ -78,8 +78,9 @@ begin
   SI.DefaultHide;
 end;
 
-procedure TVertScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function TVertScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): TVertScrollFrame;
 begin
+  Result := Self;
   FContent := FormStand1.NewAndShow<T>(VerticalScrollbox, ''
     , procedure (AForm: T)
       begin
@@ -95,8 +96,9 @@ begin
   );
 end;
 
-procedure TVertScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function TVertScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): TVertScrollFrame;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<T>(VerticalScrollbox, ''
     , procedure (AFrame: T)
       begin
@@ -112,9 +114,10 @@ begin
   );
 end;
 
-procedure TVertScrollFrame.SetTouchWidth(const Value: Single);
+function TVertScrollFrame.SetTouchWidth(const ATouchWidth: Single): TVertScrollFrame;
 begin
-  VerticalScrollbox.Padding.Right := Value;
+  Result := Self;
+  VerticalScrollbox.Padding.Right := ATouchWidth;
 end;
 
 end.

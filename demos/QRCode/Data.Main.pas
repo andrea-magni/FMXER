@@ -71,9 +71,9 @@ type
 
     procedure ShareQRCodeContent;
 
-    procedure StartScanning(const AImageFrameAvailable: TProc<TBitmap>;
+    procedure StartCameraScanning(const AImageFrameAvailable: TProc<TBitmap>;
       const AScanResult: TProc<TReadResult, TBitmap>);
-    procedure StopScanning(const AClearSubscribers: Boolean);
+    procedure StopCameraScanning(const AClearSubscribers: Boolean);
 
     function SubscribeQRCodeChange(const AProc: TProc): TMainData;
     function SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>): TMainData;
@@ -159,7 +159,7 @@ begin
   NotifyImageFrameAvailable;
 end;
 
-procedure TMainData.StartScanning(const AImageFrameAvailable: TProc<TBitmap>;
+procedure TMainData.StartCameraScanning(const AImageFrameAvailable: TProc<TBitmap>;
   const AScanResult: TProc<TReadResult, TBitmap>);
 begin
   // permissions
@@ -180,7 +180,7 @@ begin
   FScanning := True;
 end;
 
-procedure TMainData.StopScanning(const AClearSubscribers: Boolean);
+procedure TMainData.StopCameraScanning(const AClearSubscribers: Boolean);
 begin
   FScanning := False;
   if AClearSubscribers then

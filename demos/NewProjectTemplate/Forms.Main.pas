@@ -31,17 +31,22 @@ uses
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  // Initialization ------------------------------------------------------------
   Navigator(FormStand1);
 
+  // Route definitions ---------------------------------------------------------
   DefineHomeRoute('home');
 
-  Navigator.OnCloseRoute :=
+  // Navigation events ---------------------------------------------------------
+  Navigator.SetOnCloseRoute(
     procedure (ARouteName: string)
     begin
       if ARouteName = 'home' then
         Close;
-    end;
+    end
+  );
 
+  // Start ---------------------------------------------------------------------
   Navigator.RouteTo('home');
 end;
 
