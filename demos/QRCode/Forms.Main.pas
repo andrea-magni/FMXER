@@ -11,6 +11,8 @@ type
   TMainForm = class(TForm)
     FormStand1: TFormStand;
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
+      Shift: TShiftState);
   private
   public
   end;
@@ -74,18 +76,31 @@ begin
         MainData.StopCameraScanning(True);
       if ARouteName = 'home' then
         Close;
-
+      {$IFDEF MSWINDOWS}
       Caption := string.Join(' - ', Navigator.Breadcrumb);
+      {$ENDIF}
     end
   ).SetOnCreateRoute(
     procedure (ARouteName: string)
     begin
+      {$IFDEF MSWINDOWS}
       Caption := string.Join(' - ', Navigator.Breadcrumb);
+      {$ENDIF}
     end
   );
 
   // Start ---------------------------------------------------------------------
   Navigator.RouteTo('home');
+end;
+
+procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
+begin
+  if (Key = vkBack) {$IFDEF MSWINDOWS}or (Key = vkEscape){$ENDIF} then
+  begin
+    if (Navigator.ActiveRoutes.Count > 1) then
+      Navigator.StackPop;
+  end;
 end;
 
 end.

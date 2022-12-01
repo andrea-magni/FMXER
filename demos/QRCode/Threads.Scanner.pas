@@ -42,14 +42,18 @@ begin
         // extract the frame
         var LFrameBitmap := MainData.DequeueFrame;
         try
-          // process the frame
-          var LReadResult := LScanManager.Scan(LFrameBitmap);
-          if Assigned(LReadResult) then
-            try
-              MainData.NotifyScanResult(LReadResult, LFrameBitmap);
-            finally
-              FreeAndNil(LReadResult);
-            end;
+          try
+            // process the frame
+            var LReadResult := LScanManager.Scan(LFrameBitmap);
+            if Assigned(LReadResult) then
+              try
+                MainData.NotifyScanResult(LReadResult, LFrameBitmap);
+              finally
+                FreeAndNil(LReadResult);
+              end;
+          except
+            // keep scanning errors bounded here
+          end;
         finally
           LFrameBitmap.Free;
         end;
