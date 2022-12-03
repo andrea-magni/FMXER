@@ -10,12 +10,12 @@ procedure DefineQRReaderRoute(const ARouteName: string);
 implementation
 
 uses
-  DateUtils, Rtti, TypInfo
+  DateUtils, Math, Rtti, TypInfo
 , FMX.Types, FMX.Graphics, FMX.DialogService
 , ZXing.ReadResult, ZXing.BarcodeFormat
 , Skia, Skia.FMX, Skia.FMX.Graphics
 , FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
-, FMXER.ScaffoldForm, FMXER.ColumnForm
+, FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm
 , FMXER.PaintBoxFrame, FMXER.ButtonFrame, FMXER.StackFrame, FMXER.BackgroundFrame
 , FMXER.TextFrame, FMXER.AccessoryFrame, FMXER.IconFontsGlyphFrame
 , FMXER.IconFontsData, FMXER.AnimatedImageFrame, FMXER.HorzPairFrame
@@ -81,8 +81,6 @@ begin
             procedure (Col: TColumnForm)
             begin
               var LResultTextFrame: TTextFrame := nil;
-              var LFormatTextFrame: TTextFrame := nil;
-              var LResultGlyphFrame: TIconFontsGlyphFrame := nil;
 
               Col
               // Stack: Background | PaintBox
@@ -122,7 +120,7 @@ begin
                           MainData.StopCameraScanning(True);
 
                           LResultTextFrame.SetContent(AResult.text);
-                          LFormatTextFrame.SetContent(AResult.BarcodeFormat.ToString);
+//                          LFormatTextFrame.SetContent(AResult.BarcodeFormat.ToString);
 //                          LResultGlyphFrame.Visible := not AResult.text.IsEmpty;
 
                           // force last redraw in order to show acquired scan result
@@ -175,7 +173,7 @@ begin
 
               // Accessory: Text | Glyph
               .AddFrame<TAccessoryFrame>(
-                50
+                150
               , procedure (Accessory: TAccessoryFrame)
                 begin
                   Accessory
@@ -200,14 +198,15 @@ begin
                       LResultTextFrame := Frame;
                     end
                   )
-                  .SetRightAsFrame<THorzPairFrame>(
-                    100
-                  , procedure (Pair: THorzPairFrame)
+                  .SetRightAsForm<TRowForm>(
+                    IfThen(MainData.HasTorch, 150, 100)
+                  , procedure (Row: TRowForm)
                     begin
-                      Pair
+                      Row
                       // Glyph (ResultGlyphFrame)
-                      .SetLeftContentAsFrame<TIconFontsGlyphFrame>(
-                        procedure (Glyph: TIconFontsGlyphFrame)
+                      .AddFrame<TIconFontsGlyphFrame>(
+                        50
+                      , procedure (Glyph: TIconFontsGlyphFrame)
                         begin
                           Glyph
                           .SetIcon(IconFonts.MD.qrcode_edit, TAppColors.PrimaryColor)
@@ -220,13 +219,12 @@ begin
                             end
                           )
                           .SetMargin(5);
-
-                          LResultGlyphFrame := Glyph;
                         end
                       )
                       // Glyph (ResultGlyphFrame)
-                      .SetRightContentAsFrame<TIconFontsGlyphFrame>(
-                        procedure (Glyph: TIconFontsGlyphFrame)
+                      .AddFrame<TIconFontsGlyphFrame>(
+                        50
+                      , procedure (Glyph: TIconFontsGlyphFrame)
                         begin
                           Glyph
                           .SetIcon(IconFonts.MD.open_in_app, TAppColors.PrimaryColor)
@@ -239,27 +237,30 @@ begin
                             end
                           )
                           .SetMargin(5);
-
-                          LResultGlyphFrame := Glyph;
                         end
                       );
 
+                      if MainData.HasTorch then
+                        // Glyph (ResultGlyphFrame)
+                        Row.AddFrame<TIconFontsGlyphFrame>(
+                          50
+                        , procedure (Glyph: TIconFontsGlyphFrame)
+                          begin
+                            Glyph
+                            .SetIcon(IconFonts.MD.torch, TAppColors.PrimaryColor)
+                            .SetOnClickProc(
+                              procedure
+                              begin
+                                MainData.ToggleTorch;
+                              end
+                            )
+                            .SetMargin(5);
+                          end
+                        );
+
+
                     end
                   );
-                end
-              )
-
-              // Text (ScanResultFormat)
-              .AddFrame<TTextFrame>(
-                50
-              , procedure (Frame: TTextFrame)
-                begin
-                  Frame
-                  .SetContent('')
-                  .SetFontSize(14)
-                  .SetFontColor(TAlphaColorRec.Black);
-
-                  LFormatTextFrame := Frame;
                 end
               );
             end

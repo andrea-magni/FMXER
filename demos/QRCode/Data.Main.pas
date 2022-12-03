@@ -74,6 +74,8 @@ type
     procedure StartCameraScanning(const AImageFrameAvailable: TProc<TBitmap>;
       const AScanResult: TProc<TReadResult, TBitmap>);
     procedure StopCameraScanning(const AClearSubscribers: Boolean);
+    function HasTorch: Boolean;
+    procedure ToggleTorch;
 
     function SubscribeQRCodeChange(const AProc: TProc): TMainData;
     function SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>): TMainData;
@@ -302,6 +304,11 @@ begin
   Result := FFrameQueue.Count <> 0;
 end;
 
+function TMainData.HasTorch: Boolean;
+begin
+  Result := CameraComponent1.HasTorch;
+end;
+
 procedure TMainData.NotifyImageFrameAvailable;
 begin
   for var LListener in FImageFrameAvailableListeners do
@@ -468,6 +475,14 @@ begin
   Result := Self;
   if Assigned(AProc) then
     FScanResultListeners := FScanResultListeners + [AProc];
+end;
+
+procedure TMainData.ToggleTorch;
+begin
+  if CameraComponent1.TorchMode = TTorchMode.ModeOn then
+    CameraComponent1.TorchMode := TTorchMode.ModeOff
+  else
+    CameraComponent1.TorchMode := TTorchMode.ModeOn;
 end;
 
 { TScanPoint }
