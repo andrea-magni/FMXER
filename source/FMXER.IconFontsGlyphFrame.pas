@@ -15,6 +15,7 @@ type
     procedure AfterConstruction; override;
     function SetIcon(const AIcon: TIconEntry): TIconFontsGlyphFrame; overload;
     function SetIcon(const AIcon: TIconEntry; const AColor: TAlphaColor): TIconFontsGlyphFrame; overload;
+    function SetIcon(const AIconFontImageIndex: Integer): TIconFontsGlyphFrame; overload;
   end;
 
 implementation
@@ -41,6 +42,14 @@ function TIconFontsGlyphFrame.SetIcon(const AIcon: TIconEntry;
 begin
   Result := Self;
   SetImageIndex( IconFonts.AddIcon(AIcon, AColor) );
+end;
+
+function TIconFontsGlyphFrame.SetIcon(
+  const AIconFontImageIndex: Integer): TIconFontsGlyphFrame;
+begin
+  Result := Self;
+  SetImages(IconFonts.ImageList);
+  SetImageIndex(AIconFontImageIndex);
 end;
 
 end.

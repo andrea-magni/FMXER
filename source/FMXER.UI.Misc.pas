@@ -40,6 +40,8 @@ type
   TFMXERFormHelper = class helper for TCommonCustomForm
     function SetPadding(const APadding: Single): TCommonCustomForm; overload;
     function SetPadding<T: TControl>(const APadding: Single): T; overload;
+    function SetWidth(const AWidth: Integer): TCommonCustomForm; overload;
+    function SetHeight(const AHeight: Integer): TCommonCustomForm; overload;
   end;
 
   TFMXERFrameHelper = class helper for TControl
@@ -333,6 +335,12 @@ end;
 
 { TFMXERFormHelper }
 
+function TFMXERFormHelper.SetHeight(const AHeight: Integer): TCommonCustomForm;
+begin
+  Result := Self;
+  Height := AHeight;
+end;
+
 function TFMXERFormHelper.SetPadding(const APadding: Single): TCommonCustomForm;
 begin
   Result := Self;
@@ -342,6 +350,12 @@ end;
 function TFMXERFormHelper.SetPadding<T>(const APadding: Single): T;
 begin
   Result := SetPadding(APadding) as T;
+end;
+
+function TFMXERFormHelper.SetWidth(const AWidth: Integer): TCommonCustomForm;
+begin
+  Result := Self;
+  Width := AWidth;
 end;
 
 end.

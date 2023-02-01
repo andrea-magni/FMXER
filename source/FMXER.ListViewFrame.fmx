@@ -14,6 +14,7 @@ object ListViewFrame: TListViewFrame
     Size.PlatformDefault = False
     TabOrder = 0
     OnItemClick = ListViewItemClick
+    OnSearchChange = ListViewSearchChange
     OnPullRefresh = ListViewPullRefresh
     PullToRefresh = True
   end
