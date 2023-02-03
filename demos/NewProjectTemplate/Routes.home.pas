@@ -11,6 +11,7 @@ implementation
 uses
   FMXER.Navigator
 , FMXER.ScaffoldForm, FMXER.LogoFrame
+, FMXER.IconFontsData, Icons.Utils, FMXER.UI.Consts
 ;
 
 procedure DefineHomeRoute(const ARouteName: string);
@@ -27,7 +28,7 @@ begin
           Frame.Opacity := 0.10;
         end
       )
-      .AddActionButton('X'
+      .AddActionButton(IconFonts.ImageList, IconFonts.AddIcon(IconFonts.MD.close, TAppColors.PrimaryTextColor)
       , procedure
         begin
           Navigator.CloseRoute(ARouteName);

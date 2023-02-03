@@ -110,4 +110,7 @@ initialization
   TSkDefaultProviders.RegisterTypeface(TPath.Combine(TPath.GetDocumentsPath, ICON_FONTS_FILENAME));
   {$ENDIF}
 
+//  TSkDefaultProviders.RegisterTypeface(TPath.Combine('Contents\Resources\Fonts', ICON_FONTS_FILENAME));
+
+
 end.

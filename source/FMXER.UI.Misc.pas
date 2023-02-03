@@ -91,12 +91,11 @@ uses IOUtils;
 
 function LocalFile(const AFileName: string): string;
 begin
-  Result := TPath.Combine(
-   {$IFDEF MSWINDOWS} '..\..\..\..\media\' {$ENDIF}
-   {$IFDEF ANDROID  } TPath.GetDocumentsPath {$ENDIF}
-   {$IFDEF MACOS  } TPath.GetDocumentsPath {$ENDIF}
-   {$IFDEF IOS  } TPath.GetDocumentsPath {$ENDIF}
-  , AFileName);
+  {$IFDEF MSWINDOWS}
+  Result := TPath.Combine('..\..\..\..\media\', AFileName);
+  {$ELSE}
+  Result := TPath.Combine(TPath.GetDocumentsPath, AFileName);
+  {$ENDIF}
 end;
 
 { TElementDef<T> }

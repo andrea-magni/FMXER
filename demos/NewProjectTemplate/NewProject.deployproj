@@ -4,21 +4,12 @@
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
     <PropertyGroup>
-        <DeviceId Condition="'$(Platform)'=='Android'">94NAY0R89N</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android'"/>
         <DeviceId Condition="'$(Platform)'=='Android64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">B5A4D729-ACE1-42A6-8945-A10E2DC326FD</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSSimARM64'">85F9526B-56B4-4605-BC1F-8D3623E3AF34</DeviceId>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='OSX64'">
-        <DeployFile Include="OSX64\Debug\NewProject.dSYM" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>NewProject.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
-            <RemoteName>NewProject</RemoteName>
-            <DeployClass>ProjectOSXDebug</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject.app\Contents\Resources\</RemoteDir>
             <RemoteName>NewProject.icns</RemoteName>
@@ -47,6 +38,46 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binosx64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSX64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
         <DeployFile Include="OSX64\Debug\NewProject.info.plist" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject.app\Contents\</RemoteDir>
             <RemoteName>Info.plist</RemoteName>
@@ -58,6 +89,26 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win32'">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win32\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
         <DeployFile Include="Win32\Debug\NewProject.exe" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject\</RemoteDir>
             <RemoteName>NewProject.exe</RemoteName>
@@ -68,8 +119,109 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
     </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Android64'"/>
+    <ItemGroup Condition="'$(Platform)'=='Android64'">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binandroid64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\library\lib\arm64-v8a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!='' and '$(AndroidAppBundle)'=='true'">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'=='' and '$(AndroidAppBundle)'=='true'">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+    </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android'">
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject\res\drawable-large\</RemoteDir>
@@ -97,6 +249,26 @@
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Android\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="Android\Debug\splash_image_def.xml" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject\res\drawable\</RemoteDir>
@@ -198,15 +370,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>gdbserver</RemoteName>
-            <DeployClass>AndroidGDBServer</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_470x320.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject\res\drawable-normal\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -220,6 +383,15 @@
             <RemoteDir>NewProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_notification.png</RemoteName>
             <DeployClass>Android_NotificationIcon72</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>gdbserver</RemoteName>
+            <DeployClass>AndroidGDBServer</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -270,19 +442,19 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\lib\android\debug\mips\libnative-activity.so" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>NewProject\library\lib\mips\</RemoteDir>
-            <RemoteName>libNewProject.so</RemoteName>
-            <DeployClass>AndroidLibnativeMipsFile</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon24</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>NewProject\res\drawable-mdpi\</RemoteDir>
-            <RemoteName>ic_notification.png</RemoteName>
-            <DeployClass>Android_NotificationIcon24</DeployClass>
+        <DeployFile Include="$(BDS)\lib\android\debug\mips\libnative-activity.so" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject\library\lib\mips\</RemoteDir>
+            <RemoteName>libNewProject.so</RemoteName>
+            <DeployClass>AndroidLibnativeMipsFile</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -306,18 +478,59 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='OSXARM64'">
-        <DeployFile Include="OSXARM64\Debug\NewProject.dSYM" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>NewProject.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
-            <RemoteName>NewProject</RemoteName>
-            <DeployClass>ProjectOSXDebug</DeployClass>
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
-        <DeployFile Include="OSXARM64\Debug\NewProject.info.plist" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="$(BDS)\binandroid32\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libsk4d.so</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='OSXARM64'">
+        <DeployFile Include="OSXARM64\Release\NewProject" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>NewProject</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\binosxarm64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Release\NewProject.info.plist" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\Contents\</RemoteDir>
             <RemoteName>Info.plist</RemoteName>
             <DeployClass>ProjectOSXInfoPList</DeployClass>
@@ -326,7 +539,43 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\Contents\Resources\Fonts\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\Contents\Resources\Fonts\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="OSXARM64\Release\NewProject.entitlements" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\</RemoteDir>
+            <RemoteName>NewProject.entitlements</RemoteName>
+            <DeployClass>ProjectOSXEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\Contents\Resources\</RemoteDir>
+            <RemoteName>NewProject.icns</RemoteName>
+            <DeployClass>ProjectOSXResource</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\delphi_PROJECTICNS.icns" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\Contents\Resources\</RemoteDir>
             <RemoteName>NewProject.icns</RemoteName>
             <DeployClass>ProjectOSXResource</DeployClass>
@@ -344,6 +593,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="OSXARM64\Debug\NewProject.info.plist" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\Contents\</RemoteDir>
+            <RemoteName>Info.plist</RemoteName>
+            <DeployClass>ProjectOSXInfoPList</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="OSXARM64\Debug\NewProject" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
             <RemoteName>NewProject</RemoteName>
@@ -354,8 +612,69 @@
             <Overwrite>True</Overwrite>
             <Required>True</Required>
         </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\OSXARM64\libsk4d.dylib" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject.app\Contents\MacOS\</RemoteDir>
+            <RemoteName>libsk4d.dylib</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
     </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='Win64'"/>
+    <ItemGroup Condition="'$(Platform)'=='Win64'">
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(SKIADIR)\Binary\Shared\Win64\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Release' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin64\sk4d.dll" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'==''">
+            <RemoteDir>NewProject\</RemoteDir>
+            <RemoteName>sk4d.dll</RemoteName>
+            <DeployClass>Skia</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
+    </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'"/>
     <ItemGroup Condition="'$(Platform)'=='iOSSimARM64'">
@@ -368,10 +687,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_58x58.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
-            <DeployClass>iOS_AppStore1024</DeployClass>
+            <RemoteName>FM_SettingIcon_58x58.png</RemoteName>
+            <DeployClass>iPhone_Setting58</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -386,7 +705,61 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
+            <DeployClass>iOS_AppStore1024</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_1024x1024.png</RemoteName>
+            <DeployClass>iOS_AppStore1024</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
+            <DeployClass>iPhone_Notification40</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPad@2x.png</RemoteName>
+            <DeployClass>iPad_Launch2x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
             <RemoteName>FM_LaunchScreenImage_iPad@2x.png</RemoteName>
             <DeployClass>iPad_Launch2x</DeployClass>
@@ -404,6 +777,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
+            <DeployClass>iPad_SpotLight80</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_2x.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
             <RemoteName>FM_LaunchScreenImage_iPhoneDark@2x.png</RemoteName>
@@ -413,7 +795,25 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_2x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhoneDark@2x.png</RemoteName>
+            <DeployClass>iPhone_LaunchDark2x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_87x87.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_SettingIcon_87x87.png</RemoteName>
+            <DeployClass>iPhone_Setting87</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_87x87.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SettingIcon_87x87.png</RemoteName>
             <DeployClass>iPhone_Setting87</DeployClass>
@@ -440,10 +840,28 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="iOSSimARM64\Debug\NewProject.dSYM" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>NewProject.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
-            <RemoteName>NewProject</RemoteName>
-            <DeployClass>ProjectiOSDeviceDebug</DeployClass>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_NotificationIcon_60x60.png</RemoteName>
+            <DeployClass>iPhone_Notification60</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_167x167.png</RemoteName>
+            <DeployClass>iPad_AppIcon167</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_167x167.png</RemoteName>
+            <DeployClass>iPad_AppIcon167</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -458,10 +876,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_120x120.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
-            <RemoteName>FM_ApplicationIcon_167x167.png</RemoteName>
-            <DeployClass>iPad_AppIcon167</DeployClass>
+            <RemoteName>FM_SpotlightSearchIcon_120x120.png</RemoteName>
+            <DeployClass>iPhone_Spotlight120</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -495,7 +913,43 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_NotificationIcon_40x40.png</RemoteName>
+            <DeployClass>iPad_Notification40</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_SettingIcon_58x58.png</RemoteName>
+            <DeployClass>iPad_Setting58</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="iOSSimARM64\Release\NewProject.entitlements" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\</RemoteDir>
+            <RemoteName>NewProject.entitlements</RemoteName>
+            <DeployClass>ProjectiOSEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_3x.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhone@3x.png</RemoteName>
+            <DeployClass>iPhone_Launch3x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_3x.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
             <RemoteName>FM_LaunchScreenImage_iPhone@3x.png</RemoteName>
             <DeployClass>iPhone_Launch3x</DeployClass>
@@ -513,7 +967,25 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImageDark_2x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPadDark@2x.png</RemoteName>
+            <DeployClass>iPad_LaunchDark2x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
+            <DeployClass>iPhone_Spotlight80</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
             <DeployClass>iPhone_Spotlight80</DeployClass>
@@ -531,6 +1003,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_120x120.png</RemoteName>
+            <DeployClass>iPhone_AppIcon120</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
             <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
@@ -540,7 +1021,35 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
+            <DeployClass>iPhone_Launch2x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="iOSSimARM64\Release\NewProject" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\</RemoteDir>
+            <RemoteName>NewProject</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_180x180.png</RemoteName>
+            <DeployClass>iPhone_AppIcon180</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_180x180.png</RemoteName>
             <DeployClass>iPhone_AppIcon180</DeployClass>
@@ -567,11 +1076,47 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
+            <RemoteName>FM_ApplicationIcon_152x152.png</RemoteName>
+            <DeployClass>iPad_AppIcon152</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
             <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
             <DeployClass>iPhone_LaunchDark3x</DeployClass>
             <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
+            <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
+            <DeployClass>iPhone_LaunchDark3x</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="iOSSimARM64\Release\NewProject.info.plist" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\</RemoteDir>
+            <RemoteName>Info.plist</RemoteName>
+            <DeployClass>ProjectiOSInfoPList</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="iOSSimARM64\Release\NewProject.launchscreen" Condition="'$(Config)'=='Release'">
+            <RemoteDir>NewProject.app\..\$(PROJECTNAME).launchscreen\</RemoteDir>
+            <RemoteName>NewProject.launchscreen</RemoteName>
+            <DeployClass>ProjectiOSLaunchScreen</DeployClass>
+            <Operation>64</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
