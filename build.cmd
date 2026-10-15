@@ -95,7 +95,8 @@ if exist "%TESTS%\FMXERTests.exe" (
 
 REM --- demos ----------------------------------------------------------------
 if /i "%~2"=="demos" (
-  for /r "%ROOT%demos" %%P in (*.dpr) do (
+  REM *.dpr also matches the .dproj files (8.3 names): check the extension
+  for /r "%ROOT%demos" %%P in (*.dpr) do if /i "%%~xP"==".dpr" (
     set "DEMOOUT=%OUT%\demos\%%~nP"
     if not exist "!DEMOOUT!\dcu" mkdir "!DEMOOUT!\dcu"
     call :compile "%%~dpP" "%%~nxP" "!DEMOOUT!" "demo %%~nP" "-DFRAMEWORK_FMX;SKIA"
