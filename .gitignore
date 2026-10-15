@@ -69,3 +69,6 @@ __recovery/
 Android/
 Win32/
 Win64/
+
+# build.cmd output
+/build/
