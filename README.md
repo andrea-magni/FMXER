@@ -8,8 +8,11 @@ Inspired by Google Flutter's approach.
 
 ![FMXER](media/FMXER_R_256.png)
 
+## Documentation
+**[andrea-magni.github.io/FMXER](https://andrea-magni.github.io/FMXER/)**: guide, element catalog, reference and demos ([llms.txt](https://andrea-magni.github.io/FMXER/llms.txt) for AI assistants).
+
 ## Delphi version:
- - Delphi 11.2 (recent versions should be working, not tested yet)
+ - Delphi 12 Athens and 13 Florence (Skia built into RAD Studio). Delphi 11 is supported up to FMXER v.1.1.
 
 ## Submodules:
  - lib\TFrameStand: [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
@@ -29,7 +32,7 @@ Inspired by Google Flutter's approach.
 
 ## Dependencies
 1. [TFrameStand and TFormStand](https://github.com/andrea-magni/TFrameStand)
-2. [Skia4Delphi](https://github.com/skia4delphi/skia4delphi)
+2. Skia (built into Delphi 12 and later)
 3. [IconFontImageList](https://github.com/EtheaDev/IconFontsImageList)
 4. [DelphiZXingQRCode](https://github.com/foxitsoftware/DelphiZXingQRCode)
 

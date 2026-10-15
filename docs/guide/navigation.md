@@ -1,0 +1,182 @@
+# Navigation
+
+`TNavigator` (unit `FMXER.Navigator`) turns the screens of an app into **named routes**. A route is defined once, created on demand when you route to it, and freed when you close it. The navigator keeps a stack of the open routes for the Back button.
+
+## Initialization
+
+The navigator is a singleton bound to one `TFormStand`, usually dropped on the main form:
+
+```pascal
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  Navigator(FormStand1);   // first call: creates the navigator on FormStand1
+  // ...
+end;
+```
+
+After that, `Navigator` (no arguments) returns the same instance from any unit. Calling `Navigator` before it is initialized raises *Navigator has not been initialized*; calling `TNavigator.Init` twice raises *Navigator has been already initialized*. `TNavigator.Initialized` tells whether it is ready (useful in code that can run during shutdown).
+
+## Defining routes
+
+### With a form class
+
+```pascal
+Navigator.DefineRoute<TScaffoldForm>('home'
+, procedure (Home: TScaffoldForm)
+  begin
+    Home.SetTitle('Home');
+  end
+);
+```
+
+`DefineRoute<T: TForm>(ARouteName, AConfigProc, AParent, AStandName)` records a route whose screen is a new `T`, created by the navigator's `TFormStand` in `AParent` (default: the `DefaultParent` of the form stand, or its owner — the main form) inside the stand `AStandName`, then configured by `AConfigProc`.
+
+### With a function
+
+For full control, define a route with a function that returns the `TSubjectInfo` of the new screen — for example to use a different `TFrameStand`/`TFormStand`, or a frame as a screen:
+
+```pascal
+Navigator.DefineRoute('about'
+, function: TSubjectInfo
+  begin
+    Result := MainForm.FrameStand1.New<TAboutFrame>(nil, 'lightbox');
+  end
+);
+```
+
+`DefineRoute` returns the navigator, so definitions chain:
+
+```pascal
+Navigator(FormStand1)
+  .DefineRoute<TScaffoldForm>('home', ...)
+  .DefineRoute<TScaffoldForm>('detail', ...)
+  .DefineRoute<TContainerForm>('wait', ...);
+```
+
+Each name can be defined once (a second `DefineRoute` with the same name raises an exception). `IsRouteDefined(AName)` checks it.
+
+## Routing
+
+| Call | Effect |
+|---|---|
+| `RouteTo(AName)` | creates the route if it is not active (calling its definition), pushes it on the stack, fires `OnCreateRoute`, shows it. If it is already active, just shows it again |
+| `RouteTo(AName, True)` | same, but **transient**: the route is not pushed on the stack |
+| `CloseRoute(AName)` | removes the route from the active ones and from the stack (wherever it is in the stack), hides it (stand animations), frees it, then fires `OnCloseRoute` |
+| `StackPop` | closes the route on top of the stack (the Back button) |
+| `CloseAllRoutes(AFilter)` | closes every active route, or the ones for which `AFilter(Name)` is `True` |
+| `CloseAllRoutesExcept(AName)` | closes every active route but one |
+| `RouteToDelayed(AName, ATransient, ADelay_ms)` | `RouteTo` after a delay (default 100 ms) |
+| `CloseRouteDelayed(AName, ATransient, ADelay_ms)` | `CloseRoute` after a delay |
+
+An unknown route name raises *Route definition not found: ...*.
+
+```pascal
+// open a detail screen, then go back
+Navigator.RouteTo('detail');
+// ...
+Navigator.CloseRoute('detail');
+```
+
+### Transient routes
+
+A transient route is an overlay that should not take part in Back navigation: a wait screen, a splash, an animation. The HelloWorld and Skia101 demos open one and close it after a few seconds:
+
+```pascal
+Navigator.RouteTo('spinner', True);
+Navigator.CloseRouteDelayed('spinner', True, 3000);
+```
+
+The navigator remembers which routes were opened as transient: `CloseRoute`, `CloseAllRoutes` and `CloseAllRoutesExcept` handle them without being told (the `ATransient` parameter of `CloseRoute` is kept for compatibility).
+
+::: info Before v.1.2
+Up to v.1.1, `CloseRoute` removed the **top** of the stack whatever route it closed, and needed the same `ATransient` value used with `RouteTo`; `CloseAllRoutes` treated every route as non-transient and raised `EListError` (*Unbalanced stack or queue operation*) with a transient route open. On v.1.1, close routes in reverse order of opening and close transient routes with `CloseRoute(AName, True)` first.
+:::
+
+### Closing a route from inside it
+
+A route often closes itself from one of its own buttons (the X action button of a scaffold). That is fine: `CloseRoute` hides the screen first and frees it afterwards, through the stand. To close a route and open another one in the same handler, close first and then route:
+
+```pascal
+.AddActionButton('X'
+, procedure
+  begin
+    Navigator.CloseRoute('settings');
+    Navigator.RouteTo('home');
+  end
+)
+```
+
+If the next screen must appear only after the hide animation, use `RouteToDelayed`.
+
+## The stack and the Back button
+
+`Stack` (a `TStack<string>`) holds the names of the non-transient routes, in opening order; `Breadcrumb` returns them as an array, first opened first. A typical Back handler on the main form:
+
+```pascal
+procedure TMainForm.FormKeyUp(Sender: TObject; var Key: Word;
+  var KeyChar: WideChar; Shift: TShiftState);
+begin
+  if (Key = vkHardwareBack) {$IFDEF MSWINDOWS}or (Key = vkEscape){$ENDIF} then
+  begin
+    if Navigator.Stack.Count > 1 then   // never pop the home route
+    begin
+      Key := 0;                          // Android: do not close the app
+      Navigator.StackPop;
+    end;
+  end;
+end;
+```
+
+## Events
+
+| Event | Fired |
+|---|---|
+| `OnCreateRoute: TProc<string>` | after a route is created by `RouteTo` (not when an active route is shown again) |
+| `OnCloseRoute: TProc<string>` | after a closed route has been hidden and freed |
+
+Both have a fluent setter (`SetOnCreateRoute`, `SetOnCloseRoute`). The QRCode demo uses them to stop the camera when the reader screen closes, to close the app with the home route and to show the breadcrumb in the window caption:
+
+```pascal
+Navigator.SetOnCloseRoute(
+  procedure (ARouteName: string)
+  begin
+    if ARouteName = 'QRReader' then
+      MainData.StopCameraScanning(True);
+    if ARouteName = 'home' then
+      Close;
+    Caption := string.Join(' - ', Navigator.Breadcrumb);
+  end
+).SetOnCreateRoute(
+  procedure (ARouteName: string)
+  begin
+    Caption := string.Join(' - ', Navigator.Breadcrumb);
+  end
+);
+```
+
+## Closing the application
+
+When the main form closes while routes are open, close the routes first so that their hide animations and `[Hide]` methods run, and let the home route's `OnCloseRoute` close the form:
+
+```pascal
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if Navigator.ActiveRoutes.Count > 0 then
+  begin
+    Action := TCloseAction.caNone;
+    Navigator.CloseAllRoutes();
+  end;
+end;
+```
+
+
+## Inspecting the navigator
+
+| Member | Description |
+|---|---|
+| `ActiveRoutes: TDictionary<string, TSubjectInfo>` | the open routes and their infos; `ActiveRoutes['home'].Subject` is the screen |
+| `RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>>` | the definitions |
+| `IsRouteActive(AName)`, `IsRouteDefined(AName)` | checks |
+| `FormStand` | the `TFormStand` the navigator was initialized with |
+
+The full list is in the [TNavigator reference](/reference/navigator).
