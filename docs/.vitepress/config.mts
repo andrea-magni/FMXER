@@ -69,6 +69,7 @@ const guideSidebar = [
       { text: 'Writing Your Own Elements', link: '/guide/custom-elements' },
       { text: 'FAQ & Troubleshooting', link: '/guide/faq' },
       { text: 'Building & Testing', link: '/guide/building' },
+      { text: 'AI Agent Skill', link: '/guide/agent-skills' },
     ],
   },
 ]

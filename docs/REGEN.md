@@ -41,6 +41,9 @@ the `.pas` files. "Regenerating" means having an AI agent (Claude Code) re-synth
   - `tests/`, `build.cmd` → `guide/building.md`
   - dependencies, Delphi versions → `guide/installation.md`, `reference/units.md`
   - GitHub releases → `release-notes.md`
+  - any public API or behaviour change → also the agent skill in `Skills/fmxer-development/`
+    (`references/api.md` holds declarations copied from `source\`; bump `version` in
+    `.claude-plugin/plugin.json` when the skill changes)
 - `ANALYSIS.md` (not published) is the technical review of the code: when an issue it
   lists is fixed, remove the corresponding "Known issue" boxes from the pages
   (`guide/navigation.md`, `reference/navigator.md`, `elements/scaffold.md`, `elements/containers.md`,
@@ -56,8 +59,11 @@ Refresh the VitePress documentation in docs/ for FMXER.
    code samples that compile, tables for members.
 3. If a fix removes a "Known issue" listed in docs/ANALYSIS.md, remove its boxes from the pages
    and update the status in ANALYSIS.md.
-4. If a new release exists (`gh release list`), add it to docs/release-notes.md.
-5. Run docs\build.cmd and fix any dead link.
-6. Update docs/.docs-baseline to the current HEAD and today's date.
+4. If the public API or a documented behaviour changed, update Skills/fmxer-development/
+   (SKILL.md and references/, api.md from the source declarations) and bump the version
+   in .claude-plugin/plugin.json.
+5. If a new release exists (`gh release list`), add it to docs/release-notes.md.
+6. Run docs\build.cmd and fix any dead link.
+7. Update docs/.docs-baseline to the current HEAD and today's date.
 Do not touch pages unrelated to the changes.
 ```
