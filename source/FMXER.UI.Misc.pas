@@ -39,7 +39,7 @@ type
 
   TFMXERFormHelper = class helper for TCommonCustomForm
     function SetPadding(const APadding: Single): TCommonCustomForm; overload;
-    function SetPadding<T: TControl>(const APadding: Single): T; overload;
+    function SetPadding<T: TCommonCustomForm>(const APadding: Single): T; overload;
     function SetWidth(const AWidth: Integer): TCommonCustomForm; overload;
     function SetHeight(const AHeight: Integer): TCommonCustomForm; overload;
   end;
