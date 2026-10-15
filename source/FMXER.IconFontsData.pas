@@ -3,7 +3,7 @@ unit FMXER.IconFontsData;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.ImageList, FMX.ImgList,
+  System.SysUtils, System.Classes, System.ImageList, FMX.ImgList, System.Generics.Collections,
   FMX.IconFontsImageList, System.UITypes, Icons.MaterialDesign, Icons.Utils;
 
 const
@@ -15,6 +15,7 @@ type
     ImageList: TIconFontsImageList;
   private
     FCount: Integer;
+    FIndexes: TDictionary<UInt64, Integer>; // (code point, color) -> image index
   private
     class var _Instance: TIconFonts;
     class function GetIconFonts: TIconFonts; static;
@@ -25,6 +26,7 @@ type
     class destructor ClassDestroy;
 
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
 
     function AddIcon(const AIcon: TIconEntry): Integer; overload;
     function AddIcon(const AIcon: TIconEntry; const AColor: TAlphaColor): Integer; overload;
@@ -70,9 +72,18 @@ end;
 
 function TIconFonts.AddIcon(const ACodePoint: Integer;
   const AColor: TAlphaColor): Integer;
+var
+  LKey: UInt64;
 begin
+  // the same icon in the same color is added once: AddIcon is called by
+  // elements created many times (routes, list builders, action buttons)
+  LKey := (UInt64(Cardinal(ACodePoint)) shl 32) or AColor;
+  if FIndexes.TryGetValue(LKey, Result) and (Result < ImageList.Count) then
+    Exit;
+
   Result := ImageList.InsertIcon(FCount, ACodepoint, '', AColor);
   Inc(FCount);
+  FIndexes.AddOrSetValue(LKey, Result);
 end;
 
 class constructor TIconFonts.ClassCreate;
@@ -90,7 +101,14 @@ constructor TIconFonts.Create(AOwner: TComponent);
 begin
   inherited;
   FCount := 0;
+  FIndexes := TDictionary<UInt64, Integer>.Create;
   ImageList.FontName := ICON_FONTS_FAMILYNAME;
+end;
+
+destructor TIconFonts.Destroy;
+begin
+  FreeAndNil(FIndexes);
+  inherited;
 end;
 
 class function TIconFonts.GetIconFonts: TIconFonts;
