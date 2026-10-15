@@ -284,19 +284,20 @@ end;
 function TScaffoldForm.ShowSnackBar(const AText: string;
   const ADuration_ms: Integer; const AThen: TProc): TScaffoldForm;
 var
-  FSnackbar: TFrameInfo<TTextFrame>;
+  LSnackBar: TFrameInfo<TTextFrame>;
 begin
   Result := Self;
 
-  FSnackbar := FrameStand1.New<TTextFrame>(OverlayLayout, 'snackbar');
+  LSnackBar := FrameStand1.New<TTextFrame>(OverlayLayout, 'snackbar');
 
-  FSnackbar.Frame.SetContent(AText);
-  FSnackbar.Show();
+  LSnackBar.Frame.SetContent(AText);
+  LSnackBar.Show();
 
+  // hide and free the snackbar (Hide alone kept one hidden frame per call)
   TDelayedAction.Execute(ADuration_ms
     , procedure
       begin
-        FSnackBar.Hide(0, AThen);
+        LSnackBar.HideAndClose(0, AThen);
       end
   );
 end;
