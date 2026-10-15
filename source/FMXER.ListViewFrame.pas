@@ -18,7 +18,6 @@ type
     procedure ListViewPullRefresh(Sender: TObject);
     procedure ListViewSearchChange(Sender: TObject);
   private
-    FOnSelectHandlers: TDictionary<TListViewItem, TListViewItemClickProc>;
     FOnSearchChange: TProc;
     FItemBuilderProc: TProc;
     function GetItemAppearance: string;
@@ -38,8 +37,7 @@ type
     procedure HitTestChanged; override;
     function GetSearchBox: TSearchBox;
   public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
+    const ON_SELECT_DATA = 'FMXER.OnSelect'; // TListViewItem.Data key of the click handler
 
     procedure AfterConstruction; override;
     procedure RefreshList;
@@ -77,8 +75,9 @@ begin
   if AImageIndex <> -1 then
     Result.ImageIndex := AImageIndex;
 
+  // the handler lives in the item: it goes away with it (clear, swipe to delete)
   if Assigned(AOnSelect) then
-    FOnSelectHandlers.Add(Result, AOnSelect);
+    Result.Data[ON_SELECT_DATA] := TValue.From<TListViewItemClickProc>(AOnSelect);
 
 end;
 
@@ -97,18 +96,6 @@ begin
   finally
     ListView.Items.EndUpdate;
   end;
-end;
-
-constructor TListViewFrame.Create(AOwner: TComponent);
-begin
-  inherited;
-  FOnSelectHandlers := TDictionary<TListViewItem, TListViewItemClickProc>.Create();
-end;
-
-destructor TListViewFrame.Destroy;
-begin
-  FreeAndNil(FOnSelectHandlers);
-  inherited;
 end;
 
 function TListViewFrame.GetAccessoryVisible: Boolean;
@@ -169,8 +156,13 @@ end;
 procedure TListViewFrame.ListViewItemClick(const Sender: TObject;
   const AItem: TListViewItem);
 begin
-  var LHandler: TListViewItemClickProc := nil;
-  if FOnSelectHandlers.TryGetValue(AItem, LHandler) and Assigned(LHandler) then
+  if not Assigned(AItem) then
+    Exit;
+  var LData := AItem.Data[ON_SELECT_DATA];
+  if LData.IsEmpty then
+    Exit;
+  var LHandler := LData.AsType<TListViewItemClickProc>();
+  if Assigned(LHandler) then
     LHandler(AItem);
 end;
 
@@ -187,17 +179,15 @@ end;
 
 procedure TListViewFrame.RebuildItems;
 begin
-  FOnSelectHandlers.Clear;
-
+  // the builder adds the items to an empty list (pull to refresh used to
+  // append a second copy)
+  ClearItems;
   if Assigned(FItemBuilderProc) then
-    FItemBuilderProc()
-  else
-    ListView.Items.Clear;
+    FItemBuilderProc();
 end;
 
 procedure TListViewFrame.RefreshList;
 begin
-  ClearItems;
   RebuildItems;
 end;
 
