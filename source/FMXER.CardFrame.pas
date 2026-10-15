@@ -98,7 +98,7 @@ end;
 procedure TCardFrame.SetGlyphAsForm<T>(const AConfigProc: TProc<T>);
 begin
   GlyphLayout.Visible := true;
-  FContent := FormStand1.NewAndShow<T>(GlyphLayout, GlyphStand, AConfigProc);
+  FGlyph := FormStand1.NewAndShow<T>(GlyphLayout, GlyphStand, AConfigProc);
 end;
 
 procedure TCardFrame.SetGlyphAsFrame<T>(const AConfigProc: TProc<T>);
