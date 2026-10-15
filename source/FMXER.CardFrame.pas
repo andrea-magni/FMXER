@@ -55,7 +55,7 @@ implementation
 
 {$R *.fmx}
 
-uses FMXER.UI.Consts, FMXER.UI.Misc, Skia.FMX;
+uses FMXER.UI.Consts, FMXER.UI.Misc, FMX.Skia;
 
 { TCardFrame }
 

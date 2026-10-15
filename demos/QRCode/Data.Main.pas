@@ -120,7 +120,7 @@ uses
 {$IFDEF ANDROID}
 , Androidapi.Helpers, Androidapi.JNI.JavaTypes, Androidapi.JNI.Os
 {$ENDIF}
-, Skia, Skia.FMX.Graphics
+, System.Skia, FMX.Skia.Canvas
 , QRCode.Utils, FMXER.UI.Consts, QRCode.Render
 ;
 

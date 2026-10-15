@@ -4,7 +4,7 @@ REM  FMXER - build and test (Win32, dcc32)
 REM
 REM  build.cmd [version] [demos]
 REM
-REM    version  Delphi version: 13 (default), 12, 11
+REM    version  Delphi version: 13 (default), 12
 REM    demos    also build the demo projects
 REM
 REM  Steps: every unit of source\, the DUnitX test suite (built and run)
@@ -19,7 +19,7 @@ REM    FMXER_IFIL         IconFontsImageList source (lib\IconFontsImageList\Sour
 REM    FMXER_ZXINGQR      DelphiZXingQRCode source  (lib\DelphiZXingQRCode\Source)
 REM    FMXER_ZXING        ZXing.Delphi Lib\Classes  (lib\ZXing.Delphi\Lib\Classes), QRCode demo
 REM    FMXER_MARS         MARS-Curiosity source     (no default), LibraryStore demo
-REM  Delphi 11 also needs Skia4Delphi in the library path of the IDE.
+REM  Skia is the one built into Delphi 12+ (System.Skia, FMX.Skia).
 REM ==========================================================================
 setlocal EnableDelayedExpansion
 
@@ -28,9 +28,8 @@ set "VER=%~1"
 if "%VER%"=="" set "VER=13"
 if "%VER%"=="13" set "BDSVER=37.0"
 if "%VER%"=="12" set "BDSVER=23.0"
-if "%VER%"=="11" set "BDSVER=22.0"
 if not defined BDSVER (
-  echo Unknown version "%VER%": use 13, 12 or 11
+  echo Unknown version "%VER%": use 13 or 12
   exit /b 2
 )
 set "BIN=%ProgramFiles(x86)%\Embarcadero\Studio\%BDSVER%\bin"
@@ -52,9 +51,6 @@ if defined FMXER_MARS set "MARSPATH=%FMXER_MARS%;%FMXER_MARS%\..\ThirdParty\delp
 
 set "SEARCH=%ROOT%source;%FMXER_TFRAMESTAND%;%FMXER_IFIL%;%FMXER_ZXINGQR%;%BDS%\source\DUnitX"
 set "NS=-NSSystem;Xml;Data;Datasnap;Web;Soap;FMX;System.Win;Winapi"
-REM the demo projects use the Skia4Delphi unit names: Delphi 12+ has them as System.Skia/FMX.Skia
-set "ALIAS="
-if not "%VER%"=="11" set "ALIAS=-ASkia=System.Skia;Skia.FMX=FMX.Skia;Skia.FMX.Graphics=FMX.Skia.Canvas"
 
 set "OUT=%ROOT%build\%VER%"
 set "ERRORS=0"
@@ -117,7 +113,7 @@ REM --- :compile <folder> <dpr> <outdir> <label> <defines> ------------------
 :compile
 echo --- %~4
 pushd "%~1"
-"%BIN%\dcc32.exe" -B -Q "%~5" "%NS%" %ALIAS% "-U%SEARCH%;%ZXPATH%;%MARSPATH%" "-I%SEARCH%" "-R%SEARCH%" "-NU%~3\dcu" "-E%~3" %2 > "%~3\%~n2.compile.log" 2>&1
+"%BIN%\dcc32.exe" -B -Q "%~5" "%NS%" "-U%SEARCH%;%ZXPATH%;%MARSPATH%" "-I%SEARCH%" "-R%SEARCH%" "-NU%~3\dcu" "-E%~3" %2 > "%~3\%~n2.compile.log" 2>&1
 if errorlevel 1 (
   set /a ERRORS+=1
   echo FAILED  %~4, see %~3\%~n2.compile.log>> "%SUMMARY%"

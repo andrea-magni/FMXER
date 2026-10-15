@@ -12,7 +12,7 @@ function DefineQRCodeRoute(const ARouteName: string = 'qrcode'): TNavigator;
 implementation
 
 uses
-  Skia, Skia.FMX
+  System.Skia, FMX.Skia
 
 , FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.QRCodeFrame, FMXER.BackgroundFrame

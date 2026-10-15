@@ -12,7 +12,7 @@ function DefineHomeRoute(const ARouteName: string = 'home'): TNavigator;
 implementation
 
 uses
-  Skia, Skia.FMX
+  System.Skia, FMX.Skia
 
 , FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.ColumnForm, FMXER.RowForm

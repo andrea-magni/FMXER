@@ -45,7 +45,7 @@ implementation
 
 {$R *.dfm}
 
-uses FMX.Forms, IOUtils, Skia, Skia.FMX;
+uses FMX.Forms, IOUtils, System.Skia, FMX.Skia;
 
 function IconFonts: TIconFonts;
 begin

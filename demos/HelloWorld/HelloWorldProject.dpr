@@ -3,7 +3,7 @@ program HelloWorldProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Skia.FMX,
+  FMX.Skia,
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Frames.Custom1 in 'Frames.Custom1.pas' {Custom1Frame: TFrame},
   Routes.home in 'Routes.home.pas',

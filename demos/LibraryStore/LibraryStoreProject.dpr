@@ -3,7 +3,7 @@ program LibraryStoreProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Skia.FMX,
+  FMX.Skia,
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Routes.Home in 'Routes.Home.pas',
   Routes.Books in 'Routes.Books.pas',

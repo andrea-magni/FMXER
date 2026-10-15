@@ -13,7 +13,7 @@ uses
   DateUtils, Rtti, TypInfo
 , FMX.Types, FMX.Graphics, FMX.DialogService
 , ZXing.ReadResult, ZXing.BarcodeFormat
-, Skia, Skia.FMX, Skia.FMX.Graphics
+, System.Skia, FMX.Skia, FMX.Skia.Canvas
 , FMXER.Navigator, FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.ColumnForm
 , FMXER.PaintBoxFrame, FMXER.ButtonFrame, FMXER.StackFrame, FMXER.BackgroundFrame

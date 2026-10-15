@@ -6,7 +6,7 @@ interface
 
 uses
   { Skia }
-  Skia;
+  System.Skia;
 
 type
   T2DBooleanArray = array of array of Boolean;
