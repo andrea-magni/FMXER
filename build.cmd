@@ -79,6 +79,7 @@ call :compile "%CHECK%" FMXERCheck.dpr "%CHECK%" "source units" "-DFRAMEWORK_FMX
 REM --- tests ----------------------------------------------------------------
 set "TESTS=%OUT%\tests"
 if not exist "%TESTS%\dcu" mkdir "%TESTS%\dcu"
+if exist "%TESTS%\FMXERTests.exe" del "%TESTS%\FMXERTests.exe"
 call :compile "%ROOT%tests" FMXERTests.dpr "%TESTS%" "tests: build" "-DFRAMEWORK_FMX"
 if exist "%TESTS%\FMXERTests.exe" (
   echo --- tests: run
