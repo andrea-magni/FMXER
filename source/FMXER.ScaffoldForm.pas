@@ -165,8 +165,11 @@ procedure TScaffoldForm.AddActionButtonOverlayFrame<T>(
   const AElementDef: TElementDef<T>);
 var
   LProc: TProc;
+  LParam: TNameValueParam;
 begin
-  LProc := TProc(AElementDef.ParamByName('OnClickProc', nil).GetReferenceToRawData^);
+  LProc := nil;
+  if AElementDef.FindParam('OnClickProc', LParam) and not LParam.Value.IsEmpty then
+    LProc := LParam.Value.AsType<TProc>();
   AddActionButtonOverlayFrame<T>(AElementDef.ConfigProc, LProc);
 end;
 
