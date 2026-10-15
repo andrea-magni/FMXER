@@ -1,6 +1,6 @@
 # Demos
 
-The `demos` folder has one project per topic; ten of them are in `demos\AllDemos.groupproj`. They target Windows, macOS, iOS and Android, and expect the dependencies in the search path or installed (see [Installation](/guide/installation)).
+The `demos` folder has one project per topic; ten of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android, and expect the dependencies in the search path or installed (see [Installation](/guide/installation)).
 
 Media files (Lottie animations, SVG, the icon font) come from the `media` folder: on Windows the demos read them from there with `LocalFile`, on mobile they are deployed with the app.
 
@@ -16,7 +16,8 @@ Media files (Lottie animations, SVG, the icon font) come from the `media` folder
 | [LibraryStore](#librarystore) | lists filled from a REST server, async loading, multiple routes | MARS client, a MARS server |
 | [HelloWorld_IFIL](#helloworld-ifil) | an image list of icon fonts on the main form | — |
 | [QRCode](#qrcode) | QR code generator and camera reader, color pickers, share sheet | ZXing.Delphi, camera |
-| MyTicketing, EKON25 - Weather | conference demos written for FMXER 1.0 | do not compile with 1.1 |
+| [MyTicketing](#myticketing) | a login column (edits, password, default button enabled by `OnUpdateHandler`) leading to a scaffold | — |
+| [EKON25 - Weather](#ekon25-weather) | a card with a nested column in a scaffold, conference starting point | — |
 
 ## NewProjectTemplate
 
@@ -83,3 +84,14 @@ A complete app, and the most recent demo:
 - **Webview**: the scanned content in a `TWebViewFrame`.
 
 The main form shows the breadcrumb in the caption on Windows, closes the camera in `OnCloseRoute` and handles Back/Esc with `StackPop`.
+
+## MyTicketing
+
+A conference demo, ported to the fluent API of 1.1:
+
+- **login**: a `TColumnForm` with a logo, two `TEditFrame`s (`SetCaption`, `SetPassword(True)`) that store what you type in a data module (`Data.Remote`), and a default *Login* button (`SetOnClickHandler`) enabled by its `OnUpdateHandler` only when both fields are filled; the login succeeds with `andrea` / `password`;
+- **home**: a scaffold with a logo and two action buttons (a snackbar, close the route).
+
+## EKON25 - Weather
+
+The starting point of a conference session (EKON 25): a scaffold whose content is a column with a `TCardFrame` titled with a location, and a *Get weather* button in a column nested in the card. The weather frame (`Frames.WeatherSituation`) and the data module are placeholders, never completed.
