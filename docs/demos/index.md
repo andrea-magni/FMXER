@@ -30,7 +30,7 @@ The richest tour of the elements, in three routes:
 - **bubble**: a transient route with `TActivityBubblesFrame`, opened and closed after 3 seconds with `RouteTo('bubble', True)` + `CloseRouteDelayed`.
 - **qrcode**: a full-screen QR code of the text typed in the home screen; tap to close.
 
-Shared state is a data module (`Data.AppState`) that broadcasts changes with `System.Messaging` (see the warning in [State & Events](/guide/state#subscriptions-and-the-lifetime-of-elements)).
+Shared state is a data module (`Data.AppState`) that broadcasts changes with `System.Messaging` ; each subscriber is tied to the lifetime of its QR code by a `TSubscriptionGuard` (see [State & Events](/guide/state#subscriptions-and-the-lifetime-of-elements)).
 
 ## Column
 
@@ -62,7 +62,7 @@ A list of employees from a `TFDMemTable` (data module `Data.Main`) in a frame de
 A small catalog app that reads books and authors from a [MARS-Curiosity](https://github.com/andrea-magni/MARS) REST server (`Data.Remote`, `TMARSNetClient` with asynchronous `GETAsync`):
 
 - **home**: a list with two entries;
-- **books_all**, **books_by_author**, **authors**, **book_single**: lists built by an `ItemBuilderProc`, titles updated with the number of results, search box when there are more than three items, an activity animation in the title detail area while loading (driven by `TRetrieveMsg` messages), errors in a snackbar;
+- **books_all**, **books_by_author**, **authors**, **book_single**: lists built by an `ItemBuilderProc`, titles updated with the number of results, search box when there are more than three items, an activity animation in the title detail area while loading (driven by `TRetrieveMsg` messages, unsubscribed when the route closes), errors in a snackbar;
 - icons added once and cached in `Utils.UI`.
 
 It needs a MARS server exposing the LibraryStore resources (`http://localhost:8080/rest` on desktop; set the address in `Data.Remote` for devices).
