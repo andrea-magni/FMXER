@@ -308,7 +308,7 @@ begin
     else if not _TryGetRADStudioEnvVar(AInfo.Version, LName, LValue) then
       LValue := GetEnv(LName);
     Result := Result + Copy(APath, 1, LStart - 1) + LValue;
-    Delete(APath, 1, LStart + LEnd);
+    Delete(APath, 1, LStart + LEnd + 1);
     LStart := Pos('$(', APath);
   end;
   Result := Result + APath;

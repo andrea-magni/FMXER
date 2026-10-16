@@ -49,7 +49,7 @@ IconFontsImageList is not a Smart Setup product: install it **before**, from Get
 
 The setup (`FMXER_<version>_Setup.exe`, see the [releases](https://github.com/andrea-magni/FMXER/releases)) copies the library, builds the runtime packages for Win32 and Win64 and adds the source folder to the library path of every platform, for Delphi 12 and 13. It uses the `$(FMXERDIR)` environment variable of the IDE for the paths, like the TFrameStand setup does with `$(TFRAMESTANDDIR)`.
 
-Install the dependencies first: TFrameStand (its [setup](https://github.com/andrea-magni/TFrameStand/releases/latest), GetIt or Smart Setup) and IconFontsImageList (GetIt). The QR code package is built only when a DelphiZXingQRCode package is installed (Smart Setup builds one); otherwise the QR code units compile from source, with `DelphiZXingQRCode\Source` in the search path.
+Install the dependencies first: TFrameStand (its [setup](https://github.com/andrea-magni/TFrameStand/releases/latest), GetIt or Smart Setup) and IconFontsImageList (GetIt). The setup checks that their packages are there (`FrameStandPackage.dcp` and `IconFontsImageListFMX.dcp`, in the Dcp folder of the IDE or in the library path) and, if one is missing, stops before installing anything and says what to install. The QR code package is built only when a DelphiZXingQRCode package is installed (Smart Setup builds one); otherwise the QR code units compile from source, with `DelphiZXingQRCode\Source` in the search path.
 
 Silent install, for every installed Delphi version: `FMXER_<version>_Setup.exe /SILENT /RADStudioVersions=all`.
 
