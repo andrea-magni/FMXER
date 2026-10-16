@@ -2,6 +2,13 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## v.1.5.3 — 2026-10-16
+
+**Icon font on Windows**: without the *Material Design Icons Desktop* font installed, icons were drawn as empty boxes (for example the action button of the NewProjectTemplate demo).
+
+- The setup installs the font for the current user (it stays when FMXER is uninstalled, because other applications may use it).
+- `FMXER.IconFontsData` registers with Skia the `.ttf` found next to the executable: deploy the font with your application and it works on machines where the font is not installed. See [The icon font](/guide/installation#the-icon-font).
+
 ## v.1.5.2 — 2026-10-16
 
 **Setup and IDE**:
