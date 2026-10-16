@@ -9,7 +9,9 @@ uses
 
 type
   TOnDrawHandler = reference to procedure(const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-  TOnTapHandler = reference to procedure(APaintBox: TObject; APoint: TPointF);
+  TPaintBoxTapHandler = reference to procedure(APaintBox: TObject; APoint: TPointF);
+  // the other elements share FMXER.UI.Types.TOnTapHandler (another signature)
+  TOnTapHandler = TPaintBoxTapHandler deprecated 'use TPaintBoxTapHandler';
 
   TPaintBoxFrame = class(TFrame)
     PaintBox: TSkPaintBox;
@@ -19,14 +21,14 @@ type
     procedure PaintBoxDraw(ASender: TObject; const ACanvas: ISkCanvas;
       const ADest: TRectF; const AOpacity: Single);
   private
-    FOnTapHandler: TOnTapHandler;
+    FOnTapHandler: TPaintBoxTapHandler;
     FOnDrawHandler: TOnDrawHandler;
   public
     function SetOnDrawHandler(const ADrawHandler: TOnDrawHandler): TPaintBoxFrame;
-    function SetOnTapHandler(const ATapHandler: TOnTapHandler): TPaintBoxFrame;
+    function SetOnTapHandler(const ATapHandler: TPaintBoxTapHandler): TPaintBoxFrame;
 
     property OnDrawHandler: TOnDrawHandler read FOnDrawHandler write FOnDrawHandler;
-    property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
+    property OnTapHandler: TPaintBoxTapHandler read FOnTapHandler write FOnTapHandler;
   end;
 
 implementation
@@ -62,7 +64,7 @@ begin
 end;
 
 function TPaintBoxFrame.SetOnTapHandler(
-  const ATapHandler: TOnTapHandler): TPaintBoxFrame;
+  const ATapHandler: TPaintBoxTapHandler): TPaintBoxFrame;
 begin
   Result := Self;
   OnTapHandler := ATapHandler;

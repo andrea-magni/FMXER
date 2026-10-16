@@ -56,7 +56,22 @@ Legend: ✅ verified (compiled or executed), 📖 found by reading the code.
 | E2 message subscriptions | fixed (`7ed0384`): a `TSubscriptionGuard` owned by the element (the pattern of `docs/guide/state.md`) unsubscribes when the route closes; HelloWorld declares it in `Data.AppState` (three QR codes), LibraryStore in `Utils.Msg` (`TRetrieveMsg.Subscribe(AOwner, ...)`, owned by the activity animations). Test `ClosedRouteFreesItsElements`: closing a route frees its content and nested title detail frames, so the guards they own |
 | E4 HelloWorld_IFIL icons | fixed (`52be947`): the project refers to `source\Icons.MaterialDesign.pas`, its copy is removed |
 | E6 QRCode share | fixed (`25f88f3`): stream freed in `try/finally`, no save to `C:\temp` |
-| B10–B14 | open |
+| B10–B14 | see the v.1.2.1 table below |
+
+## Status on branch `release/1.2.1` (2026-10-16)
+
+v.1.2 released 2026-10-16 (PR #4, tag `v.1.2`, docs site live).
+
+| Item | Status |
+|---|---|
+| B10 `[Hide]` TODOs | checked, no change: with TFrameStand 2.3 closing a route frees every nested element (test `ClosedRouteFreesItsElements`, nested title-detail frame included). What the TODO asks — running the hide animations of nested elements before their container — is not needed for correctness; the TODO comments are left as notes |
+| B11 `TOnTapHandler` declared four times | fixed (`f6bb2b1`): declared once in the new unit `FMXER.UI.Types`, aliased by the four units; `TPaintBoxFrame` uses `TPaintBoxTapHandler` (old name kept, deprecated). Test `OneTapHandlerTypeForTheImageElements` (did not compile before) |
+| B12 `SvgToBitmap` margins | fixed (`be87483`), test `SvgToBitmapMarginsAreSymmetric` (failed before: code started at 20) |
+| B13 `LocalFile` hard-coded | fixed (`12bc278`): folder in the `LocalFilesPath` variable, same defaults. Test `LocalFileUsesLocalFilesPath` |
+| B14 column/row destructors | fixed (`d4a305c`): `FormStand1.CloseAll` too; unused variable removed. Test `ColumnClosesItsFormElements` (smoke: the forms were freed anyway by the form stand) |
+| Docs workflow on Node 20 actions | `7d4bdf5`: configure-pages v6, upload-pages-artifact v5, deploy-pages v5, Node 24 |
+
+Tests: 26 (`bcbe7cd`). Still open: design notes D1–D5; Delphi 12 and the non-Windows platforms not verified here.
 
 Verified with `build.cmd 13 demos` on Delphi 13 Win32 (no unit aliases since P1): source ok, 22/22 tests, 13 of 13 demos.
 

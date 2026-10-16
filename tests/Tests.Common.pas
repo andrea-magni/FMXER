@@ -9,6 +9,17 @@ uses
 
 type
   /// <summary>Access to the navigator singleton, to give every test a fresh one.</summary>
+  /// <summary>Sets a flag when it is destroyed: owned by an element, it tells
+  /// whether the element was freed (the pattern of the subscription guard of
+  /// the State &amp; Events guide relies on it).</summary>
+  TDestroySentinel = class(TComponent)
+  private
+    FDestroyed: PBoolean;
+  public
+    constructor Create(const AOwner: TComponent; const ADestroyed: PBoolean); reintroduce;
+    destructor Destroy; override;
+  end;
+
   TNavigatorAccess = class(TNavigator)
   public
     class procedure Reset;
@@ -32,6 +43,21 @@ begin
     Application.ProcessMessages;
     CheckSynchronize(5);
   until LStopwatch.ElapsedMilliseconds >= AMS;
+end;
+
+{ TDestroySentinel }
+
+constructor TDestroySentinel.Create(const AOwner: TComponent; const ADestroyed: PBoolean);
+begin
+  inherited Create(AOwner);
+  FDestroyed := ADestroyed;
+  FDestroyed^ := False;
+end;
+
+destructor TDestroySentinel.Destroy;
+begin
+  FDestroyed^ := True;
+  inherited;
 end;
 
 { TNavigatorAccess }

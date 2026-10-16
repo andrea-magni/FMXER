@@ -82,7 +82,14 @@ type
   function Param(const AName: string; const AValue: TFunc<Boolean>): TNameValueParam; overload;
   function OnClickProc(const AValue: TProc): TNameValueParam; overload;
 
+  /// <summary>AFileName in LocalFilesPath (the media of the demos, by default).</summary>
   function LocalFile(const AFileName: string): string;
+
+var
+  /// <summary>Folder used by LocalFile. Default: ..\..\..\..\media\ on Windows
+  /// (the media folder of the repository, seen from demos\<Demo>\<Platform>\<Config>),
+  /// the documents folder elsewhere. Set it to use LocalFile in your own app.</summary>
+  LocalFilesPath: string;
 
 
 implementation
@@ -91,11 +98,7 @@ uses IOUtils;
 
 function LocalFile(const AFileName: string): string;
 begin
-  {$IFDEF MSWINDOWS}
-  Result := TPath.Combine('..\..\..\..\media\', AFileName);
-  {$ELSE}
-  Result := TPath.Combine(TPath.GetDocumentsPath, AFileName);
-  {$ENDIF}
+  Result := TPath.Combine(LocalFilesPath, AFileName);
 end;
 
 { TElementDef<T> }
@@ -356,5 +359,12 @@ begin
   Result := Self;
   Width := AWidth;
 end;
+
+initialization
+  {$IFDEF MSWINDOWS}
+  LocalFilesPath := '..\..\..\..\media\';
+  {$ELSE}
+  LocalFilesPath := TPath.GetDocumentsPath;
+  {$ENDIF}
 
 end.

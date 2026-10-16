@@ -10,7 +10,9 @@ uses
 , SubjectStand, FrameStand, FormStand
 , FMXER.UI.Misc, FMXER.ScaffoldForm, FMXER.ActionButtonFrame, FMXER.HorzPairFrame
 , FMXER.ListViewFrame, FMXER.IconFontsData, FMXER.CardFrame, FMXER.ContainerForm
-, FMXER.LogoFrame
+, FMXER.LogoFrame, FMXER.ColumnForm
+, FMXER.UI.Types, FMXER.ImageFrame, FMXER.SVGFrame, FMXER.AnimatedImageFrame, FMXER.QRCodeFrame
+, FMX.Graphics, System.Types, QRCode.Utils
 , Tests.Common
 ;
 
@@ -33,6 +35,10 @@ type
     [Test] procedure AddIconReusesImages;
     [Test] procedure ListRefreshDoesNotDuplicate;
     [Test] procedure ListClearItemsDropsHandlers;
+    [Test] procedure OneTapHandlerTypeForTheImageElements;
+    [Test] procedure SvgToBitmapMarginsAreSymmetric;
+    [Test] procedure LocalFileUsesLocalFilesPath;
+    [Test] procedure ColumnClosesItsFormElements;
   end;
 
 implementation
@@ -192,6 +198,107 @@ begin
   LList.ListViewItemClick(nil, LNew);
   Assert.AreEqual(0, LCalls, 'an item without handler calls nothing');
   Assert.AreEqual(1, LList.ListView.Items.Count);
+end;
+
+procedure TElementsFixture.OneTapHandlerTypeForTheImageElements;
+var
+  LTaps: Integer;
+  LHandler: TOnTapHandler; // FMXER.UI.Types: assignable to every image element
+begin
+  LTaps := 0;
+  LHandler :=
+    procedure (AImage: TFMXObject; APoint: TPointF)
+    begin
+      Inc(LTaps);
+    end;
+  var LImage := TImageFrame.Create(FMain);
+  var LSVG := TSVGFrame.Create(FMain);
+  var LAnimated := TAnimatedImageFrame.Create(FMain);
+  var LQR := TQRCodeFrame.Create(FMain);
+  LImage.OnTapHandler := LHandler;
+  LSVG.OnTapHandler := LHandler;
+  LAnimated.OnTapHandler := LHandler;
+  LQR.OnTapHandler := LHandler;
+  LImage.ContentImageTap(nil, PointF(1, 1));
+  LSVG.SVGTap(nil, PointF(1, 1));
+  LAnimated.ContentImageTap(nil, PointF(1, 1));
+  LQR.QRCodeTap(nil, PointF(1, 1));
+  Assert.AreEqual(4, LTaps);
+end;
+
+procedure TElementsFixture.SvgToBitmapMarginsAreSymmetric;
+const
+  BLACK_SQUARE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">'
+    + '<rect width="10" height="10" fill="black"/></svg>';
+var
+  LInside, LTopLeftMargin, LBottomRightMargin, LNearBottomRight: TAlphaColor;
+  LWidth, LHeight: Integer;
+  LOnReady: TProc<TBitmap>;
+begin
+  LOnReady :=
+    procedure (ABitmap: TBitmap)
+    var
+      LData: TBitmapData;
+    begin
+      LWidth := ABitmap.Width;
+      LHeight := ABitmap.Height;
+      Assert.IsTrue(ABitmap.Map(TMapAccess.Read, LData));
+      try
+        LTopLeftMargin := LData.GetPixel(5, 5);
+        LInside := LData.GetPixel(15, 15);
+        LNearBottomRight := LData.GetPixel(105, 105);
+        LBottomRightMargin := LData.GetPixel(114, 114);
+      finally
+        ABitmap.Unmap(LData);
+      end;
+    end;
+  SvgToBitmap(BLACK_SQUARE, TAlphaColorRec.White, TAlphaColorRec.Black, 100, 100, LOnReady);
+  Assert.AreEqual(120, LWidth);
+  Assert.AreEqual(120, LHeight);
+  Assert.AreEqual(TAlphaColor(TAlphaColorRec.White), LTopLeftMargin, 'left/top margin');
+  Assert.AreEqual(TAlphaColor(TAlphaColorRec.Black), LInside, 'code starts at 10');
+  Assert.AreEqual(TAlphaColor(TAlphaColorRec.Black), LNearBottomRight, 'code ends at 110');
+  Assert.AreEqual(TAlphaColor(TAlphaColorRec.White), LBottomRightMargin, 'right/bottom margin');
+end;
+
+procedure TElementsFixture.LocalFileUsesLocalFilesPath;
+begin
+  var LSaved := LocalFilesPath;
+  try
+    LocalFilesPath := 'C:' + PathDelim + 'media';
+    Assert.AreEqual('C:' + PathDelim + 'media' + PathDelim + 'a.json', LocalFile('a.json'));
+  finally
+    LocalFilesPath := LSaved;
+  end;
+  Assert.AreNotEqual('', LocalFilesPath, 'a default is set');
+end;
+
+procedure TElementsFixture.ColumnClosesItsFormElements;
+var
+  LFormFreed, LFrameFreed: Boolean;
+  LFormConfig: TProc<TContainerForm>;
+  LFrameConfig: TProc<TLogoFrame>;
+begin
+  LFormFreed := False;
+  LFrameFreed := False;
+  LFormConfig :=
+    procedure (AForm: TContainerForm)
+    begin
+      TDestroySentinel.Create(AForm, @LFormFreed);
+    end;
+  LFrameConfig :=
+    procedure (AFrame: TLogoFrame)
+    begin
+      TDestroySentinel.Create(AFrame, @LFrameFreed);
+    end;
+  var LColumn := TColumnForm.Create(nil);
+  LColumn.AddForm<TContainerForm>(50, LFormConfig);
+  LColumn.AddFrame<TLogoFrame>(50, LFrameConfig);
+  Assert.AreEqual(2, LColumn.Elements.Count);
+  LColumn.Free;
+  Pump(100);
+  Assert.IsTrue(LFormFreed, 'form element freed with the column');
+  Assert.IsTrue(LFrameFreed, 'frame element freed with the column');
 end;
 
 initialization

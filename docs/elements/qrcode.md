@@ -59,7 +59,7 @@ QR.OnBeforePaint :=
 | Routine | Description |
 |---|---|
 | `TQRCode.TextToSvg(AContent, ABeforePaint = nil, ARadiusFactor = 0.1): string` | the SVG of a QR code, without any control |
-| `SvgToBitmap(ASvg, ABGColor, AColor, AWidth, AHeight, AOnReady: TProc<TBitmap>)` | renders an SVG into a bitmap and passes it to `AOnReady` (the bitmap is freed afterwards) |
+| `SvgToBitmap(ASvg, ABGColor, AColor, AWidth, AHeight, AOnReady: TProc<TBitmap>)` | renders an SVG of `AWidth` x `AHeight` into a bitmap with a 10-pixel margin of `ABGColor` on every side, and passes it to `AOnReady` (the bitmap is freed afterwards) |
 
 The QRCode demo combines them to share a code as an image; in essence:
 

@@ -127,6 +127,7 @@ end;
 destructor TRowForm.Destroy;
 begin
   FrameStand1.CloseAll();
+  FormStand1.CloseAll();
   FreeAndNil(FElements);
   inherited;
 end;

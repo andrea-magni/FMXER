@@ -44,7 +44,7 @@ begin
         try
           LSvgBrush.Source := ASvg;
           LSvgBrush.OverrideColor := AColor;
-          LSvgBrush.Render(ACanvas, RectF(MARGIN, MARGIN, AWidth, AHeight), 1);
+          LSvgBrush.Render(ACanvas, RectF(MARGIN / 2, MARGIN / 2, AWidth + MARGIN / 2, AHeight + MARGIN / 2), 1);
         finally
           LSvgBrush.Free;
         end;
