@@ -2,7 +2,7 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## v.1.3 (in preparation, branch `release/1.3`)
+## v.1.3 — 2026-10-16
 
 **Automatic sizes** (ANALYSIS D1):
 
