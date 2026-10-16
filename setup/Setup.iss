@@ -368,7 +368,7 @@ begin
   end;
   if LMissing <> '' then
   begin
-    Result := 'FMXER requires TFrameStand and IconFontsImageList, which are not installed:' + LMissing + #13#10#13#10 +
+    Result := 'FMXER requires TFrameStand and IconFontsImageList. These packages were not found:' + LMissing + #13#10#13#10 +
       'Install them first and then run this setup again:' + #13#10 +
       '  TFrameStand: its setup (github.com/andrea-magni/TFrameStand/releases), GetIt or TMS Smart Setup' + #13#10 +
       '  IconFontsImageList: GetIt (Tools > GetIt Package Manager, search "IconFontsImageList")' + #13#10#13#10 +
