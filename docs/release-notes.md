@@ -2,6 +2,20 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## v.1.5 — 2026-10-16
+
+**Packages and installation** (ANALYSIS P4):
+
+- Runtime packages for Delphi 12 Athens and 13 Florence (`packages\12Athens`, `packages\13Florence`): `FMXERPackage` (all of `source\` but the QR code units) and `FMXERQRCodePackage` (`TQRCodeFrame`, `QRCode.*`, with DelphiZXingQRCode), Win32 and Win64.
+- [TMS Smart Setup](/guide/installation#tms-smart-setup): `tmsbuild.yaml`, with TFrameStand as a dependency.
+- A [setup](/guide/installation#setup) (Inno Setup, like TFrameStand's): packages and the source folder in the library path of every platform.
+
+**Demos and build** (ANALYSIS P3, E3):
+
+- Every demo uses the same search path: `..\..\source` and the `lib\` submodules (with empty submodule folders the IDE library path is used); the icon font is deployed from `media\`.
+- LibraryStore reads the MARS server URL from constants, or from the `FMXER_LIBRARYSTORE_URL` environment variable on desktop; the Android default is `10.0.2.2` (the host seen from the emulator).
+- `build.cmd [13|12] [win32|win64|all] [demos]`: Win64 with `dcc64`; outputs in `build\<version>\<platform>`. The test suite compiles and passes on Win64 too (55 tests on each platform).
+
 ## v.1.4 — 2026-10-16
 
 **Faster columns and rows** (ANALYSIS D3), measured on Delphi 13, Windows:

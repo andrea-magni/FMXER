@@ -50,7 +50,7 @@
 
 #define LibraryName "FMXER"
 #define SetupName "FMXER"
-#define LibraryVersion "1.4"
+#define LibraryVersion "1.5"
 #define LibraryPublisher "Andrea Magni"
 #define LibraryCopyright "Copyright (c) Andrea Magni"
 #define LibraryURL "https://github.com/andrea-magni/FMXER"
