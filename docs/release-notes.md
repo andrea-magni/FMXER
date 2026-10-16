@@ -2,7 +2,7 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## v.1.2.1 (in preparation, branch `release/1.2.1`)
+## v.1.2.1 — 2026-10-16
 
 - `TOnTapHandler` is declared once, in the new unit `FMXER.UI.Types`: `TImageFrame`, `TSVGFrame`, `TAnimatedImageFrame` and `TQRCodeFrame` share it (each unit keeps an alias), so one handler variable fits them all. `TPaintBoxFrame` uses `TPaintBoxTapHandler` (its `TOnTapHandler` is deprecated).
 - `SvgToBitmap`: the same 10-pixel margin on every side and the size asked (the code was 20 pixels smaller, off-center).
