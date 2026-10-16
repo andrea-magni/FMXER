@@ -20,6 +20,9 @@ type
     FElementStand: string;
   public
     const DEFAULT_ELEMENT_HEIGHT = 200;
+    /// <summary>AddFrame/AddForm height: the element's own height (its design
+    /// height, or the one set by the configuration procedure).</summary>
+    const AUTO_HEIGHT = -1;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -49,26 +52,33 @@ implementation
 function TColumnForm.AddForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
 var
   LElementContainer: TSubjectInfoContainer;
+  LElement: TFormInfo<T>;
+  LHeight: Single;
 begin
   Result := Self;
-  Height := Height + AHeight;
 
   LElementContainer := TSubjectInfoContainer.Create(Result);
   try
     LElementContainer.Position.Y := 10000;
     LElementContainer.Parent := ContentLayout;
-    LElementContainer.Height := AHeight;
+    if AHeight >= 0 then
+      LElementContainer.Height := AHeight;
     LElementContainer.Align := TAlignLayout.Top;
 
-    LElementContainer.SubjectInfo :=
-      FormStand1.NewAndShow<T>(LElementContainer, ElementStand
-      , procedure (AElement: T)
-        begin
-          if Assigned(AConfigProc) then
-            AConfigProc(AElement);
-        end
-      );
+    LElement := FormStand1.New<T>(LElementContainer, ElementStand);
+    LElementContainer.SubjectInfo := LElement;
+    if Assigned(AConfigProc) then
+      AConfigProc(LElement.Form);
 
+    LHeight := AHeight;
+    if AHeight = AUTO_HEIGHT then
+    begin
+      LHeight := LElement.Form.Height;
+      LElementContainer.Height := LHeight;
+    end;
+    Height := Height + Round(LHeight);
+
+    LElement.Show;
     FElements.Add(LElementContainer);
   except
     LElementContainer.Free;
@@ -80,26 +90,36 @@ end;
 function TColumnForm.AddFrame<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
 var
   LElementContainer: TSubjectInfoContainer;
+  LElement: TFrameInfo<T>;
+  LHeight: Single;
 begin
   Result := Self;
-  Height := Height + AHeight;
 
   LElementContainer := TSubjectInfoContainer.Create(Result);
   try
     LElementContainer.Position.Y := 10000;
     LElementContainer.Parent := ContentLayout;
-    LElementContainer.Height := AHeight;
+    if AHeight >= 0 then
+      LElementContainer.Height := AHeight;
     LElementContainer.Align := TAlignLayout.Top;
 
-    LElementContainer.SubjectInfo :=
-      FrameStand1.NewAndShow<T>(LElementContainer, ElementStand
-      , procedure (AElement: T)
-        begin
-          if Assigned(AConfigProc) then
-            AConfigProc(AElement);
-        end
-      );
+    if AHeight = AUTO_HEIGHT then
+      LElement := TFMXERStands.NewSizedFrame<T>(FrameStand1, LElementContainer, ElementStand, TAlignLayout.Top)
+    else
+      LElement := FrameStand1.New<T>(LElementContainer, ElementStand);
+    LElementContainer.SubjectInfo := LElement;
+    if Assigned(AConfigProc) then
+      AConfigProc(LElement.Frame);
 
+    LHeight := AHeight;
+    if AHeight = AUTO_HEIGHT then
+    begin
+      LHeight := LElement.Frame.Height + LElement.Frame.Margins.Top + LElement.Frame.Margins.Bottom;
+      LElementContainer.Height := LHeight;
+    end;
+    Height := Height + Round(LHeight);
+
+    LElement.Show;
     FElements.Add(LElementContainer);
   except
     LElementContainer.Free;

@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Layouts, FrameStand, SubjectStand, FormStand;
+  FMX.Layouts, FrameStand, SubjectStand, FormStand, FMXER.UI.Misc;
 
 type
   THorzScrollFrame = class(TFrame)
@@ -42,7 +42,7 @@ end;
 function THorzScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): THorzScrollFrame;
 begin
   Result := Self;
-  FContent := FormStand1.NewAndShow<T>(HorizontalScrollbox, ''
+  FContent := FormStand1.NewAndShow<T>(HorizontalScrollbox, ContentStand
     , procedure (AForm: T)
       begin
         if Assigned(AConfigProc) then
@@ -57,20 +57,19 @@ begin
 end;
 
 function THorzScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): THorzScrollFrame;
+var
+  LContent: TFrameInfo<T>;
 begin
   Result := Self;
-  FContent := FrameStand1.NewAndShow<T>(HorizontalScrollbox, ''
-    , procedure (AFrame: T)
-      begin
-        if Assigned(AConfigProc) then
-          AConfigProc(AFrame);
-      end
-    , procedure (AFrameInfo: TFrameInfo<T>)
-      begin
-        AFrameInfo.Stand.Align := TAlignLayout.Left;
-        AFrameInfo.Stand.Width := AFrameInfo.Frame.Width;
-      end
-  );
+  // aligned to the left before entering the stand: the frame keeps its design
+  // width (or the one set by AConfigProc), and the scroll box scrolls it
+  LContent := TFMXERStands.NewSizedFrame<T>(FrameStand1, HorizontalScrollbox, ContentStand, TAlignLayout.Left);
+  FContent := LContent;
+  if Assigned(AConfigProc) then
+    AConfigProc(LContent.Frame);
+  LContent.Stand.Align := TAlignLayout.Left;
+  LContent.Stand.Width := LContent.Frame.Width + LContent.Frame.Margins.Left + LContent.Frame.Margins.Right;
+  LContent.Show;
 end;
 
 procedure THorzScrollFrame.InternalSetTouchHeight(const Value: Single);

@@ -21,6 +21,9 @@ type
     FElementAlign: TAlignLayout;
   public
     const DEFAULT_ELEMENT_WIDTH = 200;
+    /// <summary>AddFrame/AddForm width: the element's own width (its design
+    /// width, or the one set by the configuration procedure).</summary>
+    const AUTO_WIDTH = -1;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -54,25 +57,34 @@ implementation
 function TRowForm.AddForm<T>(const AWidth: Integer;
   const AConfigProc: TProc<T>): TRowForm;
 var
-  LElement: TSubjectInfo;
+  LElement: TFormInfo<T>;
   LElementContainer: TSubjectInfoContainer;
+  LWidth: Single;
 begin
   Result := Self;
-  Width := Width + AWidth;
 
   LElementContainer := TSubjectInfoContainer.Create(Self);
   try
     LElementContainer.Position.X := MaxInt;
     LElementContainer.Parent := ContentLayout;
-    LElementContainer.Width := AWidth;
+    if AWidth >= 0 then
+      LElementContainer.Width := AWidth;
     LElementContainer.Align := ElementAlign;
 
     LElement := FormStand1.New<T>(LElementContainer, ElementStand);
     LElementContainer.SubjectInfo := LElement;
     if Assigned(AConfigProc) then
-      AConfigProc(T(LElement.Subject));
-    LElement.SubjectShow();
+      AConfigProc(LElement.Form);
 
+    LWidth := AWidth;
+    if AWidth = AUTO_WIDTH then
+    begin
+      LWidth := LElement.Form.Width;
+      LElementContainer.Width := LWidth;
+    end;
+    Width := Width + Round(LWidth);
+
+    LElement.Show;
     FElements.Add(LElementContainer);
   except
     LElementContainer.Free;
@@ -83,25 +95,37 @@ end;
 function TRowForm.AddFrame<T>(const AWidth: Integer;
   const AConfigProc: TProc<T>): TRowForm;
 var
-  LElement: TSubjectInfo;
+  LElement: TFrameInfo<T>;
   LElementContainer: TSubjectInfoContainer;
+  LWidth: Single;
 begin
   Result := Self;
-  Width := Width + AWidth;
 
   LElementContainer := TSubjectInfoContainer.Create(Self);
   try
     LElementContainer.Position.X := MaxInt;
     LElementContainer.Parent := ContentLayout;
-    LElementContainer.Width := AWidth;
+    if AWidth >= 0 then
+      LElementContainer.Width := AWidth;
     LElementContainer.Align := ElementAlign;
 
-    LElement := FrameStand1.New<T>(LElementContainer, ElementStand);
+    if AWidth = AUTO_WIDTH then
+      LElement := TFMXERStands.NewSizedFrame<T>(FrameStand1, LElementContainer, ElementStand, TAlignLayout.Left)
+    else
+      LElement := FrameStand1.New<T>(LElementContainer, ElementStand);
     LElementContainer.SubjectInfo := LElement;
     if Assigned(AConfigProc) then
-      AConfigProc(T(LElement.Subject));
-    LElement.SubjectShow();
+      AConfigProc(LElement.Frame);
 
+    LWidth := AWidth;
+    if AWidth = AUTO_WIDTH then
+    begin
+      LWidth := LElement.Frame.Width + LElement.Frame.Margins.Left + LElement.Frame.Margins.Right;
+      LElementContainer.Width := LWidth;
+    end;
+    Width := Width + Round(LWidth);
+
+    LElement.Show;
     FElements.Add(LElementContainer);
   except
     LElementContainer.Free;
