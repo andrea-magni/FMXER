@@ -10,6 +10,7 @@ uses
 , SubjectStand, FrameStand, FormStand
 , FMXER.Navigator, FMXER.UI.Misc, FMXER.ContainerForm, FMXER.ColumnForm
 , FMXER.ColumnFrame, FMXER.RowFrame, FMXER.TextFrame, FMXER.ButtonFrame, FMXER.VertScrollFrame
+, FMXER.IconFontsGlyphFrame, FMXER.IconFontsData
 , Tests.Common
 ;
 
@@ -63,6 +64,7 @@ type
     [Test] procedure ColumnFrameInAScrollBox;
     [Test] procedure ColumnFrameFreesItsElements;
     [Test] procedure BatchUpdateLaysOutAllTheSlots;
+    [Test] procedure DocSamples;
   end;
 
 implementation
@@ -386,6 +388,43 @@ begin
       LBottom := LSlot.BoundsRect.Bottom;
   Assert.AreEqual(Single(6000), LBottom, 'every slot in place after the single realign');
   Assert.AreEqual(Single(20 * 299), LCol.Elements[299].Position.Y, 'the last slot is the last one');
+end;
+
+procedure TColumnRowFramesFixture.DocSamples;
+begin
+  var Col := TColumnForm.Create(FMain);
+  // docs/elements/containers.md, TColumnFrame and TRowFrame
+  Col.AddFrame<TRowFrame>(TColumnForm.AUTO_HEIGHT
+  , procedure (Row: TRowFrame)
+    begin
+      Row
+      .AddFrame<TIconFontsGlyphFrame>(48
+      , procedure (G: TIconFontsGlyphFrame) begin G.SetIcon(IconFonts.MD.account); end)
+      .AddFrame<TTextFrame>(200
+      , procedure (T: TTextFrame) begin T.SetContent('Andrea').SetFontColor(TAlphaColorRec.Black); end);
+      Row.Height := 48;
+    end
+  );
+  Assert.AreEqual(Single(48), Col.Elements[0].Height);
+
+  // docs/guide/layouts.md, Performance
+  var Items: TArray<string> := ['a', 'b', 'c'];
+  var LCol := TColumnFrame.Create(FMain);
+  LCol.BatchUpdate(
+    procedure (C: TColumnFrame)
+    begin
+      for var LItem in Items do
+        C.AddFrame<TRowFrame>(48
+        , procedure (Row: TRowFrame)
+          begin
+            Row
+            .AddFrame<TTextFrame>(TRowFrame.AUTO_WIDTH)
+            .AddFrame<TButtonFrame>(80);
+          end
+        );
+    end
+  );
+  Assert.AreEqual(3, LCol.Elements.Count);
 end;
 
 initialization
