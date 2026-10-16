@@ -12,7 +12,7 @@ uses
 , FMXER.HorzScrollFrame, FMXER.TextFrame, FMXER.ButtonFrame, FMXER.ChipFrame
 , FMXER.ContainerForm, FMXER.ContainerFrame, FMXER.CardFrame, FMXER.ActionButtonFrame
 , FMXER.WebViewFrame, FMXER.LogoFrame, FMXER.ActivityBubblesFrame, FMXER.ImageFrame
-, FMXER.BackgroundFrame, FMXER.VertScrollForm
+, FMXER.BackgroundFrame, FMXER.VertScrollForm, FMXER.EditFrame
 , Tests.Common
 ;
 
@@ -37,6 +37,7 @@ type
     [Test] procedure VertScrollUsesContentStand;
     [Test] procedure HorzScrollKeepsTheDesignWidth;
     [Test] procedure FluentSetters;
+    [Test] procedure DocSampleAutomaticSizes;
   end;
 
 implementation
@@ -263,6 +264,33 @@ begin
   Assert.AreEqual('x', TColumnForm.Create(FMain).SetElementStand('x').ElementStand);
   Assert.AreEqual('y', TBackgroundFrame.Create(FMain).SetContentStand('y').ContentStand);
   Assert.AreEqual('z', TContainerFrame.Create(FMain).SetContentStand('z').ContentStand);
+end;
+
+procedure TLayoutFixture.DocSampleAutomaticSizes;
+begin
+  var Col := TColumnForm.Create(FMain);
+  // the sample of docs/guide/layouts.md, "Automatic sizes"
+  Col
+  .AddFrame<TTextFrame>(TColumnForm.AUTO_HEIGHT)           // 80: the design height of TTextFrame
+  .AddFrame<TEditFrame>(TColumnForm.AUTO_HEIGHT
+  , procedure (Edit: TEditFrame)
+    begin
+      Edit.SetCaption('Name').SetHeight(90);               // 90: set here
+    end
+  )
+  .AddForm<TRowForm>(TColumnForm.AUTO_HEIGHT
+  , procedure (Row: TRowForm)
+    begin
+      Row.SetHeight(60);                                    // a form element: its Height
+      Row
+      .AddFrame<TButtonFrame>(TRowForm.AUTO_WIDTH
+      , procedure (B: TButtonFrame) begin B.SetText('OK').SetWidth(80); end);
+    end
+  );
+  Assert.AreEqual(Single(80), Col.Elements[0].Height);
+  Assert.AreEqual(Single(90), Col.Elements[1].Height);
+  Assert.AreEqual(Single(60), Col.Elements[2].Height);
+  Assert.AreEqual(1 + 80 + 90 + 60, Col.Height);
 end;
 
 initialization
