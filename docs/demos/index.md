@@ -66,7 +66,7 @@ A small catalog app that reads books and authors from a [MARS-Curiosity](https:/
 - **books_all**, **books_by_author**, **authors**, **book_single**: lists built by an `ItemBuilderProc`, titles updated with the number of results, search box when there are more than three items, an activity animation in the title detail area while loading (driven by `TRetrieveMsg` messages, unsubscribed when the route closes), errors in a snackbar;
 - icons added once and cached in `Utils.UI`.
 
-It needs a MARS server exposing the LibraryStore resources (`http://localhost:8080/rest` on desktop; set the address in `Data.Remote` for devices).
+It needs a MARS server exposing the LibraryStore resources. The address is in two constants at the top of `Data.Remote`: `SERVER_URL` (`http://localhost:8080/rest`, desktop) and `SERVER_URL_ANDROID` (`http://10.0.2.2:8080/rest`, the host machine as seen from the Android emulator; on a device put the LAN address of the server). On desktop the environment variable `FMXER_LIBRARYSTORE_URL`, when set, wins over the constant.
 
 ## HelloWorld_IFIL
 
