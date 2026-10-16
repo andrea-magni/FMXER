@@ -1,6 +1,6 @@
 ---
 name: fmxer-development
-description: Develop Delphi FireMonkey (FMX) apps with FMXER (Andrea Magni's declarative, Flutter-inspired framework built on TFrameStand/TFormStand) - screens built in code as trees of frame/form "elements", named routes with TNavigator (DefineRoute, RouteTo, CloseRoute, StackPop, transient routes, Back button), TScaffoldForm (title, content, action buttons, snackbar), containers and explicit sizing (TColumnForm, TRowForm, TStackFrame, TVertScrollFrame, TAccessoryFrame, THorzPairFrame, TCenterForm, TCardFrame...), elements with fluent setters (TTextFrame, TButtonFrame, TEditFrame, TListViewFrame, TQRCodeFrame, icons...), TAppColors, state shared through closures, message subscriptions and the lifetime of elements, Delphi 12+ Skia units. Use this skill whenever the user works in a Delphi project that uses FMXER (units FMXER.*, Navigator(FormStand1), DefineRoute<TScaffoldForm>, SetContentAsFrame<T>, AddFrame<T>), asks how to add a screen or route, lay out elements, pass data between screens, handle the Back button, or write a new FMXER element - even if they don't name FMXER but the code clearly uses it.
+description: Develop Delphi FireMonkey (FMX) apps with FMXER (Andrea Magni's declarative, Flutter-inspired framework built on TFrameStand/TFormStand) - screens built in code as trees of frame/form "elements", named routes with TNavigator (DefineRoute, RouteTo, CloseRoute, StackPop, transient routes, Back button), TScaffoldForm (title, content, action buttons, snackbar), containers and sizing (TColumnForm, TRowForm, TStackFrame, TVertScrollFrame, TAccessoryFrame, THorzPairFrame, TCenterForm, TCardFrame...), elements with fluent setters (TTextFrame, TButtonFrame, TEditFrame, TListViewFrame, TQRCodeFrame, icons...), TAppColors, state shared through closures, message subscriptions and the lifetime of elements, Delphi 12+ Skia units. Use this skill whenever the user works in a Delphi project that uses FMXER (units FMXER.*, Navigator(FormStand1), DefineRoute<TScaffoldForm>, SetContentAsFrame<T>, AddFrame<T>), asks how to add a screen or route, lay out elements, pass data between screens, handle the Back button, or write a new FMXER element - even if they don't name FMXER but the code clearly uses it.
 ---
 
 # Developing with FMXER
@@ -39,7 +39,7 @@ begin
           .AddFrame<TButtonFrame>(60
           , procedure (Button: TButtonFrame)
             begin
-              Button.SetText('Details').SetOnClickHandler(
+              Button.SetText('Details').SetOnClickProc(
                 procedure begin Navigator.RouteTo('detail'); end);
             end);
         end)
@@ -62,7 +62,7 @@ The project source sets `GlobalUseSkia := True;` before `Application.Initialize`
 | overlay not in Back history (wait screen, splash) | `RouteTo(AName, True)` (transient), `CloseRouteDelayed(AName, True, 3000)` |
 | pass data to a screen | set a field/data module value, then `RouteTo`: the definition reads it while it builds (routes have no parameters) |
 | title bar, floating buttons, short messages | `TScaffoldForm`: `SetTitle`, `SetContentAs*`, `AddActionButton`, `ShowSnackBar(AText, ADuration_ms[, AThen])`, `SetTitleDetailContentAs*` |
-| elements one under another | `TColumnForm.AddFrame<T>(AHeight, ...)` (height is explicit, default 200) |
+| elements one under another | `TColumnForm.AddFrame<T>(AHeight, ...)` (default 200; `TColumnForm.AUTO_HEIGHT` = the element's own height) |
 | scrolling column | `TVertScrollFrame.SetContentAsForm<TColumnForm>` |
 | side by side | `TRowForm.AddFrame<T>(AWidth, ...)` inside a column slot, `THorzPairFrame` (two halves), `TAccessoryFrame` (fixed left/right + content) |
 | layers (background + content) | `TStackFrame.AddFrame<T>(AConfigProc, AName)` (frames only; later = on top) |
@@ -78,8 +78,8 @@ The project source sets `GlobalUseSkia := True;` before `Application.Initialize`
 
 - **Initialize the navigator first**: `Navigator(FormStand1)` before any `DefineRoute`/`RouteTo`, or *Navigator has not been initialized*. Route names are case-sensitive and defined once (keep them in constants); unknown names raise *Route definition not found*.
 - **`TTextFrame` text is white** (`TAppColors.PrimaryTextColor`, meant for text on the primary color). On a light background call `SetFontColor(TAlphaColorRec.Black)` (or your color), or the text is invisible.
-- **Sizes are explicit, top-down**: every `AddFrame`/`AddForm` of a column/row gets the height/width you pass (200 if omitted) and the column's `Height` grows by it. Pass real sizes; columns do not scroll: wrap long ones in `TVertScrollFrame`. Sizes are computed once (use `Col.Width`, `Scaffold.Width` at build time; rebuild the route or use `TVertScrollFrame.OnResizedProc` to react to resizes).
-- **The `TControl` helpers return `TControl`**: after `.SetMargin(5)` the element's own setters are gone. Use the generic overload (`.SetMargin<TButtonFrame>(5).SetText('OK')`) or call the helpers last. Not every slot method is chainable: `TContainerForm`, `THorzScrollFrame`, `TVertScrollForm`, `TCardFrame` and `TActionButtonFrame` declare theirs as procedures (see `references/api.md`).
+- **Sizes are top-down**: every `AddFrame`/`AddForm` of a column/row gets the height/width you pass (200 if omitted), or with `TColumnForm.AUTO_HEIGHT` / `TRowForm.AUTO_WIDTH` (v.1.3+) the element's own size (design size, or the one set in the configuration procedure); the column's `Height` grows by it. Columns do not scroll: wrap long ones in `TVertScrollFrame`. Sizes are computed once (use `Col.Width`, `Scaffold.Width` at build time; rebuild the route or use `TVertScrollFrame.OnResizedProc` to react to resizes).
+- **The `TControl` helpers return `TControl`**: after `.SetMargin(5)` the element's own setters are gone. Use the generic overload (`.SetMargin<TButtonFrame>(5).SetText('OK')`) or call the helpers last. Since v.1.3 every slot method returns its container and every clickable element has `SetOnClickProc` (on v.1.2 some slot methods were procedures: see `references/api.md`).
 - **Closures that outlive their element crash**: a `TMessageManager` subscription, a timer, `TDelayedAction`, a background callback or a data-module listener that references elements runs on freed objects after the route closes (and re-subscribes each time the route opens). Tie it to the element (a `TComponent` guard owned by the element that unsubscribes in its destructor), clear it in `Navigator.OnCloseRoute`, or check `Navigator.IsRouteActive(AName)` before touching elements. See `references/state.md`.
 - **Loop variables in closures**: configuration procedures run at once (safe), click handlers run later and see the last value: copy the variable into a local declared inside the loop.
 - **Configuration procedures run once**, when the element is created. To change an element later keep a reference (captured variable) or rebuild the route. Changing `TAppColors` affects only elements created afterwards.

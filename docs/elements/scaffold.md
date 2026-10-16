@@ -100,7 +100,7 @@ The button element can also be used on its own:
 |---|---|
 | `SetOverlayAsFrame<T>(AConfigProc)`, `SetOverlayAsForm<T>(AConfigProc)` | the element drawn on the circle (scaled into the inner 80%) |
 | `SetOverlayAsText(AText, AOnClickProc, AConfigProc)` | shortcut: a `TTextFrame` with `AText` |
-| `OnClickProc: TProc` | click handler |
+| `OnClickProc: TProc` / `SetOnClickProc(TProc)` | click handler |
 | `OverlayStand` | stand of the overlay element |
 | `BackgroundCircle` | the circle (its `Fill.Color` is `PrimaryColor` at creation) |
 

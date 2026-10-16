@@ -2,6 +2,22 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## v.1.3 (in preparation, branch `release/1.3`)
+
+**Automatic sizes** (ANALYSIS D1):
+
+- `TColumnForm.AddFrame<T>(TColumnForm.AUTO_HEIGHT)` and `TRowForm.AddFrame<T>(TRowForm.AUTO_WIDTH)` (and `AddForm<T>`): the slot takes the element's own size, the one in its `.fmx` or the one set by the configuration procedure. See [Automatic sizes](/guide/layouts#automatic-sizes).
+- `TVertScrollFrame`, `TVertScrollForm`, `THorzScrollFrame`: a frame content keeps its design size (it got 50 pixels: TFrameStand aligns the frame to its stand before the configuration procedure runs), and `ContentStand` is used (it was ignored).
+- `TFMXERStands.NewSizedFrame<T>` to do the same in your own containers.
+
+**Uniform fluent API** (ANALYSIS D2), all additions, existing code compiles unchanged:
+
+- every slot method returns its container (`TContainerForm`, `TVertScrollForm`, `THorzScrollFrame`, `TCardFrame`, `TActionButtonFrame` had procedures);
+- `SetOnClickProc` on every clickable element; `SetOnTapHandler` on the image elements;
+- setters for the properties: `TCardFrame.SetTitle`, `TWebViewFrame.SetURL`/`SetHTML`, `TLogoFrame.SetLogoResource`, `TActivityBubblesFrame.SetText`, `TVertScrollForm.SetTouchWidth`, `THorzScrollFrame.SetTouchHeight`, `SetContentStand` on the single-slot containers, `SetElementStand` and `TRowForm.SetElementAlign`.
+
+36 tests.
+
 ## v.1.2.1 — 2026-10-16
 
 - `TOnTapHandler` is declared once, in the new unit `FMXER.UI.Types`: `TImageFrame`, `TSVGFrame`, `TAnimatedImageFrame` and `TQRCodeFrame` share it (each unit keeps an alias), so one handler variable fits them all. `TPaintBoxFrame` uses `TPaintBoxTapHandler` (its `TOnTapHandler` is deprecated).

@@ -8,13 +8,14 @@ FMXER has no state library: elements are created by closures, and closures are w
 
 | Element | Event |
 |---|---|
-| `TButtonFrame` | `OnClickHandler: TProc` (`SetOnClickHandler`), `OnUpdateHandler: TProc<TAction>` |
+| `TButtonFrame` | `SetOnClickProc(TProc)` (also `SetOnClickHandler`, `OnClickHandler`), `OnUpdateHandler: TProc<TAction>` |
 | `TEditFrame` | `OnChangeProc: TProc<Boolean>` (`True` while typing, `False` on change) — property only, no setter |
 | `TTrackbarFrame` | `OnChangeProc: TProc<Single>` (`SetOnChangeProc`) |
 | `TColorPickerFrame` | `OnChangeProc: TProc<TAlphaColor>` |
-| `TTextFrame` | `SetOnClick(TProc)` |
+| `TTextFrame` | `SetOnClickProc(TProc)` (also `SetOnClick`) |
 | `TGlyphFrame`, `TIconFontsGlyphFrame` | `SetOnClickProc(TProc)` |
-| `TChipFrame` | `OnClickHandler: TProc` |
+| `TChipFrame` | `SetOnClickProc(TProc)` (also `OnClickHandler`) |
+| `TActionButtonFrame` | `SetOnClickProc(TProc)` (also `OnClickProc`) |
 | `TImageFrame`, `TSVGFrame`, `TAnimatedImageFrame`, `TQRCodeFrame` | `OnTapHandler` (tap on mobile, mouse up on Windows) |
 | `TPaintBoxFrame` | `SetOnDrawHandler`, `SetOnTapHandler` |
 | `TListViewFrame` | per item `AOnSelect` of `AddItem`, `SetOnSearchChange` |
@@ -38,7 +39,7 @@ Col
 .AddFrame<TButtonFrame>(60
 , procedure (Button: TButtonFrame)
   begin
-    Button.SetText('Greet').SetOnClickHandler(
+    Button.SetText('Greet').SetOnClickProc(
       procedure
       begin
         ShowMessage('Hello, ' + LEditFrame.GetText);

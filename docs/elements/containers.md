@@ -15,13 +15,13 @@ Col
 
 | Member | Description |
 |---|---|
-| `AddFrame<T: TFrame>(AHeight = 200; AConfigProc = nil): TColumnForm` | adds a frame element in a slot `AHeight` high |
+| `AddFrame<T: TFrame>(AHeight = 200; AConfigProc = nil): TColumnForm` | adds a frame element in a slot `AHeight` high; `AUTO_HEIGHT`: the element's height |
 | `AddFrame<T>(AColDef: TElementDef<T>)` | same, height from the `Height` param |
-| `AddForm<T: TForm>(AHeight = 200; AConfigProc = nil)`, `AddForm<T>(AColDef)` | adds a form element |
+| `AddForm<T: TForm>(AHeight = 200; AConfigProc = nil)`, `AddForm<T>(AColDef)` | adds a form element; `AUTO_HEIGHT`: the form's `Height` after the configuration procedure |
 | `Elements: TList<TSubjectInfoContainer>` | the slots, in order; `Elements[i].ContainedFrame<T>` returns the element |
-| `ElementStand: string` | stand for the next elements (default stand: `fadeIn`) |
+| `ElementStand: string` / `SetElementStand(AStand)` | stand for the next elements (default stand: `fadeIn`) |
 | `GetContent: TLayout`, `ContentLayout` | the layout holding the slots |
-| `DEFAULT_ELEMENT_HEIGHT = 200` | |
+| `DEFAULT_ELEMENT_HEIGHT = 200`, `AUTO_HEIGHT = -1` | see [Automatic sizes](/guide/layouts#automatic-sizes) |
 
 The column's `Height` grows with every element (it starts at 1), so a column in a [TVertScrollFrame](#tvertscrollframe-and-tvertscrollform) scrolls over its whole content.
 
@@ -31,10 +31,10 @@ Unit `FMXER.RowForm`. The horizontal twin of the column: slots of fixed width, f
 
 | Member | Description |
 |---|---|
-| `AddFrame<T>(AWidth = 200; AConfigProc = nil): TRowForm`, `AddFrame<T>(AColDef)` | adds a frame element; `Width` param for the definition overload |
+| `AddFrame<T>(AWidth = 200; AConfigProc = nil): TRowForm`, `AddFrame<T>(AColDef)` | adds a frame element; `Width` param for the definition overload; `AUTO_WIDTH`: the element's width |
 | `AddForm<T>(AWidth = 200; AConfigProc = nil)`, `AddForm<T>(AColDef)` | adds a form element |
-| `ElementAlign: TAlignLayout` | alignment of the slots, `Left` by default (`Right` fills from the right) |
-| `Elements`, `ElementStand`, `GetContent`, `DEFAULT_ELEMENT_WIDTH = 200` | as in the column |
+| `ElementAlign: TAlignLayout` / `SetElementAlign(AAlign)` | alignment of the slots, `Left` by default (`Right` fills from the right) |
+| `Elements`, `ElementStand` / `SetElementStand`, `GetContent`, `DEFAULT_ELEMENT_WIDTH = 200`, `AUTO_WIDTH = -1` | as in the column |
 
 The row's `Width` grows with every element.
 
@@ -55,9 +55,9 @@ Scroll
 
 | Member | Description |
 |---|---|
-| `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content (functions in the frame, procedures in the form) |
-| `TouchWidth` (form) / `GetTouchWidth`, `SetTouchWidth` (frame) | right padding of the scroll box, 50 by default: a strip to scroll with a finger |
-| `ContentStand` | stand of the content |
+| `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content; a frame keeps its design height, or the one set by `AConfigProc` |
+| `SetTouchWidth(AWidth)`, `GetTouchWidth` (and `TouchWidth` in the form) | right padding of the scroll box, 50 by default: a strip to scroll with a finger |
+| `ContentStand` / `SetContentStand(AStand)` | stand of the content (ignored before v.1.3) |
 | `OnShowProc`, `OnResizeProc`, `OnResizedProc: TProc<TVertScrollFrame>` | frame only: after show, on resize, after resize |
 | `VerticalScrollbox` | the scroll box |
 
@@ -67,9 +67,9 @@ Unit `FMXER.HorzScrollFrame`. A `THorzScrollBox` with one element aligned to the
 
 | Member | Description |
 |---|---|
-| `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content (procedures) |
-| `TouchHeight` | bottom padding of the scroll box |
-| `ContentStand`, `HorizontalScrollBox` | |
+| `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content; a frame keeps its design width, or the one set by `AConfigProc` |
+| `TouchHeight` / `SetTouchHeight(AHeight)` | bottom padding of the scroll box |
+| `ContentStand` / `SetContentStand(AStand)`, `HorizontalScrollBox` | |
 
 ## TStackFrame
 
@@ -100,7 +100,7 @@ Center.SetContentAsFrame<TQRCodeFrame>(240, 240
 |---|---|
 | `SetContentAsFrame<T>(AWidth, AHeight, AConfigProc): TCenterForm` | |
 | `SetContentAsForm<T>(AWidth, AHeight, AConfigProc): TCenterForm` | |
-| `ContentStand` | |
+| `ContentStand` / `SetContentStand(AStand)` | |
 
 ## TContainerFrame and TContainerForm
 
@@ -108,9 +108,9 @@ Units `FMXER.ContainerFrame`, `FMXER.ContainerForm`. The simplest container: one
 
 | Member | Description |
 |---|---|
-| `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content (functions in the frame, procedures in the form) |
+| `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content |
 | `SetContentAs<T: TFmxObject>(AConfigProc): TContainerFrame` | frame only: creates any FMX object `T` (a `TSwitch`, a `TCalendar`, a `TMapView`...) inside an empty frame |
-| `Content: TSubjectInfo`, `ContentStand` | |
+| `Content: TSubjectInfo`, `ContentStand` / `SetContentStand(AStand)` | |
 
 ```pascal
 Navigator.DefineRoute<TContainerForm>('bubbles'
@@ -149,7 +149,7 @@ Units `FMXER.BackgroundFrame`, `FMXER.BackgroundForm`. One element on a `TRectan
 | `SetContentAsFrame<T>(AConfigProc)`, `SetContentAsForm<T>(AConfigProc)` | the content, inside the rectangle |
 | `SetFillColor(AColor)`, `SetStrokeColor(AColor)`, `SetStrokeThickness(AThickness)` | fluent setters |
 | `Fill: TBrush`, `Stroke: TStrokeBrush` | the rectangle's brushes, for gradients and bitmaps |
-| `Content`, `ContentStand`, `BackgroundRectangle` | |
+| `Content`, `ContentStand` / `SetContentStand(AStand)`, `BackgroundRectangle` | |
 
 `TBackgroundFrame` forwards `HitTest` to the rectangle, so `SetHitTest(False)` makes it click-through.
 
@@ -185,14 +185,15 @@ Unit `FMXER.CardFrame`. A card: a title bar in `PrimaryColor` with optional glyp
 Col.AddFrame<TCardFrame>(150
 , procedure (Card: TCardFrame)
   begin
-    Card.Title := 'Today';
-    Card.SetGlyphAsFrame<TIconFontsGlyphFrame>(
+    Card
+    .SetTitle('Today')
+    .SetGlyphAsFrame<TIconFontsGlyphFrame>(
       procedure (Glyph: TIconFontsGlyphFrame)
       begin
         Glyph.SetIcon(IconFonts.MD.weather_sunny, TAlphaColorRec.White);
       end
-    );
-    Card.SetContentAsFrame<TTextFrame>(
+    )
+    .SetContentAsFrame<TTextFrame>(
       procedure (Text: TTextFrame)
       begin
         Text.SetContent('Sunny, 24°').SetFontColor(TAlphaColorRec.Black);
@@ -204,14 +205,13 @@ Col.AddFrame<TCardFrame>(150
 
 | Member | Description |
 |---|---|
-| `Title: string` | title text (a `TTextFrame` in the title bar) |
+| `Title: string` / `SetTitle(ATitle)` | title text (a `TTextFrame` in the title bar) |
 | `SetGlyphAsFrame<T>`, `SetGlyphAsForm<T>` | left glyph (50 px) |
 | `SetGlyphRAsFrame<T>`, `SetGlyphRAsForm<T>` | right glyph |
 | `SetContentAsFrame<T>`, `SetContentAsForm<T>` | content |
-| `ContentStand`, `GlyphStand`, `GlyphRStand` | stands |
+| `ContentStand` / `SetContentStand(AStand)`, `GlyphStand`, `GlyphRStand` | stands |
 | `Detail: string` | stored, not displayed (v.1.1) |
 
-The slot methods of the card are procedures (not chainable).
 
 ## THorzDividerFrame
 

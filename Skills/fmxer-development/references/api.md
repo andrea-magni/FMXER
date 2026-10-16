@@ -95,11 +95,12 @@ end;
 // unit FMXER.ActionButtonFrame (a circle in PrimaryColor with an element on top)
 TActionButtonFrame = class(TFrame)
   BackgroundCircle: TCircle;
-  procedure SetOverlayAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
-  procedure SetOverlayAsText(const AText: string;
+  function SetOverlayAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TActionButtonFrame;
+  function SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TActionButtonFrame;
+  function SetOverlayAsText(const AText: string;
     const AOnClickProc: TProc = nil;
-    const AConfigProc: TProc<TTextFrame> = nil);
+    const AConfigProc: TProc<TTextFrame> = nil): TActionButtonFrame;
+  function SetOnClickProc(const AOnClickProc: TProc): TActionButtonFrame;
   property OnClickProc: TProc;
   property OverlayStand: string;
 end;
@@ -107,13 +108,14 @@ end;
 
 ## Containers
 
-Every container also has public `FrameStand1: TFrameStand` and (except `TStackFrame`) `FormStand1: TFormStand`, plus the slot layouts as published fields. **Watch the return types**: a `procedure` slot method cannot be chained.
+Every container also has public `FrameStand1: TFrameStand` and (except `TStackFrame`) `FormStand1: TFormStand`, plus the slot layouts as published fields. Since v.1.3 every slot method is a function returning its container (chainable), and every stand property has a fluent setter.
 
 ```pascal
-// unit FMXER.ColumnForm — slots aligned Top, column Height grows by AHeight (starts at 1)
+// unit FMXER.ColumnForm — slots aligned Top, column Height grows by each slot (starts at 1)
 TColumnForm = class(TForm)
   ContentLayout: TLayout; Stands: TStyleBook;               // Stands has 'fadeIn'
   const DEFAULT_ELEMENT_HEIGHT = 200;
+  const AUTO_HEIGHT = -1;   // v.1.3: slot = the element's own height (design, or set in AConfigProc; margins included; forms: Height)
   function AddFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
     const AConfigProc: TProc<T> = nil): TColumnForm; overload;
   function AddFrame<T: TFrame>(const AColDef: TElementDef<T>): TColumnForm; overload;   // param 'Height'
@@ -121,14 +123,16 @@ TColumnForm = class(TForm)
     const AConfigProc: TProc<T> = nil): TColumnForm; overload;
   function AddForm<T: TForm>(const AColDef: TElementDef<T>): TColumnForm; overload;
   function GetContent: TLayout; virtual;
+  function SetElementStand(const AStand: string): TColumnForm;
   property ElementStand: string;                            // default 'fadeIn' (the stands' DefaultStandName)
   property Elements: TList<TSubjectInfoContainer>;
 end;
 
-// unit FMXER.RowForm — slots aligned ElementAlign (default Left), row Width grows by AWidth
+// unit FMXER.RowForm — slots aligned ElementAlign (default Left), row Width grows by each slot
 TRowForm = class(TForm)
   ContentLayout: TLayout; Stands: TStyleBook;               // has 'fadeIn', not the default
   const DEFAULT_ELEMENT_WIDTH = 200;
+  const AUTO_WIDTH = -1;    // v.1.3: slot = the element's own width
   function AddFrame<T: TFrame>(const AWidth: Integer = DEFAULT_ELEMENT_WIDTH;
     const AConfigProc: TProc<T> = nil): TRowForm; overload;
   function AddFrame<T: TFrame>(const AColDef: TElementDef<T>): TRowForm; overload;     // param 'Width'
@@ -136,6 +140,8 @@ TRowForm = class(TForm)
     const AConfigProc: TProc<T> = nil): TRowForm; overload;
   function AddForm<T: TForm>(const AColDef: TElementDef<T>): TRowForm; overload;
   function GetContent: TLayout; virtual;
+  function SetElementStand(const AStand: string): TRowForm;
+  function SetElementAlign(const AAlign: TAlignLayout): TRowForm;
   property ElementStand: string;
   property ElementAlign: TAlignLayout;
   property Elements: TList<TSubjectInfoContainer>;
@@ -148,13 +154,14 @@ TStackFrame = class(TFrame)
   property DefaultStand: string;
 end;
 
-// unit FMXER.VertScrollFrame — content aligned Top, keeps its own Height
+// unit FMXER.VertScrollFrame — content aligned Top, keeps its own Height (frames: design height or set in AConfigProc)
 TVertScrollFrame = class(TFrame)
   VerticalScrollbox: TVertScrollBox;
   function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TVertScrollFrame;
   function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TVertScrollFrame;
   function GetTouchWidth: Single;
   function SetTouchWidth(const ATouchWidth: Single): TVertScrollFrame;  // right padding for dragging, default 50
+  function SetContentStand(const AStand: string): TVertScrollFrame;
   property ContentStand: string;
   property OnResizeProc: TProc<TVertScrollFrame>;
   property OnResizedProc: TProc<TVertScrollFrame>;
@@ -164,8 +171,10 @@ end;
 // unit FMXER.VertScrollForm
 TVertScrollForm = class(TForm)
   VerticalScrollbox: TVertScrollBox;
-  procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+  function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TVertScrollForm;
+  function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TVertScrollForm;
+  function SetContentStand(const AStand: string): TVertScrollForm;
+  function SetTouchWidth(const ATouchWidth: Single): TVertScrollForm;
   property ContentStand: string;
   property TouchWidth: Single;
 end;
@@ -173,8 +182,10 @@ end;
 // unit FMXER.HorzScrollFrame — content aligned Left, keeps its own Width
 THorzScrollFrame = class(TFrame)
   HorizontalScrollBox: THorzScrollBox;
-  procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+  function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): THorzScrollFrame;
+  function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): THorzScrollFrame;
+  function SetContentStand(const AStand: string): THorzScrollFrame;
+  function SetTouchHeight(const ATouchHeight: Single): THorzScrollFrame;
   property ContentStand: string;
   property TouchHeight: Single;
 end;
@@ -214,6 +225,7 @@ TCenterForm = class(TForm)
     const AConfigProc: TProc<T> = nil): TCenterForm;
   function SetContentAsForm<T: TForm>(const AWidth, AHeight: Integer;
     const AConfigProc: TProc<T> = nil): TCenterForm;
+  function SetContentStand(const AStand: string): TCenterForm;
   property ContentStand: string;
 end;
 
@@ -223,14 +235,16 @@ TContainerFrame = class(TFrame)
   function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TContainerFrame;
   function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TContainerFrame;
   function SetContentAs<T: TFmxObject>(const AConfigProc: TProc<T> = nil): TContainerFrame; // any FMX control
+  function SetContentStand(const AStand: string): TContainerFrame;
   property ContentStand: string;
   property Content: TSubjectInfo;
 end;
 
 // unit FMXER.ContainerForm
 TContainerForm = class(TForm)
-  procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+  function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TContainerForm;
+  function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TContainerForm;
+  function SetContentStand(const AStand: string): TContainerForm;
   property ContentStand: string;
   property Content: TSubjectInfo;
 end;
@@ -243,6 +257,7 @@ TBackgroundFrame = class(TFrame)
   function SetFillColor(const AColor: TAlphaColor): TBackgroundFrame;
   function SetStrokeColor(const AColor: TAlphaColor): TBackgroundFrame;
   function SetStrokeThickness(const AThickness: Single): TBackgroundFrame;
+  function SetContentStand(const AStand: string): TBackgroundFrame;
   property ContentStand: string;
   property Content: TSubjectInfo;
   property Fill: TBrush;
@@ -253,12 +268,14 @@ end;
 TCardFrame = class(TFrame)
   TitleLayout, ContentLayout, GlyphLayout, GlyphRLayout: TLayout;
   TitleBackground, ContentBackground: TRectangle;
-  procedure SetGlyphAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetGlyphAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
-  procedure SetGlyphRAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetGlyphRAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
-  procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-  procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+  function SetGlyphAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TCardFrame;
+  function SetGlyphAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TCardFrame;
+  function SetGlyphRAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TCardFrame;
+  function SetGlyphRAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TCardFrame;
+  function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TCardFrame;
+  function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TCardFrame;
+  function SetTitle(const ATitle: string): TCardFrame;
+  function SetContentStand(const AStand: string): TCardFrame;
   property Title: string;
   property Detail: string;
   property ContentStand, GlyphStand, GlyphRStand: string;
@@ -280,6 +297,7 @@ TTextFrame = class(TFrame)
   function SetHorzAlign(const AHorzAlign: TSkTextHorzAlign): TTextFrame;   // Leading, Center, Trailing, Justify
   function SetVertAlign(const AVertAlign: TTextAlign): TTextFrame;
   function SetOnClick(const AOnClickProc: TProc): TTextFrame;
+  function SetOnClickProc(const AOnClickProc: TProc): TTextFrame;   // v.1.3, same as SetOnClick
   function SetFontColor(const AColor: TAlphaColor): TTextFrame;
   function SetFontSize(const AFontSize: Single): TTextFrame;
   function SetFontFamily(const AFontFamily: string): TTextFrame;
@@ -300,6 +318,7 @@ TButtonFrame = class(TFrame)
   function SetBackgroundVisible(const AVisible: Boolean): TButtonFrame;
   function SetBackgroundOpacity(const AOpacity: Single): TButtonFrame;
   function SetOnClickHandler(const AOnClickHandler: TProc): TButtonFrame;
+  function SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;   // v.1.3, same as SetOnClickHandler
   property BackgroundFill: TBrush;
   property BackgroundStroke: TStrokeBrush;
   property IsDefault: Boolean;
@@ -361,6 +380,7 @@ TChipFrame = class(TFrame)
   function SetText(const AText: string): TChipFrame;
   function SetBackgroundColor(const AColor: TAlphaColor): TChipFrame;
   function SetForegroundColor(const AColor: TAlphaColor): TChipFrame;
+  function SetOnClickProc(const AOnClickProc: TProc): TChipFrame;   // v.1.3
   property OnClickHandler: TProc;
 end;
 TChipsFrame = class(TFrame)                       // a TFlowLayout of chips
@@ -405,6 +425,7 @@ TOnTapHandler = reference to procedure(AImage: TFMXObject; APoint: TPointF);  //
 TImageFrame = class(TFrame)
   ContentImage: TImage;
   property Image: TImage;
+  function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TImageFrame;
   property OnTapHandler: TOnTapHandler;
 end;
 
@@ -414,6 +435,7 @@ TAnimatedImageFrame = class(TFrame)             // Lottie / animated images (TSk
   function SetOpacity(const AOpacity: Single): TAnimatedImageFrame;
   function SetAnimationSpeed(const ASpeed: Single): TAnimatedImageFrame;
   property Image: TSkAnimatedImage;
+  function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TAnimatedImageFrame;
   property OnTapHandler: TOnTapHandler;
 end;
 
@@ -425,6 +447,7 @@ TSVGFrame = class(TFrame)
   function SetWrapMode(const AWrapMode: TSkSvgWrapMode): TSVGFrame;
   function SetOverrideColor(const AOverrideColor: TAlphaColor): TSVGFrame;
   function SetSVGSource(const ASVGSource: string): TSVGFrame;
+  function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TSVGFrame;
   property OnTapHandler: TOnTapHandler;
 end;
 
@@ -451,13 +474,14 @@ TQRCodeFrame = class(TFrame)
   function SetLogoWidth(const AWidth: Single): TQRCodeFrame;
   function SetLogoHeight(const AHeight: Single): TQRCodeFrame;
   function SetLogoVisible(const AVisible: Boolean): TQRCodeFrame;
+  function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TQRCodeFrame;
   property OnBeforePaint: TOnBeforePaintHandler;   // QRCode.Utils
   property OnTapHandler: TOnTapHandler;
 end;
 
-TActivityBubblesFrame = class(TFrame)  property Text: string;  end;     // FMXER.ActivityBubblesFrame
-TLogoFrame = class(TFrame)  LogoImage: TImage;  property LogoResource: string;  end;  // FMXER.LogoFrame
-TWebViewFrame = class(TFrame)  WebBrowser1: TWebBrowser;  property HTML: string;  property URL: string;  end;
+TActivityBubblesFrame = class(TFrame)  function SetText(const AText: string): TActivityBubblesFrame;  property Text: string;  end;  // FMXER.ActivityBubblesFrame
+TLogoFrame = class(TFrame)  LogoImage: TImage;  function SetLogoResource(const AResourceName: string): TLogoFrame;  property LogoResource: string;  end;  // FMXER.LogoFrame
+TWebViewFrame = class(TFrame)  WebBrowser1: TWebBrowser;  function SetURL(const AURL: string): TWebViewFrame;  function SetHTML(const AHTML: string): TWebViewFrame;  property HTML: string;  property URL: string;  end;
 ```
 
 ## Icons
@@ -518,6 +542,12 @@ TElementDef<T> = record
   class operator Implicit(AConfigProc: TProc<T>): TElementDef<T>;
 end;
 
+TFMXERStands = record                       // v.1.3: for your own containers
+  // like TFrameStand.New<T>, but the frame gets AAlign before entering the stand, so it keeps its
+  // design size; configure it, size its slot on it, then Show the returned info
+  class function NewSizedFrame<T: TFrame>(const AFrameStand: TFrameStand; const AParent: TFmxObject;
+    const AStandName: string; const AAlign: TAlignLayout): TFrameInfo<T>; static;
+end;
 TSubjectInfoContainer = class(TLayout)      // slot of TColumnForm / TRowForm (Elements list)
   function ContainedFrame<T: TFrame>: T;    // nil when the slot holds a form
   function ContainedForm<T: TForm>: T;

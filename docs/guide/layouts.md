@@ -2,20 +2,50 @@
 
 FMXER layouts are made of a few containers nested into each other. This page shows the sizing rules and the combinations used most often; every container is described in detail in [Containers](/elements/containers).
 
-## Sizing: explicit, top-down
+## Sizing: top-down
 
-FMXER does not measure its children the way Flutter does. Sizes are **explicit**, and each container follows a simple rule:
+FMXER does not run a measure pass the way Flutter does: each container gives its children a size by a simple rule, and you either pass the size or let the slot take the **element's own size** (its design size in the `.fmx`, or the one the configuration procedure sets).
 
 | Container | Rule |
 |---|---|
-| `TColumnForm` | each `AddFrame<T>(AHeight)`/`AddForm<T>(AHeight)` adds a slot of `AHeight` (default 200), aligned to the top, as wide as the column; the column's own `Height` grows by `AHeight` |
-| `TRowForm` | each `AddFrame<T>(AWidth)` adds a slot of `AWidth` (default 200), aligned to the left (`ElementAlign`); the row's `Width` grows by `AWidth` |
+| `TColumnForm` | each `AddFrame<T>(AHeight)`/`AddForm<T>(AHeight)` adds a slot of `AHeight` (default 200), aligned to the top, as wide as the column; with `TColumnForm.AUTO_HEIGHT` the slot takes the element's height. The column's own `Height` grows with each slot |
+| `TRowForm` | each `AddFrame<T>(AWidth)` adds a slot of `AWidth` (default 200), aligned to the left (`ElementAlign`); with `TRowForm.AUTO_WIDTH` the slot takes the element's width. The row's `Width` grows with each slot |
 | `TVertScrollFrame` / `TVertScrollForm` | the content is aligned to the top and keeps its own `Height`: put a column in it and the scroll box scrolls the column |
 | `THorzScrollFrame` | the content is aligned to the left and keeps its own `Width`: put a row in it |
 | `TCenterForm` | the content gets the size you pass (`SetContentAsFrame<T>(AWidth, AHeight)`), centered |
 | everything else | the child fills the slot (`Client`) |
 
 A slot is a `TLayout`: the element inside is aligned to it by its own `Align` (most elements are `Client` by design), so margins and paddings set on the element apply inside the slot.
+
+### Automatic sizes
+
+Pass `AUTO_HEIGHT` (column) or `AUTO_WIDTH` (row) instead of a size, and the slot takes the size of the element: the one designed in its `.fmx`, or the one set in the configuration procedure — margins included. For a form element (a nested column, for example) it is the form's `Height`/`Width` after the configuration procedure: a nested column measures itself.
+
+```pascal
+Col
+.AddFrame<TTextFrame>(TColumnForm.AUTO_HEIGHT)           // 80: the design height of TTextFrame
+.AddFrame<TEditFrame>(TColumnForm.AUTO_HEIGHT
+, procedure (Edit: TEditFrame)
+  begin
+    Edit.SetCaption('Name').SetHeight(90);               // 90: set here
+  end
+)
+.AddForm<TRowForm>(TColumnForm.AUTO_HEIGHT
+, procedure (Row: TRowForm)
+  begin
+    Row.SetHeight(60);                                    // a form element: its Height
+    Row
+    .AddFrame<TButtonFrame>(TRowForm.AUTO_WIDTH
+    , procedure (B: TButtonFrame) begin B.SetText('OK').SetWidth(80); end);
+  end
+);
+```
+
+The size is taken once, when the element is added: an element that changes size later does not resize its slot. The scroll boxes follow the same rule for a frame content: it keeps its design height (`TVertScrollFrame`) or width (`THorzScrollFrame`), or the one set by the configuration procedure.
+
+::: info Since v.1.3
+`AUTO_HEIGHT`/`AUTO_WIDTH` are new in v.1.3. Before, a frame put in a scroll box got a height (width) of 50 unless the configuration procedure set one.
+:::
 
 ## Column
 
@@ -89,7 +119,7 @@ Row
 , procedure (B: TButtonFrame) begin B.SetText('Three'); end);
 ```
 
-A row inside a column is the usual way to place elements side by side: `Col.AddForm<TRowForm>(75, procedure (Row: TRowForm) ...)`. Set `Row.ElementAlign := TAlignLayout.Right` before adding elements to fill the row from the right. For a horizontally scrolling row, put it in a `THorzScrollFrame`.
+A row inside a column is the usual way to place elements side by side: `Col.AddForm<TRowForm>(75, procedure (Row: TRowForm) ...)`. Call `Row.SetElementAlign(TAlignLayout.Right)` before adding elements to fill the row from the right. For a horizontally scrolling row, put it in a `THorzScrollFrame`.
 
 ## Layers: stack
 

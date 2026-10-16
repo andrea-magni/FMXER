@@ -7,7 +7,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 | Unit | Declares | Depends on |
 |---|---|---|
 | `FMXER.Navigator` | `TNavigator`, `Navigator()` | TFrameStand |
-| `FMXER.UI.Misc` | `TElementDef<T>`, `TNameValueParam`, `TParams`, `Param()`, `OnClickProc()`, `TFMXERFrameHelper`, `TFMXERFormHelper`, `TSubjectInfoContainer`, `TCaptionPosition`, `LocalFile()`, `LocalFilesPath` | TFrameStand |
+| `FMXER.UI.Misc` | `TElementDef<T>`, `TNameValueParam`, `TParams`, `Param()`, `OnClickProc()`, `TFMXERFrameHelper`, `TFMXERFormHelper`, `TSubjectInfoContainer`, `TFMXERStands`, `TCaptionPosition`, `LocalFile()`, `LocalFilesPath` | TFrameStand |
 | `FMXER.UI.Consts` | `TAppColors` | — |
 | `FMXER.UI.Types` | `TOnTapHandler` | — |
 | `FMXER.IconFontsData` | `TIconFonts` (data module), `IconFonts()`, `ICON_FONTS_FAMILYNAME`, `ICON_FONTS_FILENAME` | IconFontsImageList, Skia |

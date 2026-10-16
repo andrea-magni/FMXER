@@ -75,6 +75,18 @@ Tests: 26 (`bcbe7cd`). Still open: design notes D1–D5; Delphi 12 and the non-W
 
 Verified with `build.cmd 13 demos` on Delphi 13 Win32 (no unit aliases since P1): source ok, 22/22 tests, 13 of 13 demos.
 
+## Status on branch `release/1.3` (2026-10-16)
+
+v.1.2.1 released 2026-10-16 (PR #5, tag `v.1.2.1`).
+
+| Item | Status |
+|---|---|
+| D2 fluent API not uniform | done (`8c48949`), additions only: every slot method is a function returning its container; `SetOnClickProc` on every clickable element (the older `SetOnClick`, `SetOnClickHandler`, `OnClickHandler` stay); fluent setters for `Title`, `URL`/`HTML`, `LogoResource`, `Text`, `TouchWidth`/`TouchHeight`, `ContentStand`, `ElementStand`, `ElementAlign`, `OnTapHandler`. Test `FluentSetters` |
+| D1 explicit sizes | done (`6700e81`): `TColumnForm.AUTO_HEIGHT` / `TRowForm.AUTO_WIDTH` take the element's own size (design size, or the one set by the configuration procedure; margins included; a form element: its `Height`/`Width`, so a nested column measures itself). Found while doing it: TFrameStand aligns a new frame (Align = Client) to its stand before the configuration procedure runs, so the design size is lost (50, the default size of the stand layout): `TFMXERStands.NewSizedFrame<T>` aligns the frame first, then hands it to `TFrameStand.Use`. The scroll boxes use it too: a frame content kept 50 pixels instead of its design height. Not done: sizes that follow later changes of the element (computed once, as before) |
+| Scroll boxes ignored `ContentStand` | fixed (`6700e81`): `TVertScrollFrame`, `TVertScrollForm`, `THorzScrollFrame` passed `''` |
+
+Tests: 36 (`6a93684`); the scroll-box tests fail on the previous code (50 instead of 80, `framestand` instead of the content stand). Still open: D3–D5.
+
 ## 1. Build, packaging and dependencies
 
 | # | Finding | Evidence | Fix |
@@ -124,8 +136,8 @@ NewProjectTemplate, QRCode, Skia101, WebView) build for Win32 with Delphi 13 (P1
 
 | # | Note |
 |---|---|
-| D1 | **Sizes are explicit.** `TColumnForm.AddFrame<T>(AHeight)` (default 200) and `TRowForm.AddFrame<T>(AWidth)` add fixed-size slots and grow the form's own `Height`/`Width`; there is no measure/layout pass as in Flutter. `TVertScrollFrame` takes the content's `Height`. It is simple and predictable, but every element needs a size; the docs explain it. |
-| D2 | **Fluent API is not uniform.** Most `SetContentAs*` are functions returning the element, some are procedures (`TContainerForm`, `TVertScrollForm`, `THorzScrollFrame`, `TCardFrame`, `TActionButtonFrame`); click handlers are named `OnClickProc`, `OnClickHandler`, `SetOnClick`, `SetOnClickHandler`, `SetOnClickProc` depending on the element; some values are properties (`TCardFrame.Title`, `TWebViewFrame.URL`), others setters. |
+| D1 | (done in v.1.3, see above) **Sizes are explicit.** `TColumnForm.AddFrame<T>(AHeight)` (default 200) and `TRowForm.AddFrame<T>(AWidth)` add fixed-size slots and grow the form's own `Height`/`Width`; there is no measure/layout pass as in Flutter. `TVertScrollFrame` takes the content's `Height`. It is simple and predictable, but every element needs a size; the docs explain it. |
+| D2 | (done in v.1.3, see above) **Fluent API is not uniform.** Most `SetContentAs*` are functions returning the element, some are procedures (`TContainerForm`, `TVertScrollForm`, `THorzScrollFrame`, `TCardFrame`, `TActionButtonFrame`); click handlers are named `OnClickProc`, `OnClickHandler`, `SetOnClick`, `SetOnClickHandler`, `SetOnClickProc` depending on the element; some values are properties (`TCardFrame.Title`, `TWebViewFrame.URL`), others setters. |
 | D3 | Every container element embeds its own `TFrameStand` + `TFormStand` (and `TColumnForm`/`TRowForm`/`TScaffoldForm` a `TStyleBook`): a deep tree means many components. Fine for screens of tens of elements; for long lists use `TListViewFrame`. |
 | D4 | Global state: one `Navigator` (singleton, one `TFormStand`), one `IconFonts` image list, `TAppColors` class variables read in the constructors (changing `TAppColors.PrimaryColor` affects elements created afterwards only). |
 | D5 | TFrameStand 2.3 added dialog results (`ShowModal`), Back/Esc handling and a navigation stack (`Push`/`Pop`) with the same purpose as `TNavigator`'s stack: after P2, the navigator could delegate its stack to `TFormStand.Push`/`Pop` and get Back/Esc for free. |
