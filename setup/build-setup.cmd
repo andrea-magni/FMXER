@@ -36,6 +36,15 @@ git -C "%ROOT%" archive --format=zip -o "%OUT%\source.zip" HEAD || exit /b 1
 "%SystemRoot%\System32\tar.exe" -xf "%OUT%\source.zip" -C "%EXPORT%" || exit /b 1
 del "%OUT%\source.zip"
 
+REM The setup finds the RAD Studio versions through the enabled BuildGroupProject
+REM items of the .groupproj files (parsed with MSXML, like here): without them it
+REM stops with "no RAD Studio version available".
+echo === Checking the build groups of the packages
+powershell -NoProfile -Command "$bad = 0; Get-ChildItem '%EXPORT%\packages\*\*.groupproj' | ForEach-Object { $d = New-Object -ComObject Msxml2.DOMDocument; $d.async = $false; [void]$d.load($_.FullName); $n = $d.selectNodes('/Project/ItemGroup/BuildGroupProject[@Include and Enabled=''True'']').length; Write-Host ('  ' + $_.Directory.Name + '\' + $_.Name + ': ' + $n + ' projects'); if ($n -eq 0) { $bad = 1 } }; exit $bad" || (
+  echo A .groupproj has no enabled BuildGroupProject: the setup would find no RAD Studio version
+  exit /b 1
+)
+
 echo === Compiling the setup with "%ISCC%"
 "%ISCC%" /Q /O"%OUT%" "%EXPORT%\setup\Setup.iss"
 if errorlevel 1 (
