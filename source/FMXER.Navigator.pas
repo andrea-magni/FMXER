@@ -3,7 +3,7 @@ unit FMXER.Navigator;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, Generics.Collections
+  System.Classes, System.SysUtils, System.StrUtils, System.UITypes, Generics.Collections
 , FMX.Types, FMX.Forms
 , SubjectStand, FormStand
 ;
@@ -12,6 +12,9 @@ type
   TNavigator = class
   private
     FFormStand: TFormStand;
+    FBackKeyHook: TComponent;
+    function GetCatchBackKey: Boolean;
+    procedure SetCatchBackKeyValue(const AValue: Boolean);
   protected
     FOnCloseRouteProc: TProc<string>;
     FOnCreateRouteProc: TProc<string>;
@@ -49,6 +52,18 @@ type
     function SetOnCreateRoute(const AOnCreateRouteProc: TProc<string>): TNavigator;
     function SetOnCloseRoute(const AOnCloseRouteProc: TProc<string>): TNavigator;
     function Breadcrumb: TArray<string>;
+
+    /// <summary>Back (vkHardwareBack) and Esc: closes the route on top of the
+    /// stack (StackPop) when the stack has more than one route, and clears
+    /// AKey and AKeyChar so that Android does not close the app. While a
+    /// transient route is open (a wait screen) the key is consumed and nothing
+    /// is closed. Returns True when it handled the key. Call it from OnKeyDown
+    /// of the form, or set CatchBackKey.</summary>
+    function HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;
+    /// <summary>True: the navigator handles Back/Esc by itself, hooking
+    /// OnKeyDown of the form that owns FormStand (the previous handler is still
+    /// called for the keys the navigator does not handle).</summary>
+    function SetCatchBackKey(const AValue: Boolean): TNavigator;
     //
     property ActiveRoutes: TDictionary<string, TSubjectInfo> read FActiveRoutes;
     property RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>> read FRouteDefinitions;
@@ -56,8 +71,15 @@ type
     property Stack: TStack<string> read FStack;
     property OnCreateRoute: TProc<string> read FOnCreateRouteProc write FOnCreateRouteProc;
     property OnCloseRoute: TProc<string> read FOnCloseRouteProc write FOnCloseRouteProc;
+    property CatchBackKey: Boolean read GetCatchBackKey write SetCatchBackKeyValue;
 
+    /// <summary>Creates the singleton returned by Navigator. Other instances
+    /// can be created with TNavigator.Create (and freed by their owner): each
+    /// one has its own routes and stack.</summary>
     class procedure Init(const AFormStand: TFormStand);
+    /// <summary>Frees the singleton (Navigator raises again until Init); the
+    /// routes still open are not closed.</summary>
+    class procedure ReleaseInstance;
     class property Instance: TNavigator read GetClassInstance;
     class property Initialized: Boolean read GetInitialized;
 
@@ -68,10 +90,64 @@ function Navigator(const AFormStand: TFormStand = nil): TNavigator;
 
 implementation
 
+type
+  /// <summary>Owned by the form: hooks its OnKeyDown for TNavigator.CatchBackKey.</summary>
+  TNavigatorBackKeyHook = class(TComponent)
+  private
+    FForm: TCommonCustomForm;
+    FNavigator: TNavigator;
+    FPreviousKeyDown: TKeyEvent;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: WideChar;
+      Shift: TShiftState);
+  public
+    constructor Create(const AForm: TCommonCustomForm; const ANavigator: TNavigator); reintroduce;
+    destructor Destroy; override;
+  end;
+
+{ TNavigatorBackKeyHook }
+
+constructor TNavigatorBackKeyHook.Create(const AForm: TCommonCustomForm;
+  const ANavigator: TNavigator);
+begin
+  inherited Create(AForm);
+  FForm := AForm;
+  FNavigator := ANavigator;
+  FPreviousKeyDown := AForm.OnKeyDown;
+  AForm.OnKeyDown := FormKeyDown;
+end;
+
+destructor TNavigatorBackKeyHook.Destroy;
+var
+  LHandler: TKeyEvent;
+begin
+  // put the previous handler back, if nobody replaced this one meanwhile
+  if Assigned(FForm) and not (csDestroying in FForm.ComponentState) then
+  begin
+    LHandler := FormKeyDown;
+    if TMethod(FForm.OnKeyDown) = TMethod(LHandler) then
+      FForm.OnKeyDown := FPreviousKeyDown;
+  end;
+  // freed with the form: the navigator must not free it again
+  if Assigned(FNavigator) and (FNavigator.FBackKeyHook = Self) then
+    FNavigator.FBackKeyHook := nil;
+  inherited;
+end;
+
+procedure TNavigatorBackKeyHook.FormKeyDown(Sender: TObject; var Key: Word;
+  var KeyChar: WideChar; Shift: TShiftState);
+begin
+  if Assigned(FNavigator) and FNavigator.HandleBackKey(Key, KeyChar) then
+    Exit;
+  if Assigned(FPreviousKeyDown) then
+    FPreviousKeyDown(Sender, Key, KeyChar, Shift);
+end;
+
 function Navigator(const AFormStand: TFormStand = nil): TNavigator;
 begin
   if (not TNavigator.Initialized) and Assigned(AFormStand) then
-    TNavigator.Init(AFormStand);
+    TNavigator.Init(AFormStand)
+  else if Assigned(AFormStand) and (AFormStand <> TNavigator.Instance.FormStand) then
+    raise Exception.Create('Navigator has been already initialized with another form stand');
 
   Result := TNavigator.Instance;
 end;
@@ -180,6 +256,7 @@ end;
 
 destructor TNavigator.Destroy;
 begin
+  SetCatchBackKeyValue(False);
   FreeAndNil(FTransientRoutes);
   FreeAndNil(FStack);
   FreeAndNil(FActiveRoutes);
@@ -203,6 +280,63 @@ end;
 class function TNavigator.GetInitialized: Boolean;
 begin
   Result := Assigned(_ClassInstance);
+end;
+
+function TNavigator.GetCatchBackKey: Boolean;
+begin
+  Result := Assigned(FBackKeyHook);
+end;
+
+procedure TNavigator.SetCatchBackKeyValue(const AValue: Boolean);
+var
+  LHook: TComponent;
+begin
+  if AValue = Assigned(FBackKeyHook) then
+    Exit;
+  if AValue then
+  begin
+    if not (Assigned(FFormStand) and (FFormStand.Owner is TCommonCustomForm)) then
+      raise Exception.Create('CatchBackKey needs a form stand owned by a form');
+    FBackKeyHook := TNavigatorBackKeyHook.Create(TCommonCustomForm(FFormStand.Owner), Self);
+  end
+  else
+  begin
+    LHook := FBackKeyHook;
+    FBackKeyHook := nil;
+    TNavigatorBackKeyHook(LHook).FNavigator := nil;
+    LHook.Free;
+  end;
+end;
+
+function TNavigator.SetCatchBackKey(const AValue: Boolean): TNavigator;
+begin
+  Result := Self;
+  SetCatchBackKeyValue(AValue);
+end;
+
+function TNavigator.HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;
+begin
+  Result := False;
+  if (AKey <> vkHardwareBack) and (AKey <> vkEscape) then
+    Exit;
+  if FTransientRoutes.Count > 0 then
+    Result := True // a wait screen is open: Back does nothing
+  else if FStack.Count > 1 then
+  begin
+    Result := True;
+    StackPop;
+  end;
+  if Result then
+  begin
+    // handled: Android must not close the app
+    AKey := 0;
+    AKeyChar := #0;
+  end;
+end;
+
+class procedure TNavigator.ReleaseInstance;
+begin
+  FreeAndNil(_ClassInstance);
 end;
 
 class procedure TNavigator.Init(const AFormStand: TFormStand);
