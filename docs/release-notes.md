@@ -2,7 +2,7 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## v.1.2 (in preparation, branch `release/1.2`)
+## v.1.2 — 2026-10-16
 
 **Breaking change**: FMXER requires **Delphi 12 or later** and uses the Skia built into RAD Studio: the units are `System.Skia`, `FMX.Skia` and `FMX.Skia.Canvas` instead of Skia4Delphi's `Skia`, `Skia.FMX` and `Skia.FMX.Graphics` (replace them in your `uses` clauses; the `.fmx` files do not change). On Delphi 11 use v.1.1.
 
@@ -15,9 +15,10 @@ Fixes, each with a test in the new DUnitX suite (`tests\`, run by `build.cmd`):
 - `THorzPairFrame.SetLeftContentStand`/`SetRightContentStand` store the stand name; `TCardFrame.SetGlyphAsForm` keeps the glyph info; `TFMXERFormHelper.SetPadding<T>` works (constraint `TCommonCustomForm`).
 - `lib/TFrameStand` submodule updated to TFrameStand v.2.3 (FMXER still compiles with v.1.6).
 - `build.cmd`: builds the source, the tests and the demos; documentation site (this one).
+- Demos: MyTicketing and EKON25 - Weather ported to the fluent API (all 13 demos compile); HelloWorld and LibraryStore remove their message subscriptions when their elements are freed; HelloWorld_IFIL uses the icon table of `source`; the QRCode demo frees its share stream.
 - AI agent skill `fmxer-development` in `Skills/`; the repository is a Claude plugin marketplace (see [AI Agent Skill](/guide/agent-skills)).
 
-Also on master since v.1.1 (45 commits, up to February 2023):
+Also in this release, from the work on master after v.1.1 (up to February 2023):
 
 - New elements: `TAccessoryFrame` (content with left/right accessories), `THorzPairFrame` (50/50 pair), `TTrackbarFrame`, `TColorPickerFrame`, `TColorButtonFrame`.
 - `TIconFontsGlyphFrame` and `TGlyphFrame` upgraded (fluent setters, `SetIcon` overloads); IconFontsImageList as a submodule.
