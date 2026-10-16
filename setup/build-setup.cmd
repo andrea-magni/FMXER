@@ -36,6 +36,17 @@ git -C "%ROOT%" archive --format=zip -o "%OUT%\source.zip" HEAD || exit /b 1
 "%SystemRoot%\System32\tar.exe" -xf "%OUT%\source.zip" -C "%EXPORT%" || exit /b 1
 del "%OUT%\source.zip"
 
+REM git archive leaves the submodules out: export the ones the setup ships
+REM (the QRCode demo and FMXER.QRCodeFrame need them; TFrameStand and
+REM IconFontsImageList are prerequisites, installed in the IDE)
+for %%M in (DelphiZXingQRCode ZXing.Delphi) do (
+  echo === Exporting lib\%%M
+  git -C "%ROOT%" submodule update --init "lib/%%M" || exit /b 1
+  git -C "%ROOT%\lib\%%M" archive --format=zip --prefix=lib/%%M/ -o "%OUT%\%%M.zip" HEAD || exit /b 1
+  "%SystemRoot%\System32\tar.exe" -xf "%OUT%\%%M.zip" -C "%EXPORT%" || exit /b 1
+  del "%OUT%\%%M.zip"
+)
+
 REM The setup finds the RAD Studio versions through the enabled BuildGroupProject
 REM items of the .groupproj files (parsed with MSXML, like here): without them it
 REM stops with "no RAD Studio version available".

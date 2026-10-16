@@ -45,6 +45,8 @@ supported frameworks:
 packages:
   - FMXERPackage: [runtime, fmx]
   - FMXERQRCodePackage: [runtime, qrcode]
+  # FMXER in the splash screen and the About box of the IDE
+  - dclFMXERPackage: [design, fmx]
 
 package options:
   # the platforms enabled in the .dproj files differ between Delphi versions:

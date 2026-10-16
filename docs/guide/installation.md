@@ -1,6 +1,6 @@
 # Installation
 
-FMXER has no design-time components: nothing is registered in the IDE. Your application compiles FMXER's units, so installing FMXER means making its `source` folder (or the compiled units of its runtime packages) and its dependencies reachable by the compiler. Pick one of these ways:
+FMXER has no design-time components: its design-time package only adds FMXER to the splash screen and the About box of the IDE. Your application compiles FMXER's units, so installing FMXER means making its `source` folder (or the compiled units of its runtime packages) and its dependencies reachable by the compiler. Pick one of these ways:
 
 | | What it does | Platforms |
 |---|---|---|
@@ -51,6 +51,8 @@ The setup (`FMXER_<version>_Setup.exe`, see the [releases](https://github.com/an
 
 Install the dependencies first: TFrameStand (its [setup](https://github.com/andrea-magni/TFrameStand/releases/latest), GetIt or Smart Setup) and IconFontsImageList (GetIt). The setup checks that their packages are there (`FrameStandPackage.dcp` and `IconFontsImageListFMX.dcp`, in the Dcp folder of the IDE or in the library path) and, if one is missing, stops before installing anything and says what to install. The QR code package is built only when a DelphiZXingQRCode package is installed (Smart Setup builds one); otherwise the QR code units compile from source, with `DelphiZXingQRCode\Source` in the search path.
 
+The setup also copies the libraries the QRCode demo needs, in `lib\DelphiZXingQRCode` and `lib\ZXing.Delphi` (the demos find them through their search path). The LibraryStore demo needs the [MARS-Curiosity](https://github.com/andrea-magni/MARS) client: install MARS with its setup.
+
 Silent install, for every installed Delphi version: `FMXER_<version>_Setup.exe /SILENT /RADStudioVersions=all`.
 
 ## Packages
@@ -61,8 +63,9 @@ The runtime packages are in `packages\12Athens` and `packages\13Florence` (`FMXE
 |---|---|---|
 | `FMXERPackage` | every unit of `source` but the QR code ones | `rtl`, `fmx`, `Skia.Package.RTL`, `Skia.Package.FMX`, `FrameStandPackage`, `IconFontsImageListFMX` |
 | `FMXERQRCodePackage` | `FMXER.QRCodeFrame`, `QRCode.Utils`, `QRCode.Render` | `FMXERPackage`, `DelphiZXingQRCode` |
+| `dclFMXERPackage` | `FMXER.Registration` (in `packages\`): FMXER in the splash screen and the About box of the IDE | `rtl`, `vcl`, `vclimg`, `designide` |
 
-They are runtime only: build them, don't install them in the IDE. The units are compiled to `dcu\<version>\<platform>\<config>`: add that folder to the library path to use the compiled units instead of the source. To build an application *with runtime packages*, add `FMXERPackage` (and `FMXERQRCodePackage`) to the runtime packages list of the project and deploy the `.bpl` files.
+`FMXERPackage` and `FMXERQRCodePackage` are runtime only: build them, don't install them in the IDE. `dclFMXERPackage` is design-time only (the setup installs it). The units are compiled to `dcu\<version>\<platform>\<config>`: add that folder to the library path to use the compiled units instead of the source. To build an application *with runtime packages*, add `FMXERPackage` (and `FMXERQRCodePackage`) to the runtime packages list of the project and deploy the `.bpl` files.
 
 ## Getting the source
 
