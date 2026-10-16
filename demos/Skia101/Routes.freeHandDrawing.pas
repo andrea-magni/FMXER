@@ -19,7 +19,7 @@ uses
 , FMXER.UI.Consts, FMXER.UI.Misc
 
 , System.UITypes
-, Skia, QRCode.Render, FMX.Types
+, System.Skia, QRCode.Render, FMX.Types
 ;
 
 

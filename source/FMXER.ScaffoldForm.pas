@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls, FMX.ImgList, System.Rtti,
   Generics.Collections, System.Actions, FMX.ActnList, FMX.Effects
-, Skia, Skia.FMX
+, System.Skia, FMX.Skia
 , SubjectStand, FrameStand, FormStand
 , FMXER.UI.Misc, FMXER.ActionButtonFrame, FMXER.TextFrame, FMXER.GlyphFrame
 , FMXER.IconFontsData, Icons.Utils
@@ -165,8 +165,11 @@ procedure TScaffoldForm.AddActionButtonOverlayFrame<T>(
   const AElementDef: TElementDef<T>);
 var
   LProc: TProc;
+  LParam: TNameValueParam;
 begin
-  LProc := TProc(AElementDef.ParamByName('OnClickProc', nil).GetReferenceToRawData^);
+  LProc := nil;
+  if AElementDef.FindParam('OnClickProc', LParam) and not LParam.Value.IsEmpty then
+    LProc := LParam.Value.AsType<TProc>();
   AddActionButtonOverlayFrame<T>(AElementDef.ConfigProc, LProc);
 end;
 
@@ -281,19 +284,20 @@ end;
 function TScaffoldForm.ShowSnackBar(const AText: string;
   const ADuration_ms: Integer; const AThen: TProc): TScaffoldForm;
 var
-  FSnackbar: TFrameInfo<TTextFrame>;
+  LSnackBar: TFrameInfo<TTextFrame>;
 begin
   Result := Self;
 
-  FSnackbar := FrameStand1.New<TTextFrame>(OverlayLayout, 'snackbar');
+  LSnackBar := FrameStand1.New<TTextFrame>(OverlayLayout, 'snackbar');
 
-  FSnackbar.Frame.SetContent(AText);
-  FSnackbar.Show();
+  LSnackBar.Frame.SetContent(AText);
+  LSnackBar.Show();
 
+  // hide and free the snackbar (Hide alone kept one hidden frame per call)
   TDelayedAction.Execute(ADuration_ms
     , procedure
       begin
-        FSnackBar.Hide(0, AThen);
+        LSnackBar.HideAndClose(0, AThen);
       end
   );
 end;

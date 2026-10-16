@@ -3,7 +3,7 @@ program NewProject;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Skia.FMX,
+  FMX.Skia,
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Routes.home in 'Routes.home.pas';
 

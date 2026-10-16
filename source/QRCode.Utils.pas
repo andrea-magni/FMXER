@@ -5,7 +5,7 @@ interface
 uses
   System.Classes, System.SysUtils, System.Types, UITypes
 , FMX.Graphics, FMX.Types
-, Skia, Skia.FMX
+, System.Skia, FMX.Skia
 , DelphiZXIngQRCode  // ../../lib/DelphiZXingQRCode/Source
 , QRCode.Render // skia4Delphi Samples (webinar)
 ;

@@ -55,7 +55,7 @@ implementation
 
 {$R *.fmx}
 
-uses FMXER.UI.Consts, FMXER.UI.Misc, Skia.FMX;
+uses FMXER.UI.Consts, FMXER.UI.Misc, FMX.Skia;
 
 { TCardFrame }
 
@@ -98,7 +98,7 @@ end;
 procedure TCardFrame.SetGlyphAsForm<T>(const AConfigProc: TProc<T>);
 begin
   GlyphLayout.Visible := true;
-  FContent := FormStand1.NewAndShow<T>(GlyphLayout, GlyphStand, AConfigProc);
+  FGlyph := FormStand1.NewAndShow<T>(GlyphLayout, GlyphStand, AConfigProc);
 end;
 
 procedure TCardFrame.SetGlyphAsFrame<T>(const AConfigProc: TProc<T>);

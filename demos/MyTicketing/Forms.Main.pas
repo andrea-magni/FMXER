@@ -39,48 +39,39 @@ begin
      'login'
    , procedure (AForm: TColumnForm)
      begin
-       AForm.AddFrame<TLogoFrame>(100);
-
-       AForm.AddFrame<TEditFrame>(80
+       AForm
+       .AddFrame<TLogoFrame>(100)
+       .AddFrame<TEditFrame>(80
          , procedure (AFrame: TEditFrame)
            begin
-             AFrame.Caption := 'Username:';
+             AFrame.SetCaption('Username:');
              AFrame.OnChangeProc :=
                procedure (ATracking: Boolean)
                begin
-                 RemoteData.LoginUserName := AFrame.Text;
+                 RemoteData.LoginUserName := AFrame.GetText;
                end;
            end
-       );
-       AForm.AddFrame<TEditFrame>(80
+       )
+       .AddFrame<TEditFrame>(80
          , procedure (AFrame: TEditFrame)
            begin
-             AFrame.Caption := 'Password:';
-             AFrame.Password := True;
+             AFrame
+             .SetCaption('Password:')
+             .SetPassword(True);
              AFrame.OnChangeProc :=
                procedure (ATracking: Boolean)
                begin
-                 RemoteData.LoginPassword := AFrame.Text;
+                 RemoteData.LoginPassword := AFrame.GetText;
                end;
            end
-       );
-
-       AForm.AddFrame<TButtonFrame>(80
+       )
+       .AddFrame<TButtonFrame>(80
          , procedure (AFrame: TButtonFrame)
            begin
-             AFrame.Text := 'Login';
-             AFrame.ButtonControl.Width := 200;
-             AFrame.IsDefault := True;
-
-             AFrame.OnUpdateProc :=
-               procedure(AAction: TAction)
-               begin
-                 AAction.Enabled := not (RemoteData.LoginUserName.Trim.IsEmpty)
-                   and (not RemoteData.LoginPassword.IsEmpty);
-               end;
-
-             AFrame.OnClickProc :=
-               procedure (AFrame: TButtonFrame)
+             AFrame
+             .SetText('Login')
+             .SetOnClickHandler(
+               procedure
                begin
                  RemoteData.AttemptLogin(
                    procedure
@@ -93,6 +84,16 @@ begin
                      ShowMessage('Login failed');
                    end
                  );
+               end
+             );
+             AFrame.ButtonControl.Width := 200;
+             AFrame.IsDefault := True;
+
+             AFrame.OnUpdateHandler :=
+               procedure(AAction: TAction)
+               begin
+                 AAction.Enabled := not (RemoteData.LoginUserName.Trim.IsEmpty)
+                   and (not RemoteData.LoginPassword.IsEmpty);
                end;
            end
        );
@@ -102,17 +103,15 @@ begin
      'home'
    , procedure (AForm: TScaffoldForm)
      begin
-       AForm.Title := 'Hello, World!';
-
-       AForm.SetContentAsFrame<TLogoFrame>;
-
-       AForm.AddActionButton('A',
+       AForm
+       .SetTitle('Hello, World!')
+       .SetContentAsFrame<TLogoFrame>
+       .AddActionButton('A',
          procedure
          begin
            AForm.ShowSnackBar('This is a transient message', 3000);
-         end);
-
-       AForm.AddActionButton('X',
+         end)
+       .AddActionButton('X',
          procedure
          begin
            Navigator.CloseRoute('home');

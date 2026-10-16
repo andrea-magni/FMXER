@@ -90,6 +90,7 @@ function THorzPairFrame.SetLeftContentStand(
   const AStandName: string): THorzPairFrame;
 begin
   Result := Self;
+  FLeftContentStand := AStandName;
 end;
 
 function THorzPairFrame.SetRightContentAsForm<T>(
@@ -110,6 +111,7 @@ function THorzPairFrame.SetRightContentStand(
   const AStandName: string): THorzPairFrame;
 begin
   Result := Self;
+  FRightContentStand := AStandName;
 end;
 
 end.

@@ -120,7 +120,7 @@ uses
 {$IFDEF ANDROID}
 , Androidapi.Helpers, Androidapi.JNI.JavaTypes, Androidapi.JNI.Os
 {$ENDIF}
-, Skia, Skia.FMX.Graphics
+, System.Skia, FMX.Skia.Canvas
 , QRCode.Utils, FMXER.UI.Consts, QRCode.Render
 ;
 
@@ -443,11 +443,14 @@ begin
   , 1024, 1024
   , procedure (ABitmap: TBitmap)
     begin
-      {$IFDEF MSWINDOWS} ABitmap.SaveToFile('C:\temp\qrcode.jpg'); {$ENDIF}
       var LStream := TMemoryStream.Create;
-      ABitmap.SaveToStream(LStream);
-      LStream.Position := 0;
-      ShowShareSheetAction1.Bitmap.LoadFromStream(LStream);
+      try
+        ABitmap.SaveToStream(LStream);
+        LStream.Position := 0;
+        ShowShareSheetAction1.Bitmap.LoadFromStream(LStream);
+      finally
+        LStream.Free;
+      end;
     end
   );
 

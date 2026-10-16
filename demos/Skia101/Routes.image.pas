@@ -25,7 +25,7 @@ uses
 , FMXER.UI.Consts, FMXER.UI.Misc
 
 , System.UITypes
-, Skia, QRCode.Render
+, System.Skia, QRCode.Render
 
 , Utils
 ;

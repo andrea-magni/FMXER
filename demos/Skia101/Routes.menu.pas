@@ -9,7 +9,7 @@ implementation
 uses
  System.Types, System.UITypes
 , FMX.Types, FMX.ListView.Appearances
-, Skia, QRCode.Render
+, System.Skia, QRCode.Render
 
 , FMXER.Navigator
 , FMXER.ScaffoldForm

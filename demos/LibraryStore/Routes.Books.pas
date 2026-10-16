@@ -42,8 +42,8 @@ begin
           .SetContentAsFrame<TActivityBubblesFrame>(
             procedure (ABF: TActivityBubblesFrame)
             begin
-              TRetrieveMsg.Subscribe(
-                procedure (AData: string)
+              TRetrieveMsg.Subscribe(ABF // unsubscribes when the route closes
+              , procedure (AData: string)
                 begin
                   if AData = 'books.end' then
                     SF.HideTitleDetailContent();

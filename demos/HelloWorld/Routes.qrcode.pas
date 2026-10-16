@@ -12,7 +12,7 @@ function DefineQRCodeRoute(const ARouteName: string = 'qrcode'): TNavigator;
 implementation
 
 uses
-  Skia, Skia.FMX
+  System.Skia, FMX.Skia
 
 , FMXER.UI.Consts, FMXER.UI.Misc
 , FMXER.ScaffoldForm, FMXER.QRCodeFrame, FMXER.BackgroundFrame
@@ -41,7 +41,7 @@ begin
                 .SetMargin(2)
                 .SetHitTest(True);
 
-                TMessageManager.DefaultManager.SubscribeToMessage(TSomethingChangedMsg
+                TSubscriptionGuard.Create(QRF, TSomethingChangedMsg // unsubscribes when the route closes
                 , procedure (const Sender: TObject; const M: TMessage)
                   begin
                     var Msg := M as TSomethingChangedMsg;

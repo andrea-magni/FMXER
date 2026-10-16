@@ -36,7 +36,7 @@ begin
   .DefineRoute<TScaffoldForm>('home'
   , procedure (AHome: TScaffoldForm)
     begin
-      AHome.Title := 'EKON25 Demo';
+      AHome.SetTitle('EKON25 Demo');
 
 //      AHome.SetContentAsFrame<TWeatherSituationFrame>(
 //        procedure (AWeatherFrame: TWeatherSituationFrame)
@@ -60,7 +60,7 @@ begin
                  ACol.AddFrame<TButtonFrame>(100,
                    procedure (AButton: TButtonFrame)
                    begin
-                     AButton.Text := 'Get weather';
+                     AButton.SetText('Get weather');
 
                    end
                  );

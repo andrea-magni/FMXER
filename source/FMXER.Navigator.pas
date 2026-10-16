@@ -18,12 +18,14 @@ type
     FRouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>>;
     FActiveRoutes: TDictionary<string, TSubjectInfo>;
     FStack: TStack<string>;
+    FTransientRoutes: TList<string>; // active routes opened as transient (not on the stack)
   protected
     class var _ClassInstance: TNavigator;
     class function GetClassInstance: TNavigator; static;
     class function GetInitialized: Boolean; static;
   protected
     procedure DoCloseRouteProc(const ARouteName: string); virtual;
+    procedure RemoveFromStack(const ARouteName: string);
   public
     constructor Create(const AFormStand: TFormStand); virtual;
     destructor Destroy; override;
@@ -98,7 +100,7 @@ begin
   for LRoute in LActiveRoutes do
   begin
     if (not Assigned(AFilter)) or AFilter(LRoute) then
-      CloseRoute(LRoute, False);
+      CloseRoute(LRoute);
   end;
 end;
 
@@ -126,8 +128,11 @@ begin
       end
     );
     ActiveRoutes.Remove(ARouteName);
-    if not ATransient then
-      FStack.Pop;
+    // the navigator knows whether the route is transient (ATransient is kept
+    // for compatibility): a transient route is not on the stack, any other
+    // route is removed from it wherever it is (not only from the top)
+    if FTransientRoutes.Remove(ARouteName) < 0 then
+      RemoveFromStack(ARouteName);
   end;
 end;
 
@@ -149,6 +154,7 @@ begin
   FRouteDefinitions := TDictionary<string, TFunc<TSubjectInfo>>.Create;
   FActiveRoutes := TDictionary<string, TSubjectInfo>.Create;
   FStack := TStack<string>.Create;
+  FTransientRoutes := TList<string>.Create;
 end;
 
 function TNavigator.DefineRoute(const ARouteName: string;
@@ -174,6 +180,7 @@ end;
 
 destructor TNavigator.Destroy;
 begin
+  FreeAndNil(FTransientRoutes);
   FreeAndNil(FStack);
   FreeAndNil(FActiveRoutes);
   FreeAndNil(FRouteDefinitions);
@@ -208,12 +215,34 @@ end;
 
 function TNavigator.IsRouteActive(const ARouteName: string): Boolean;
 begin
-  Result := IndexStr(ARouteName, ActiveRoutes.Keys.ToArray) <> -1;
+  Result := ActiveRoutes.ContainsKey(ARouteName);
 end;
 
 function TNavigator.IsRouteDefined(const ARouteName: string): Boolean;
 begin
-  Result := IndexStr(ARouteName, RouteDefinitions.Keys.ToArray) <> -1;
+  Result := RouteDefinitions.ContainsKey(ARouteName);
+end;
+
+procedure TNavigator.RemoveFromStack(const ARouteName: string);
+var
+  LRoutes: TArray<string>;
+  LIndex, LRemove: Integer;
+begin
+  LRoutes := FStack.ToArray; // bottom first
+  LRemove := -1;
+  for LIndex := High(LRoutes) downto 0 do
+    if LRoutes[LIndex] = ARouteName then
+    begin
+      LRemove := LIndex;
+      Break;
+    end;
+  if LRemove < 0 then
+    Exit;
+
+  FStack.Clear;
+  for LIndex := 0 to High(LRoutes) do
+    if LIndex <> LRemove then
+      FStack.Push(LRoutes[LIndex]);
 end;
 
 procedure TNavigator.RouteTo(const ARouteName: string; const ATransient: Boolean);
@@ -228,7 +257,9 @@ begin
       LSubjectInfo := LDefinitionFunc();
       ActiveRoutes.Add(ARouteName, LSubjectInfo);
 
-      if not ATransient then
+      if ATransient then
+        FTransientRoutes.Add(ARouteName)
+      else
         FStack.Push(ARouteName);
 
       if Assigned(FOnCreateRouteProc) then
