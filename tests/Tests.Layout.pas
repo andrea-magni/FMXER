@@ -177,7 +177,7 @@ begin
   LScroll.Parent := FMain;
   LScroll.SetContentAsFrame<TTextFrame>();
   Pump(50);
-  Assert.AreEqual(1, LScroll.FrameStand1.FrameInfos.Count);
+  Assert.AreEqual<NativeInt>(1, LScroll.FrameStand1.FrameInfos.Count);
   for var LInfo in LScroll.FrameStand1.FrameInfos.Values do
   begin
     Assert.AreEqual(Single(80), LInfo.Frame.Height, 'frame (it was 50: the size of an empty stand)');

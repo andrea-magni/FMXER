@@ -1,8 +1,10 @@
 # Demos
 
-The `demos` folder has one project per topic; ten of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android, and expect the dependencies in the search path or installed (see [Installation](/guide/installation)).
+The `demos` folder has one project per topic; ten of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
 
-Media files (Lottie animations, SVG, the icon font) come from the `media` folder: on Windows the demos read them from there with `LocalFile`, on mobile they are deployed with the app.
+Every demo has the same search path, set once for all platforms: `..\..\source` and the submodules `lib\TFrameStand\source`, `lib\IconFontsImageList\Source`, `lib\DelphiZXingQRCode\Source` (QRCode also the `lib\ZXing.Delphi\Lib\Classes` folders). Clone with `--recursive` (see [Installation](/guide/installation)) and the demos build as they are. If you installed TFrameStand and IconFontsImageList instead and left `lib\` empty, the IDE library path is used. The MARS client of LibraryStore is not a submodule: install MARS or add its `Source` folder to the library path.
+
+Media files (Lottie animations, SVG, the icon font `Material Design Icons Desktop.ttf`) come from the `media` folder: on Windows the demos read them from there with `LocalFile`, on mobile they are deployed with the app.
 
 | Demo | Shows | Extra requirements |
 |---|---|---|
@@ -66,7 +68,7 @@ A small catalog app that reads books and authors from a [MARS-Curiosity](https:/
 - **books_all**, **books_by_author**, **authors**, **book_single**: lists built by an `ItemBuilderProc`, titles updated with the number of results, search box when there are more than three items, an activity animation in the title detail area while loading (driven by `TRetrieveMsg` messages, unsubscribed when the route closes), errors in a snackbar;
 - icons added once and cached in `Utils.UI`.
 
-It needs a MARS server exposing the LibraryStore resources (`http://localhost:8080/rest` on desktop; set the address in `Data.Remote` for devices).
+It needs a MARS server exposing the LibraryStore resources. The address is in two constants at the top of `Data.Remote`: `SERVER_URL` (`http://localhost:8080/rest`, desktop) and `SERVER_URL_ANDROID` (`http://10.0.2.2:8080/rest`, the host machine as seen from the Android emulator; on a device put the LAN address of the server). On desktop the environment variable `FMXER_LIBRARYSTORE_URL`, when set, wins over the constant.
 
 ## HelloWorld_IFIL
 

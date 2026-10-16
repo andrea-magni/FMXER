@@ -80,6 +80,8 @@ git submodule update --init
 
 If TFrameStand and IconFontsImageList are already installed (GetIt, setup, Smart Setup), you only need FMXER's own `source` folder.
 
+The demos use the submodules: each `.dproj` has `..\..\source` and the `lib\` folders in its search path. With empty submodule folders the IDE library path is used, so the demos also build against installed libraries.
+
 ## Search path
 
 Add these folders to **Project > Options > Building > Delphi Compiler > Search path** (all platforms), or to **Tools > Options > Language > Delphi > Library > Library path**:
