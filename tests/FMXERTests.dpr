@@ -20,7 +20,8 @@ uses
   Tests.Common in 'Tests.Common.pas',
   Tests.Navigator in 'Tests.Navigator.pas',
   Tests.Elements in 'Tests.Elements.pas',
-  Tests.Layout in 'Tests.Layout.pas';
+  Tests.Layout in 'Tests.Layout.pas',
+  Tests.Design in 'Tests.Design.pas';
 
 var
   LResults: IRunResults;
