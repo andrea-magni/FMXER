@@ -2,7 +2,7 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## v.1.4 (in preparation, branch `release/1.4`)
+## v.1.4 — 2026-10-16
 
 **Faster columns and rows** (ANALYSIS D3), measured on Delphi 13, Windows:
 
