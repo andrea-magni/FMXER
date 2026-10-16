@@ -49,10 +49,15 @@ TNavigator = class
   property Stack: TStack<string>;                            // non-transient routes, last on top
   property OnCreateRoute: TProc<string>;
   property OnCloseRoute: TProc<string>;
+  function HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;  // v.1.4: Back/Esc -> StackPop (not at the root)
+  function SetCatchBackKey(const AValue: Boolean): TNavigator;             // v.1.4: hooks OnKeyDown of FormStand's form
+  property CatchBackKey: Boolean;
   class procedure Init(const AFormStand: TFormStand);        // raises if already initialized
+  class procedure ReleaseInstance;                           // v.1.4: frees the singleton
   class property Instance: TNavigator;                       // raises if not initialized
   class property Initialized: Boolean;
 end;
+// Navigator(AFormStand): with a stand other than the singleton's raises (v.1.4)
 ```
 
 ## Scaffold and action button
@@ -127,6 +132,13 @@ TColumnForm = class(TForm)
   property ElementStand: string;                            // default 'fadeIn' (the stands' DefaultStandName)
   property Elements: TList<TSubjectInfoContainer>;
 end;
+
+// All four (TColumnForm, TRowForm, TColumnFrame, TRowFrame) also have, since v.1.4:
+//   function BatchUpdate(const ABuildProc: TProc<TSelf>): TSelf;   // add many elements: one realign, O(N) not O(N^2)
+// unit FMXER.ColumnFrame / FMXER.RowFrame (v.1.4): TColumnFrame = class(TFrame), TRowFrame = class(TFrame),
+//   the same members as TColumnForm / TRowForm (AddFrame, AddForm, AUTO_HEIGHT / AUTO_WIDTH, Elements,
+//   SetElementStand, SetElementAlign, ElementStand, ElementAlign, BatchUpdate); Height/Width start at 0.
+//   ~10x cheaper to create than the forms (a form creates a native window on Windows).
 
 // unit FMXER.RowForm — slots aligned ElementAlign (default Left), row Width grows by each slot
 TRowForm = class(TForm)
@@ -547,6 +559,13 @@ TFMXERStands = record                       // v.1.3: for your own containers
   // design size; configure it, size its slot on it, then Show the returned info
   class function NewSizedFrame<T: TFrame>(const AFrameStand: TFrameStand; const AParent: TFmxObject;
     const AStandName: string; const AAlign: TAlignLayout): TFrameInfo<T>; static;
+end;
+TFMXERSlots = record                        // v.1.4: the slots of the columns and rows, for your own containers
+  const AUTO_SIZE = -1;
+  class function AddFrame<T: TFrame>(const AFrameStand: TFrameStand; const AContent: TControl; const AOwner: TComponent;
+    const AElements: TList<TSubjectInfoContainer>; const AStandName: string; const AVertical: Boolean;
+    const ASlotAlign: TAlignLayout; const ASize: Integer; const AConfigProc: TProc<T>): Single; static;  // returns the slot size
+  class function AddForm<T: TForm>(...same, with a TFormStand...): Single; static;
 end;
 TSubjectInfoContainer = class(TLayout)      // slot of TColumnForm / TRowForm (Elements list)
   function ContainedFrame<T: TFrame>: T;    // nil when the slot holds a form

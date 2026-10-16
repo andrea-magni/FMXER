@@ -4,8 +4,8 @@ interface
 
 uses
   Classes, SysUtils, System.Rtti, FMX.Forms, FMX.Layouts, Types, FMX.Types,
-  FMX.Controls,
-  SubjectStand, FrameStand;
+  FMX.Controls, Generics.Collections,
+  SubjectStand, FrameStand, FormStand;
 
 type
   TNameValueParam = record
@@ -87,6 +87,39 @@ type
       const AAlign: TAlignLayout): TFrameInfo<T>; static;
   end;
 
+  /// <summary>The slots of the columns and rows (TColumnForm, TColumnFrame,
+  /// TRowForm, TRowFrame): one implementation for the four of them.</summary>
+  TFMXERSlots = record
+  public
+    /// <summary>ASize value: the slot takes the element's own size.</summary>
+    const AUTO_SIZE = -1;
+  private
+    class function NewSlot(const AContent: TControl; const AOwner: TComponent;
+      const AVertical: Boolean; const ASlotAlign: TAlignLayout;
+      const ASize: Integer): TSubjectInfoContainer; static;
+    class procedure SetSlotSize(const ASlot: TSubjectInfoContainer;
+      const AVertical: Boolean; const ASize: Single); static;
+  public
+    /// <summary>Adds a slot to AContent (after the others: at the bottom of a
+    /// column, AVertical = True; at the end of a row, AVertical = False),
+    /// creates a T in it through AFrameStand, configures it with AConfigProc,
+    /// sizes the slot (ASize, or the element's own size with AUTO_SIZE), shows
+    /// the element and adds the slot to AElements. Returns the slot size, by
+    /// which the container grows.</summary>
+    class function AddFrame<T: TFrame>(const AFrameStand: TFrameStand;
+      const AContent: TControl; const AOwner: TComponent;
+      const AElements: TList<TSubjectInfoContainer>; const AStandName: string;
+      const AVertical: Boolean; const ASlotAlign: TAlignLayout;
+      const ASize: Integer; const AConfigProc: TProc<T>): Single; static;
+    /// <summary>The same for a form element; with AUTO_SIZE the slot takes the
+    /// form's Height (Width) after AConfigProc.</summary>
+    class function AddForm<T: TForm>(const AFormStand: TFormStand;
+      const AContent: TControl; const AOwner: TComponent;
+      const AElements: TList<TSubjectInfoContainer>; const AStandName: string;
+      const AVertical: Boolean; const ASlotAlign: TAlignLayout;
+      const ASize: Integer; const AConfigProc: TProc<T>): Single; static;
+  end;
+
   // shortcut function
   function Param(const AName: string; const AValue: TValue): TNameValueParam; overload;
   function Param(const AName: string; const AValue: TProc): TNameValueParam; overload;
@@ -128,6 +161,117 @@ begin
     Result.FrameIsOwned := True;
   except
     LFrame.Free;
+    raise;
+  end;
+end;
+
+{ TFMXERSlots }
+
+class function TFMXERSlots.NewSlot(const AContent: TControl; const AOwner: TComponent;
+  const AVertical: Boolean; const ASlotAlign: TAlignLayout;
+  const ASize: Integer): TSubjectInfoContainer;
+begin
+  Result := TSubjectInfoContainer.Create(AOwner);
+  try
+    // placed after the existing slots, then aligned
+    if AVertical then
+      Result.Position.Y := 10000
+    else
+      Result.Position.X := MaxInt;
+    Result.Parent := AContent;
+    if ASize >= 0 then
+      SetSlotSize(Result, AVertical, ASize);
+    Result.Align := ASlotAlign;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+
+class procedure TFMXERSlots.SetSlotSize(const ASlot: TSubjectInfoContainer;
+  const AVertical: Boolean; const ASize: Single);
+begin
+  if AVertical then
+    ASlot.Height := ASize
+  else
+    ASlot.Width := ASize;
+end;
+
+class function TFMXERSlots.AddFrame<T>(const AFrameStand: TFrameStand;
+  const AContent: TControl; const AOwner: TComponent;
+  const AElements: TList<TSubjectInfoContainer>; const AStandName: string;
+  const AVertical: Boolean; const ASlotAlign: TAlignLayout;
+  const ASize: Integer; const AConfigProc: TProc<T>): Single;
+var
+  LSlot: TSubjectInfoContainer;
+  LElement: TFrameInfo<T>;
+  LFrame: TFrame;
+begin
+  LSlot := NewSlot(AContent, AOwner, AVertical, ASlotAlign, ASize);
+  try
+    if ASize = AUTO_SIZE then
+    begin
+      // aligned before entering the stand: the frame keeps its size
+      if AVertical then
+        LElement := TFMXERStands.NewSizedFrame<T>(AFrameStand, LSlot, AStandName, TAlignLayout.Top)
+      else
+        LElement := TFMXERStands.NewSizedFrame<T>(AFrameStand, LSlot, AStandName, TAlignLayout.Left);
+    end
+    else
+      LElement := AFrameStand.New<T>(LSlot, AStandName);
+    LSlot.SubjectInfo := LElement;
+    if Assigned(AConfigProc) then
+      AConfigProc(LElement.Frame);
+
+    Result := ASize;
+    if ASize = AUTO_SIZE then
+    begin
+      LFrame := LElement.Frame;
+      if AVertical then
+        Result := LFrame.Height + LFrame.Margins.Top + LFrame.Margins.Bottom
+      else
+        Result := LFrame.Width + LFrame.Margins.Left + LFrame.Margins.Right;
+      SetSlotSize(LSlot, AVertical, Result);
+    end;
+
+    LElement.Show;
+    AElements.Add(LSlot);
+  except
+    LSlot.Free;
+    raise;
+  end;
+end;
+
+class function TFMXERSlots.AddForm<T>(const AFormStand: TFormStand;
+  const AContent: TControl; const AOwner: TComponent;
+  const AElements: TList<TSubjectInfoContainer>; const AStandName: string;
+  const AVertical: Boolean; const ASlotAlign: TAlignLayout;
+  const ASize: Integer; const AConfigProc: TProc<T>): Single;
+var
+  LSlot: TSubjectInfoContainer;
+  LElement: TFormInfo<T>;
+begin
+  LSlot := NewSlot(AContent, AOwner, AVertical, ASlotAlign, ASize);
+  try
+    LElement := AFormStand.New<T>(LSlot, AStandName);
+    LSlot.SubjectInfo := LElement;
+    if Assigned(AConfigProc) then
+      AConfigProc(LElement.Form);
+
+    Result := ASize;
+    if ASize = AUTO_SIZE then
+    begin
+      if AVertical then
+        Result := LElement.Form.Height
+      else
+        Result := LElement.Form.Width;
+      SetSlotSize(LSlot, AVertical, Result);
+    end;
+
+    LElement.Show;
+    AElements.Add(LSlot);
+  except
+    LSlot.Free;
     raise;
   end;
 end;

@@ -9,6 +9,7 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 | `TScaffoldForm` | form | screen with title bar, title detail area, content, floating action buttons, snackbar | [Scaffold](./scaffold) |
 | `TColumnForm` | form | elements stacked vertically, fixed heights | [Containers](./containers#tcolumnform) |
 | `TRowForm` | form | elements side by side, fixed widths | [Containers](./containers#trowform) |
+| `TColumnFrame`, `TRowFrame` | frame | the same as frames: cheaper, for columns and rows created many times | [Containers](./containers#tcolumnframe-and-trowframe) |
 | `TVertScrollForm` / `TVertScrollFrame` | form / frame | vertical scroll box around one element | [Containers](./containers#tvertscrollframe-and-tvertscrollform) |
 | `THorzScrollFrame` | frame | horizontal scroll box around one element | [Containers](./containers#thorzscrollframe) |
 | `TStackFrame` | frame | layers, one on top of the other | [Containers](./containers#tstackframe) |

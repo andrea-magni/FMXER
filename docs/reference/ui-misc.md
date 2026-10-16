@@ -105,6 +105,21 @@ end;
 
 Like `TFrameStand.New<T>`, but the frame is aligned with `AAlign` (`Top`, `Left`...) **before** it enters the stand, so it keeps its design size: with its usual `Align = Client` it would take the size of the stand at once. The frame is not shown: configure it, size its slot on it, then call `Show` on the returned info. Columns, rows and scroll boxes use it for [automatic sizes](/guide/layouts#automatic-sizes); use it in your own containers to do the same.
 
+## TFMXERSlots
+
+```pascal
+TFMXERSlots = record
+  const AUTO_SIZE = -1;
+  class function AddFrame<T: TFrame>(const AFrameStand: TFrameStand; const AContent: TControl;
+    const AOwner: TComponent; const AElements: TList<TSubjectInfoContainer>; const AStandName: string;
+    const AVertical: Boolean; const ASlotAlign: TAlignLayout; const ASize: Integer;
+    const AConfigProc: TProc<T>): Single; static;
+  class function AddForm<T: TForm>(...same parameters, a TFormStand...): Single; static;
+end;
+```
+
+The one implementation of the slots of `TColumnForm`, `TColumnFrame`, `TRowForm` and `TRowFrame` (since v.1.4): it adds a `TSubjectInfoContainer` to `AContent` after the existing ones (`AVertical`: at the bottom; otherwise at the end of the row), creates the element in it through the stand, runs `AConfigProc`, sizes the slot (`ASize`, or the element's own size with `AUTO_SIZE`), shows the element and adds the slot to `AElements`. It returns the slot size, by which the container grows. Use it to write your own column-like container.
+
 ## TSubjectInfoContainer
 
 ```pascal

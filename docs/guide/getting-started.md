@@ -167,11 +167,14 @@ Define the greeting screen next to the home route. Its content is built **when y
 
 ## 5. Back button and closing the app
 
-The navigator keeps a **stack** of the routes you opened. Two small handlers complete the app:
+The navigator keeps a **stack** of the routes you opened. Two lines complete the app:
 
 ```pascal
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  // Android back button, and Esc on desktop: go back one screen
+  Navigator(FormStand1).SetCatchBackKey(True);
+
   // ... route definitions as above ...
 
   // closing the home route closes the application
@@ -184,21 +187,9 @@ begin
 
   Navigator.RouteTo('home');
 end;
-
-// Android back button, and Esc on desktop: go back one screen
-procedure TMainForm.FormKeyUp(Sender: TObject; var Key: Word;
-  var KeyChar: WideChar; Shift: TShiftState);
-begin
-  if (Key = vkHardwareBack) or (Key = vkEscape) then
-  begin
-    if Navigator.Stack.Count > 1 then
-    begin
-      Key := 0;
-      Navigator.StackPop;
-    end;
-  end;
-end;
 ```
+
+With `SetCatchBackKey(True)` Back and Esc close the screen on top; on the home screen they are left to the form (on Android, the app closes). See [The stack and the Back button](./navigation#the-stack-and-the-back-button).
 
 ## 6. One unit per route
 

@@ -32,7 +32,8 @@ uses
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   // Initialization ------------------------------------------------------------
-  Navigator(FormStand1);
+  Navigator(FormStand1)
+    .SetCatchBackKey(True); // Back (Android) and Esc close the top route
 
   // Route definitions ---------------------------------------------------------
   DefineHomeRoute('home');

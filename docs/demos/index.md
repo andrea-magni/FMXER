@@ -21,7 +21,7 @@ Media files (Lottie animations, SVG, the icon font) come from the `media` folder
 
 ## NewProjectTemplate
 
-The starting point for a new app: a main form with a `TFormStand`, one route unit (`Routes.home`) with a scaffold, a logo and a close action button, `OnCloseRoute` closing the app. The project is set up for every platform, including the iOS simulator on Apple silicon, and deploys the icon font. Copy the folder to start a new project.
+The starting point for a new app: a main form with a `TFormStand`, one route unit (`Routes.home`) with a scaffold, a logo and a close action button, `OnCloseRoute` closing the app, Back/Esc handled by the navigator (`SetCatchBackKey`). The project is set up for every platform, including the iOS simulator on Apple silicon, and deploys the icon font. Copy the folder to start a new project.
 
 ## HelloWorld
 

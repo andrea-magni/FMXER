@@ -64,7 +64,7 @@ end;
 
 class procedure TNavigatorAccess.Reset;
 begin
-  FreeAndNil(_ClassInstance);
+  TNavigator.ReleaseInstance;
 end;
 
 end.

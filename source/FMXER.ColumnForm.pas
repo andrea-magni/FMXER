@@ -22,7 +22,7 @@ type
     const DEFAULT_ELEMENT_HEIGHT = 200;
     /// <summary>AddFrame/AddForm height: the element's own height (its design
     /// height, or the one set by the configuration procedure).</summary>
-    const AUTO_HEIGHT = -1;
+    const AUTO_HEIGHT = TFMXERSlots.AUTO_SIZE;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -37,6 +37,10 @@ type
 
     function GetContent: TLayout; virtual;
     function SetElementStand(const AStand: string): TColumnForm;
+    /// <summary>Runs ABuildProc with the realign of the slots suspended,
+    /// then realigns once. Adding N elements costs O(N) instead of O(N^2):
+    /// use it for more than a few tens of elements.</summary>
+    function BatchUpdate(const ABuildProc: TProc<TColumnForm>): TColumnForm;
 
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -47,84 +51,21 @@ implementation
 {$R *.fmx}
 
 
-{ TCenterForm }
+{ TColumnForm }
 
 function TColumnForm.AddForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
-var
-  LElementContainer: TSubjectInfoContainer;
-  LElement: TFormInfo<T>;
-  LHeight: Single;
 begin
   Result := Self;
-
-  LElementContainer := TSubjectInfoContainer.Create(Result);
-  try
-    LElementContainer.Position.Y := 10000;
-    LElementContainer.Parent := ContentLayout;
-    if AHeight >= 0 then
-      LElementContainer.Height := AHeight;
-    LElementContainer.Align := TAlignLayout.Top;
-
-    LElement := FormStand1.New<T>(LElementContainer, ElementStand);
-    LElementContainer.SubjectInfo := LElement;
-    if Assigned(AConfigProc) then
-      AConfigProc(LElement.Form);
-
-    LHeight := AHeight;
-    if AHeight = AUTO_HEIGHT then
-    begin
-      LHeight := LElement.Form.Height;
-      LElementContainer.Height := LHeight;
-    end;
-    Height := Height + Round(LHeight);
-
-    LElement.Show;
-    FElements.Add(LElementContainer);
-  except
-    LElementContainer.Free;
-    raise;
-  end;
+  Height := Height + Round(TFMXERSlots.AddForm<T>(FormStand1, ContentLayout, Self, FElements,
+    ElementStand, True, TAlignLayout.Top, AHeight, AConfigProc));
 end;
 
 
 function TColumnForm.AddFrame<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
-var
-  LElementContainer: TSubjectInfoContainer;
-  LElement: TFrameInfo<T>;
-  LHeight: Single;
 begin
   Result := Self;
-
-  LElementContainer := TSubjectInfoContainer.Create(Result);
-  try
-    LElementContainer.Position.Y := 10000;
-    LElementContainer.Parent := ContentLayout;
-    if AHeight >= 0 then
-      LElementContainer.Height := AHeight;
-    LElementContainer.Align := TAlignLayout.Top;
-
-    if AHeight = AUTO_HEIGHT then
-      LElement := TFMXERStands.NewSizedFrame<T>(FrameStand1, LElementContainer, ElementStand, TAlignLayout.Top)
-    else
-      LElement := FrameStand1.New<T>(LElementContainer, ElementStand);
-    LElementContainer.SubjectInfo := LElement;
-    if Assigned(AConfigProc) then
-      AConfigProc(LElement.Frame);
-
-    LHeight := AHeight;
-    if AHeight = AUTO_HEIGHT then
-    begin
-      LHeight := LElement.Frame.Height + LElement.Frame.Margins.Top + LElement.Frame.Margins.Bottom;
-      LElementContainer.Height := LHeight;
-    end;
-    Height := Height + Round(LHeight);
-
-    LElement.Show;
-    FElements.Add(LElementContainer);
-  except
-    LElementContainer.Free;
-    raise;
-  end;
+  Height := Height + Round(TFMXERSlots.AddFrame<T>(FrameStand1, ContentLayout, Self, FElements,
+    ElementStand, True, TAlignLayout.Top, AHeight, AConfigProc));
 end;
 
 function TColumnForm.AddForm<T>(const AColDef: TElementDef<T>): TColumnForm;
@@ -165,6 +106,18 @@ function TColumnForm.SetElementStand(const AStand: string): TColumnForm;
 begin
   Result := Self;
   FElementStand := AStand;
+end;
+
+function TColumnForm.BatchUpdate(const ABuildProc: TProc<TColumnForm>): TColumnForm;
+begin
+  Result := Self;
+  ContentLayout.BeginUpdate;
+  try
+    if Assigned(ABuildProc) then
+      ABuildProc(Self);
+  finally
+    ContentLayout.EndUpdate;
+  end;
 end;
 
 end.

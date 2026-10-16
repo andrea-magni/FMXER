@@ -56,6 +56,10 @@ Both fixed in v.1.2. On v.1.1 use the non-generic `SetPadding(Value)` on forms, 
 
 Fixed in v.1.2. On v.1.1 clear the items at the start of your `ItemBuilderProc` (`List.ClearItems`), or turn pull-to-refresh off with `List.ListView.PullToRefresh := False`.
 
+### A screen with many elements is slow to open
+
+Each form element (`TColumnForm`, `TRowForm`, ...) creates a native window on Windows (about 2.5 ms), and adding elements one by one to a column costs O(N²). Use `TColumnFrame`/`TRowFrame` for columns and rows created many times, and `BatchUpdate` to add many elements; for hundreds of uniform rows use `TListViewFrame`. See [Performance](./layouts#performance-frames-forms-and-many-elements).
+
 ### The elements of a row/column overlap or are cut
 
 Every `AddFrame` gets the height (column) or width (row) you pass, 200 by default. Pass the size you want, or `AUTO_HEIGHT`/`AUTO_WIDTH` to use the element's own size, and put columns longer than the screen in a `TVertScrollFrame`. See [Composing Layouts](./layouts#sizing-top-down).
