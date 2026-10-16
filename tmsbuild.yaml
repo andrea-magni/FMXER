@@ -1,0 +1,61 @@
+# TMS Smart Setup definition file for FMXER
+# See https://doc.tmssoftware.com/smartsetup/guide/creating-bundles.html
+# yaml-language-server: $schema=https://raw.githubusercontent.com/tmssoftware/smartsetup/refs/heads/main/tms/example-config/tmsbuild.schema.json
+
+minimum required tmsbuild version: 3.5
+
+application:
+  id: andreamagni.fmxer
+  name: FMXER
+  description: Flutter-inspired framework to build FireMonkey user interfaces in code, with a navigator, layouts and ready-made UI elements, built on TFrameStand.
+  company name: Andrea Magni
+  copyright: Andrea Magni
+  license: MPL-2.0
+  license url: https://github.com/andrea-magni/FMXER/blob/master/LICENSE
+  url: https://github.com/andrea-magni/FMXER
+  docs: https://andrea-magni.github.io/FMXER/
+  version file: version.txt
+
+# the submodules in lib\ are for building the demos and the tests from a clone:
+# Smart Setup installs TFrameStand and DelphiZXingQRCode as dependencies
+fetch options:
+  skip submodules: true
+
+supported frameworks:
+  # Win32/Win64 only: the FMX package of IconFontsImageList (a requirement of
+  # FMXERPackage) is built for these platforms only. For the other FMX platforms,
+  # add FMXER's source folder to the project search path (see the docs).
+  fmx:
+    ide since: delphi12
+    platforms:
+      - win32intel
+      - win64intel
+    dependencies:
+      - andreamagni.tframestand
+
+  qrcode:
+    ide since: delphi12
+    platforms:
+      - win32intel
+      - win64intel
+    dependencies:
+      - andreamagni.tframestand
+      - foxit.zxingqrcode
+
+packages:
+  - FMXERPackage: [runtime, fmx]
+  - FMXERQRCodePackage: [runtime, qrcode]
+
+package options:
+  # the platforms enabled in the .dproj files differ between Delphi versions:
+  # build for the platforms listed above
+  ignore dproj platforms: true
+  package folders:
+    delphi12: 12Athens
+    delphi13: 13Florence
+
+paths:
+  # IconFontsImageList is not a Smart Setup product: install it from GetIt (or
+  # build its packages) and Smart Setup passes its paths to the compiler
+  search paths to preserve:
+    - '*iconfontsimagelist*'

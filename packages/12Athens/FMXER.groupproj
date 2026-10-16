@@ -1,0 +1,48 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6C0E5C2B-0F3D-4C55-9A3E-6B1C2F0A1203}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="FMXERPackage.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="FMXERQRCodePackage.dproj">
+            <Dependencies>FMXERPackage.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="FMXERPackage">
+        <MSBuild Projects="FMXERPackage.dproj"/>
+    </Target>
+    <Target Name="FMXERPackage:Clean">
+        <MSBuild Projects="FMXERPackage.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FMXERPackage:Make">
+        <MSBuild Projects="FMXERPackage.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FMXERQRCodePackage" DependsOnTargets="FMXERPackage">
+        <MSBuild Projects="FMXERQRCodePackage.dproj"/>
+    </Target>
+    <Target Name="FMXERQRCodePackage:Clean" DependsOnTargets="FMXERPackage:Clean">
+        <MSBuild Projects="FMXERQRCodePackage.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FMXERQRCodePackage:Make" DependsOnTargets="FMXERPackage:Make">
+        <MSBuild Projects="FMXERQRCodePackage.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="FMXERPackage;FMXERQRCodePackage"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="FMXERPackage:Clean;FMXERQRCodePackage:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="FMXERPackage:Make;FMXERQRCodePackage:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
