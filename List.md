@@ -10,6 +10,7 @@
 1. ChipsFrame
 1. ColorButtonFrame
 1. ColorPickerFrame
+1. ColumnFrame
 1. ContainerFrame
 1. EditFrame
 1. GlyphFrame
@@ -24,9 +25,11 @@
 1. PaddingFrame
 1. PaintBoxFrame
 1. QRCodeFrame
+1. RowFrame
 1. StackFrame
 1. SVGFrame
 1. TextFrame
+1. TrackbarFrame
 1. VertScrollFrame
 1. WebViewFrame
 
