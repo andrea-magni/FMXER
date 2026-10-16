@@ -286,6 +286,97 @@ begin
   end;
 end;
 
+/// <summary> A folder of the library path of the IDE with its $(...) variables expanded:
+/// $(Platform), $(Config) and the variables of the IDE (environment.proj) </summary>
+function _ExpandLibraryPath(const AInfo: TRADStudioInfo; const APlatform: TProjectPlatform; APath: string): string;
+var
+  LStart, LEnd: Integer;
+  LName, LValue: string;
+begin
+  Result := '';
+  LStart := Pos('$(', APath);
+  while LStart > 0 do
+  begin
+    LEnd := Pos(')', Copy(APath, LStart + 2, MaxInt));
+    if LEnd = 0 then
+      Break;
+    LName := Copy(APath, LStart + 2, LEnd - 1);
+    if SameText(LName, 'Platform') then
+      LValue := GetProjectPlatformName(APlatform)
+    else if SameText(LName, 'Config') then
+      LValue := 'Release'
+    else if not _TryGetRADStudioEnvVar(AInfo.Version, LName, LValue) then
+      LValue := GetEnv(LName);
+    Result := Result + Copy(APath, 1, LStart - 1) + LValue;
+    Delete(APath, 1, LStart + LEnd);
+    LStart := Pos('$(', APath);
+  end;
+  Result := Result + APath;
+end;
+
+/// <summary> True when the compiler finds the package: its .dcp in the Dcp folder of the
+/// IDE (GetIt, the TFrameStand setup) or in a folder of the library path (TMS Smart Setup) </summary>
+function _IsPackageInstalled(const AInfo: TRADStudioInfo; const APlatform: TProjectPlatform; const APackageName: string): Boolean;
+var
+  LSearchPath: string;
+  LPaths: TArrayOfString;
+  I: Integer;
+begin
+  Result := FileExists(AddBackslash(GetRADStudioCommonDcpDir(AInfo, APlatform)) + APackageName + '.dcp');
+  if Result then
+    Exit;
+  if not RegQueryStringValue(HKEY_CURRENT_USER, GetRADStudioRegKey(AInfo.Version) + '\Library\' + GetProjectPlatformLibraryName(APlatform), 'Search Path', LSearchPath) then
+    Exit;
+  LPaths := SplitString(LSearchPath, ';');
+  for I := 0 to GetArrayLength(LPaths) - 1 do
+    if (Trim(LPaths[I]) <> '') and FileExists(AddBackslash(_ExpandLibraryPath(AInfo, APlatform, Trim(LPaths[I]))) + APackageName + '.dcp') then
+    begin
+      Result := True;
+      Exit;
+    end;
+end;
+
+/// <summary> FMXERPackage requires the packages of TFrameStand and IconFontsImageList, which the
+/// setup does not install: without them MSBuild stops with "E2202 Required package not found".
+/// Check them before installing anything, and tell what is missing and how to get it </summary>
+function PrepareToInstall(var ANeedsRestart: Boolean): string;
+var
+  LInfos: TRADStudioInfos;
+  LPlatforms: array of TProjectPlatform;
+  LMissing: string;
+  I, J: Integer;
+begin
+  Result := '';
+  LMissing := '';
+  LInfos := GetSelectedRADStudioVersions;
+  SetArrayLength(LPlatforms, 2);
+  LPlatforms[0] := pfWin32;
+  LPlatforms[1] := pfWin64;
+  for I := 0 to GetArrayLength(LInfos) - 1 do
+  begin
+    if LInfos[I].Status <> riNormal then
+      Continue;
+    for J := 0 to GetArrayLength(LPlatforms) - 1 do
+    begin
+      if not CheckIfRADStudioSupportsPlatform(LInfos[I], LPlatforms[J]) then
+        Continue;
+      if not _IsPackageInstalled(LInfos[I], LPlatforms[J], 'FrameStandPackage') then
+        LMissing := LMissing + #13#10 + Format('  %s, %s: TFrameStand (FrameStandPackage)', [LInfos[I].Version.Name, GetProjectPlatformName(LPlatforms[J])]);
+      if not _IsPackageInstalled(LInfos[I], LPlatforms[J], 'IconFontsImageListFMX') then
+        LMissing := LMissing + #13#10 + Format('  %s, %s: IconFontsImageList (IconFontsImageListFMX)', [LInfos[I].Version.Name, GetProjectPlatformName(LPlatforms[J])]);
+    end;
+  end;
+  if LMissing <> '' then
+  begin
+    Result := 'FMXER requires TFrameStand and IconFontsImageList, which are not installed:' + LMissing + #13#10#13#10 +
+      'Install them first and then run this setup again:' + #13#10 +
+      '  TFrameStand: its setup (github.com/andrea-magni/TFrameStand/releases), GetIt or TMS Smart Setup' + #13#10 +
+      '  IconFontsImageList: GetIt (Tools > GetIt Package Manager, search "IconFontsImageList")' + #13#10#13#10 +
+      'Nothing was installed.';
+    Log('PrepareToInstall: ' + Result);
+  end;
+end;
+
 /// <summary> Library paths relative to $(FMXERDIR) instead of absolute </summary>
 procedure _UseLibraryDirVariable(var AProjectItem: TRADStudioGroupProjectItem);
 var
