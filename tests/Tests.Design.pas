@@ -290,7 +290,7 @@ begin
   .AddFrame<TTextFrame>(50)
   .AddFrame<TTextFrame>(TColumnFrame.AUTO_HEIGHT)
   .AddFrame<TTextFrame>(TColumnFrame.AUTO_HEIGHT, LConfig);
-  Assert.AreEqual(3, LCol.Elements.Count);
+  Assert.AreEqual<NativeInt>(3, LCol.Elements.Count);
   Assert.AreEqual(Single(50), LCol.Elements[0].Height);
   Assert.AreEqual(Single(80), LCol.Elements[1].Height);
   Assert.AreEqual(Single(33), LCol.Elements[2].Height);
@@ -380,7 +380,7 @@ begin
   LCol.Align := TAlignLayout.Top; // before the parent: keeps its own height, as in a scroll box
   LCol.Parent := FMain;
   LCol.BatchUpdate(LBuild);
-  Assert.AreEqual(300, LCol.Elements.Count);
+  Assert.AreEqual<NativeInt>(300, LCol.Elements.Count);
   Assert.AreEqual(Single(6000), LCol.Height);
   var LBottom: Single := 0;
   for var LSlot in LCol.Elements do
@@ -424,7 +424,7 @@ begin
         );
     end
   );
-  Assert.AreEqual(3, LCol.Elements.Count);
+  Assert.AreEqual<NativeInt>(3, LCol.Elements.Count);
 end;
 
 initialization

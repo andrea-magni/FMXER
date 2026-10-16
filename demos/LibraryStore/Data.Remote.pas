@@ -9,6 +9,16 @@ uses
   MARS.Client.Client.Net
 ;
 
+const
+  // The MARS server with the LibraryStore resources. Change these to point the
+  // demo to another server, or set the environment variable
+  // FMXER_LIBRARYSTORE_URL (desktop platforms) before starting the app.
+  // On Android, 10.0.2.2 is the host machine as seen from the emulator; on a
+  // device use the LAN address of the machine running the server.
+  SERVER_URL = 'http://localhost:8080/rest';
+  SERVER_URL_ANDROID = 'http://10.0.2.2:8080/rest';
+  SERVER_URL_ENV = 'FMXER_LIBRARYSTORE_URL';
+
 type
   TRemoteData = class(TDataModule)
     netClient: TMARSNetClient;
@@ -55,10 +65,17 @@ uses Utils.Msg;
 { TRemoteData }
 
 procedure TRemoteData.DataModuleCreate(Sender: TObject);
+var
+  LURL: string;
 begin
   {$IFDEF ANDROID}
-  netClient.MARSEngineURL := 'http://192.168.62.28:8080/rest';
+  LURL := SERVER_URL_ANDROID;
+  {$ELSE}
+  LURL := GetEnvironmentVariable(SERVER_URL_ENV);
+  if LURL = '' then
+    LURL := SERVER_URL;
   {$ENDIF}
+  netClient.MARSEngineURL := LURL;
 end;
 
 procedure TRemoteData.RetrieveAuthors(const AOnSuccess: TProc<TArray<TAuthor>>;

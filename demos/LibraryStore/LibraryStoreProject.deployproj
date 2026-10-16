@@ -478,7 +478,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\..\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
             <RemoteDir>LibraryStoreProject\assets\internal\</RemoteDir>
             <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
             <DeployClass>File</DeployClass>
@@ -487,7 +487,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\..\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
             <RemoteDir>LibraryStoreProject\assets\internal\</RemoteDir>
             <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
             <DeployClass>File</DeployClass>

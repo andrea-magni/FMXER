@@ -93,7 +93,7 @@ begin
     end;
   LScaffold.AddActionButton('A', [ OnClickProc(LProc) ]);
   var LButtons := FindActionButtons(LScaffold);
-  Assert.AreEqual(1, Length(LButtons));
+  Assert.AreEqual<NativeInt>(1, Length(LButtons));
   LButtons[0].ClickableLayoutClick(nil);
   Assert.AreEqual(1, LClicks);
 end;
@@ -103,7 +103,7 @@ begin
   var LScaffold := TScaffoldForm.Create(FMain);
   LScaffold.AddActionButton('A', []);   // raised EInvalidCast in v.1.1
   var LButtons := FindActionButtons(LScaffold);
-  Assert.AreEqual(1, Length(LButtons));
+  Assert.AreEqual<NativeInt>(1, Length(LButtons));
   LButtons[0].ClickableLayoutClick(nil); // no handler: nothing happens
 end;
 
@@ -139,8 +139,8 @@ begin
   var LCard := TCardFrame.Create(FMain);
   LCard.SetGlyphAsForm<TContainerForm>;
   LCard.SetContentAsFrame<TLogoFrame>;
-  Assert.AreEqual(1, LCard.FormStand1.FormInfos.Count, 'glyph form');
-  Assert.AreEqual(1, LCard.FrameStand1.FrameInfos.Count, 'content frame');
+  Assert.AreEqual<NativeInt>(1, LCard.FormStand1.FormInfos.Count, 'glyph form');
+  Assert.AreEqual<NativeInt>(1, LCard.FrameStand1.FrameInfos.Count, 'content frame');
   Assert.IsTrue(LCard.GlyphLayout.Visible);
 end;
 
@@ -294,7 +294,7 @@ begin
   var LColumn := TColumnForm.Create(nil);
   LColumn.AddForm<TContainerForm>(50, LFormConfig);
   LColumn.AddFrame<TLogoFrame>(50, LFrameConfig);
-  Assert.AreEqual(2, LColumn.Elements.Count);
+  Assert.AreEqual<NativeInt>(2, LColumn.Elements.Count);
   LColumn.Free;
   Pump(100);
   Assert.IsTrue(LFormFreed, 'form element freed with the column');

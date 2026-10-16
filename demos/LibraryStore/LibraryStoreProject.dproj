@@ -88,6 +88,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_UnitSearchPath>..\..\source;..\..\lib\TFrameStand\source;..\..\lib\IconFontsImageList\Source;..\..\lib\DelphiZXingQRCode\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>
@@ -108,7 +109,6 @@
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <SanitizedProjectName>LibraryStoreProject</SanitizedProjectName>
         <DCC_Define>SKIA;$(DCC_Define)</DCC_Define>
-        <DCC_UnitSearchPath>..\..\lib\IconFontsImageList\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_UsePackage>fmx;DbxCommonDriver;bindengine;IndyIPCommon;emsclient;FireDACCommonDriver;IndyProtocols;FrameStandPackage_11_1;Skia.Package.RTL;IndyIPClient;dbxcds;bindcompfmx;FireDACSqliteDriver;DbxClientDriver;soapmidas;fmxFireDAC;dbexpress;inet;DataSnapCommon;fmxase;dbrtl;FireDACDBXDriver;Skia.Package.FMX;CustomIPTransport;DBXInterBaseDriver;IndySystem;bindcomp;FireDACCommon;IndyCore;RESTBackendComponents;bindcompdbx;rtl;RESTComponents;DBXSqliteDriver;IndyIPServer;dsnapxml;DataSnapClient;DataSnapProviderClient;DataSnapFireDAC;emsclientfiredac;FireDAC;FireDACDSDriver;xmlrtl;tethering;dsnap;CloudService;DataSnapNativeClient;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
@@ -805,14 +805,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Configuration="Debug" Class="File">
+                <DeployFile LocalName="..\..\media\Material Design Icons Desktop.ttf" Configuration="Debug" Class="File">
                     <Platform Name="Android">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="..\..\..\IconFontsImageList\Demo\Fonts\Material Design Icons Desktop.ttf" Configuration="Release" Class="File">
+                <DeployFile LocalName="..\..\media\Material Design Icons Desktop.ttf" Configuration="Release" Class="File">
                     <Platform Name="Android">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
