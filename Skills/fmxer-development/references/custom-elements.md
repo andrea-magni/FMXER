@@ -149,5 +149,5 @@ end;
 - Main form: one `TFormStand` (`FormStand1`) at design time; `OnCreate` initializes the navigator, defines routes, sets `OnCloseRoute`, routes to home; `OnKeyUp` handles Back; `OnClose` closes routes first.
 - Migrating v.1.1 code to Delphi 12+: `Skia` → `System.Skia`, `Skia.FMX` → `FMX.Skia`, `Skia.FMX.Graphics` → `FMX.Skia.Canvas` (`.fmx` files load unchanged). FMXER 1.0 code (MyTicketing, EKON25 demos) uses old properties (`Title`, `Text`, `OnClickProc`) that became setters (`SetTitle`, `SetText`, `SetOnClickHandler`).
 - Icon font *Material Design Icons Desktop* (`media\Material Design Icons Desktop.ttf`): install on Windows; macOS: deploy to `Contents\Resources\Fonts` + `ATSApplicationFontsPath=Fonts` in the version info keys; iOS: deploy to the bundle (`.\`); Android: deploy to `.\assets\internal` (registered with Skia by `FMXER.IconFontsData`). The NewProjectTemplate demo has all the deployment entries.
-- `LocalFile(AFileName)` points to the repository `media\` folder on Windows: it is for the demos; ship your own assets with the deployment manager.
+- `LocalFile(AFileName)` points by default to the repository `media\` folder on Windows (the demos): set `LocalFilesPath` to your own folder, and ship your assets with the deployment manager.
 - New elements contributed to FMXER go in `source\FMXER.<Name>.pas` and `List.md`.

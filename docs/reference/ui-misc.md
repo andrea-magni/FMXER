@@ -1,6 +1,6 @@
 # FMXER.UI.Misc
 
-Unit `FMXER.UI.Misc`: element definitions, parameters, fluent helpers for controls and forms, the slot layout of columns and rows, and a file helper for the demos.
+Unit `FMXER.UI.Misc`: element definitions, parameters, fluent helpers for controls and forms, the slot layout of columns and rows, and a file helper. The tap handler type shared by the image elements is in `FMXER.UI.Types` (see [Images & Media](/elements/images-and-media#tap-handlers)).
 
 ## TElementDef
 
@@ -112,7 +112,8 @@ The slot layout created by `TColumnForm` and `TRowForm` for each element (`Eleme
 ## LocalFile
 
 ```pascal
+var LocalFilesPath: string;
 function LocalFile(const AFileName: string): string;
 ```
 
-The location of the demo media: `..\..\..\..\media\AFileName` on Windows (relative to `demos\<Demo>\<Platform>\<Config>`), `TPath.GetDocumentsPath + AFileName` on the other platforms. Meant for the demos.
+`LocalFile` returns `TPath.Combine(LocalFilesPath, AFileName)`. `LocalFilesPath` is, by default, the media folder of the repository seen from a demo executable on Windows (`..\..\..\..\media\`, from `demos\<Demo>\<Platform>\<Config>`) and `TPath.GetDocumentsPath` on the other platforms. Set it at startup to use `LocalFile` with your own folder (since v.1.2.1).

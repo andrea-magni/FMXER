@@ -12,9 +12,7 @@ TOnTapHandler = reference to procedure(AImage: TFMXObject; APoint: TPointF);
 
 It is called on `OnTap` on mobile and on `OnMouseUp` on Windows (where FMX raises no tap without a touch screen). The point is in the coordinates of the inner control. These elements also forward `HitTest` to the inner control: `SetHitTest(False)` makes them click-through, `SetHitTest(True)` lets them receive taps.
 
-::: tip Same name, different units
-Each of these units declares its own `TOnTapHandler` with the same signature. Assign anonymous methods directly (as in the examples), and avoid declaring variables of that type when several of these units are in the `uses` clause.
-:::
+The type is declared once, in `FMXER.UI.Types`; the element units alias it, so a variable of type `TOnTapHandler` can be assigned to any of these elements (since v.1.2.1: before, each unit had its own type).
 
 ## TImageFrame
 
@@ -103,7 +101,7 @@ Scaffold.SetContentAsFrame<TPaintBoxFrame>(
 | Member | Description |
 |---|---|
 | `SetOnDrawHandler(TOnDrawHandler)` / `OnDrawHandler` | `procedure(const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single)` |
-| `SetOnTapHandler(TOnTapHandler)` / `OnTapHandler` | `procedure(APaintBox: TObject; APoint: TPointF)` |
+| `SetOnTapHandler(TPaintBoxTapHandler)` / `OnTapHandler` | `TPaintBoxTapHandler = reference to procedure(APaintBox: TObject; APoint: TPointF)` (the old name `TOnTapHandler` of this unit is deprecated) |
 
 Call `PaintBox.Redraw` to repaint. The Skia101 demo fills one with a sweep gradient, the QRCode demo draws the camera frame and the detected points on it.
 
@@ -129,4 +127,4 @@ Scaffold.SetContentAsFrame<TWebViewFrame>(
 
 ## Loading files: LocalFile
 
-`LocalFile(AFileName)` (unit `FMXER.UI.Misc`) is the helper the demos use to find their media: on Windows it returns `..\..\..\..\media\<AFileName>` (relative to the demo executable in `demos\<Demo>\Win32\Debug`), elsewhere `TPath.GetDocumentsPath + AFileName` (deploy the files to `.\assets\internal` on Android, to `StartUp\Documents` on iOS). In your own app, build the path yourself.
+`LocalFile(AFileName)` (unit `FMXER.UI.Misc`) is the helper the demos use to find their media: on Windows it returns `..\..\..\..\media\<AFileName>` (relative to the demo executable in `demos\<Demo>\Win32\Debug`), elsewhere `TPath.GetDocumentsPath + AFileName` (deploy the files to `.\assets\internal` on Android, to `StartUp\Documents` on iOS). The folder is the `LocalFilesPath` variable: set it to use `LocalFile` with the folder of your own app.

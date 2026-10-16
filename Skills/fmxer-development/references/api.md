@@ -7,7 +7,8 @@ Public declarations copied from `source\` (FMXER v.1.2; private fields, event ha
 | Unit | Declares |
 |---|---|
 | `FMXER.Navigator` | `TNavigator`, `Navigator()` |
-| `FMXER.UI.Misc` | `TElementDef<T>`, `TNameValueParam`, `TParams`, `Param()`, `OnClickProc()`, `TFMXERFrameHelper` (for `TControl`), `TFMXERFormHelper` (for `TCommonCustomForm`), `TSubjectInfoContainer`, `TCaptionPosition`, `LocalFile()` |
+| `FMXER.UI.Misc` | `TElementDef<T>`, `TNameValueParam`, `TParams`, `Param()`, `OnClickProc()`, `TFMXERFrameHelper` (for `TControl`), `TFMXERFormHelper` (for `TCommonCustomForm`), `TSubjectInfoContainer`, `TCaptionPosition`, `LocalFile()`, `LocalFilesPath` |
+| `FMXER.UI.Types` | `TOnTapHandler` (shared by the image elements) |
 | `FMXER.UI.Consts` | `TAppColors` |
 | `FMXER.IconFontsData` | `TIconFonts`, `IconFonts()` |
 | `Icons.Utils` / `Icons.MaterialDesign` | `TIconEntry`, `TIconCollection`, `TIconManager` / `TMaterialDesign` (one `TIconEntry` per icon, `-` → `_`: `MD.qrcode_scan`) |
@@ -397,7 +398,8 @@ end;
 ## Images, media, QR codes
 
 ```pascal
-// FMXER.ImageFrame, FMXER.AnimatedImageFrame, FMXER.SVGFrame, FMXER.QRCodeFrame each declare:
+// unit FMXER.UI.Types (since v.1.2.1); FMXER.ImageFrame, FMXER.AnimatedImageFrame,
+// FMXER.SVGFrame, FMXER.QRCodeFrame alias it (TOnTapHandler = FMXER.UI.Types.TOnTapHandler)
 TOnTapHandler = reference to procedure(AImage: TFMXObject; APoint: TPointF);  // tap on mobile, mouse up on Windows
 
 TImageFrame = class(TFrame)
@@ -428,13 +430,14 @@ end;
 
 // unit FMXER.PaintBoxFrame
 TOnDrawHandler = reference to procedure(const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-TOnTapHandler = reference to procedure(APaintBox: TObject; APoint: TPointF);
+TPaintBoxTapHandler = reference to procedure(APaintBox: TObject; APoint: TPointF);
+TOnTapHandler = TPaintBoxTapHandler deprecated 'use TPaintBoxTapHandler';
 TPaintBoxFrame = class(TFrame)
   PaintBox: TSkPaintBox;
   function SetOnDrawHandler(const ADrawHandler: TOnDrawHandler): TPaintBoxFrame;
-  function SetOnTapHandler(const ATapHandler: TOnTapHandler): TPaintBoxFrame;
+  function SetOnTapHandler(const ATapHandler: TPaintBoxTapHandler): TPaintBoxFrame;
   property OnDrawHandler: TOnDrawHandler;
-  property OnTapHandler: TOnTapHandler;
+  property OnTapHandler: TPaintBoxTapHandler;
 end;
 
 // unit FMXER.QRCodeFrame (encoding: DelphiZXingQRCode)
@@ -555,7 +558,8 @@ function Param(const AName: string; const AValue: TValue): TNameValueParam; over
 function Param(const AName: string; const AValue: TProc): TNameValueParam; overload;
 function Param(const AName: string; const AValue: TFunc<Boolean>): TNameValueParam; overload;
 function OnClickProc(const AValue: TProc): TNameValueParam; overload;   // = Param('OnClickProc', AValue)
-function LocalFile(const AFileName: string): string;                    // demo media: ..\..\..\..\media\ on Windows, Documents elsewhere
+var LocalFilesPath: string;  // folder of LocalFile; default: ..\..\..\..\media\ on Windows (demos), Documents elsewhere
+function LocalFile(const AFileName: string): string;                    // TPath.Combine(LocalFilesPath, AFileName)
 ```
 
 Delphi applies one class helper per class: a project helper for `TControl` closer in scope hides `TFMXERFrameHelper`.

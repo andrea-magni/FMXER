@@ -50,8 +50,9 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 | Unit | Content | Page |
 |---|---|---|
 | `FMXER.Navigator` | `TNavigator`, `Navigator()` | [TNavigator](/reference/navigator) |
-| `FMXER.UI.Misc` | `TElementDef<T>`, `Param()`, control and form helpers, `TSubjectInfoContainer`, `LocalFile` | [FMXER.UI.Misc](/reference/ui-misc) |
+| `FMXER.UI.Misc` | `TElementDef<T>`, `Param()`, control and form helpers, `TSubjectInfoContainer`, `LocalFile`, `LocalFilesPath` | [FMXER.UI.Misc](/reference/ui-misc) |
 | `FMXER.UI.Consts` | `TAppColors` | [TAppColors](/reference/app-colors) |
+| `FMXER.UI.Types` | `TOnTapHandler` | [Images & Media](./images-and-media#tap-handlers) |
 | `FMXER.IconFontsData` | `TIconFonts`, `IconFonts()` | [Icons](./icons) |
 | `Icons.Utils`, `Icons.MaterialDesign` | icon entries, collections, the Material Design Icons table | [Icons](./icons#icon-entries) |
 | `QRCode.Utils`, `QRCode.Render` | QR code to SVG, SVG to bitmap, rounded renderer | [QR Codes](./qrcode#qrcode-utils) |
