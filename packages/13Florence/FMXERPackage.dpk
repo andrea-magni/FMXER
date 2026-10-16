@@ -1,0 +1,89 @@
+package FMXERPackage;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'FMXER Runtime Package'}
+{$LIBSUFFIX AUTO}
+{$RUNONLY ON}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  fmx,
+  Skia.Package.RTL,
+  Skia.Package.FMX,
+  FrameStandPackage,
+  IconFontsImageListFMX;
+
+contains
+  FMXER.AccessoryFrame in '..\..\source\FMXER.AccessoryFrame.pas' {AccessoryFrame: TFrame},
+  FMXER.ActionButtonFrame in '..\..\source\FMXER.ActionButtonFrame.pas' {ActionButtonFrame: TFrame},
+  FMXER.ActivityBubblesFrame in '..\..\source\FMXER.ActivityBubblesFrame.pas' {ActivityBubblesFrame: TFrame},
+  FMXER.AnimatedImageFrame in '..\..\source\FMXER.AnimatedImageFrame.pas' {AnimatedImageFrame: TFrame},
+  FMXER.BackgroundForm in '..\..\source\FMXER.BackgroundForm.pas' {BackgroundForm: TForm},
+  FMXER.BackgroundFrame in '..\..\source\FMXER.BackgroundFrame.pas' {BackgroundFrame: TFrame},
+  FMXER.ButtonFrame in '..\..\source\FMXER.ButtonFrame.pas' {ButtonFrame: TFrame},
+  FMXER.CardFrame in '..\..\source\FMXER.CardFrame.pas' {CardFrame: TFrame},
+  FMXER.CenterForm in '..\..\source\FMXER.CenterForm.pas' {CenterForm: TForm},
+  FMXER.ChipFrame in '..\..\source\FMXER.ChipFrame.pas' {ChipFrame: TFrame},
+  FMXER.ChipsFrame in '..\..\source\FMXER.ChipsFrame.pas' {ChipsFrame: TFrame},
+  FMXER.ColorButtonFrame in '..\..\source\FMXER.ColorButtonFrame.pas' {ColorButtonFrame: TFrame},
+  FMXER.ColorPickerFrame in '..\..\source\FMXER.ColorPickerFrame.pas' {ColorPickerFrame: TFrame},
+  FMXER.ColumnForm in '..\..\source\FMXER.ColumnForm.pas' {ColumnForm: TForm},
+  FMXER.ColumnFrame in '..\..\source\FMXER.ColumnFrame.pas' {ColumnFrame: TFrame},
+  FMXER.ContainerForm in '..\..\source\FMXER.ContainerForm.pas' {ContainerForm: TForm},
+  FMXER.ContainerFrame in '..\..\source\FMXER.ContainerFrame.pas' {ContainerFrame: TFrame},
+  FMXER.EditFrame in '..\..\source\FMXER.EditFrame.pas' {EditFrame: TFrame},
+  FMXER.GlyphFrame in '..\..\source\FMXER.GlyphFrame.pas' {GlyphFrame: TFrame},
+  FMXER.HorzDividerFrame in '..\..\source\FMXER.HorzDividerFrame.pas' {HorzDividerFrame: TFrame},
+  FMXER.HorzPairFrame in '..\..\source\FMXER.HorzPairFrame.pas' {HorzPairFrame: TFrame},
+  FMXER.HorzScrollFrame in '..\..\source\FMXER.HorzScrollFrame.pas' {HorzScrollFrame: TFrame},
+  FMXER.IconFontsData in '..\..\source\FMXER.IconFontsData.pas' {IconFonts: TDataModule},
+  FMXER.IconFontsGlyphFrame in '..\..\source\FMXER.IconFontsGlyphFrame.pas' {IconFontsGlyphFrame: TFrame},
+  FMXER.ImageFrame in '..\..\source\FMXER.ImageFrame.pas' {ImageFrame: TFrame},
+  FMXER.ListViewFrame in '..\..\source\FMXER.ListViewFrame.pas' {ListViewFrame: TFrame},
+  FMXER.LogoFrame in '..\..\source\FMXER.LogoFrame.pas' {LogoFrame: TFrame},
+  FMXER.MarginFrame in '..\..\source\FMXER.MarginFrame.pas' {MarginFrame: TFrame},
+  FMXER.Navigator in '..\..\source\FMXER.Navigator.pas',
+  FMXER.PaddingFrame in '..\..\source\FMXER.PaddingFrame.pas' {PaddingFrame: TFrame},
+  FMXER.PaintBoxFrame in '..\..\source\FMXER.PaintBoxFrame.pas' {PaintBoxFrame: TFrame},
+  FMXER.RowForm in '..\..\source\FMXER.RowForm.pas' {RowForm: TForm},
+  FMXER.RowFrame in '..\..\source\FMXER.RowFrame.pas' {RowFrame: TFrame},
+  FMXER.SVGFrame in '..\..\source\FMXER.SVGFrame.pas' {SVGFrame: TFrame},
+  FMXER.ScaffoldForm in '..\..\source\FMXER.ScaffoldForm.pas' {ScaffoldForm: TForm},
+  FMXER.StackFrame in '..\..\source\FMXER.StackFrame.pas' {StackFrame: TFrame},
+  FMXER.TextFrame in '..\..\source\FMXER.TextFrame.pas' {TextFrame: TFrame},
+  FMXER.TrackbarFrame in '..\..\source\FMXER.TrackbarFrame.pas' {TrackbarFrame: TFrame},
+  FMXER.UI.Consts in '..\..\source\FMXER.UI.Consts.pas',
+  FMXER.UI.Misc in '..\..\source\FMXER.UI.Misc.pas',
+  FMXER.UI.Types in '..\..\source\FMXER.UI.Types.pas',
+  FMXER.VertScrollForm in '..\..\source\FMXER.VertScrollForm.pas' {VertScrollForm: TForm},
+  FMXER.VertScrollFrame in '..\..\source\FMXER.VertScrollFrame.pas' {VertScrollFrame: TFrame},
+  FMXER.WebViewFrame in '..\..\source\FMXER.WebViewFrame.pas' {WebViewFrame: TFrame},
+  Icons.MaterialDesign in '..\..\source\Icons.MaterialDesign.pas',
+  Icons.Utils in '..\..\source\Icons.Utils.pas';
+
+end.

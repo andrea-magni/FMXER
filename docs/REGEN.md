@@ -36,7 +36,7 @@ the `.pas` files. "Regenerating" means having an AI agent (Claude Code) re-synth
   - `ListViewFrame` → `elements/lists.md`
   - `QRCodeFrame`, `QRCode.*` → `elements/qrcode.md`
   - `IconFontsData`, `IconFontsGlyphFrame`, `GlyphFrame`, `Icons.*` → `elements/icons.md`
-  - a new unit → `elements/index.md` (catalog), `reference/units.md`, and the page of its category; also `List.md`
+  - a new unit → `elements/index.md` (catalog), `reference/units.md`, and the page of its category; also `List.md`, and both `packages\*\FMXERPackage` (or `FMXERQRCodePackage`) .dpk/.dproj
   - `demos/` → `demos/index.md` and the examples in the guide
   - `tests/`, `build.cmd` → `guide/building.md`
   - dependencies, Delphi versions → `guide/installation.md`, `reference/units.md`

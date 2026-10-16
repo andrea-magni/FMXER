@@ -1,6 +1,12 @@
 # Installation
 
-FMXER is a **source library**: there are no packages to install in the IDE. You add its `source` folder (and the folders of its dependencies) to the search path of your project, or to the library path of the IDE.
+FMXER has no design-time components: nothing is registered in the IDE. Your application compiles FMXER's units, so installing FMXER means making its `source` folder (or the compiled units of its runtime packages) and its dependencies reachable by the compiler. Pick one of these ways:
+
+| | What it does | Platforms |
+|---|---|---|
+| [TMS Smart Setup](#tms-smart-setup) | downloads FMXER, TFrameStand and DelphiZXingQRCode, builds the runtime packages, sets the library path | Win32, Win64 (other platforms: add the source folder) |
+| [Setup](#setup) | copies FMXER, builds the runtime packages, sets the library path of every platform | all |
+| [Source](#getting-the-source) | clone the repository, add the folders to the search path | all |
 
 ## Requirements
 
@@ -24,6 +30,39 @@ Demo-only dependencies: [ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) (Q
 ::: tip TFrameStand version
 The submodule points to **TFrameStand 2.3**, which fixes several lifecycle defects of delayed actions and nested stands. FMXER also compiles with TFrameStand 1.6 (the version of FMXER 1.1), but 2.3 is recommended.
 :::
+
+## TMS Smart Setup
+
+[TMS Smart Setup](https://doc.tmssoftware.com/smartsetup/) installs FMXER (id `andreamagni.fmxer`) with its dependencies TFrameStand and DelphiZXingQRCode:
+
+```bash
+tms install andreamagni.fmxer
+```
+
+::: warning Smart Setup registry
+`tms install andreamagni.fmxer` works once FMXER is listed in the [Smart Setup registry](https://github.com/tmssoftware/smartsetup-registry); until then, use the setup or the source.
+:::
+
+IconFontsImageList is not a Smart Setup product: install it **before**, from GetIt (*IconFontsImageList*), and Smart Setup finds it in the library path of the IDE. Smart Setup builds the packages for Win32 and Win64 (the platforms of the IconFontsImageList FMX package): for the other platforms add `<FMXER>\source` to the search path of the project, as in [Search path](#search-path).
+
+## Setup
+
+The setup (`FMXER_<version>_Setup.exe`, see the [releases](https://github.com/andrea-magni/FMXER/releases)) copies the library, builds the runtime packages for Win32 and Win64 and adds the source folder to the library path of every platform, for Delphi 12 and 13. It uses the `$(FMXERDIR)` environment variable of the IDE for the paths, like the TFrameStand setup does with `$(TFRAMESTANDDIR)`.
+
+Install the dependencies first: TFrameStand (its [setup](https://github.com/andrea-magni/TFrameStand/releases/latest), GetIt or Smart Setup) and IconFontsImageList (GetIt). The QR code package is built only when a DelphiZXingQRCode package is installed (Smart Setup builds one); otherwise the QR code units compile from source, with `DelphiZXingQRCode\Source` in the search path.
+
+Silent install, for every installed Delphi version: `FMXER_<version>_Setup.exe /SILENT /RADStudioVersions=all`.
+
+## Packages
+
+The runtime packages are in `packages\12Athens` and `packages\13Florence` (`FMXER.groupproj`); the setup and Smart Setup build them for you.
+
+| Package | Contains | Requires |
+|---|---|---|
+| `FMXERPackage` | every unit of `source` but the QR code ones | `rtl`, `fmx`, `Skia.Package.RTL`, `Skia.Package.FMX`, `FrameStandPackage`, `IconFontsImageListFMX` |
+| `FMXERQRCodePackage` | `FMXER.QRCodeFrame`, `QRCode.Utils`, `QRCode.Render` | `FMXERPackage`, `DelphiZXingQRCode` |
+
+They are runtime only: build them, don't install them in the IDE. The units are compiled to `dcu\<version>\<platform>\<config>`: add that folder to the library path to use the compiled units instead of the source. To build an application *with runtime packages*, add `FMXERPackage` (and `FMXERQRCodePackage`) to the runtime packages list of the project and deploy the `.bpl` files.
 
 ## Getting the source
 

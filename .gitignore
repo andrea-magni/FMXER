@@ -72,3 +72,6 @@ Win64/
 
 # build.cmd output
 /build/
+
+# package dcu output (packages\*\*.dproj)
+/dcu/

@@ -51,3 +51,17 @@ build\13\tests\FMXERTests.exe --pause
 A NUnit-style XML report (`FMXERTests.xml`) is written next to the executable.
 
 To test a new defect, add a test that fails first, then fix the code: the tests of v.1.2 were written this way, and 11 of the 21 fail on v.1.1.
+
+## Packages
+
+`packages\12Athens` and `packages\13Florence` hold the runtime packages (`FMXERPackage`, `FMXERQRCodePackage`, see [Installation](./installation#packages)) and `FMXER.groupproj`. Build them from the IDE or with MSBuild; to keep the IDE's own `Bpl` and `Dcp` folders untouched (where the installed packages are), pass the output folders:
+
+```bash
+msbuild packages\13Florence\FMXERPackage.dproj /p:Config=Release /p:Platform=Win64 /p:DCC_BplOutput=C:\Temp\fmxer\bpl /p:DCC_DcpOutput=C:\Temp\fmxer\dcp /p:DCC_DcuOutput=C:\Temp\fmxer\dcu
+```
+
+A new unit in `source\` goes in both packages folders: `FMXERPackage`, or `FMXERQRCodePackage` when it uses DelphiZXingQRCode.
+
+## The setup
+
+`setup\build-setup.cmd` builds `build\setup\FMXER_<version>_Setup.exe` with Inno Setup 6, from a clean export of `HEAD` (committed files only). The setup is based on the same Ethea InnoSetup library as the TFrameStand and MARS-Curiosity setups; the version is `LibraryVersion` in `setup\Setup.iss` (and `version.txt` for TMS Smart Setup, see `tmsbuild.yaml`).
