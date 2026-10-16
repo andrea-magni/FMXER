@@ -168,6 +168,10 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl,.\InnoSetupSc
 ; packages: one folder per Delphi version (12, 13), each with FMXER.groupproj
 Source: "..\{#LibraryPackagesFolder}\*"; Excludes: "{#CommonRADStudioFilesExcludes}"; DestDir: "{app}\{#LibraryPackagesFolder}"; Flags: recursesubdirs ignoreversion
 Source: "..\*"; Excludes: "{#CommonRADStudioFilesExcludes},*.gitattributes,*.gitignore,\.git\*,\.github\*,\.claude\*,\.claude-plugin\*,\{#LibraryDCUFolder}\*,\lib\TFrameStand\*,\lib\IconFontsImageList\*,\lib\DelphiZXingQRCode\TestApp\*,\lib\ZXing.Delphi\UnitTest\*,\lib\ZXing.Delphi\MemLeakTest\*,\lib\ZXing.Delphi\demo\*,\{#SetupFolder}\*,\{#LibraryPackagesFolder}\*,\build\*,\docs\node_modules\*,\docs\.vitepress\cache\*,\docs\.vitepress\dist\*,\docs\public\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
+; the icon font of FMXER (FMXER.IconFontsData): installed for the current user, so that
+; icons show in the demos and in the applications run on this machine. Kept on uninstall:
+; other applications may use it
+Source: "..\media\Material Design Icons Desktop.ttf"; DestDir: "{autofonts}"; FontInstall: "Material Design Icons Desktop"; Flags: onlyifdoesntexist uninsneveruninstall
 
 [Icons]
 Name: "{group}\Uninstall"; Filename: "{uninstallexe}"

@@ -123,9 +123,25 @@ begin
   Result := Icons.MaterialDesign.MD;
 end;
 
+{$IFDEF MSWINDOWS}
+// the font installed in Windows is found by name; without it, a copy of the .ttf
+// next to the executable is enough
+procedure RegisterLocalIconFont;
+var
+  LFileName: string;
+begin
+  LFileName := TPath.Combine(ExtractFilePath(ParamStr(0)), ICON_FONTS_FILENAME);
+  if FileExists(LFileName) then
+    TSkDefaultProviders.RegisterTypeface(LFileName);
+end;
+{$ENDIF}
+
 initialization
   {$IFDEF ANDROID}
   TSkDefaultProviders.RegisterTypeface(TPath.Combine(TPath.GetDocumentsPath, ICON_FONTS_FILENAME));
+  {$ENDIF}
+  {$IFDEF MSWINDOWS}
+  RegisterLocalIconFont;
   {$ENDIF}
 
 //  TSkDefaultProviders.RegisterTypeface(TPath.Combine('Contents\Resources\Fonts', ICON_FONTS_FILENAME));

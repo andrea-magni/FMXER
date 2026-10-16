@@ -53,6 +53,8 @@ Install the dependencies first: TFrameStand (its [setup](https://github.com/andr
 
 The setup also copies the libraries the QRCode demo needs, in `lib\DelphiZXingQRCode` and `lib\ZXing.Delphi` (the demos find them through their search path). The LibraryStore demo needs the [MARS-Curiosity](https://github.com/andrea-magni/MARS) client: install MARS with its setup.
 
+The setup installs the icon font (*Material Design Icons Desktop*) for the current user, see [The icon font](#the-icon-font).
+
 Silent install, for every installed Delphi version: `FMXER_<version>_Setup.exe /SILENT /RADStudioVersions=all`.
 
 ## Packages
@@ -137,7 +139,7 @@ Elements with icons (`TIconFontsGlyphFrame`, `TScaffoldForm.AddActionButton` wit
 
 | Platform | What to do |
 |---|---|
-| Windows | install the font (double-click the `.ttf`, *Install*) on the development and target machines |
+| Windows | install the font (double-click the `.ttf`, *Install*; the setup installs it for you), or put the `.ttf` next to the executable: FMXER registers it with Skia at startup |
 | macOS | deploy the `.ttf` to `Contents\Resources\Fonts` and add `ATSApplicationFontsPath=Fonts` to the version info keys (as the NewProjectTemplate demo does) |
 | iOS | deploy the `.ttf` to the application bundle (remote path `.\`), as the NewProjectTemplate demo does |
 | Android | deploy the `.ttf` to `.\assets\internal`: FMXER registers it with Skia at startup (`initialization` of `FMXER.IconFontsData`) |
