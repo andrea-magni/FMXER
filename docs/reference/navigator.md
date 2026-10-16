@@ -15,8 +15,10 @@ Returns the singleton navigator. When it is not initialized yet and `AFormStand`
 | `class procedure Init(const AFormStand: TFormStand)` | creates the singleton; raises if already initialized |
 | `class property Instance: TNavigator` | the singleton; raises if not initialized |
 | `class property Initialized: Boolean` | whether `Init` was called (and the class destructor has not run yet) |
+| `class procedure ReleaseInstance` | frees the singleton (since v.1.4); the routes still open are not closed |
+| `constructor Create(const AFormStand: TFormStand)` | another navigator, with its own routes and stack; free it yourself |
 
-The instance is freed by the class destructor, at unit finalization.
+The singleton is freed by the class destructor, at unit finalization. `Navigator(AFormStand)` raises when the singleton exists with another form stand.
 
 ## Route definition
 
@@ -59,3 +61,10 @@ The instance is freed by the class destructor, at unit finalization.
 |---|---|
 | `OnCreateRoute: TProc<string>` / `SetOnCreateRoute(...): TNavigator` | after a route is built by `RouteTo` |
 | `OnCloseRoute: TProc<string>` / `SetOnCloseRoute(...): TNavigator` | after a route is hidden and closed |
+
+## Back button
+
+| Member | Description |
+|---|---|
+| `HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean` | Back (`vkHardwareBack`) or Esc: `StackPop` when the stack has more than one route; consumed without action while a transient route is open; not handled at the root. Clears `AKey`/`AKeyChar` and returns `True` when handled |
+| `CatchBackKey: Boolean` / `SetCatchBackKey(AValue): TNavigator` | hooks `OnKeyDown` of the form that owns `FormStand` and calls `HandleBackKey`; the previous handler gets the keys not handled. Raises when `FormStand` is not owned by a form |

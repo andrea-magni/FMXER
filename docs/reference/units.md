@@ -7,7 +7,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 | Unit | Declares | Depends on |
 |---|---|---|
 | `FMXER.Navigator` | `TNavigator`, `Navigator()` | TFrameStand |
-| `FMXER.UI.Misc` | `TElementDef<T>`, `TNameValueParam`, `TParams`, `Param()`, `OnClickProc()`, `TFMXERFrameHelper`, `TFMXERFormHelper`, `TSubjectInfoContainer`, `TFMXERStands`, `TCaptionPosition`, `LocalFile()`, `LocalFilesPath` | TFrameStand |
+| `FMXER.UI.Misc` | `TElementDef<T>`, `TNameValueParam`, `TParams`, `Param()`, `OnClickProc()`, `TFMXERFrameHelper`, `TFMXERFormHelper`, `TSubjectInfoContainer`, `TFMXERStands`, `TFMXERSlots`, `TCaptionPosition`, `LocalFile()`, `LocalFilesPath` | TFrameStand |
 | `FMXER.UI.Consts` | `TAppColors` | — |
 | `FMXER.UI.Types` | `TOnTapHandler` | — |
 | `FMXER.IconFontsData` | `TIconFonts` (data module), `IconFonts()`, `ICON_FONTS_FAMILYNAME`, `ICON_FONTS_FILENAME` | IconFontsImageList, Skia |
@@ -17,6 +17,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 | `QRCode.Render` | `TQRCodeRender`, `IQRCodeRender`, `T2DBooleanArray` | Skia |
 | `FMXER.ScaffoldForm` | `TScaffoldForm` | TFrameStand, Skia, IconFontsImageList |
 | `FMXER.ColumnForm`, `FMXER.RowForm` | `TColumnForm`, `TRowForm` | TFrameStand |
+| `FMXER.ColumnFrame`, `FMXER.RowFrame` | `TColumnFrame`, `TRowFrame` | TFrameStand |
 | `FMXER.CenterForm`, `FMXER.ContainerForm`, `FMXER.BackgroundForm`, `FMXER.VertScrollForm` | the other form containers | TFrameStand |
 | `FMXER.ContainerFrame`, `FMXER.MarginFrame`, `FMXER.PaddingFrame`, `FMXER.StackFrame`, `FMXER.VertScrollFrame`, `FMXER.HorzScrollFrame`, `FMXER.AccessoryFrame`, `FMXER.HorzPairFrame`, `FMXER.BackgroundFrame` | frame containers | TFrameStand |
 | `FMXER.CardFrame`, `FMXER.ActionButtonFrame` | | TFrameStand, Skia |

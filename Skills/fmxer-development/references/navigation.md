@@ -4,7 +4,9 @@ Unit `FMXER.Navigator`. Docs: https://andrea-magni.github.io/FMXER/guide/navigat
 
 ## Initialization
 
-`Navigator(FormStand1)` in the main form's `OnCreate`, before anything else: the first call with a form stand creates the singleton (`TNavigator.Init`), later `Navigator` with no arguments returns it from any unit. Calling `Navigator` before that raises *Navigator has not been initialized*; `TNavigator.Init` twice raises *Navigator has been already initialized*. `TNavigator.Initialized` is useful in code that can run during shutdown. The instance is freed at unit finalization.
+`Navigator(FormStand1)` in the main form's `OnCreate`, before anything else: the first call with a form stand creates the singleton (`TNavigator.Init`), later `Navigator` with no arguments returns it from any unit. Calling `Navigator` before that raises *Navigator has not been initialized*; `TNavigator.Init` twice raises *Navigator has been already initialized*. `TNavigator.Initialized` is useful in code that can run during shutdown. The instance is freed at unit finalization; `TNavigator.ReleaseInstance` frees it earlier (v.1.4). `Navigator(AFormStand)` with a form stand other than the first raises (v.1.4).
+
+Other navigators: `TNavigator.Create(AFormStand)` (public), each with its own routes and stack, for an area with its own navigation (a tab); the caller frees it.
 
 ## Defining routes
 
@@ -88,6 +90,16 @@ List.AddItem(Author.Surname, '', -1
 If the route may already be active (it would only be shown again, not rebuilt), close it first: `Navigator.CloseRoute('detail'); Navigator.RouteTo('detail');`.
 
 ## Back button
+
+v.1.4+: let the navigator do it.
+
+```pascal
+Navigator(FormStand1).SetCatchBackKey(True);   // hooks OnKeyDown of the main form
+```
+
+Back (`vkHardwareBack`) and Esc: `StackPop` when the stack has more than one route (key cleared: Android does not close the app); at the root the key goes to the form (Android closes the app); while a transient route is open the key is consumed and nothing closes. The form's own `OnKeyDown` still receives the other keys. Without the hook: `if Navigator.HandleBackKey(Key, KeyChar) then Exit;` in your `OnKeyDown`. Do not keep an old handler that also calls `StackPop` (it would pop twice). If `FormStand1.CatchBackKey` (TFrameStand dialogs) is also used, set it after `SetCatchBackKey(True)`: the last hook installed runs first.
+
+Before v.1.4:
 
 ```pascal
 procedure TMainForm.FormKeyUp(Sender: TObject; var Key: Word;

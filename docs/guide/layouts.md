@@ -228,6 +228,41 @@ Col.AddFrame<TContainerFrame>(60
 );
 ```
 
+## Performance: frames, forms and many elements
+
+Measured on Delphi 13, Windows, release build (times per element):
+
+| Element | Created in |
+|---|---|
+| a frame element (`TTextFrame`) | 0.2 ms |
+| a frame container with its two stands (`TContainerFrame`) | 0.1 ms |
+| a **form** element (`TColumnForm`, `TRowForm`, `TContainerForm`) | 2.3–2.5 ms — on Windows each form creates a native window |
+| a column slot with a text (`AddFrame<TTextFrame>`), fade-in included | 1.0–1.7 ms |
+
+Two rules follow:
+
+- **Prefer frames for elements created many times.** `TColumnFrame` and `TRowFrame` have the API of `TColumnForm` and `TRowForm` as frames: a row of three texts in a column costs 2.5 ms with `TRowFrame`, 6 ms with `TRowForm`.
+- **Add many elements in a batch.** Each slot added to a column realigns the slots already there, so adding N elements one by one costs O(N²): 400 texts take 1.5–2 seconds. `BatchUpdate` realigns once at the end — 0.34 seconds for the same 400:
+
+```pascal
+Col.BatchUpdate(
+  procedure (C: TColumnFrame)
+  begin
+    for var LItem in Items do
+      C.AddFrame<TRowFrame>(48
+      , procedure (Row: TRowFrame)
+        begin
+          Row
+          .AddFrame<TTextFrame>(TRowFrame.AUTO_WIDTH)
+          .AddFrame<TButtonFrame>(80);
+        end
+      );
+  end
+);
+```
+
+For hundreds of uniform rows, [TListViewFrame](/elements/lists) is still the right choice: it virtualizes its items.
+
 ## Responsive tips
 
 - Compute sizes from the container when the configuration procedure runs: `Col.AddFrame<TLogoFrame>(Col.Width, ...)` makes a square logo (MarginAndPadding demo), `Scaffold.Width` gives the screen width (QRCode demo).

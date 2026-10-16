@@ -14,7 +14,21 @@ begin
 end;
 ```
 
-After that, `Navigator` (no arguments) returns the same instance from any unit. Calling `Navigator` before it is initialized raises *Navigator has not been initialized*; calling `TNavigator.Init` twice raises *Navigator has been already initialized*. `TNavigator.Initialized` tells whether it is ready (useful in code that can run during shutdown).
+After that, `Navigator` (no arguments) returns the same instance from any unit. Calling `Navigator` before it is initialized raises *Navigator has not been initialized*; calling `TNavigator.Init` twice raises *Navigator has been already initialized*, and so does `Navigator(AFormStand)` with a form stand other than the first one (since v.1.4: it used to return the first navigator silently). `TNavigator.Initialized` tells whether it is ready (useful in code that can run during shutdown); `TNavigator.ReleaseInstance` frees it, so that it can be initialized again.
+
+### More than one navigator
+
+`Navigator` is a convenience for the app's main navigation, not a limit: a `TNavigator` can be created on any `TFormStand` with `TNavigator.Create`, and has its own routes and stack. Use one for an area with its own navigation — a tab, a side panel — and free it with its owner:
+
+```pascal
+FTabNavigator := TNavigator.Create(TabFormStand);   // a TFormStand on the tab's form or frame
+FTabNavigator
+  .DefineRoute<TScaffoldForm>('list', ...)
+  .DefineRoute<TScaffoldForm>('detail', ...);
+FTabNavigator.RouteTo('list');
+// ...
+FTabNavigator.Free;
+```
 
 ## Defining routes
 
@@ -110,22 +124,36 @@ If the next screen must appear only after the hide animation, use `RouteToDelaye
 
 ## The stack and the Back button
 
-`Stack` (a `TStack<string>`) holds the names of the non-transient routes, in opening order; `Breadcrumb` returns them as an array, first opened first. A typical Back handler on the main form:
+`Stack` (a `TStack<string>`) holds the names of the non-transient routes, in opening order; `Breadcrumb` returns them as an array, first opened first.
+
+The navigator handles the Android Back button and Esc by itself (since v.1.4):
 
 ```pascal
-procedure TMainForm.FormKeyUp(Sender: TObject; var Key: Word;
+Navigator(FormStand1)
+  .SetCatchBackKey(True);
+```
+
+| Situation | Back / Esc |
+|---|---|
+| more than one route on the stack | `StackPop`: the top route closes; the key is cleared, so Android does not close the app |
+| only the root route | not handled: it goes to the form (on Android the app closes) |
+| a transient route is open (a wait screen) | consumed, nothing is closed |
+
+`CatchBackKey` hooks `OnKeyDown` of the form that owns the navigator's `FormStand`; your own `OnKeyDown` handler still receives every key the navigator does not handle. Without the hook, call `Navigator.HandleBackKey(Key, KeyChar)` from your handler — it returns `True` when it handled the key:
+
+```pascal
+procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: WideChar; Shift: TShiftState);
 begin
-  if (Key = vkHardwareBack) {$IFDEF MSWINDOWS}or (Key = vkEscape){$ENDIF} then
-  begin
-    if Navigator.Stack.Count > 1 then   // never pop the home route
-    begin
-      Key := 0;                          // Android: do not close the app
-      Navigator.StackPop;
-    end;
-  end;
+  if Navigator.HandleBackKey(Key, KeyChar) then
+    Exit;
+  // other keys...
 end;
 ```
+
+::: info Why not TFrameStand's Push/Pop?
+TFrameStand 2.3 has its own navigation stack (`Push`/`Pop`) and Back handling (`CatchBackKey` on a stand). The navigator does not delegate to them: `Push` hides the page below while routes stay visible under the new one (overlays, wait screens), routes can be built by any stand (`DefineRoute` with a function), and closing a route through TFrameStand would skip the navigator's bookkeeping (active routes, stack, `OnCloseRoute`). The navigator follows the same rules for the keys instead. If you also show dialogs with `FormStand1.ShowModal` and its `CatchBackKey`, set it after `Navigator.SetCatchBackKey(True)`: the last hook installed runs first, so Back cancels the dialog before it closes a route.
+:::
 
 ## Events
 

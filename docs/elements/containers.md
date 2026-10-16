@@ -25,6 +25,28 @@ Col
 
 The column's `Height` grows with every element (it starts at 1), so a column in a [TVertScrollFrame](#tvertscrollframe-and-tvertscrollform) scrolls over its whole content.
 
+`BatchUpdate(ABuildProc): TColumnForm` runs `ABuildProc` with the realign of the slots suspended: use it to add more than a few tens of elements (see [Performance](/guide/layouts#performance-frames-forms-and-many-elements)).
+
+## TColumnFrame and TRowFrame
+
+Units `FMXER.ColumnFrame`, `FMXER.RowFrame` (since v.1.4). The same API as `TColumnForm` and `TRowForm` — `AddFrame<T>`, `AddForm<T>`, `AUTO_HEIGHT`/`AUTO_WIDTH`, `TElementDef<T>`, `Elements`, `SetElementStand`, `SetElementAlign` (row), `BatchUpdate` — as **frames**, about ten times cheaper to create than the forms (no native window). Use them for columns and rows created many times: rows of a list-like column, columns in cards.
+
+```pascal
+Col.AddFrame<TRowFrame>(TColumnForm.AUTO_HEIGHT
+, procedure (Row: TRowFrame)
+  begin
+    Row
+    .AddFrame<TIconFontsGlyphFrame>(48
+    , procedure (G: TIconFontsGlyphFrame) begin G.SetIcon(IconFonts.MD.account); end)
+    .AddFrame<TTextFrame>(200
+    , procedure (T: TTextFrame) begin T.SetContent('Andrea').SetFontColor(TAlphaColorRec.Black); end);
+    Row.Height := 48;
+  end
+);
+```
+
+A frame column starts with `Height` 0 (a row with `Width` 0) and grows with its slots; with `AUTO_HEIGHT` (or in a scroll box) the parent takes that size. Inside a slot of fixed size they fill the slot, like any frame.
+
 ## TRowForm
 
 Unit `FMXER.RowForm`. The horizontal twin of the column: slots of fixed width, from the left.
@@ -36,7 +58,7 @@ Unit `FMXER.RowForm`. The horizontal twin of the column: slots of fixed width, f
 | `ElementAlign: TAlignLayout` / `SetElementAlign(AAlign)` | alignment of the slots, `Left` by default (`Right` fills from the right) |
 | `Elements`, `ElementStand` / `SetElementStand`, `GetContent`, `DEFAULT_ELEMENT_WIDTH = 200`, `AUTO_WIDTH = -1` | as in the column |
 
-The row's `Width` grows with every element.
+The row's `Width` grows with every element. `BatchUpdate(ABuildProc): TRowForm` as in the column.
 
 ## TVertScrollFrame and TVertScrollForm
 

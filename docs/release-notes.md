@@ -2,6 +2,20 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## v.1.4 (in preparation, branch `release/1.4`)
+
+**Faster columns and rows** (ANALYSIS D3), measured on Delphi 13, Windows:
+
+- `TColumnFrame` and `TRowFrame` (new units): the API of `TColumnForm` and `TRowForm` as frames, about ten times cheaper to create (a form creates a native window: 2.4 ms against 0.2 ms).
+- `BatchUpdate` on the four of them: adding many elements realigns once, linear instead of quadratic (400 texts: 0.34 s instead of 1.5–2 s).
+- `TFMXERSlots`: the one implementation of the slots, usable for your own containers.
+
+**Back button** (ANALYSIS D5): `Navigator.SetCatchBackKey(True)` — Back and Esc close the top route, the root is left to the form, a transient route consumes the key. `HandleBackKey` for your own `OnKeyDown`. The NewProjectTemplate demo uses it.
+
+**Navigator instances** (ANALYSIS D4): `Navigator(AFormStand)` with another form stand raises (it returned the first navigator); `TNavigator.ReleaseInstance`; more navigators with `TNavigator.Create`, each with its own routes and stack.
+
+55 tests.
+
 ## v.1.3 — 2026-10-16
 
 **Automatic sizes** (ANALYSIS D1):
@@ -16,7 +30,7 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 - `SetOnClickProc` on every clickable element; `SetOnTapHandler` on the image elements;
 - setters for the properties: `TCardFrame.SetTitle`, `TWebViewFrame.SetURL`/`SetHTML`, `TLogoFrame.SetLogoResource`, `TActivityBubblesFrame.SetText`, `TVertScrollForm.SetTouchWidth`, `THorzScrollFrame.SetTouchHeight`, `SetContentStand` on the single-slot containers, `SetElementStand` and `TRowForm.SetElementAlign`.
 
-36 tests.
+37 tests.
 
 ## v.1.2.1 — 2026-10-16
 

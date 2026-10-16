@@ -75,6 +75,18 @@ Tests: 26 (`bcbe7cd`). Still open: design notes D1–D5; Delphi 12 and the non-W
 
 Verified with `build.cmd 13 demos` on Delphi 13 Win32 (no unit aliases since P1): source ok, 22/22 tests, 13 of 13 demos.
 
+## Status on branch `release/1.4` (2026-10-16)
+
+v.1.3 released 2026-10-16 (PR #6, tag `v.1.3`).
+
+| Item | Status |
+|---|---|
+| D3 nested stands | measured, then fixed where the cost really is (`8e89a2c`). Delphi 13 Win32 release build, per element: `TTextFrame` 0.23 ms; `TContainerFrame` with its two stands 0.09 ms / 4.8 KB (the embedded stands are **not** the problem); a style book +0.2 ms; any **form** 2.3–2.5 ms (a native window per form on Windows); a column slot with a text 1.0–1.7 ms (the default `fadeIn` stand only 0.3 ms of it). Adding slots to a column was O(N²): every Top-aligned slot realigns the others (25: 1.05 ms each, 400: 3.8–5.6 ms each). Done: `TColumnFrame`/`TRowFrame` (0.2 ms instead of 2.4; a row of three texts in a column 2.5 ms instead of 6.0), `BatchUpdate` on the four column/row classes (400 elements: 0.34 s instead of 1.5–2.2 s, layout verified), `TFMXERSlots` as the single implementation. Not measured: Android, iOS, macOS |
+| D4 global state | `e5d0267`: the singleton stays as the app's main navigation; `Navigator(AFormStand)` with another stand raises (it returned the first navigator); `TNavigator.ReleaseInstance`; more navigators with `TNavigator.Create` (independent routes and stacks, tested). `IconFonts` (one shared image list) and `TAppColors` (read at creation) unchanged by decision: live re-theming would need every element to listen for changes; documented |
+| D5 navigator on TFrameStand Push/Pop | not delegated, by analysis: `Push` hides the page below (routes stay visible under the new one), routes may come from any stand (`DefineRoute` with a function), and closing through TFrameStand would bypass the navigator's bookkeeping. Done instead (`e5d0267`): `HandleBackKey` and `CatchBackKey` with TFrameStand's rules (pop above the root, root left to the form, key cleared; transient route open: consumed), hook owned by the form, previous `OnKeyDown` kept. NewProjectTemplate uses it (`a2d5e29`) |
+
+Tests: 55 (`d3329be` and following). Benchmark program not committed (scratch). Still open from the review: nothing; not verified here: Delphi 12, non-Windows platforms.
+
 ## Status on branch `release/1.3` (2026-10-16)
 
 v.1.2.1 released 2026-10-16 (PR #5, tag `v.1.2.1`).
@@ -138,9 +150,9 @@ NewProjectTemplate, QRCode, Skia101, WebView) build for Win32 with Delphi 13 (P1
 |---|---|
 | D1 | (done in v.1.3, see above) **Sizes are explicit.** `TColumnForm.AddFrame<T>(AHeight)` (default 200) and `TRowForm.AddFrame<T>(AWidth)` add fixed-size slots and grow the form's own `Height`/`Width`; there is no measure/layout pass as in Flutter. `TVertScrollFrame` takes the content's `Height`. It is simple and predictable, but every element needs a size; the docs explain it. |
 | D2 | (done in v.1.3, see above) **Fluent API is not uniform.** Most `SetContentAs*` are functions returning the element, some are procedures (`TContainerForm`, `TVertScrollForm`, `THorzScrollFrame`, `TCardFrame`, `TActionButtonFrame`); click handlers are named `OnClickProc`, `OnClickHandler`, `SetOnClick`, `SetOnClickHandler`, `SetOnClickProc` depending on the element; some values are properties (`TCardFrame.Title`, `TWebViewFrame.URL`), others setters. |
-| D3 | Every container element embeds its own `TFrameStand` + `TFormStand` (and `TColumnForm`/`TRowForm`/`TScaffoldForm` a `TStyleBook`): a deep tree means many components. Fine for screens of tens of elements; for long lists use `TListViewFrame`. |
-| D4 | Global state: one `Navigator` (singleton, one `TFormStand`), one `IconFonts` image list, `TAppColors` class variables read in the constructors (changing `TAppColors.PrimaryColor` affects elements created afterwards only). |
-| D5 | TFrameStand 2.3 added dialog results (`ShowModal`), Back/Esc handling and a navigation stack (`Push`/`Pop`) with the same purpose as `TNavigator`'s stack: after P2, the navigator could delegate its stack to `TFormStand.Push`/`Pop` and get Back/Esc for free. |
+| D3 | (addressed in v.1.4, see above) Every container element embeds its own `TFrameStand` + `TFormStand` (and `TColumnForm`/`TRowForm`/`TScaffoldForm` a `TStyleBook`): a deep tree means many components. Fine for screens of tens of elements; for long lists use `TListViewFrame`. |
+| D4 | (addressed in v.1.4, see above) Global state: one `Navigator` (singleton, one `TFormStand`), one `IconFonts` image list, `TAppColors` class variables read in the constructors (changing `TAppColors.PrimaryColor` affects elements created afterwards only). |
+| D5 | (addressed in v.1.4, see above) TFrameStand 2.3 added dialog results (`ShowModal`), Back/Esc handling and a navigation stack (`Push`/`Pop`) with the same purpose as `TNavigator`'s stack: after P2, the navigator could delegate its stack to `TFormStand.Push`/`Pop` and get Back/Esc for free. |
 
 ## Suggested order
 
