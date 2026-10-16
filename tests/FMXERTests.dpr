@@ -19,7 +19,8 @@ uses
   DUnitX.Loggers.XML.NUnit,
   Tests.Common in 'Tests.Common.pas',
   Tests.Navigator in 'Tests.Navigator.pas',
-  Tests.Elements in 'Tests.Elements.pas';
+  Tests.Elements in 'Tests.Elements.pas',
+  Tests.Layout in 'Tests.Layout.pas';
 
 var
   LResults: IRunResults;
