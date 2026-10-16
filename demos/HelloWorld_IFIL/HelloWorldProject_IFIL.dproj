@@ -329,7 +329,7 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Icons.FontAwesome.pas"/>
-        <DCCReference Include="Icons.MaterialDesign.pas"/>
+        <DCCReference Include="..\..\source\Icons.MaterialDesign.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

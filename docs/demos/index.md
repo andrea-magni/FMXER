@@ -1,6 +1,6 @@
 # Demos
 
-The `demos` folder has one project per topic; ten of them are in `demos\AllDemos.groupproj`. They target Windows, macOS, iOS and Android, and expect the dependencies in the search path or installed (see [Installation](/guide/installation)).
+The `demos` folder has one project per topic; ten of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android, and expect the dependencies in the search path or installed (see [Installation](/guide/installation)).
 
 Media files (Lottie animations, SVG, the icon font) come from the `media` folder: on Windows the demos read them from there with `LocalFile`, on mobile they are deployed with the app.
 
@@ -16,7 +16,8 @@ Media files (Lottie animations, SVG, the icon font) come from the `media` folder
 | [LibraryStore](#librarystore) | lists filled from a REST server, async loading, multiple routes | MARS client, a MARS server |
 | [HelloWorld_IFIL](#helloworld-ifil) | an image list of icon fonts on the main form | — |
 | [QRCode](#qrcode) | QR code generator and camera reader, color pickers, share sheet | ZXing.Delphi, camera |
-| MyTicketing, EKON25 - Weather | conference demos written for FMXER 1.0 | do not compile with 1.1 |
+| [MyTicketing](#myticketing) | a login column (edits, password, default button enabled by `OnUpdateHandler`) leading to a scaffold | — |
+| [EKON25 - Weather](#ekon25-weather) | a card with a nested column in a scaffold, conference starting point | — |
 
 ## NewProjectTemplate
 
@@ -30,7 +31,7 @@ The richest tour of the elements, in three routes:
 - **bubble**: a transient route with `TActivityBubblesFrame`, opened and closed after 3 seconds with `RouteTo('bubble', True)` + `CloseRouteDelayed`.
 - **qrcode**: a full-screen QR code of the text typed in the home screen; tap to close.
 
-Shared state is a data module (`Data.AppState`) that broadcasts changes with `System.Messaging` (see the warning in [State & Events](/guide/state#subscriptions-and-the-lifetime-of-elements)).
+Shared state is a data module (`Data.AppState`) that broadcasts changes with `System.Messaging` ; each subscriber is tied to the lifetime of its QR code by a `TSubscriptionGuard` (see [State & Events](/guide/state#subscriptions-and-the-lifetime-of-elements)).
 
 ## Column
 
@@ -62,7 +63,7 @@ A list of employees from a `TFDMemTable` (data module `Data.Main`) in a frame de
 A small catalog app that reads books and authors from a [MARS-Curiosity](https://github.com/andrea-magni/MARS) REST server (`Data.Remote`, `TMARSNetClient` with asynchronous `GETAsync`):
 
 - **home**: a list with two entries;
-- **books_all**, **books_by_author**, **authors**, **book_single**: lists built by an `ItemBuilderProc`, titles updated with the number of results, search box when there are more than three items, an activity animation in the title detail area while loading (driven by `TRetrieveMsg` messages), errors in a snackbar;
+- **books_all**, **books_by_author**, **authors**, **book_single**: lists built by an `ItemBuilderProc`, titles updated with the number of results, search box when there are more than three items, an activity animation in the title detail area while loading (driven by `TRetrieveMsg` messages, unsubscribed when the route closes), errors in a snackbar;
 - icons added once and cached in `Utils.UI`.
 
 It needs a MARS server exposing the LibraryStore resources (`http://localhost:8080/rest` on desktop; set the address in `Data.Remote` for devices).
@@ -83,3 +84,14 @@ A complete app, and the most recent demo:
 - **Webview**: the scanned content in a `TWebViewFrame`.
 
 The main form shows the breadcrumb in the caption on Windows, closes the camera in `OnCloseRoute` and handles Back/Esc with `StackPop`.
+
+## MyTicketing
+
+A conference demo, ported to the fluent API of 1.1:
+
+- **login**: a `TColumnForm` with a logo, two `TEditFrame`s (`SetCaption`, `SetPassword(True)`) that store what you type in a data module (`Data.Remote`), and a default *Login* button (`SetOnClickHandler`) enabled by its `OnUpdateHandler` only when both fields are filled; the login succeeds with `andrea` / `password`;
+- **home**: a scaffold with a logo and two action buttons (a snackbar, close the route).
+
+## EKON25 - Weather
+
+The starting point of a conference session (EKON 25): a scaffold whose content is a column with a `TCardFrame` titled with a location, and a *Get weather* button in a column nested in the card. The weather frame (`Frames.WeatherSituation`) and the data module are placeholders, never completed.

@@ -162,7 +162,7 @@ begin
          .SetMargin(2)
          .SetHitTest(True);
 
-         TMessageManager.DefaultManager.SubscribeToMessage(TSomethingChangedMsg
+         TSubscriptionGuard.Create(AQR, TSomethingChangedMsg // unsubscribes when AQR is freed
          , procedure (const Sender: TObject; const M: TMessage)
            begin
              var Msg := M as TSomethingChangedMsg;
@@ -220,7 +220,7 @@ begin
             .SetMargin(2)
             .SetHitTest(True);
 
-            TMessageManager.DefaultManager.SubscribeToMessage(TSomethingChangedMsg
+            TSubscriptionGuard.Create(AQR, TSomethingChangedMsg // unsubscribes when AQR is freed
             , procedure (const Sender: TObject; const M: TMessage)
               begin
                 var Msg := M as TSomethingChangedMsg;

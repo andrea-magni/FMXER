@@ -6,7 +6,7 @@ uses
   FMX.Skia,
   Forms.Main in 'Forms.Main.pas' {MainForm},
   Icons.FontAwesome in 'Icons.FontAwesome.pas',
-  Icons.MaterialDesign in 'Icons.MaterialDesign.pas';
+  Icons.MaterialDesign in '..\..\source\Icons.MaterialDesign.pas';
 
 {$R *.res}
 

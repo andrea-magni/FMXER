@@ -8,11 +8,22 @@ uses
   System.SysUtils, System.Classes, System.Generics.Collections, DUnitX.TestFramework
 , FMX.Types, FMX.Forms
 , SubjectStand, FormStand
-, FMXER.Navigator, FMXER.ContainerForm
+, FMXER.Navigator, FMXER.ContainerForm, FMXER.ScaffoldForm, FMXER.BackgroundFrame
 , Tests.Common
 ;
 
 type
+  /// <summary>Sets a flag when it is destroyed: owned by an element, it tells
+  /// whether the element was freed (the pattern of the subscription guard of
+  /// the State &amp; Events guide relies on it).</summary>
+  TDestroySentinel = class(TComponent)
+  private
+    FDestroyed: PBoolean;
+  public
+    constructor Create(const AOwner: TComponent; const ADestroyed: PBoolean); reintroduce;
+    destructor Destroy; override;
+  end;
+
   [TestFixture]
   TNavigatorFixture = class
   private
@@ -36,9 +47,25 @@ type
     [Test] procedure EventsAreFired;
     [Test] procedure UnknownRouteRaises;
     [Test] procedure DelayedRouting;
+    [Test] procedure ClosedRouteFreesItsElements;
   end;
 
 implementation
+
+{ TDestroySentinel }
+
+constructor TDestroySentinel.Create(const AOwner: TComponent; const ADestroyed: PBoolean);
+begin
+  inherited Create(AOwner);
+  FDestroyed := ADestroyed;
+  FDestroyed^ := False;
+end;
+
+destructor TDestroySentinel.Destroy;
+begin
+  FDestroyed^ := True;
+  inherited;
+end;
 
 { TNavigatorFixture }
 
@@ -230,6 +257,44 @@ begin
   Pump(400);
   Assert.AreEqual('', Active);
   Assert.AreEqual('', Stack);
+end;
+
+procedure TNavigatorFixture.ClosedRouteFreesItsElements;
+var
+  LContentFreed, LNestedFreed: Boolean;
+begin
+  LContentFreed := False;
+  LNestedFreed := False;
+  Navigator.DefineRoute<TScaffoldForm>('s'
+  , procedure (SF: TScaffoldForm)
+    begin
+      SF
+      .SetTitleDetailContentAsFrame<TBackgroundFrame>(
+        procedure (BF: TBackgroundFrame)
+        begin
+          BF.SetContentAsFrame<TBackgroundFrame>(
+            procedure (Nested: TBackgroundFrame)
+            begin
+              TDestroySentinel.Create(Nested, @LNestedFreed);
+            end
+          );
+        end
+      )
+      .SetContentAsFrame<TBackgroundFrame>(
+        procedure (BF: TBackgroundFrame)
+        begin
+          TDestroySentinel.Create(BF, @LContentFreed);
+        end
+      );
+    end
+  );
+  Navigator.RouteTo('s');
+  Pump(100);
+  Assert.IsFalse(LContentFreed or LNestedFreed, 'elements of an active route are alive');
+  Navigator.CloseRoute('s');
+  Pump(300);
+  Assert.IsTrue(LContentFreed, 'content frame freed with its route');
+  Assert.IsTrue(LNestedFreed, 'nested title detail frame freed with its route');
 end;
 
 initialization

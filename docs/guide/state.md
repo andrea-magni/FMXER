@@ -117,7 +117,7 @@ TMessageManager.DefaultManager.SubscribeToMessage(TSomethingChangedMsg
 ### Subscriptions and the lifetime of elements
 
 ::: danger Unsubscribe when the element goes away
-A subscription lives in the global message manager, the element does not: when its route closes, the element is freed and the subscription stays. The next message runs the closure on a **freed object** (an access violation, or worse), and opening the route again adds a second subscription. The HelloWorld and LibraryStore demos have this problem.
+A subscription lives in the global message manager, the element does not: when its route closes, the element is freed and the subscription stays. The next message runs the closure on a **freed object** (an access violation, or worse), and opening the route again adds a second subscription.
 :::
 
 Tie the subscription to the element. A tiny component owned by the element does it — when the element is freed, so is the guard, and the guard unsubscribes:
@@ -169,6 +169,8 @@ TSubscriptionGuard.Create(QR, TSomethingChangedMsg
   end
 );
 ```
+
+The demos use this guard: HelloWorld declares it in `Data.AppState` and gives one to each QR code that follows the edit; LibraryStore wraps it in `TRetrieveMsg.Subscribe(ABF, ...)` (`Utils.Msg`), owned by the activity animation in the title detail area. Note that hiding an element (`HideTitleDetailContent`) does not free it: the subscription stays active until the route closes.
 
 The same rule applies to anything that can call back later: timers, `TDelayedAction`, background threads, data-module listener lists (the QRCode demo clears its camera listeners in `OnCloseRoute`).
 

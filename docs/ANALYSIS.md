@@ -11,7 +11,7 @@ Baseline: `master` at `c9e2efe` (2023-02-03, 45 commits after v.1.1). Compiler u
 | Elements | 31 frames, 7 forms, plus `TNavigator`, `TAppColors`, `TIconFonts` and the helpers of `FMXER.UI.Misc` |
 | Packages | none: the library is used from source (search path) |
 | Dependencies | TFrameStand (submodule pinned at `9200a9c`, v.1.6 + 3 commits, 2022), Skia4Delphi (standalone, unit names `Skia`/`Skia.FMX`), IconFontsImageList (submodule, v.3.2.2), DelphiZXingQRCode (submodule); ZXing.Delphi (submodule) only for the QRCode demo; MARS client only for the LibraryStore demo |
-| Demos | 13 projects, 10 in `AllDemos.groupproj` |
+| Demos | 13 projects, 10 in `AllDemos.groupproj` (all 13 build since E1) |
 | Tests / CI | none |
 | GitHub | 100 stars, 28 forks, 3 issues (all closed in 2021), no PRs |
 | Last release | v.1.1, 2022-11-03 ("Skia4Delphi is now a dependency"); 45 commits on `master` since then, unreleased |
@@ -52,9 +52,13 @@ Legend: ✅ verified (compiled or executed), 📖 found by reading the code.
 | B9 snackbar not freed | fixed (`98c43dd`), test `SnackBarIsClosed` |
 | P2 TFrameStand submodule | `31f5b8c`: v.2.3. Source, tests and demos verified against v.2.3 and v.1.6 (all 21 tests pass on both) |
 | P1 Skia unit names | done (`9d302fb`), decided by Andrea: FMXER requires Delphi 12+ and uses `System.Skia`, `FMX.Skia`, `FMX.Skia.Canvas` in source, demo units and demo projects; no unit aliases. Verified with `build.cmd 13 demos` (no aliases). Delphi 12 itself not available here: not compiled with 12 |
-| E1, E2, E4, E6, B10–B14 | open |
+| E1 MyTicketing, EKON25 - Weather | ported to the fluent API (`6e6643c`): `SetTitle`, `SetText`, `SetCaption`, `SetPassword`, `GetText`, `SetOnClickHandler`, `OnUpdateHandler`; a section for each in `docs/demos`. Still not in `AllDemos.groupproj` |
+| E2 message subscriptions | fixed (`7ed0384`): a `TSubscriptionGuard` owned by the element (the pattern of `docs/guide/state.md`) unsubscribes when the route closes; HelloWorld declares it in `Data.AppState` (three QR codes), LibraryStore in `Utils.Msg` (`TRetrieveMsg.Subscribe(AOwner, ...)`, owned by the activity animations). Test `ClosedRouteFreesItsElements`: closing a route frees its content and nested title detail frames, so the guards they own |
+| E4 HelloWorld_IFIL icons | fixed (`52be947`): the project refers to `source\Icons.MaterialDesign.pas`, its copy is removed |
+| E6 QRCode share | fixed (`25f88f3`): stream freed in `try/finally`, no save to `C:\temp` |
+| B10–B14 | open |
 
-Verified with `build.cmd 13 demos` on Delphi 13 Win32 (no unit aliases since P1): source ok, 21/21 tests, 11 of 13 demos (MyTicketing, EKON25 - Weather: E1).
+Verified with `build.cmd 13 demos` on Delphi 13 Win32 (no unit aliases since P1): source ok, 22/22 tests, 13 of 13 demos.
 
 ## 1. Build, packaging and dependencies
 
