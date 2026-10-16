@@ -5,21 +5,24 @@ The repository has a build script and a DUnitX test suite, used to check every c
 ## build.cmd
 
 ```bash
-build.cmd 13 demos
+build.cmd 13 all demos
 ```
 
 | Argument | Meaning |
 |---|---|
 | version | Delphi version: `13` (default), `12` |
+| platform | `win32` (default, `dcc32`), `win64` (`dcc64`), `all` (both) |
 | `demos` | also build every demo project |
 
-The script compiles, for Win32 with `dcc32`:
+The arguments can be given in any order. For each platform the script compiles:
 
 1. every unit of `source\` (a generated program that uses them all);
 2. the test suite `tests\FMXERTests.dpr`, then runs it;
 3. with `demos`, every `.dpr` under `demos\`.
 
-Everything is written under `build\<version>` (ignored by git): the projects and their `.res` files are not touched. At the end it prints a summary; the exit code is 0 when every step succeeded. Each step has its log (`*.compile.log`, `FMXERTests.log`) next to its output.
+Everything is written under `build\<version>\<platform>` (ignored by git): the projects and their `.res` files are not touched. At the end it prints a summary of every step of every platform (also in `build\<version>\summary.txt`); the exit code is 0 when every step succeeded. Each step has its log (`*.compile.log`, `FMXERTests.log`) next to its output.
+
+Run `build.cmd all demos` before a release: Win64 catches what Win32 hides, such as `Length` and `Count` being `NativeInt` there (the tests compare them with `Assert.AreEqual<NativeInt>`).
 
 ### Dependencies
 
@@ -45,7 +48,7 @@ By default the script uses the submodules in `lib\`. To use other folders — in
 Run it from the IDE or directly:
 
 ```bash
-build\13\tests\FMXERTests.exe --pause
+build\13\Win32\tests\FMXERTests.exe --pause
 ```
 
 A NUnit-style XML report (`FMXERTests.xml`) is written next to the executable.
