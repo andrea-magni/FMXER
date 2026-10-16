@@ -11,6 +11,9 @@ Inspired by Google Flutter's approach.
 ## Documentation
 **[andrea-magni.github.io/FMXER](https://andrea-magni.github.io/FMXER/)**: guide, element catalog, reference and demos ([llms.txt](https://andrea-magni.github.io/FMXER/llms.txt) for AI assistants).
 
+## AI agent skill
+The [`Skills/`](Skills/) folder has an [Agent Skill](https://andrea-magni.github.io/FMXER/guide/agent-skills) for Claude Code and other AI coding agents. Install it as a plugin: `/plugin marketplace add andrea-magni/FMXER`, then `/plugin install fmxer@fmxer`.
+
 ## Delphi version:
  - Delphi 12 Athens and 13 Florence (Skia built into RAD Studio). Delphi 11 is supported up to FMXER v.1.1.
 

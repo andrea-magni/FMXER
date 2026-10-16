@@ -15,6 +15,7 @@ Fixes, each with a test in the new DUnitX suite (`tests\`, run by `build.cmd`):
 - `THorzPairFrame.SetLeftContentStand`/`SetRightContentStand` store the stand name; `TCardFrame.SetGlyphAsForm` keeps the glyph info; `TFMXERFormHelper.SetPadding<T>` works (constraint `TCommonCustomForm`).
 - `lib/TFrameStand` submodule updated to TFrameStand v.2.3 (FMXER still compiles with v.1.6).
 - `build.cmd`: builds the source, the tests and the demos; documentation site (this one).
+- AI agent skill `fmxer-development` in `Skills/`; the repository is a Claude plugin marketplace (see [AI Agent Skill](/guide/agent-skills)).
 
 Also on master since v.1.1 (45 commits, up to February 2023):
 

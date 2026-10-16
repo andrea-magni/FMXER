@@ -1,0 +1,15 @@
+{
+  "name": "fmxer",
+  "description": "Official plugin marketplace of FMXER, the declarative, Flutter-inspired visual framework for Delphi FireMonkey: an Agent Skill to develop FMXER apps.",
+  "owner": {
+    "name": "Andrea Magni",
+    "url": "https://github.com/andrea-magni"
+  },
+  "plugins": [
+    {
+      "name": "fmxer",
+      "source": "./",
+      "description": "Agent Skill for FMXER (Delphi FMX): routes and TNavigator, the scaffold, containers and explicit sizing, elements with fluent setters, icons and colors, state and the lifetime of elements, Delphi 12+ Skia units."
+    }
+  ]
+}

@@ -76,4 +76,4 @@ Routes have no parameters: set the value somewhere the route definition can read
 
 ### Is there an AI agent skill for FMXER?
 
-Not yet. The [llms.txt](https://andrea-magni.github.io/FMXER/llms.txt) and [llms-full.txt](https://andrea-magni.github.io/FMXER/llms-full.txt) files of this site give an AI assistant the whole documentation in one request.
+Yes: the `fmxer-development` skill in the `Skills/` folder of the repository, installable as a Claude Code plugin, with npx or by hand. See [AI Agent Skill](./agent-skills). The [llms.txt](https://andrea-magni.github.io/FMXER/llms.txt) and [llms-full.txt](https://andrea-magni.github.io/FMXER/llms-full.txt) files of this site give an AI assistant the whole documentation in one request.
