@@ -12,9 +12,10 @@ type
     LogoImage: TImage;
   private
     FLogoResource: string;
-    procedure SetLogoResource(const Value: string);
+    procedure InternalSetLogoResource(const Value: string);
   public
-    property LogoResource: string read FLogoResource write SetLogoResource;
+    function SetLogoResource(const AResourceName: string): TLogoFrame;
+    property LogoResource: string read FLogoResource write InternalSetLogoResource;
   end;
 
 implementation
@@ -23,7 +24,7 @@ implementation
 
 { TLogoFrame }
 
-procedure TLogoFrame.SetLogoResource(const Value: string);
+procedure TLogoFrame.InternalSetLogoResource(const Value: string);
 begin
   if FLogoResource <> Value then
   begin
@@ -35,6 +36,12 @@ begin
       LStream.Free;
     end;
   end;
+end;
+
+function TLogoFrame.SetLogoResource(const AResourceName: string): TLogoFrame;
+begin
+  Result := Self;
+  LogoResource := AResourceName;
 end;
 
 end.

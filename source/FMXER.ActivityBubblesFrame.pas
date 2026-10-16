@@ -13,9 +13,10 @@ type
     CaptionLabel: TSkLabel;
   private
     function GetText: string;
-    procedure SetText(const Value: string);
+    procedure InternalSetText(const Value: string);
   public
-    property Text: string read GetText write SetText;
+    function SetText(const AText: string): TActivityBubblesFrame;
+    property Text: string read GetText write InternalSetText;
   end;
 
 implementation
@@ -29,9 +30,15 @@ begin
   Result := CaptionLabel.Text;
 end;
 
-procedure TActivityBubblesFrame.SetText(const Value: string);
+procedure TActivityBubblesFrame.InternalSetText(const Value: string);
 begin
   CaptionLabel.Text := Value;
+end;
+
+function TActivityBubblesFrame.SetText(const AText: string): TActivityBubblesFrame;
+begin
+  Result := Self;
+  Text := AText;
 end;
 
 end.

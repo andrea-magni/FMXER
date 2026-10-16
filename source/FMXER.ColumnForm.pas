@@ -33,6 +33,7 @@ type
     function AddForm<T: TForm>(const AColDef: TElementDef<T>): TColumnForm; overload;
 
     function GetContent: TLayout; virtual;
+    function SetElementStand(const AStand: string): TColumnForm;
 
     property ElementStand: string read FElementStand write FElementStand;
     property Elements: TList<TSubjectInfoContainer> read FElements;
@@ -138,6 +139,12 @@ end;
 function TColumnForm.GetContent: TLayout;
 begin
   Result := ContentLayout;
+end;
+
+function TColumnForm.SetElementStand(const AStand: string): TColumnForm;
+begin
+  Result := Self;
+  FElementStand := AStand;
 end;
 
 end.

@@ -16,14 +16,16 @@ type
     FContent: TSubjectInfo;
     FContentStand: string;
     function GetTouchHeight: Single;
-    procedure SetTouchHeight(const Value: Single);
+    procedure InternalSetTouchHeight(const Value: Single);
   public
     //
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): THorzScrollFrame;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): THorzScrollFrame;
+    function SetContentStand(const AStand: string): THorzScrollFrame;
+    function SetTouchHeight(const ATouchHeight: Single): THorzScrollFrame;
     //
     property ContentStand: string read FContentStand write FContentStand;
-    property TouchHeight: Single read GetTouchHeight write SetTouchHeight;
+    property TouchHeight: Single read GetTouchHeight write InternalSetTouchHeight;
   end;
 
 implementation
@@ -37,8 +39,9 @@ begin
   Result := HorizontalScrollbox.Padding.Bottom;
 end;
 
-procedure THorzScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function THorzScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): THorzScrollFrame;
 begin
+  Result := Self;
   FContent := FormStand1.NewAndShow<T>(HorizontalScrollbox, ''
     , procedure (AForm: T)
       begin
@@ -53,8 +56,9 @@ begin
   );
 end;
 
-procedure THorzScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function THorzScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): THorzScrollFrame;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<T>(HorizontalScrollbox, ''
     , procedure (AFrame: T)
       begin
@@ -69,9 +73,21 @@ begin
   );
 end;
 
-procedure THorzScrollFrame.SetTouchHeight(const Value: Single);
+procedure THorzScrollFrame.InternalSetTouchHeight(const Value: Single);
 begin
   HorizontalScrollbox.Padding.Bottom := Value;
+end;
+
+function THorzScrollFrame.SetContentStand(const AStand: string): THorzScrollFrame;
+begin
+  Result := Self;
+  FContentStand := AStand;
+end;
+
+function THorzScrollFrame.SetTouchHeight(const ATouchHeight: Single): THorzScrollFrame;
+begin
+  Result := Self;
+  TouchHeight := ATouchHeight;
 end;
 
 end.

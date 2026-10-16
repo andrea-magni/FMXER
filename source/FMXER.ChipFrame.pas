@@ -22,6 +22,7 @@ type
     function SetText(const AText: string): TChipFrame;
     function SetBackgroundColor(const AColor: TAlphaColor): TChipFrame;
     function SetForegroundColor(const AColor: TAlphaColor): TChipFrame;
+    function SetOnClickProc(const AOnClickProc: TProc): TChipFrame;
 
     property OnClickHandler: TProc read FOnClickHandler write FOnClickHandler;
   end;
@@ -67,6 +68,12 @@ procedure TChipFrame.ButtonClick(Sender: TObject);
 begin
   if Assigned(FOnClickHandler) then
     FOnClickHandler();
+end;
+
+function TChipFrame.SetOnClickProc(const AOnClickProc: TProc): TChipFrame;
+begin
+  Result := Self;
+  FOnClickHandler := AOnClickProc;
 end;
 
 end.

@@ -30,6 +30,7 @@ type
 
     function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TVertScrollFrame;
     function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TVertScrollFrame;
+    function SetContentStand(const AStand: string): TVertScrollFrame;
 
     function GetTouchWidth: Single;
     function SetTouchWidth(const ATouchWidth: Single): TVertScrollFrame;
@@ -118,6 +119,12 @@ function TVertScrollFrame.SetTouchWidth(const ATouchWidth: Single): TVertScrollF
 begin
   Result := Self;
   VerticalScrollbox.Padding.Right := ATouchWidth;
+end;
+
+function TVertScrollFrame.SetContentStand(const AStand: string): TVertScrollFrame;
+begin
+  Result := Self;
+  FContentStand := AStand;
 end;
 
 end.

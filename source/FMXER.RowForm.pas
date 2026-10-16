@@ -34,6 +34,8 @@ type
     function AddForm<T: TForm>(const AColDef: TElementDef<T>): TRowForm; overload;
 
     function GetContent: TLayout; virtual;
+    function SetElementStand(const AStand: string): TRowForm;
+    function SetElementAlign(const AAlign: TAlignLayout): TRowForm;
 
     property ElementStand: string read FElementStand write FElementStand;
     property ElementAlign: TAlignLayout read FElementAlign write FElementAlign;
@@ -144,6 +146,18 @@ begin
       AColDef.ParamByName('Width', DEFAULT_ELEMENT_WIDTH).AsInteger
     , AColDef.ConfigProc
     );
+end;
+
+function TRowForm.SetElementStand(const AStand: string): TRowForm;
+begin
+  Result := Self;
+  FElementStand := AStand;
+end;
+
+function TRowForm.SetElementAlign(const AAlign: TAlignLayout): TRowForm;
+begin
+  Result := Self;
+  FElementAlign := AAlign;
 end;
 
 end.

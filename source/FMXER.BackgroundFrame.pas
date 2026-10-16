@@ -25,6 +25,7 @@ type
     //
     function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TBackgroundFrame;
     function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TBackgroundFrame;
+    function SetContentStand(const AStand: string): TBackgroundFrame;
     //
     function SetFillColor(const AColor: TAlphaColor): TBackgroundFrame;
     function SetStrokeColor(const AColor: TAlphaColor): TBackgroundFrame;
@@ -100,6 +101,12 @@ function TBackgroundFrame.SetStrokeThickness(
 begin
   Result := Self;
   Stroke.Thickness := AThickness;
+end;
+
+function TBackgroundFrame.SetContentStand(const AStand: string): TBackgroundFrame;
+begin
+  Result := Self;
+  FContentStand := AStand;
 end;
 
 end.

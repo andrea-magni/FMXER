@@ -12,14 +12,16 @@ type
     WebBrowser1: TWebBrowser;
   private
     FHTML: string;
-    procedure SetHTML(const Value: string);
+    procedure InternalSetHTML(const Value: string);
     function GetURL: string;
-    procedure SetURL(const Value: string);
+    procedure InternalSetURL(const Value: string);
     { Private declarations }
   public
     { Public declarations }
-    property HTML: string read FHTML write SetHTML;
-    property URL: string read GetURL write SetURL;
+    function SetURL(const AURL: string): TWebViewFrame;
+    function SetHTML(const AHTML: string): TWebViewFrame;
+    property HTML: string read FHTML write InternalSetHTML;
+    property URL: string read GetURL write InternalSetURL;
   end;
 
 implementation
@@ -33,15 +35,27 @@ begin
   Result := WebBrowser1.URL;
 end;
 
-procedure TWebViewFrame.SetHTML(const Value: string);
+procedure TWebViewFrame.InternalSetHTML(const Value: string);
 begin
   FHTML := Value;
   WebBrowser1.LoadFromStrings(FHTML, '');
 end;
 
-procedure TWebViewFrame.SetURL(const Value: string);
+procedure TWebViewFrame.InternalSetURL(const Value: string);
 begin
   WebBrowser1.URL := Value;
+end;
+
+function TWebViewFrame.SetHTML(const AHTML: string): TWebViewFrame;
+begin
+  Result := Self;
+  HTML := AHTML;
+end;
+
+function TWebViewFrame.SetURL(const AURL: string): TWebViewFrame;
+begin
+  Result := Self;
+  URL := AURL;
 end;
 
 end.

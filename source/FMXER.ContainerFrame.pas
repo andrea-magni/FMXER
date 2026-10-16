@@ -21,6 +21,7 @@ type
     function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TContainerFrame;
     function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TContainerFrame;
     function SetContentAs<T: TFmxObject>(const AConfigProc: TProc<T> = nil): TContainerFrame;
+    function SetContentStand(const AStand: string): TContainerFrame;
     //
     property ContentStand: string read FContentStand write FContentStand;
     property Content: TSubjectInfo read FContent;
@@ -64,6 +65,12 @@ function TContainerFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): TCon
 begin
   Result := Self;
   FContent := FrameStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
+end;
+
+function TContainerFrame.SetContentStand(const AStand: string): TContainerFrame;
+begin
+  Result := Self;
+  FContentStand := AStand;
 end;
 
 end.

@@ -23,6 +23,7 @@ type
   public
 
     property Image: TImage read ContentImage;
+    function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TImageFrame;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;
 
@@ -49,6 +50,12 @@ begin
   inherited;
   if Assigned(ContentImage) then
     ContentImage.HitTest := HitTest;
+end;
+
+function TImageFrame.SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TImageFrame;
+begin
+  Result := Self;
+  FOnTapHandler := AOnTapHandler;
 end;
 
 end.

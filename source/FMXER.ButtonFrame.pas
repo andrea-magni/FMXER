@@ -35,6 +35,7 @@ type
     function SetBackgroundVisible(const AVisible: Boolean): TButtonFrame;
     function SetBackgroundOpacity(const AOpacity: Single): TButtonFrame;
     function SetOnClickHandler(const AOnClickHandler: TProc): TButtonFrame;
+    function SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;
 
     property BackgroundFill: TBrush read GetBackgroundFill;
     property BackgroundStroke: TStrokeBrush read GetBackgroundStroke;
@@ -139,6 +140,11 @@ function TButtonFrame.SetText(const AText: string): TButtonFrame;
 begin
   Result := Self;
   ButtonAction.Caption := AText;
+end;
+
+function TButtonFrame.SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;
+begin
+  Result := SetOnClickHandler(AOnClickProc);
 end;
 
 end.
