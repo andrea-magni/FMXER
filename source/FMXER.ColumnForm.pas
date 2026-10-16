@@ -47,7 +47,6 @@ implementation
 
 function TColumnForm.AddForm<T>(const AHeight: Integer; const AConfigProc: TProc<T>): TColumnForm;
 var
-  LElement: TSubjectInfo;
   LElementContainer: TSubjectInfoContainer;
 begin
   Result := Self;
@@ -131,6 +130,7 @@ end;
 destructor TColumnForm.Destroy;
 begin
   FrameStand1.CloseAll();
+  FormStand1.CloseAll();
   FreeAndNil(FElements);
   inherited;
 end;
