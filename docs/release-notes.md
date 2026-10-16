@@ -2,6 +2,15 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## v.1.5.1 — 2026-10-16
+
+**Setup fixes** (the v.1.5 setup did not install):
+
+- The setup found no RAD Studio version: the `FMXER.groupproj` files of the packages had no build groups, which the setup reads to find the packages and their Delphi version. `setup\build-setup.cmd` now checks them before compiling the setup.
+- When TFrameStand or IconFontsImageList was not installed, the setup copied the files and then failed building the packages (`E2202 Required package 'IconFontsImageListFMX' not found`). It now checks for their packages (in the Dcp folder of the IDE and in the library path) and, if one is missing, stops before installing anything and says what to install. See [Setup](/guide/installation#setup).
+
+Library code is unchanged from v.1.5.
+
 ## v.1.5 — 2026-10-16
 
 **Packages and installation** (ANALYSIS P4):
