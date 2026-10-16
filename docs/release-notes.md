@@ -2,6 +2,16 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## v.1.5.2 — 2026-10-16
+
+**Setup and IDE**:
+
+- The setup installs the libraries the QRCode demo needs, in `lib\DelphiZXingQRCode` and `lib\ZXing.Delphi`: the demos compile after a setup install. The LibraryStore demo needs the MARS-Curiosity client (its setup). See [Setup](/guide/installation#setup).
+- New design-time package `dclFMXERPackage` (Delphi 12 and 13): FMXER, with its version, in the splash screen and in the About box of the IDE. It registers no components. The setup and TMS Smart Setup install it.
+- The QRCode and NewProjectTemplate demos open with Win32 as the active platform, like the other demos.
+
+Library code is unchanged from v.1.5.
+
 ## v.1.5.1 — 2026-10-16
 
 **Setup fixes** (the v.1.5 setup did not install):
