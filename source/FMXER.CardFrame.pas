@@ -29,23 +29,25 @@ type
     FGlyphStand: string;
     FGlyphRStand: string;
     FTitleTextFrame: TTextFrame;
-    procedure SetDetail(const Value: string);
-    procedure SetTitle(const Value: string);
+    procedure InternalSetDetail(const Value: string);
+    procedure InternalSetTitle(const Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     //
-    procedure SetGlyphAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetGlyphAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetGlyphAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TCardFrame;
+    function SetGlyphAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TCardFrame;
 
-    procedure SetGlyphRAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetGlyphRAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetGlyphRAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TCardFrame;
+    function SetGlyphRAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TCardFrame;
 
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TCardFrame;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TCardFrame;
+    function SetTitle(const ATitle: string): TCardFrame;
+    function SetContentStand(const AStand: string): TCardFrame;
     //
-    property Title: string read FTitle write SetTitle;
-    property Detail: string read FDetail write SetDetail;
+    property Title: string read FTitle write InternalSetTitle;
+    property Detail: string read FDetail write InternalSetDetail;
     property ContentStand: string read FContentStand write FContentStand;
     property GlyphStand: string read FGlyphStand write FGlyphStand;
     property GlyphRStand: string read FGlyphRStand write FGlyphRStand;
@@ -80,49 +82,67 @@ begin
   inherited;
 end;
 
-procedure TCardFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function TCardFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): TCardFrame;
 begin
+  Result := Self;
   FContent := FormStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
 end;
 
-procedure TCardFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function TCardFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): TCardFrame;
 begin
+  Result := Self;
   FContent := FrameStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
 end;
 
-procedure TCardFrame.SetDetail(const Value: string);
+procedure TCardFrame.InternalSetDetail(const Value: string);
 begin
   FDetail := Value;
 end;
 
-procedure TCardFrame.SetGlyphAsForm<T>(const AConfigProc: TProc<T>);
+function TCardFrame.SetGlyphAsForm<T>(const AConfigProc: TProc<T>): TCardFrame;
 begin
+  Result := Self;
   GlyphLayout.Visible := true;
   FGlyph := FormStand1.NewAndShow<T>(GlyphLayout, GlyphStand, AConfigProc);
 end;
 
-procedure TCardFrame.SetGlyphAsFrame<T>(const AConfigProc: TProc<T>);
+function TCardFrame.SetGlyphAsFrame<T>(const AConfigProc: TProc<T>): TCardFrame;
 begin
+  Result := Self;
   GlyphLayout.Visible := true;
   FGlyph := FrameStand1.NewAndShow<T>(GlyphLayout, GlyphStand, AConfigProc);
 end;
 
-procedure TCardFrame.SetGlyphRAsForm<T>(const AConfigProc: TProc<T>);
+function TCardFrame.SetGlyphRAsForm<T>(const AConfigProc: TProc<T>): TCardFrame;
 begin
+  Result := Self;
   GlyphRLayout.Visible := true;
   FGlyphR := FormStand1.NewAndShow<T>(GlyphRLayout, GlyphRStand, AConfigProc);
 end;
 
-procedure TCardFrame.SetGlyphRAsFrame<T>(const AConfigProc: TProc<T>);
+function TCardFrame.SetGlyphRAsFrame<T>(const AConfigProc: TProc<T>): TCardFrame;
 begin
+  Result := Self;
   GlyphRLayout.Visible := true;
   FGlyphR := FrameStand1.NewAndShow<T>(GlyphRLayout, GlyphRStand, AConfigProc);
 end;
 
-procedure TCardFrame.SetTitle(const Value: string);
+procedure TCardFrame.InternalSetTitle(const Value: string);
 begin
   FTitle := Value;
   FTitleTextFrame.SetContent(Value);
+end;
+
+function TCardFrame.SetTitle(const ATitle: string): TCardFrame;
+begin
+  Result := Self;
+  Title := ATitle;
+end;
+
+function TCardFrame.SetContentStand(const AStand: string): TCardFrame;
+begin
+  Result := Self;
+  FContentStand := AStand;
 end;
 
 end.

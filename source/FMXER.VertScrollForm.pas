@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
-  FormStand, SubjectStand, FrameStand;
+  FormStand, SubjectStand, FrameStand, FMXER.UI.Misc;
 
 type
   [Align(TAlignLayout.Client)]
@@ -17,18 +17,20 @@ type
     FContent: TSubjectInfo;
     FContentStand: string;
     function GetTouchWidth: Single;
-    procedure SetTouchWidth(const Value: Single);
+    procedure InternalSetTouchWidth(const Value: Single);
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
     [Hide]
     procedure HideHandler;
     //
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TVertScrollForm;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TVertScrollForm;
+    function SetContentStand(const AStand: string): TVertScrollForm;
+    function SetTouchWidth(const ATouchWidth: Single): TVertScrollForm;
     //
     property ContentStand: string read FContentStand write FContentStand;
-    property TouchWidth: Single read GetTouchWidth write SetTouchWidth;
+    property TouchWidth: Single read GetTouchWidth write InternalSetTouchWidth;
   end;
 
 var
@@ -54,9 +56,10 @@ begin
   SI.DefaultHide;
 end;
 
-procedure TVertScrollForm.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function TVertScrollForm.SetContentAsForm<T>(const AConfigProc: TProc<T>): TVertScrollForm;
 begin
-  FContent := FormStand1.NewAndShow<T>(VerticalScrollbox, ''
+  Result := Self;
+  FContent := FormStand1.NewAndShow<T>(VerticalScrollbox, ContentStand
     , procedure (AForm: T)
       begin
 //        TForm(AForm).Align := TAlignLayout.Top; // ???
@@ -71,26 +74,37 @@ begin
   );
 end;
 
-procedure TVertScrollForm.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function TVertScrollForm.SetContentAsFrame<T>(const AConfigProc: TProc<T>): TVertScrollForm;
+var
+  LContent: TFrameInfo<T>;
 begin
-  FContent := FrameStand1.NewAndShow<T>(VerticalScrollbox, ''
-    , procedure (AFrame: T)
-      begin
-        TFrame(AFrame).Align := TAlignLayout.Top;
-        if Assigned(AConfigProc) then
-          AConfigProc(AFrame);
-      end
-    , procedure (AFrameInfo: TFrameInfo<T>)
-      begin
-        AFrameInfo.Stand.Align := AFrameInfo.Frame.Align;
-        AFrameInfo.Stand.Height := AFrameInfo.Frame.Height;
-      end
-  );
+  Result := Self;
+  // aligned to the top before entering the stand: the frame keeps its design
+  // height (or the one set by AConfigProc), and the scroll box scrolls it
+  LContent := TFMXERStands.NewSizedFrame<T>(FrameStand1, VerticalScrollbox, ContentStand, TAlignLayout.Top);
+  FContent := LContent;
+  if Assigned(AConfigProc) then
+    AConfigProc(LContent.Frame);
+  LContent.Stand.Align := TAlignLayout.Top;
+  LContent.Stand.Height := LContent.Frame.Height + LContent.Frame.Margins.Top + LContent.Frame.Margins.Bottom;
+  LContent.Show;
 end;
 
-procedure TVertScrollForm.SetTouchWidth(const Value: Single);
+procedure TVertScrollForm.InternalSetTouchWidth(const Value: Single);
 begin
   VerticalScrollbox.Padding.Right := Value;
+end;
+
+function TVertScrollForm.SetContentStand(const AStand: string): TVertScrollForm;
+begin
+  Result := Self;
+  FContentStand := AStand;
+end;
+
+function TVertScrollForm.SetTouchWidth(const ATouchWidth: Single): TVertScrollForm;
+begin
+  Result := Self;
+  TouchWidth := ATouchWidth;
 end;
 
 end.

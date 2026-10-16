@@ -5,7 +5,7 @@ interface
 uses
   Classes, SysUtils, System.Rtti, FMX.Forms, FMX.Layouts, Types, FMX.Types,
   FMX.Controls,
-  SubjectStand;
+  SubjectStand, FrameStand;
 
 type
   TNameValueParam = record
@@ -76,6 +76,17 @@ type
 
   TCaptionPosition = (Left, Right, Top, Bottom);
 
+  /// <summary>Helpers for the containers.</summary>
+  TFMXERStands = record
+    /// <summary>Like TFrameStand.New, but the frame is aligned with AAlign
+    /// before it enters the stand, so it keeps its design size (with Align =
+    /// Client it would take the size of the stand). The caller sizes the slot
+    /// on the frame (after the configuration procedure) and shows it.</summary>
+    class function NewSizedFrame<T: TFrame>(const AFrameStand: TFrameStand;
+      const AParent: TFmxObject; const AStandName: string;
+      const AAlign: TAlignLayout): TFrameInfo<T>; static;
+  end;
+
   // shortcut function
   function Param(const AName: string; const AValue: TValue): TNameValueParam; overload;
   function Param(const AName: string; const AValue: TProc): TNameValueParam; overload;
@@ -99,6 +110,26 @@ uses IOUtils;
 function LocalFile(const AFileName: string): string;
 begin
   Result := TPath.Combine(LocalFilesPath, AFileName);
+end;
+
+{ TFMXERStands }
+
+class function TFMXERStands.NewSizedFrame<T>(const AFrameStand: TFrameStand;
+  const AParent: TFmxObject; const AStandName: string;
+  const AAlign: TAlignLayout): TFrameInfo<T>;
+var
+  LFrame: T;
+begin
+  LFrame := T.Create(nil);
+  try
+    LFrame.Name := '';
+    LFrame.Align := AAlign;
+    Result := AFrameStand.Use<T>(LFrame, AParent, AStandName);
+    Result.FrameIsOwned := True;
+  except
+    LFrame.Free;
+    raise;
+  end;
 end;
 
 { TElementDef<T> }

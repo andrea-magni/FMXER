@@ -25,7 +25,7 @@ type
     FContent: string;
     FOnBeforePaint: TOnBeforePaintHandler;
     FRadiusFactor: Single;
-    procedure SetOnTapHandler(const Value: TOnTapHandler);
+    procedure InternalSetOnTapHandler(const Value: TOnTapHandler);
   protected
     procedure SetOnBeforePaint(const Value: TOnBeforePaintHandler);
     procedure UpdateQRCode;
@@ -42,9 +42,10 @@ type
     function SetLogoWidth(const AWidth: Single): TQRCodeFrame;
     function SetLogoHeight(const AHeight: Single): TQRCodeFrame;
     function SetLogoVisible(const AVisible: Boolean): TQRCodeFrame;
+    function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TQRCodeFrame;
 
     property OnBeforePaint: TOnBeforePaintHandler read FOnBeforePaint write SetOnBeforePaint;
-    property OnTapHandler: TOnTapHandler read FOnTapHandler write SetOnTapHandler;
+    property OnTapHandler: TOnTapHandler read FOnTapHandler write InternalSetOnTapHandler;
   end;
 
 implementation
@@ -130,7 +131,7 @@ begin
   end;
 end;
 
-procedure TQRCodeFrame.SetOnTapHandler(const Value: TOnTapHandler);
+procedure TQRCodeFrame.InternalSetOnTapHandler(const Value: TOnTapHandler);
 begin
   FOnTapHandler := Value;
 end;
@@ -160,6 +161,12 @@ end;
 procedure TQRCodeFrame.UpdateQRCode;
 begin
   SetSVGSource(TQRCode.TextToSvg(FContent, FOnBeforePaint, FRadiusFactor));
+end;
+
+function TQRCodeFrame.SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TQRCodeFrame;
+begin
+  Result := Self;
+  OnTapHandler := AOnTapHandler;
 end;
 
 end.

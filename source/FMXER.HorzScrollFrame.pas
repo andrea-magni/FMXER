@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Layouts, FrameStand, SubjectStand, FormStand;
+  FMX.Layouts, FrameStand, SubjectStand, FormStand, FMXER.UI.Misc;
 
 type
   THorzScrollFrame = class(TFrame)
@@ -16,14 +16,16 @@ type
     FContent: TSubjectInfo;
     FContentStand: string;
     function GetTouchHeight: Single;
-    procedure SetTouchHeight(const Value: Single);
+    procedure InternalSetTouchHeight(const Value: Single);
   public
     //
-    procedure SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetContentAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): THorzScrollFrame;
+    function SetContentAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): THorzScrollFrame;
+    function SetContentStand(const AStand: string): THorzScrollFrame;
+    function SetTouchHeight(const ATouchHeight: Single): THorzScrollFrame;
     //
     property ContentStand: string read FContentStand write FContentStand;
-    property TouchHeight: Single read GetTouchHeight write SetTouchHeight;
+    property TouchHeight: Single read GetTouchHeight write InternalSetTouchHeight;
   end;
 
 implementation
@@ -37,9 +39,10 @@ begin
   Result := HorizontalScrollbox.Padding.Bottom;
 end;
 
-procedure THorzScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>);
+function THorzScrollFrame.SetContentAsForm<T>(const AConfigProc: TProc<T>): THorzScrollFrame;
 begin
-  FContent := FormStand1.NewAndShow<T>(HorizontalScrollbox, ''
+  Result := Self;
+  FContent := FormStand1.NewAndShow<T>(HorizontalScrollbox, ContentStand
     , procedure (AForm: T)
       begin
         if Assigned(AConfigProc) then
@@ -53,25 +56,37 @@ begin
   );
 end;
 
-procedure THorzScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>);
+function THorzScrollFrame.SetContentAsFrame<T>(const AConfigProc: TProc<T>): THorzScrollFrame;
+var
+  LContent: TFrameInfo<T>;
 begin
-  FContent := FrameStand1.NewAndShow<T>(HorizontalScrollbox, ''
-    , procedure (AFrame: T)
-      begin
-        if Assigned(AConfigProc) then
-          AConfigProc(AFrame);
-      end
-    , procedure (AFrameInfo: TFrameInfo<T>)
-      begin
-        AFrameInfo.Stand.Align := TAlignLayout.Left;
-        AFrameInfo.Stand.Width := AFrameInfo.Frame.Width;
-      end
-  );
+  Result := Self;
+  // aligned to the left before entering the stand: the frame keeps its design
+  // width (or the one set by AConfigProc), and the scroll box scrolls it
+  LContent := TFMXERStands.NewSizedFrame<T>(FrameStand1, HorizontalScrollbox, ContentStand, TAlignLayout.Left);
+  FContent := LContent;
+  if Assigned(AConfigProc) then
+    AConfigProc(LContent.Frame);
+  LContent.Stand.Align := TAlignLayout.Left;
+  LContent.Stand.Width := LContent.Frame.Width + LContent.Frame.Margins.Left + LContent.Frame.Margins.Right;
+  LContent.Show;
 end;
 
-procedure THorzScrollFrame.SetTouchHeight(const Value: Single);
+procedure THorzScrollFrame.InternalSetTouchHeight(const Value: Single);
 begin
   HorizontalScrollbox.Padding.Bottom := Value;
+end;
+
+function THorzScrollFrame.SetContentStand(const AStand: string): THorzScrollFrame;
+begin
+  Result := Self;
+  FContentStand := AStand;
+end;
+
+function THorzScrollFrame.SetTouchHeight(const ATouchHeight: Single): THorzScrollFrame;
+begin
+  Result := Self;
+  TouchHeight := ATouchHeight;
 end;
 
 end.

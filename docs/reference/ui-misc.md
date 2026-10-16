@@ -22,8 +22,8 @@ Parameter names are case-insensitive. `ParamByName` returns `ADefaultValue` (or 
 
 | Consumer | Parameters |
 |---|---|
-| `TColumnForm.AddFrame<T>(TElementDef<T>)`, `AddForm<T>(...)` | `Height` (Integer, default 200) |
-| `TRowForm.AddFrame<T>(TElementDef<T>)`, `AddForm<T>(...)` | `Width` (Integer, default 200) |
+| `TColumnForm.AddFrame<T>(TElementDef<T>)`, `AddForm<T>(...)` | `Height` (Integer, default 200; `TColumnForm.AUTO_HEIGHT` for the element's own height) |
+| `TRowForm.AddFrame<T>(TElementDef<T>)`, `AddForm<T>(...)` | `Width` (Integer, default 200; `TRowForm.AUTO_WIDTH` for the element's own width) |
 | `TScaffoldForm.AddActionButton(ACaption, AParams)`, `AddActionButtonOverlayFrame<T>(TElementDef<T>)` | `OnClickProc` (`TProc`) |
 
 ```pascal
@@ -92,6 +92,18 @@ Delphi uses only one class helper per class at a time. If your code declares ano
 | `SetPadding(APadding): TCommonCustomForm` | the form's padding (moved with the content when the form is shown through a `TFormStand`) |
 | `SetWidth(AWidth)`, `SetHeight(AHeight): TCommonCustomForm` | size |
 | `SetPadding<T: TCommonCustomForm>(APadding): T` | the same, returning the form as `T` (up to v.1.1 the constraint was `TControl` and it always raised `EInvalidCast`) |
+
+## TFMXERStands
+
+```pascal
+TFMXERStands = record
+  class function NewSizedFrame<T: TFrame>(const AFrameStand: TFrameStand;
+    const AParent: TFmxObject; const AStandName: string;
+    const AAlign: TAlignLayout): TFrameInfo<T>; static;
+end;
+```
+
+Like `TFrameStand.New<T>`, but the frame is aligned with `AAlign` (`Top`, `Left`...) **before** it enters the stand, so it keeps its design size: with its usual `Align = Client` it would take the size of the stand at once. The frame is not shown: configure it, size its slot on it, then call `Show` on the returned info. Columns, rows and scroll boxes use it for [automatic sizes](/guide/layouts#automatic-sizes); use it in your own containers to do the same.
 
 ## TSubjectInfoContainer
 

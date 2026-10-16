@@ -97,7 +97,7 @@ Row.AddFrame<TBadgeFrame>(48
 
 | Convention | Why |
 |---|---|
-| `Align = Client` on the frame | the slot decides the size |
+| `Align = Client` on the frame, and a sensible design size | the slot decides the size; with `AUTO_HEIGHT`/`AUTO_WIDTH` the design size becomes the slot size |
 | setters named `Set...`, returning the element | fluent configuration, like the built-in elements |
 | events as `TProc` / `TProc<T>` (`OnClickProc`, `OnChangeProc`) | configured with closures in the configuration procedure |
 | read `TAppColors` in the constructor | the element follows the application colors |

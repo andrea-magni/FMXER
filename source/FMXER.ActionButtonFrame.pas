@@ -25,13 +25,15 @@ type
   public
     constructor Create(AOwner: TComponent); override;
 
-    procedure SetOverlayAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil);
-    procedure SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil);
+    function SetOverlayAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil): TActionButtonFrame;
+    function SetOverlayAsForm<T: TForm>(const AConfigProc: TProc<T> = nil): TActionButtonFrame;
 
     // shortcuts
-    procedure SetOverlayAsText(const AText: string;
+    function SetOverlayAsText(const AText: string;
       const AOnClickProc: TProc = nil;
-      const AConfigProc: TProc<TTextFrame> = nil);
+      const AConfigProc: TProc<TTextFrame> = nil): TActionButtonFrame;
+
+    function SetOnClickProc(const AOnClickProc: TProc): TActionButtonFrame;
 
     property OnClickProc: TProc read FOnClickProc write FOnClickProc;
     property OverlayStand: string read FOverlayStand write FOverlayStand;
@@ -57,20 +59,23 @@ begin
   BackgroundCircle.Fill.Color := TAppColors.PrimaryColor;
 end;
 
-procedure TActionButtonFrame.SetOverlayAsForm<T>(const AConfigProc: TProc<T>);
+function TActionButtonFrame.SetOverlayAsForm<T>(const AConfigProc: TProc<T>): TActionButtonFrame;
 begin
+  Result := Self;
   FOverlay := FormStand1.NewAndShow<T>(OverlayLayout, OverlayStand, AConfigProc);
 end;
 
-procedure TActionButtonFrame.SetOverlayAsFrame<T>(
-  const AConfigProc: TProc<T>);
+function TActionButtonFrame.SetOverlayAsFrame<T>(
+  const AConfigProc: TProc<T>): TActionButtonFrame;
 begin
+  Result := Self;
   FOverlay := FrameStand1.NewAndShow<T>(OverlayLayout, OverlayStand, AConfigProc);
 end;
 
-procedure TActionButtonFrame.SetOverlayAsText(const AText: string;
-  const AOnClickProc: TProc; const AConfigProc: TProc<TTextFrame>);
+function TActionButtonFrame.SetOverlayAsText(const AText: string;
+  const AOnClickProc: TProc; const AConfigProc: TProc<TTextFrame>): TActionButtonFrame;
 begin
+  Result := Self;
   SetOverlayAsFrame<TTextFrame>(
     procedure (ATextFrame: TTextFrame)
     begin
@@ -82,6 +87,12 @@ begin
 
   if Assigned(AOnClickProc) then
     OnClickProc := AOnClickProc;
+end;
+
+function TActionButtonFrame.SetOnClickProc(const AOnClickProc: TProc): TActionButtonFrame;
+begin
+  Result := Self;
+  FOnClickProc := AOnClickProc;
 end;
 
 end.

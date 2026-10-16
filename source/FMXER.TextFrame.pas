@@ -22,6 +22,7 @@ type
     function SetHorzAlign(const AHorzAlign: TSkTextHorzAlign): TTextFrame;
     function SetVertAlign(const AVertAlign: TTextAlign): TTextFrame;
     function SetOnClick(const AOnClickProc: TProc): TTextFrame;
+    function SetOnClickProc(const AOnClickProc: TProc): TTextFrame;
     function SetFontColor(const AColor: TAlphaColor): TTextFrame;
     function SetFontSize(const AFontSize: Single): TTextFrame;
     function SetFontFamily(const AFontFamily: string): TTextFrame;
@@ -152,6 +153,11 @@ function TTextFrame.SetVertAlign(
 begin
   Result := Self;
   TextContent.TextSettings.VertAlign := AVertAlign;
+end;
+
+function TTextFrame.SetOnClickProc(const AOnClickProc: TProc): TTextFrame;
+begin
+  Result := SetOnClick(AOnClickProc);
 end;
 
 end.

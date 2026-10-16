@@ -8,14 +8,15 @@ Elements expose their events as anonymous-method properties or setters, not as `
 
 | Element | Event |
 |---|---|
-| `TButtonFrame` | `OnClickHandler: TProc` (`SetOnClickHandler`), `OnUpdateHandler: TProc<TAction>` |
+| `TButtonFrame` | `SetOnClickProc(TProc)` (also `SetOnClickHandler`, `OnClickHandler`), `OnUpdateHandler: TProc<TAction>` |
 | `TEditFrame` | `OnChangeProc: TProc<Boolean>` — `True` while typing (`OnChangeTracking`), `False` on `OnChange` |
 | `TTrackbarFrame` | `OnChangeProc: TProc<Single>` |
 | `TColorPickerFrame` | `OnChangeProc: TProc<TAlphaColor>` |
-| `TTextFrame` | `SetOnClick(TProc)` |
+| `TTextFrame` | `SetOnClickProc(TProc)` (also `SetOnClick`) |
 | `TGlyphFrame` | `SetOnClickProc(TProc)` |
-| `TChipFrame` | `OnClickHandler: TProc` |
-| `TImageFrame`, `TSVGFrame`, `TAnimatedImageFrame`, `TQRCodeFrame` | `OnTapHandler` (tap on mobile, mouse up on Windows) |
+| `TChipFrame` | `SetOnClickProc(TProc)` (also `OnClickHandler`) |
+| `TActionButtonFrame` | `SetOnClickProc(TProc)` (also `OnClickProc`) |
+| `TImageFrame`, `TSVGFrame`, `TAnimatedImageFrame`, `TQRCodeFrame` | `SetOnTapHandler` / `OnTapHandler` (tap on mobile, mouse up on Windows) |
 | `TListViewFrame` | a `TListViewItemClickProc` per item (`AddItem`), `SetOnSearchChange` |
 
 Assign them in the configuration procedure:

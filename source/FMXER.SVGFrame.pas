@@ -28,6 +28,7 @@ type
     function SetOverrideColor(const AOverrideColor: TAlphaColor): TSVGFrame;
     function SetSVGSource(const ASVGSource: string): TSVGFrame;
 
+    function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TSVGFrame;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;
 
@@ -95,6 +96,12 @@ function TSVGFrame.SetWrapMode(const AWrapMode: TSkSvgWrapMode): TSVGFrame;
 begin
   Result := Self;
   SVG.Svg.WrapMode := AWrapMode;
+end;
+
+function TSVGFrame.SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TSVGFrame;
+begin
+  Result := Self;
+  FOnTapHandler := AOnTapHandler;
 end;
 
 end.

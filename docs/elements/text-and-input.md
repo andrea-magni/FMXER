@@ -17,7 +17,7 @@ Col.AddFrame<TTextFrame>(80
     .SetFontWeight(TFontWeight.Bold)
     .SetHorzAlign(TSkTextHorzAlign.Leading)
     .SetMaxLines(2)
-    .SetOnClick(
+    .SetOnClickProc(
       procedure
       begin
         ShowMessage('Clicked');
@@ -37,7 +37,7 @@ Col.AddFrame<TTextFrame>(80
 | `SetHorzAlign(TSkTextHorzAlign)` | `GetHorzAlign` | `Leading`, `Center`, `Trailing`, `Justify` |
 | `SetVertAlign(TTextAlign)` | `GetVertAlign` | |
 | `SetMaxLines(ALines)` | `GetMaxLines` | |
-| `SetOnClick(TProc)` | `GetOnClickProc` | |
+| `SetOnClickProc(TProc)` (or `SetOnClick`) | `GetOnClickProc` | |
 
 The label is `TextContent`. `TTextFrame` is also what the scaffold uses for snackbars and for text action buttons.
 
@@ -52,7 +52,7 @@ Col.AddFrame<TButtonFrame>(60
     Button
     .SetText('Save')
     .SetBackgroundVisible(False)
-    .SetOnClickHandler(
+    .SetOnClickProc(
       procedure
       begin
         // save
@@ -73,7 +73,7 @@ Col.AddFrame<TButtonFrame>(60
 | `SetText(AText)` | the button text (the action's caption) |
 | `SetCaption(ACaption)` | label above the button |
 | `SetExtraText(AText)` | label below the button |
-| `SetOnClickHandler(TProc)` / `OnClickHandler` | click (the action's `OnExecute`) |
+| `SetOnClickProc(TProc)` (or `SetOnClickHandler`) / `OnClickHandler` | click (the action's `OnExecute`) |
 | `OnUpdateHandler: TProc<TAction>` | the action's `OnUpdate`: enable, check, rename the button |
 | `SetBackgroundFillColor`, `SetBackgroundStrokeColor`, `SetBackgroundStrokeThickness`, `SetBackgroundOpacity`, `SetBackgroundVisible` | the rectangle behind the button |
 | `BackgroundFill`, `BackgroundStroke` | its brushes |
@@ -190,7 +190,7 @@ Col.AddFrame<TChipsFrame>(50
 | `SetText(AText)` | |
 | `SetBackgroundColor(AColor)` | fill (default `SolidBackgroundColor`) |
 | `SetForegroundColor(AColor)` | text and border (default `PrimaryColor`) |
-| `OnClickHandler: TProc` | |
+| `SetOnClickProc(TProc)` / `OnClickHandler: TProc` | |
 
 | `TChipsFrame` | |
 |---|---|

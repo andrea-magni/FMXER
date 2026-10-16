@@ -58,7 +58,7 @@ Fixed in v.1.2. On v.1.1 clear the items at the start of your `ItemBuilderProc` 
 
 ### The elements of a row/column overlap or are cut
 
-Sizes are explicit: every `AddFrame` gets the height (column) or width (row) you pass, 200 by default. Pass the size you want, and put columns longer than the screen in a `TVertScrollFrame`. See [Composing Layouts](./layouts#sizing-explicit-top-down).
+Every `AddFrame` gets the height (column) or width (row) you pass, 200 by default. Pass the size you want, or `AUTO_HEIGHT`/`AUTO_WIDTH` to use the element's own size, and put columns longer than the screen in a `TVertScrollFrame`. See [Composing Layouts](./layouts#sizing-top-down).
 
 ## Design
 

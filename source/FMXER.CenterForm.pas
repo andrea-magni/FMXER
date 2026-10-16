@@ -21,6 +21,7 @@ type
       const AConfigProc: TProc<T> = nil): TCenterForm;
     function SetContentAsForm<T: TForm>(const AWidth, AHeight: Integer;
       const AConfigProc: TProc<T> = nil): TCenterForm;
+    function SetContentStand(const AStand: string): TCenterForm;
     //
     property ContentStand: string read FContentStand write FContentStand;
   end;
@@ -48,6 +49,12 @@ begin
   ContentLayout.Height := AHeight;
 
   FContent := FrameStand1.NewAndShow<T>(ContentLayout, ContentStand, AConfigProc);
+end;
+
+function TCenterForm.SetContentStand(const AStand: string): TCenterForm;
+begin
+  Result := Self;
+  FContentStand := AStand;
 end;
 
 end.

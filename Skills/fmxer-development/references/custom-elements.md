@@ -8,7 +8,7 @@ Any `TFrame` works in a slot. To feel like the built-in ones:
 
 | Convention | Why |
 |---|---|
-| `Align = Client` on the frame | the slot decides the size |
+| `Align = Client` on the frame, a sensible design size | the slot decides the size; with `AUTO_HEIGHT`/`AUTO_WIDTH` the design size is the slot size |
 | `Set...` methods returning the element (`Result := Self;`) | fluent configuration |
 | events as `TProc` / `TProc<T>` (`OnClickProc`, `OnChangeProc`) + a setter | configured with closures |
 | read `TAppColors` in the constructor | follows the application colors |

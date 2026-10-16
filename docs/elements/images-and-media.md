@@ -10,7 +10,7 @@ Elements that draw: bitmaps, SVG, Lottie animations, custom drawing with Skia, a
 TOnTapHandler = reference to procedure(AImage: TFMXObject; APoint: TPointF);
 ```
 
-It is called on `OnTap` on mobile and on `OnMouseUp` on Windows (where FMX raises no tap without a touch screen). The point is in the coordinates of the inner control. These elements also forward `HitTest` to the inner control: `SetHitTest(False)` makes them click-through, `SetHitTest(True)` lets them receive taps.
+Assign it with the `OnTapHandler` property or the fluent `SetOnTapHandler`. It is called on `OnTap` on mobile and on `OnMouseUp` on Windows (where FMX raises no tap without a touch screen). The point is in the coordinates of the inner control. These elements also forward `HitTest` to the inner control: `SetHitTest(False)` makes them click-through, `SetHitTest(True)` lets them receive taps.
 
 The type is declared once, in `FMXER.UI.Types`; the element units alias it, so a variable of type `TOnTapHandler` can be assigned to any of these elements (since v.1.2.1: before, each unit had its own type).
 
@@ -36,7 +36,7 @@ Scaffold.SetContentAsFrame<TImageFrame>(
 
 ## TLogoFrame
 
-Unit `FMXER.LogoFrame`. A `TImage` (`LogoImage`) showing the FMXER logo by default — the placeholder used in many demos. `LogoResource := 'MyLogo'` loads a bitmap from an `RCDATA` resource of the application.
+Unit `FMXER.LogoFrame`. A `TImage` (`LogoImage`) showing the FMXER logo by default — the placeholder used in many demos. `SetLogoResource('MyLogo')` (or the `LogoResource` property) loads a bitmap from an `RCDATA` resource of the application.
 
 ## TSVGFrame
 
@@ -75,7 +75,7 @@ The `media` folder of the repository has several Lottie animations from [LottieF
 
 ## TActivityBubblesFrame
 
-Unit `FMXER.ActivityBubblesFrame`. A Lottie "bubbles" animation (embedded in the `.fmx`) with a `Text` property for a caption. Used as a busy indicator: a transient route with a `TContainerForm` around it, or in the scaffold's title detail area.
+Unit `FMXER.ActivityBubblesFrame`. A Lottie "bubbles" animation (embedded in the `.fmx`) with a caption: `SetText(AText)` or the `Text` property. Used as a busy indicator: a transient route with a `TContainerForm` around it, or in the scaffold's title detail area.
 
 ## TPaintBoxFrame
 
@@ -111,8 +111,8 @@ Unit `FMXER.WebViewFrame`. A `TWebBrowser` (`WebBrowser1`).
 
 | Member | Description |
 |---|---|
-| `URL: string` | navigates to a URL |
-| `HTML: string` | loads an HTML string (`LoadFromStrings`) |
+| `URL: string` / `SetURL(AURL)` | navigates to a URL |
+| `HTML: string` / `SetHTML(AHTML)` | loads an HTML string (`LoadFromStrings`) |
 
 ```pascal
 Scaffold.SetContentAsFrame<TWebViewFrame>(

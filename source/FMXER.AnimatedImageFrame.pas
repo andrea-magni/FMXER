@@ -27,6 +27,7 @@ type
     function SetAnimationSpeed(const ASpeed: Single): TAnimatedImageFrame;
 
     property Image: TSkAnimatedImage read ContentImage;
+    function SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TAnimatedImageFrame;
     property OnTapHandler: TOnTapHandler read FOnTapHandler write FOnTapHandler;
   end;
 
@@ -82,6 +83,12 @@ function TAnimatedImageFrame.SetWrapMode(
 begin
   Result := Self;
   ContentImage.WrapMode := AWrapMode;
+end;
+
+function TAnimatedImageFrame.SetOnTapHandler(const AOnTapHandler: TOnTapHandler): TAnimatedImageFrame;
+begin
+  Result := Self;
+  FOnTapHandler := AOnTapHandler;
 end;
 
 end.

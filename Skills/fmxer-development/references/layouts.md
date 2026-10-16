@@ -6,15 +6,15 @@ Docs: https://andrea-magni.github.io/FMXER/guide/layouts, /elements/containers, 
 
 Every slot method (`SetContentAsFrame<T>`, `AddFrame<T>`, `SetLeftAsFrame<T>`...) does: create a `T` with the container's `TFrameStand`/`TFormStand` in the slot layout, inside the slot's stand → call the configuration procedure (optional: `Scaffold.SetContentAsFrame<TLogoFrame>;`) → show it (stand `OnShow*` animations) → keep the `TSubjectInfo`. Frames go through `...AsFrame<T: TFrame>`, forms through `...AsForm<T: TForm>` (the form's controls are moved into the slot). Any `TFrame`/`TForm` works, not only FMXER ones.
 
-## Sizing: explicit, top-down
+## Sizing: top-down
 
-FMXER does not measure children like Flutter.
+FMXER has no measure pass like Flutter: pass the size, or (v.1.3+) `AUTO_HEIGHT`/`AUTO_WIDTH` for the element's own size.
 
 | Container | Rule |
 |---|---|
-| `TColumnForm` | `AddFrame<T>(AHeight)` adds a slot of `AHeight` (default 200) aligned Top, as wide as the column; the column's `Height` grows by `AHeight` |
-| `TRowForm` | `AddFrame<T>(AWidth)` adds a slot of `AWidth` (default 200) aligned `ElementAlign` (Left; set `Right` before adding to fill from the right); `Width` grows |
-| `TVertScrollFrame` / `TVertScrollForm` | content aligned Top, keeps its own `Height`: a column inside scrolls |
+| `TColumnForm` | `AddFrame<T>(AHeight)` adds a slot of `AHeight` (default 200) aligned Top, as wide as the column; `TColumnForm.AUTO_HEIGHT`: the element's height (design, or set in the configuration procedure, margins included; a form element: its `Height`, so a nested column measures itself); the column's `Height` grows by the slot |
+| `TRowForm` | `AddFrame<T>(AWidth)` adds a slot of `AWidth` (default 200) aligned `ElementAlign` (Left; `SetElementAlign(TAlignLayout.Right)` before adding fills from the right); `TRowForm.AUTO_WIDTH`: the element's width; `Width` grows |
+| `TVertScrollFrame` / `TVertScrollForm` | content aligned Top, keeps its own `Height` (a frame: its design height or the one set in the configuration procedure; before v.1.3 a frame got 50): a column inside scrolls |
 | `THorzScrollFrame` | content aligned Left, keeps its own `Width`: a row inside scrolls |
 | `TCenterForm` | content gets `AWidth` x `AHeight`, centered |
 | everything else | the child fills the slot (`Client`) |
@@ -106,7 +106,7 @@ Col.AddFrame<TContainerFrame>(60
   end);
 ```
 
-Other needs: fixed-size centered element → `TCenterForm.SetContentAsFrame<T>(AWidth, AHeight, ...)`; colored/bordered background → `TBackgroundFrame`/`TBackgroundForm` (`SetFillColor`, `SetStrokeColor`, `SetStrokeThickness`; fill is `PrimaryColor` by default); titled box → `TCardFrame` (`Title`, `Detail`, `SetContentAsFrame<T>` — procedures, not chainable); spacing → `TMarginFrame`/`TPaddingFrame`/`TContainerFrame` + `SetMargin`/`SetPadding`; a thin line → `THorzDividerFrame` in a 1-pixel slot.
+Other needs: fixed-size centered element → `TCenterForm.SetContentAsFrame<T>(AWidth, AHeight, ...)`; colored/bordered background → `TBackgroundFrame`/`TBackgroundForm` (`SetFillColor`, `SetStrokeColor`, `SetStrokeThickness`; fill is `PrimaryColor` by default); titled box → `TCardFrame` (`SetTitle`, `SetGlyphAsFrame<T>`, `SetContentAsFrame<T>`, chainable since v.1.3); spacing → `TMarginFrame`/`TPaddingFrame`/`TContainerFrame` + `SetMargin`/`SetPadding`; a thin line → `THorzDividerFrame` in a 1-pixel slot.
 
 ## TElementDef
 

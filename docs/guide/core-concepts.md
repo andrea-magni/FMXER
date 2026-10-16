@@ -66,7 +66,12 @@ Two rules keep this safe:
 
 ## Fluent setters
 
-Most elements expose `Set*` methods that return the element itself, so a configuration reads as a sentence:
+Elements expose `Set*` methods that return the element itself, so a configuration reads as a sentence. Since v.1.3 the API follows three rules:
+
+- every slot method (`SetContentAsFrame<T>`, `AddFrame<T>`, `SetGlyphAsFrame<T>`, `SetOverlayAsText`...) returns its container;
+- every clickable element has `SetOnClickProc(TProc)`, and the image elements `SetOnTapHandler`;
+- the properties you set when building a screen have a setter: `SetTitle`, `SetText`, `SetURL`, `SetContentStand`, `SetElementStand`, `SetTouchWidth`...
+
 
 ```pascal
 Text
@@ -100,15 +105,14 @@ Every slot has a **stand name**: the name of the stand, in the container's style
 | Container | Stand property | Stands in its style book |
 |---|---|---|
 | `TColumnForm` | `ElementStand` | `fadeIn`, also the default: every element of a column fades in |
-| `TRowForm` | `ElementStand` | `fadeIn`, not the default: set `ElementStand := 'fadeIn'` to use it |
+| `TRowForm` | `ElementStand` | `fadeIn`, not the default: call `SetElementStand('fadeIn')` to use it |
 | `TScaffoldForm` | `ContentStand`, `TitleDetailStand`, `ActionButtonStand` | `snackbar` (used by `ShowSnackBar`) |
 | other containers | `ContentStand` (and `LeftStand`, `RightStand`, `GlyphStand`...) | none |
 
 An empty stand name means the `DefaultStandName` of the container's `TFrameStand`/`TFormStand` (`fadeIn` in `TColumnForm`, `framestand`/`formstand` elsewhere). When the name is not found in the style book, the element goes into a plain `TLayout`: no visual effect, everything else works. Set a stand property **before** the slot method that uses it:
 
 ```pascal
-Row.ElementStand := 'fadeIn';
-Row.AddFrame<TTextFrame>(120);
+Row.SetElementStand('fadeIn').AddFrame<TTextFrame>(120);
 ```
 
 ## Ownership and lifetime
