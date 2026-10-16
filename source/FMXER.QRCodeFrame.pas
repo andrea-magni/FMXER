@@ -7,10 +7,11 @@ uses
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   System.Skia, FMX.Skia, FMX.Layouts, FMX.Objects
 , QRCode.Render, QRCode.Utils
-;
+, FMXER.UI.Types;
 
 type
-  TOnTapHandler = reference to procedure(AImage: TFMXObject; APoint: TPointF);
+  // declared once, in FMXER.UI.Types (kept here for the code that names it with this unit)
+  TOnTapHandler = FMXER.UI.Types.TOnTapHandler;
 
   TQRCodeFrame = class(TFrame)
     QRCode: TSkSvg;

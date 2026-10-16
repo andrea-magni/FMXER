@@ -5,10 +5,11 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  System.Skia, FMX.Skia;
+  System.Skia, FMX.Skia, FMXER.UI.Types;
 
 type
-  TOnTapHandler = reference to procedure(AImage: TFMXObject; APoint: TPointF);
+  // declared once, in FMXER.UI.Types (kept here for the code that names it with this unit)
+  TOnTapHandler = FMXER.UI.Types.TOnTapHandler;
 
   TAnimatedImageFrame = class(TFrame)
     ContentImage: TSkAnimatedImage;
