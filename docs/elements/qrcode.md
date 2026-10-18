@@ -75,4 +75,4 @@ SvgToBitmap(TQRCode.TextToSvg(QRCodeContent), QRCodeBGColor, QRCodeColor, 1024, 
 
 ## Reading QR codes
 
-FMXER has no element to *read* codes, but the **QRCode demo** shows how to do it: a `TCameraComponent` queues frames, a background thread decodes them with [ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi), and a `TPaintBoxFrame` draws the frame and the detected points; camera permission, torch and Back handling included. See [Demos](/demos/#qrcode).
+FMXER has no element to *read* codes, but the **QRCode demo** shows how to do it: a `TCameraComponent` gives the frames, [ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4 decodes them in background (one `IScanManager` for every frame, `ScanAsync`: a frame that comes while a scan runs is skipped), and a `TPaintBoxFrame` draws the frame, the points found while scanning and the outline of the code read; camera permission, torch and Back handling included. See [Demos](/demos/#qrcode).

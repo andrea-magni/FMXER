@@ -345,7 +345,6 @@
         <DCCReference Include="Routes.colorPicker.pas"/>
         <DCCReference Include="Routes.QRGenerator.pas"/>
         <DCCReference Include="Routes.QRReader.pas"/>
-        <DCCReference Include="Threads.Scanner.pas"/>
         <DCCReference Include="Routes.Webview.pas"/>
         <DCCReference Include="Routes.SingleFrame.pas"/>
         <BuildConfiguration Include="Base">

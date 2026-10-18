@@ -2,6 +2,14 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## Unreleased
+
+**Demos and submodules** (library code unchanged):
+
+- `lib/TFrameStand` updated to TFrameStand v.2.4 (interactive gestures of the frames registered with the hosting form).
+- `lib/ZXing.Delphi` updated to ZXing.Delphi 4.0 (branch `4.0`): 52 formats, parallel decoding, `IScanManager` and `ScanAsync`.
+- QRCode demo: the scanner thread and its frame queue are replaced by one `IScanManager` with `ScanAsync` (decoding in background, the result in the main thread); the code read is outlined from its corners (`TReadResult.Position`). `Threads.Scanner.pas` removed.
+
 ## v.1.5.3 — 2026-10-16
 
 **Icon font on Windows**: without the *Material Design Icons Desktop* font installed, icons were drawn as empty boxes (for example the action button of the NewProjectTemplate demo).

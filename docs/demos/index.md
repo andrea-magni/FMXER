@@ -81,8 +81,8 @@ A complete app, and the most recent demo:
 - **home**: a stack with background, Lottie animation and a column of `TAccessoryFrame` rows (icon + button) to the other routes;
 - **QRGenerator**: an edit for the content, two `TColorButtonFrame`s in a `THorzPairFrame` that open color picker routes, a `TTrackbarFrame` for the corner radius, the code (`TQRCodeFrame`) and a share action (`SvgToBitmap` + `TShowShareSheetAction`);
 - **QRCodeColorSelection**, **QRCodeBGColorSelection**: the same route definition (`DefineColorPickerRoute`) with different getters and setters;
-- **QRReader**: camera preview in a `TPaintBoxFrame`, frames decoded by ZXing.Delphi in a background thread (`Threads.Scanner`), detected points drawn as they fade, torch toggle when the device has one, result with actions to open the content in the **Webview** route or to generate it again;
-- **SingleFrame**: the last camera frame (or the frame of the last result, with its points), with the same result actions; scanning a single picture is still marked *Not yet implemented*;
+- **QRReader**: camera preview in a `TPaintBoxFrame`, frames decoded in background by ZXing.Delphi 4 (`TMainData.ScanFrame`: one `IScanManager`, `ScanAsync`, the result in the main thread), the points found while scanning drawn as they fade, the code read outlined (its corners, `TReadResult.Position`), torch toggle when the device has one, result with actions to open the content in the **Webview** route or to generate it again;
+- **SingleFrame**: the last camera frame (or the frame of the last result, with its outline), with the same result actions; scanning a single picture is still marked *Not yet implemented*;
 - **Webview**: the scanned content in a `TWebViewFrame`.
 
 The main form shows the breadcrumb in the caption on Windows, closes the camera in `OnCloseRoute` and handles Back/Esc with `StackPop`.

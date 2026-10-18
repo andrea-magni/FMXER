@@ -25,10 +25,10 @@ FMXER has no design-time components: its design-time package only adds FMXER to 
 | [IconFontsImageList](https://github.com/EtheaDev/IconFontsImageList) | the Material Design icon font (`FMXER.IconFontsData`, glyph elements, action buttons with icons) | submodule `lib/IconFontsImageList`, GetIt |
 | [DelphiZXingQRCode](https://github.com/foxitsoftware/DelphiZXingQRCode) | QR code encoding (`TQRCodeFrame`) | submodule `lib/DelphiZXingQRCode` |
 
-Demo-only dependencies: [ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) (QR code *reading* in the QRCode demo, submodule `lib/ZXing.Delphi`), the [MARS-Curiosity](https://github.com/andrea-magni/MARS) REST client (LibraryStore demo) and FireDAC (DataSet demo).
+Demo-only dependencies: [ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0 or later (QR code *reading* in the QRCode demo, submodule `lib/ZXing.Delphi`, branch `4.0`), the [MARS-Curiosity](https://github.com/andrea-magni/MARS) REST client (LibraryStore demo) and FireDAC (DataSet demo).
 
 ::: tip TFrameStand version
-The submodule points to **TFrameStand 2.3**, which fixes several lifecycle defects of delayed actions and nested stands. FMXER also compiles with TFrameStand 1.6 (the version of FMXER 1.1), but 2.3 is recommended.
+The submodule points to **TFrameStand 2.4**. 2.3 fixed several lifecycle defects of delayed actions and nested stands; 2.4 registers the interactive gestures (zoom, double tap…) of the controls of a frame with the hosting form, so they work on Android. FMXER also compiles with TFrameStand 1.6 (the version of FMXER 1.1), but 2.4 is recommended.
 :::
 
 ## TMS Smart Setup
