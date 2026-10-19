@@ -4,6 +4,8 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 
 ## Unreleased
 
+**Safe area (Android 15+ edge-to-edge, iOS notch)**: the routes no longer go under the status bar and the navigation bar. The navigator shows them in a layout of the form that gets the safe area insets as margins (`TNavigator.SafeArea`, on by default; `SetSafeArea(False)` for apps that handle it themselves). See [The safe area](/guide/navigation#the-safe-area).
+
 **Android: no crash without the icon font**. On Android `FMXER.IconFontsData` registered `Material Design Icons Desktop.ttf` from the documents folder without checking it: with Skia of RAD Studio 13 a missing file raises in the unit initialization, and the app closed at start (runtime error 217, white screen). The font is now registered only when present, as on Windows: without it the icons are missing, the app starts. Deploy it to `assets\internal` (see [The icon font](/guide/installation#the-icon-font)).
 
 **Demos and submodules**:

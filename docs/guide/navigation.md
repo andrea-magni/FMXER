@@ -155,6 +155,22 @@ end;
 TFrameStand 2.3 has its own navigation stack (`Push`/`Pop`) and Back handling (`CatchBackKey` on a stand). The navigator does not delegate to them: `Push` hides the page below while routes stay visible under the new one (overlays, wait screens), routes can be built by any stand (`DefineRoute` with a function), and closing a route through TFrameStand would skip the navigator's bookkeeping (active routes, stack, `OnCloseRoute`). The navigator follows the same rules for the keys instead. If you also show dialogs with `FormStand1.ShowModal` and its `CatchBackKey`, set it after `Navigator.SetCatchBackKey(True)`: the last hook installed runs first, so Back cancels the dialog before it closes a route.
 :::
 
+## The safe area
+
+Android 15 and later draw every app **edge-to-edge** (RAD Studio 13 targets SDK 35+): the form covers the status bar and the navigation bar. On iOS the notch and the home indicator take part of the screen too. The navigator keeps the routes clear of them by default:
+
+- when its `FormStand` is owned by a form, it puts a `TLayout` (`Align = Client`) in that form and makes it the `DefaultParent` of the `FormStand` (unless you set one): the routes created without an explicit parent are shown in it;
+- it hooks `OnSafeAreaChanged` of the form and gives the safe area insets to that layout as margins. Your own `OnSafeAreaChanged` handler is still called.
+
+The area under the system bars shows the background of the form (`Fill`). On Windows and macOS the insets are zero and nothing changes.
+
+```pascal
+// an app that handles the safe area by itself: before the first route is shown
+Navigator(FormStand1).SetSafeArea(False);
+```
+
+`Navigator.SafeAreaLayout` is the layout (nil when `SafeArea` is `False`). Turning `SafeArea` off while routes are shown in it raises an exception. Routes created with an explicit parent (`DefineRoute<T>(Name, Proc, AParent)`) stay where you put them: give that parent the insets yourself if it covers the whole form.
+
 ## Events
 
 | Event | Fired |

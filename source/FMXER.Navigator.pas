@@ -3,8 +3,8 @@ unit FMXER.Navigator;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, System.UITypes, Generics.Collections
-, FMX.Types, FMX.Forms
+  System.Classes, System.SysUtils, System.StrUtils, System.Types, System.UITypes, Generics.Collections
+, FMX.Types, FMX.Controls, FMX.Forms, FMX.Layouts
 , SubjectStand, FormStand
 ;
 
@@ -13,8 +13,12 @@ type
   private
     FFormStand: TFormStand;
     FBackKeyHook: TComponent;
+    FSafeAreaHook: TComponent;
     function GetCatchBackKey: Boolean;
     procedure SetCatchBackKeyValue(const AValue: Boolean);
+    function GetSafeArea: Boolean;
+    procedure SetSafeAreaValue(const AValue: Boolean);
+    function GetSafeAreaLayout: TLayout;
   protected
     FOnCloseRouteProc: TProc<string>;
     FOnCreateRouteProc: TProc<string>;
@@ -64,6 +68,15 @@ type
     /// OnKeyDown of the form that owns FormStand (the previous handler is still
     /// called for the keys the navigator does not handle).</summary>
     function SetCatchBackKey(const AValue: Boolean): TNavigator;
+    /// <summary>True (the default when FormStand is owned by a form): the routes
+    /// stay within the safe area of the form, clear of the system bars (Android 15+
+    /// draws the app edge-to-edge, under the status and navigation bars) and of
+    /// the notch (iOS). The navigator puts a layout in the form, as DefaultParent
+    /// of FormStand (unless one is set), and gives it the safe area insets as
+    /// margins, hooking OnSafeAreaChanged of the form (the previous handler is
+    /// still called). Routes created with an explicit parent are not moved. Set it
+    /// before the first route is shown.</summary>
+    function SetSafeArea(const AValue: Boolean): TNavigator;
     //
     property ActiveRoutes: TDictionary<string, TSubjectInfo> read FActiveRoutes;
     property RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>> read FRouteDefinitions;
@@ -72,6 +85,10 @@ type
     property OnCreateRoute: TProc<string> read FOnCreateRouteProc write FOnCreateRouteProc;
     property OnCloseRoute: TProc<string> read FOnCloseRouteProc write FOnCloseRouteProc;
     property CatchBackKey: Boolean read GetCatchBackKey write SetCatchBackKeyValue;
+    property SafeArea: Boolean read GetSafeArea write SetSafeAreaValue;
+    /// <summary>The layout the routes are shown in when SafeArea is True (nil
+    /// otherwise).</summary>
+    property SafeAreaLayout: TLayout read GetSafeAreaLayout;
 
     /// <summary>Creates the singleton returned by Navigator. Other instances
     /// can be created with TNavigator.Create (and freed by their owner): each
@@ -103,6 +120,77 @@ type
     constructor Create(const AForm: TCommonCustomForm; const ANavigator: TNavigator); reintroduce;
     destructor Destroy; override;
   end;
+
+  /// <summary>Owned by the form: the layout within its safe area, parent of the
+  /// routes (TNavigator.SafeArea).</summary>
+  TNavigatorSafeArea = class(TComponent)
+  private
+    FForm: TCommonCustomForm;
+    FNavigator: TNavigator;
+    FLayout: TLayout;
+    FPreviousSafeAreaChanged: TSafeAreaChangedEvent;
+    procedure FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
+  public
+    constructor Create(const AForm: TCommonCustomForm; const ANavigator: TNavigator); reintroduce;
+    destructor Destroy; override;
+    procedure ApplyInsets(const AInsets: TRectF);
+    property Layout: TLayout read FLayout;
+  end;
+
+{ TNavigatorSafeArea }
+
+constructor TNavigatorSafeArea.Create(const AForm: TCommonCustomForm;
+  const ANavigator: TNavigator);
+begin
+  inherited Create(AForm);
+  FForm := AForm;
+  FNavigator := ANavigator;
+
+  // Align = Client: the stands are Align = Contents, they fill this layout
+  FLayout := TLayout.Create(Self);
+  FLayout.Align := TAlignLayout.Client;
+  FLayout.HitTest := False;
+  FLayout.Parent := AForm;
+  if not Assigned(ANavigator.FormStand.DefaultParent) then
+    ANavigator.FormStand.DefaultParent := FLayout;
+
+  FPreviousSafeAreaChanged := AForm.OnSafeAreaChanged;
+  AForm.OnSafeAreaChanged := FormSafeAreaChanged;
+end;
+
+destructor TNavigatorSafeArea.Destroy;
+var
+  LHandler: TSafeAreaChangedEvent;
+begin
+  // put the previous handler back, if nobody replaced this one meanwhile
+  if Assigned(FForm) and not (csDestroying in FForm.ComponentState) then
+  begin
+    LHandler := FormSafeAreaChanged;
+    if TMethod(FForm.OnSafeAreaChanged) = TMethod(LHandler) then
+      FForm.OnSafeAreaChanged := FPreviousSafeAreaChanged;
+  end;
+  if Assigned(FNavigator) then
+  begin
+    if Assigned(FNavigator.FormStand) and (FNavigator.FormStand.DefaultParent = FLayout) then
+      FNavigator.FormStand.DefaultParent := nil;
+    // freed with the form: the navigator must not free it again
+    if FNavigator.FSafeAreaHook = Self then
+      FNavigator.FSafeAreaHook := nil;
+  end;
+  inherited;
+end;
+
+procedure TNavigatorSafeArea.ApplyInsets(const AInsets: TRectF);
+begin
+  FLayout.Margins.Rect := AInsets;
+end;
+
+procedure TNavigatorSafeArea.FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
+begin
+  ApplyInsets(AInsets);
+  if Assigned(FPreviousSafeAreaChanged) then
+    FPreviousSafeAreaChanged(Sender, AInsets);
+end;
 
 { TNavigatorBackKeyHook }
 
@@ -231,6 +319,9 @@ begin
   FActiveRoutes := TDictionary<string, TSubjectInfo>.Create;
   FStack := TStack<string>.Create;
   FTransientRoutes := TList<string>.Create;
+  // the routes within the safe area of the form (system bars, notch)
+  if Assigned(FFormStand) and (FFormStand.Owner is TCommonCustomForm) then
+    SetSafeAreaValue(True);
 end;
 
 function TNavigator.DefineRoute(const ARouteName: string;
@@ -257,6 +348,12 @@ end;
 destructor TNavigator.Destroy;
 begin
   SetCatchBackKeyValue(False);
+  // the safe area layout stays with the form (routes may still be in it)
+  if Assigned(FSafeAreaHook) then
+  begin
+    TNavigatorSafeArea(FSafeAreaHook).FNavigator := nil;
+    FSafeAreaHook := nil;
+  end;
   FreeAndNil(FTransientRoutes);
   FreeAndNil(FStack);
   FreeAndNil(FActiveRoutes);
@@ -306,6 +403,47 @@ begin
     TNavigatorBackKeyHook(LHook).FNavigator := nil;
     LHook.Free;
   end;
+end;
+
+function TNavigator.GetSafeArea: Boolean;
+begin
+  Result := Assigned(FSafeAreaHook);
+end;
+
+function TNavigator.GetSafeAreaLayout: TLayout;
+begin
+  Result := nil;
+  if Assigned(FSafeAreaHook) then
+    Result := TNavigatorSafeArea(FSafeAreaHook).Layout;
+end;
+
+procedure TNavigator.SetSafeAreaValue(const AValue: Boolean);
+var
+  LHook: TComponent;
+begin
+  if AValue = Assigned(FSafeAreaHook) then
+    Exit;
+  if AValue then
+  begin
+    if not (Assigned(FFormStand) and (FFormStand.Owner is TCommonCustomForm)) then
+      raise Exception.Create('SafeArea needs a form stand owned by a form');
+    FSafeAreaHook := TNavigatorSafeArea.Create(TCommonCustomForm(FFormStand.Owner), Self);
+  end
+  else
+  begin
+    // the layout goes with the hook: not while routes are in it
+    if TNavigatorSafeArea(FSafeAreaHook).Layout.ChildrenCount > 0 then
+      raise Exception.Create('SafeArea: routes are already shown in the safe area layout');
+    LHook := FSafeAreaHook;
+    FSafeAreaHook := nil;
+    LHook.Free;
+  end;
+end;
+
+function TNavigator.SetSafeArea(const AValue: Boolean): TNavigator;
+begin
+  Result := Self;
+  SetSafeAreaValue(AValue);
 end;
 
 function TNavigator.SetCatchBackKey(const AValue: Boolean): TNavigator;
