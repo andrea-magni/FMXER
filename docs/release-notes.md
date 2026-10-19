@@ -2,7 +2,7 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## Unreleased
+## v.1.6 — 2026-10-19
 
 **Safe area (Android 15+ edge-to-edge, iOS notch)**: the routes no longer go under the status bar and the navigation bar. The navigator shows them in a layout of the form that gets the safe area insets as margins (`TNavigator.SafeArea`, on by default; `SetSafeArea(False)` for apps that handle it themselves). See [The safe area](/guide/navigation#the-safe-area).
 
