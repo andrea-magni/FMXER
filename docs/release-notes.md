@@ -11,6 +11,10 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 **Demos and submodules**:
 
 - Android64 deployment of the demo media: the font, the Lottie animations and the images were deployed for Android 32-bit only (and the JSON files of QRCode outside `assets\internal`), so the 64-bit APKs had none of them. Every demo now deploys the font, and its media, to `assets\internal` for Android and Android64.
+- Every demo project updated for RAD Studio 13 (project version 20.5, the Android system libraries of RAD Studio 13, min SDK 24 and target SDK 36, the Android64 deployment as RAD Studio 13 writes it; no `libsk4d.so`: Skia is linked statically). Weather and MyTicketing get an Android manifest template.
+- Demo permissions: only what each demo uses (QRCode: camera and internet; LibraryStore and WebView: internet; the others none). Debug builds also get INTERNET, which RAD Studio adds for the debugger.
+- Demo launcher icon: the FMXER rocket (`media\android`), as an adaptive icon (also themed on Android 13+) and as legacy icons for every density, instead of the default FireMonkey icon. Package names `eu.andreamagni.<Project>`.
+- HelloWorld_IFIL: black screen on Android. With the Skia raster canvas (the default on Android) its `TIconFontsImageList` left the whole window black; the demo now uses the GPU canvas (`GlobalUseSkiaRasterWhenAvailable := False`), as HelloWorld does.
 - `lib/TFrameStand` updated to TFrameStand v.2.4 (interactive gestures of the frames registered with the hosting form).
 - `lib/ZXing.Delphi` updated to ZXing.Delphi 4.0 (branch `4.0`): 52 formats, parallel decoding, `IScanManager` and `ScanAsync`.
 - QRCode demo: the scanner thread and its frame queue are replaced by one `IScanManager` with `ScanAsync` (decoding in background, the result in the main thread); the code read is outlined from its corners (`TReadResult.Position`). `Threads.Scanner.pas` removed.

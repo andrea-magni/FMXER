@@ -67,6 +67,8 @@ __recovery/
 
 # Build folders
 Android/
+# (not the launcher icon of the demos: Windows matches Android/ with any case)
+!/media/android/
 Android64/
 iOSDevice64/
 iOSSimARM64/
