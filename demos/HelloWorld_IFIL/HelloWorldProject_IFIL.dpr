@@ -12,6 +12,7 @@ uses
 
 begin
   GlobalUseSkia := True;
+  GlobalUseSkiaRasterWhenAvailable := False;
   {$IFDEF MSWINDOWS}ReportMemoryLeaksOnShutdown := False;{$ENDIF}
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);
