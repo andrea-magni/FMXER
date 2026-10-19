@@ -105,6 +105,114 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android64'">
+        <DeployFile Include="..\..\media\android\ic_launcher_foreground.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_foreground.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconForeground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_background.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_background.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconBackground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_monochrome.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_monochrome.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconMonochrome</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_fmxer.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable-nodpi\</RemoteDir>
+            <RemoteName>ic_launcher_fmxer.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android64\Debug\ic_launcher.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v26\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIcon</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android64\Debug\ic_launcher-v33.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v33\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconV33</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_foreground.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_foreground.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconForeground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_background.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_background.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconBackground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_monochrome.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_monochrome.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconMonochrome</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_fmxer.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable-nodpi\</RemoteDir>
+            <RemoteName>ic_launcher_fmxer.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android64\Release\ic_launcher.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v26\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIcon</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android64\Release\ic_launcher-v33.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v33\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconV33</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
             <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
@@ -132,7 +240,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_72x72.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\android\ic_launcher_72.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\drawable-hdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon72</DeployClass>
@@ -150,7 +258,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_48x48.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\android\ic_launcher_48.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon48</DeployClass>
@@ -204,7 +312,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\android\ic_launcher_192.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\drawable-xxxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon192</DeployClass>
@@ -249,7 +357,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_144x144.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\android\ic_launcher_144.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\drawable-xxhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon144</DeployClass>
@@ -303,7 +411,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_36x36.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\android\ic_launcher_36.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\drawable-ldpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon36</DeployClass>
@@ -339,7 +447,7 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_96x96.png" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\android\ic_launcher_96.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>QRCodeProject\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon96</DeployClass>
@@ -414,6 +522,114 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android'">
+        <DeployFile Include="..\..\media\android\ic_launcher_foreground.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_foreground.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconForeground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_background.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_background.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconBackground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_monochrome.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_monochrome.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconMonochrome</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_fmxer.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable-nodpi\</RemoteDir>
+            <RemoteName>ic_launcher_fmxer.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Debug\ic_launcher.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v26\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIcon</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Debug\ic_launcher-v33.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v33\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconV33</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_foreground.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_foreground.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconForeground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_background.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_background.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconBackground</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_monochrome.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable\</RemoteDir>
+            <RemoteName>ic_launcher_monochrome.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconMonochrome</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\android\ic_launcher_fmxer.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable-nodpi\</RemoteDir>
+            <RemoteName>ic_launcher_fmxer.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Release\ic_launcher.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v26\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIcon</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Android\Release\ic_launcher-v33.xml" Condition="'$(Config)'=='Release'">
+            <RemoteDir>QRCodeProject\res\drawable-anydpi-v33\</RemoteDir>
+            <RemoteName>ic_launcher.xml</RemoteName>
+            <DeployClass>Android_AdaptiveIconV33</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
             <RemoteDir>QRCodeProject\assets\internal\</RemoteDir>
             <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>

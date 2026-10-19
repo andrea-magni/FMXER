@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- the FMXER rocket (ic_launcher_fmxer.png, 432x432, deployed to res\drawable-nodpi), within the safe zone -->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/ic_launcher_fmxer"
+    android:gravity="fill" />
