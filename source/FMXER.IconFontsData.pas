@@ -136,9 +136,22 @@ begin
 end;
 {$ENDIF}
 
+{$IFDEF ANDROID}
+// the .ttf deployed to assets\internal (copied to the documents folder by
+// System.StartUpCopy); without it the icons are missing, the app still starts
+procedure RegisterDeployedIconFont;
+var
+  LFileName: string;
+begin
+  LFileName := TPath.Combine(TPath.GetDocumentsPath, ICON_FONTS_FILENAME);
+  if FileExists(LFileName) then
+    TSkDefaultProviders.RegisterTypeface(LFileName);
+end;
+{$ENDIF}
+
 initialization
   {$IFDEF ANDROID}
-  TSkDefaultProviders.RegisterTypeface(TPath.Combine(TPath.GetDocumentsPath, ICON_FONTS_FILENAME));
+  RegisterDeployedIconFont;
   {$ENDIF}
   {$IFDEF MSWINDOWS}
   RegisterLocalIconFont;
