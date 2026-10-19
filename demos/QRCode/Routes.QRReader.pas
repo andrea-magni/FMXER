@@ -48,16 +48,25 @@ begin
   end;
 end;
 
-// Draws points on image frame when Scanning = False
+// Draws the outline of the code read (its corners) when Scanning = False
 procedure DrawPointsResult(ACanvas: ISkCanvas; APaint: ISkPaint; AOffsetX, AOffsetY: Single);
 begin
-  for var LPoint in MainData.ScanResultPoints do
-  begin
-    LPoint.Offset(AOffsetX, AOffsetY);
-    APaint.Color := TAppColors.PrimaryColor;
-    APaint.Alpha := $FF;
-    ACanvas.DrawRect(RectF(LPoint.x - 5, LPoint.y - 5, LPoint.x + 5, LPoint.y + 5), APaint);
-  end;
+  var LCorners := MainData.ScanResultPoints;
+  if Length(LCorners) < 2 then
+    Exit;
+
+  var LPath: ISkPathBuilder := TSkPathBuilder.Create;
+  LPath.MoveTo(LCorners[0].X + AOffsetX, LCorners[0].Y + AOffsetY);
+  for var I := 1 to High(LCorners) do
+    LPath.LineTo(LCorners[I].X + AOffsetX, LCorners[I].Y + AOffsetY);
+  LPath.Close;
+
+  var LPaint: ISkPaint := TSkPaint.Create(TSkPaintStyle.Stroke);
+  LPaint.AntiAlias := True;
+  LPaint.Color := TAppColors.PrimaryColor;
+  LPaint.StrokeWidth := 4;
+  LPaint.StrokeJoin := TSkStrokeJoin.Round;
+  ACanvas.DrawPath(LPath.Detach, LPaint);
 end;
 
 
@@ -112,7 +121,7 @@ begin
                         begin
                           LAniFrame.SetOpacity(0);
                           PaintBoxFrame.PaintBox.Redraw;
-                          MainData.QueueFrame(ABitmap);
+                          MainData.ScanFrame(ABitmap);
                         end
                         // SCAN RESULT AVAILABLE Handler
                       , procedure (AResult: TReadResult; AFrame: TBitmap)

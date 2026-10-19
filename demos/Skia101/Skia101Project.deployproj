@@ -104,6 +104,240 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android64'">
+        <DeployFile Include="..\..\media\FMXER_R_256.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_R_256.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_R_256.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_R_256.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_L_512.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_L_512.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_L_512.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_L_512.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\tesla.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>tesla.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\tesla.svg" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>tesla.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_512.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_512.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_512.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_512.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_R_1080.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_R_1080.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_R_1080.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_R_1080.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_R_512.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_R_512.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_R_512.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_R_512.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_L_256.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_L_256.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_L_256.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_L_256.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\spinner-loader.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>spinner-loader.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\spinner-loader.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>spinner-loader.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_L_1080.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_L_1080.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_L_1080.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_L_1080.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_256.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_256.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_256.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_256.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_1080.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_1080.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\FMXER_1080.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>FMXER_1080.png</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\lottie_bubbles_MATERIAL_AMBER_800.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>lottie_bubbles_MATERIAL_AMBER_800.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\lottie_bubbles_MATERIAL_AMBER_800.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>Skia101Project\assets\internal\</RemoteDir>
+            <RemoteName>lottie_bubbles_MATERIAL_AMBER_800.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>Skia101Project\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>

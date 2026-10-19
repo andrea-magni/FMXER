@@ -1,12 +1,13 @@
 unit Tests.Design;
 
-// ANALYSIS D3 (column and row frames), D4 (navigator instances), D5 (Back/Esc).
+// ANALYSIS D3 (column and row frames), D4 (navigator instances), D5 (Back/Esc);
+// the safe area of the navigator (Android 15+ edge-to-edge, iOS notch).
 
 interface
 
 uses
   System.SysUtils, System.Classes, System.Types, System.UITypes, DUnitX.TestFramework
-, FMX.Types, FMX.Forms, FMX.Controls
+, FMX.Types, FMX.Forms, FMX.Controls, FMX.Layouts
 , SubjectStand, FrameStand, FormStand
 , FMXER.Navigator, FMXER.UI.Misc, FMXER.ContainerForm, FMXER.ColumnForm
 , FMXER.ColumnFrame, FMXER.RowFrame, FMXER.TextFrame, FMXER.ButtonFrame, FMXER.VertScrollFrame
@@ -34,6 +35,27 @@ type
     [Test] procedure OtherKeysAreNotHandled;
     [Test] procedure CatchBackKeyHooksTheForm;
     [Test] procedure CatchBackKeyOffRestoresTheHandler;
+  end;
+
+  [TestFixture]
+  TSafeAreaFixture = class
+  private
+    FMain: TForm;
+    FPreviousInsets: TRectF;
+    FPreviousCalls: Integer;
+    procedure PreviousSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
+    procedure ChangeInsets(const AInsets: TRectF);
+  public
+    [Setup] procedure Setup;
+    [TearDown] procedure TearDown;
+
+    [Test] procedure OnByDefault;
+    [Test] procedure RoutesInsideTheSafeArea;
+    [Test] procedure PreviousHandlerStillCalled;
+    [Test] procedure ExplicitDefaultParentKept;
+    [Test] procedure OffRestoresTheForm;
+    [Test] procedure OffWithRoutesShownRaises;
+    [Test] procedure FreedWithTheForm;
   end;
 
   [TestFixture]
@@ -190,6 +212,123 @@ begin
   Navigator.SetCatchBackKey(True);
   FreeAndNil(FMain);
   Assert.IsFalse(Navigator.CatchBackKey, 'hook gone with its form');
+end;
+
+{ TSafeAreaFixture }
+
+procedure TSafeAreaFixture.Setup;
+begin
+  TNavigatorAccess.Reset;
+  FPreviousCalls := 0;
+  FPreviousInsets := TRectF.Empty;
+  FMain := TForm.CreateNew(nil);
+  FMain.SetBounds(0, 0, 400, 800);
+end;
+
+procedure TSafeAreaFixture.TearDown;
+begin
+  TNavigatorAccess.Reset;
+  FreeAndNil(FMain);
+end;
+
+procedure TSafeAreaFixture.PreviousSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
+begin
+  Inc(FPreviousCalls);
+  FPreviousInsets := AInsets;
+end;
+
+procedure TSafeAreaFixture.ChangeInsets(const AInsets: TRectF);
+begin
+  // what FMX does when the system bars change (ISafeAreaContainer.SafeAreaChanged)
+  (FMain as ISafeAreaContainer).SafeAreaChanged(AInsets);
+  Pump(50);
+end;
+
+procedure TSafeAreaFixture.OnByDefault;
+begin
+  Navigator(TFormStand.Create(FMain));
+  Assert.IsTrue(Navigator.SafeArea);
+  Assert.IsNotNull(Navigator.SafeAreaLayout);
+  Assert.IsTrue(Navigator.SafeAreaLayout.Parent = FMain, 'layout in the form');
+  Assert.IsTrue(Navigator.FormStand.DefaultParent = Navigator.SafeAreaLayout, 'default parent of the routes');
+end;
+
+procedure TSafeAreaFixture.RoutesInsideTheSafeArea;
+begin
+  Navigator(TFormStand.Create(FMain)).DefineRoute<TContainerForm>('a');
+  Navigator.RouteTo('a');
+  Pump(300);
+  var LStand := Navigator.ActiveRoutes['a'].Stand;
+  Assert.IsTrue(LStand.Parent = Navigator.SafeAreaLayout, 'the route in the safe area layout');
+
+  // status bar 24, navigation bar 16 (Android 15+ edge-to-edge)
+  ChangeInsets(RectF(0, 24, 0, 16));
+  Assert.AreEqual<Single>(24, Navigator.SafeAreaLayout.Margins.Top);
+  Assert.AreEqual<Single>(16, Navigator.SafeAreaLayout.Margins.Bottom);
+  var LRect := LStand.AbsoluteRect;
+  Assert.AreEqual<Single>(24, LRect.Top, 'below the status bar');
+  Assert.AreEqual<Single>(FMain.ClientHeight - 16, LRect.Bottom, 'above the navigation bar');
+
+  // insets gone (e.g. full screen): the whole form again
+  ChangeInsets(TRectF.Empty);
+  LRect := LStand.AbsoluteRect;
+  Assert.AreEqual<Single>(0, LRect.Top);
+  Assert.AreEqual<Single>(FMain.ClientHeight, LRect.Bottom);
+end;
+
+procedure TSafeAreaFixture.PreviousHandlerStillCalled;
+begin
+  FMain.OnSafeAreaChanged := PreviousSafeAreaChanged;
+  Navigator(TFormStand.Create(FMain));
+  ChangeInsets(RectF(0, 30, 0, 20));
+  Assert.AreEqual(1, FPreviousCalls);
+  Assert.AreEqual<Single>(30, FPreviousInsets.Top);
+  Assert.AreEqual<Single>(30, Navigator.SafeAreaLayout.Margins.Top);
+end;
+
+procedure TSafeAreaFixture.ExplicitDefaultParentKept;
+begin
+  var LStand := TFormStand.Create(FMain);
+  var LMine := TLayout.Create(FMain);
+  LMine.Parent := FMain;
+  LStand.DefaultParent := LMine;
+  Navigator(LStand);
+  Assert.IsTrue(Navigator.SafeArea);
+  Assert.IsTrue(LStand.DefaultParent = LMine, 'the parent set by the app is kept');
+end;
+
+procedure TSafeAreaFixture.OffRestoresTheForm;
+var
+  LHandler: TSafeAreaChangedEvent;
+begin
+  FMain.OnSafeAreaChanged := PreviousSafeAreaChanged;
+  Navigator(TFormStand.Create(FMain)).SetSafeArea(False);
+  Assert.IsFalse(Navigator.SafeArea);
+  Assert.IsNull(Navigator.SafeAreaLayout);
+  Assert.IsNull(Navigator.FormStand.DefaultParent, 'default parent back');
+  LHandler := PreviousSafeAreaChanged;
+  Assert.IsTrue(TMethod(FMain.OnSafeAreaChanged) = TMethod(LHandler), 'previous handler back');
+  Assert.AreEqual(0, FMain.ChildrenCount, 'layout removed');
+end;
+
+procedure TSafeAreaFixture.OffWithRoutesShownRaises;
+begin
+  Navigator(TFormStand.Create(FMain)).DefineRoute<TContainerForm>('a');
+  Navigator.RouteTo('a');
+  Pump(300);
+  Assert.WillRaise(
+    procedure
+    begin
+      Navigator.SetSafeArea(False);
+    end);
+  Assert.IsTrue(Navigator.SafeArea, 'still on');
+end;
+
+procedure TSafeAreaFixture.FreedWithTheForm;
+begin
+  Navigator(TFormStand.Create(FMain));
+  FreeAndNil(FMain);
+  Assert.IsFalse(Navigator.SafeArea, 'hook gone with its form');
 end;
 
 { TNavigatorInstancesFixture }
@@ -429,6 +568,7 @@ end;
 
 initialization
   TDUnitX.RegisterTestFixture(TBackKeyFixture);
+  TDUnitX.RegisterTestFixture(TSafeAreaFixture);
   TDUnitX.RegisterTestFixture(TNavigatorInstancesFixture);
   TDUnitX.RegisterTestFixture(TColumnRowFramesFixture);
 

@@ -114,6 +114,78 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Android64'">
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>TSkSvg.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\TSkSvg.svg" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>TSkSvg.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\rect_shadow.svg" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>rect_shadow.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\rect_shadow.svg" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>rect_shadow.svg</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="..\..\media\85570-background-animation-for-a-simple-project.json" Condition="'$(Config)'=='Release'">
+            <RemoteDir>HelloWorldProject\assets\internal\</RemoteDir>
+            <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(SKIADIR)\Binary\Shared\Android64\libsk4d.so" Condition="'$(Config)'=='Debug' And '$(SKIADIR)'!=''">
             <RemoteDir>HelloWorldProject\library\lib\arm64-v8a\</RemoteDir>
             <RemoteName>libsk4d.so</RemoteName>

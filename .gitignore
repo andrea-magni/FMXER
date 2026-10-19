@@ -67,8 +67,16 @@ __recovery/
 
 # Build folders
 Android/
+Android64/
+iOSDevice64/
+iOSSimARM64/
+OSX64/
+OSXARM64/
 Win32/
 Win64/
+
+# written by the IDE when deploying
+deployedassets.txt
 
 # build.cmd output
 /build/

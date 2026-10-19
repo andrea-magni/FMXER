@@ -8,7 +8,6 @@ uses
   FMX.ActnList, FMX.StdActns, FMX.MediaLibrary.Actions, FMX.Graphics, UITypes,
   FMX.Types, FMX.Media
 , ZXing.ScanManager, ZXing.BarcodeFormat, ZXing.ReadResult, ZXing.ResultPoint
-, Threads.Scanner
 ;
 
 type
@@ -41,11 +40,14 @@ type
     FScanResultFrame: TBitmap;
     FScanResultPoints: TArray<TPointF>;
     FPermissionCamera: string;
-    FScanner: TScannerThread;
-    FFrameQueue: TQueue<TBitmap>;
+    // ZXing.Delphi 4: one scan manager for every frame, decoding in background
+    // (ScanAsync); held as interface, it lives while a scan runs
+    FScanManager: IScanManager;
+    FScanFrame: TBitmap; // the frame being decoded
     FScanPoints: TList<TScanPoint>;
-    FLastQueued: TDateTime;
+    FLastScan: TDateTime;
     FScanning: Boolean;
+    procedure OnResultPointHandler(const APoint: TResultPoint);
     procedure SetQRCodeColor(const Value: TAlphaColor);
     procedure SetQRRadiusFactor(const Value: Single);
     procedure SetQRCodeBGColor(const Value: TAlphaColor);
@@ -81,17 +83,15 @@ type
     function SubscribeImageFrameAvailable(const AProc: TProc<TBitmap>): TMainData;
     function SubscribeScanResult(const AProc: TProc<TReadResult, TBitmap>): TMainData;
 
-    // thread shared manipulation procedures -----------------------------------
+    /// <summary>Scans a camera frame in background (at most SCAN_MAX_FREQ per second,
+    /// one at a time: a frame that comes while a scan runs is skipped). The pixels
+    /// are taken before returning: the caller keeps the bitmap.</summary>
+    procedure ScanFrame(const ABitmap: TBitmap);
+
+    // the points found while scanning (they come from the decoding tasks) -----
     procedure AddScanPoint(const APoint: TPointF);
     function ScanPoints: TArray<TScanPoint>;
     procedure ClearScanPoints;
-
-    // NB: the caller is now the owner of the TBitmap instance
-    // NB: if no frame is present in the queue, returns nil
-    function DequeueFrame: TBitmap;
-    procedure QueueFrame(const ABitmap: TBitmap);
-    procedure ClearFrameQueue;
-    function HasFramesInQueue: Boolean;
     // -------------------------------------------------------------------------
 
     property QRCodeContent: string read FQRCodeContent write SetQRCodeContent;
@@ -100,11 +100,12 @@ type
     property QRRadiusFactor: Single read FQRRadiusFactor write SetQRRadiusFactor;
     property ImageFrame: TBitmap read FImageFrame;
     property ScanResultFrame: TBitmap read FScanResultFrame;
+    /// <summary>The corners of the code read, in the frame</summary>
     property ScanResultPoints: TArray<TPointF> read FScanResultPoints;
     property Scanning: Boolean read FScanning;
 
     const MAX_SCAN_POINTS = 4;
-    const QUEUE_MAX_FREQ = 10; // 10 frames per second
+    const SCAN_MAX_FREQ = 10; // 10 frames per second
   end;
 
   function MainData: TMainData;
@@ -192,18 +193,7 @@ begin
   end;
 
   CameraComponent1.Active := False;
-  ClearFrameQueue;
   ClearScanPoints;
-end;
-
-procedure TMainData.ClearFrameQueue;
-begin
-  FScannerCS.Enter;
-  try
-    FFrameQueue.Clear;
-  finally
-    FScannerCS.Leave;
-  end;
 end;
 
 procedure TMainData.ClearImageFrameSubscribers;
@@ -218,9 +208,6 @@ end;
 
 procedure TMainData.ClearScanPoints;
 begin
-  if not Assigned(FScanner) then
-    Exit;
-
   FScannerCS.Enter;
   try
     FScanPoints.Clear;
@@ -257,36 +244,25 @@ begin
 
   FImageFrame := TBitmap.Create(512, 512);
 
-  FLastQueued := Now;
-  FFrameQueue := TQueue<TBitmap>.Create;
-  FScanner := TScannerThread.Create(False);
+  FLastScan := Now;
+  FScanFrame := TBitmap.Create;
+  FScanManager := TScanManager.Create(TBarcodeFormat.QR_CODE, nil);
+  // set handler for on-scanning point tracking
+  FScanManager.OnResultPoint := OnResultPointHandler;
 end;
 
 procedure TMainData.DataModuleDestroy(Sender: TObject);
 begin
-  if Assigned(FScanner) then
-  begin
-    FScanner.Terminate;
-    FScanner.WaitFor;
-  end;
+  // a running scan calls back through TThread.Synchronize: let it complete
+  // before the data module (referenced by the callback) goes away
+  while Assigned(FScanManager) and FScanManager.Scanning do
+    CheckSynchronize(10);
+  FScanManager := nil;
+  FScanFrame.Free;
+  FScanResultFrame.Free;
   FImageFrame.Free;
-  FFrameQueue.Free;
   FScanPoints.Free;
   FScannerCS.Free;
-end;
-
-function TMainData.DequeueFrame: TBitmap;
-begin
-  Result := nil;
-  if FFrameQueue.Count > 0 then
-  begin
-    FScannerCS.Enter;
-    try
-      Result := FFrameQueue.Dequeue;
-    finally
-      FScannerCS.Leave;
-    end;
-  end;
 end;
 
 procedure TMainData.DisplayRationale(Sender: TObject;
@@ -297,11 +273,6 @@ begin
     begin
       APostRationaleProc;
     end)
-end;
-
-function TMainData.HasFramesInQueue: Boolean;
-begin
-  Result := FFrameQueue.Count <> 0;
 end;
 
 function TMainData.HasTorch: Boolean;
@@ -324,20 +295,24 @@ end;
 procedure TMainData.NotifyScanResult(const AScanResult: TReadResult;
   const AFrame: TBitmap);
 begin
-  TThread.Synchronize(
-    nil
-  , procedure
-    begin
-      FScanResultFrame.Assign(AFrame);
+  // main thread (the callback of ScanAsync)
+  FScanResultFrame.Assign(AFrame);
 
-      FScanResultPoints := [];
-      for var LresultPoint in AScanResult.resultPoints do
-        FScanResultPoints := FScanResultPoints + [PointF(LresultPoint.x, LresultPoint.y)];
+  // the 4 corners of the code (estimated from the result points when the
+  // reader does not set them)
+  FScanResultPoints := [];
+  for var LCorner in AScanResult.Position do
+    FScanResultPoints := FScanResultPoints + [PointF(LCorner.x, LCorner.y)];
 
-      for var LListener in FScanResultListeners do
-        LListener(AScanResult, AFrame);
-    end
-  );
+  for var LListener in FScanResultListeners do
+    LListener(AScanResult, AFrame);
+end;
+
+procedure TMainData.OnResultPointHandler(const APoint: TResultPoint);
+begin
+  // called by the decoding tasks
+  if not APoint.IsNone then
+    AddScanPoint(PointF(APoint.x, APoint.y));
 end;
 
 procedure TMainData.PermissionRequestResult(Sender: TObject;
@@ -360,35 +335,34 @@ begin
   NotifyQRCodeChange;
 end;
 
-procedure TMainData.QueueFrame(const ABitmap: TBitmap);
+procedure TMainData.ScanFrame(const ABitmap: TBitmap);
 begin
-  if not Assigned(ABitmap) then
+  if not Assigned(ABitmap) or ABitmap.IsEmpty or FScanManager.Scanning then
     Exit;
 
-  if MillisecondsBetween(FLastQueued, Now) < (1000 / QUEUE_MAX_FREQ) then
+  if MillisecondsBetween(FLastScan, Now) < (1000 / SCAN_MAX_FREQ) then
     Exit;
+  FLastScan := Now;
 
-  FScannerCS.Enter;
-  try
-    var LBitmapCopy := TBitmap.Create(0, 0);
-    try
-      LBitmapCopy.Assign(ABitmap);
-      FLastQueued := Now;
-      FFrameQueue.Enqueue(LBitmapCopy);
-    except
-      LBitmapCopy.Free;
-      raise;
-    end;
-  finally
-    FScannerCS.Leave;
-  end;
+  FScanFrame.Assign(ABitmap); // the frame shown with the result
+  FScanManager.ScanAsync(ABitmap
+  , procedure (AResult: TReadResult)
+    begin
+      // main thread; nil when nothing was read
+      if not Assigned(AResult) then
+        Exit;
+      try
+        if FScanning then
+          NotifyScanResult(AResult, FScanFrame);
+      finally
+        AResult.Free;
+      end;
+    end
+  );
 end;
 
 function TMainData.ScanPoints: TArray<TScanPoint>;
 begin
-  if not Assigned(FScanner) then
-    Exit;
-
   FScannerCS.Enter;
   try
     Result := FScanPoints.ToArray;
