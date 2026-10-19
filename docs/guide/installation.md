@@ -142,7 +142,7 @@ Elements with icons (`TIconFontsGlyphFrame`, `TScaffoldForm.AddActionButton` wit
 | Windows | install the font (double-click the `.ttf`, *Install*; the setup installs it for you), or put the `.ttf` next to the executable: FMXER registers it with Skia at startup |
 | macOS | deploy the `.ttf` to `Contents\Resources\Fonts` and add `ATSApplicationFontsPath=Fonts` to the version info keys (as the NewProjectTemplate demo does) |
 | iOS | deploy the `.ttf` to the application bundle (remote path `.\`), as the NewProjectTemplate demo does |
-| Android | deploy the `.ttf` to `.\assets\internal`: FMXER registers it with Skia at startup (`initialization` of `FMXER.IconFontsData`) |
+| Android | deploy the `.ttf` to `.\assets\internal` for both **Android and Android64** (two deployment entries): FMXER registers it with Skia at startup (`initialization` of `FMXER.IconFontsData`); without it the icons are missing |
 
 Use **Project > Deployment** to add the file; the demos are a working reference.
 

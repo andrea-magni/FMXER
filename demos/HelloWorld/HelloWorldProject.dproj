@@ -972,9 +972,19 @@
                         <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\85570-background-animation-for-a-simple-project.json" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>85570-background-animation-for-a-simple-project.json</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -986,9 +996,19 @@
                         <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\Material Design Icons Desktop.ttf" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -1000,9 +1020,19 @@
                         <RemoteName>rect_shadow.svg</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>rect_shadow.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\rect_shadow.svg" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>rect_shadow.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>rect_shadow.svg</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -1014,9 +1044,19 @@
                         <RemoteName>TSkSvg.svg</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>TSkSvg.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\TSkSvg.svg" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>TSkSvg.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>TSkSvg.svg</RemoteName>
                         <Overwrite>true</Overwrite>

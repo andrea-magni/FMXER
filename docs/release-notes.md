@@ -4,8 +4,11 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 
 ## Unreleased
 
-**Demos and submodules** (library code unchanged):
+**Android: no crash without the icon font**. On Android `FMXER.IconFontsData` registered `Material Design Icons Desktop.ttf` from the documents folder without checking it: with Skia of RAD Studio 13 a missing file raises in the unit initialization, and the app closed at start (runtime error 217, white screen). The font is now registered only when present, as on Windows: without it the icons are missing, the app starts. Deploy it to `assets\internal` (see [The icon font](/guide/installation#the-icon-font)).
 
+**Demos and submodules**:
+
+- Android64 deployment of the demo media: the font, the Lottie animations and the images were deployed for Android 32-bit only (and the JSON files of QRCode outside `assets\internal`), so the 64-bit APKs had none of them. Every demo now deploys the font, and its media, to `assets\internal` for Android and Android64.
 - `lib/TFrameStand` updated to TFrameStand v.2.4 (interactive gestures of the frames registered with the hosting form).
 - `lib/ZXing.Delphi` updated to ZXing.Delphi 4.0 (branch `4.0`): 52 formats, parallel decoding, `IScanManager` and `ScanAsync`.
 - QRCode demo: the scanner thread and its frame queue are replaced by one `IScanManager` with `ScanAsync` (decoding in background, the result in the main thread); the code read is outlined from its corners (`TReadResult.Position`). `Threads.Scanner.pas` removed.

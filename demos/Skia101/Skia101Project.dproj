@@ -781,9 +781,19 @@
                         <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\Material Design Icons Desktop.ttf" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -795,9 +805,19 @@
                         <RemoteName>FMXER_1080.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_1080.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_1080.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_1080.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_1080.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -809,9 +829,19 @@
                         <RemoteName>FMXER_256.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_256.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_256.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_256.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_256.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -823,9 +853,19 @@
                         <RemoteName>FMXER_512.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_512.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_512.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_512.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_512.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -837,9 +877,19 @@
                         <RemoteName>FMXER_L_1080.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_L_1080.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_L_1080.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_L_1080.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_L_1080.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -851,9 +901,19 @@
                         <RemoteName>FMXER_L_256.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_L_256.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_L_256.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_L_256.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_L_256.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -865,9 +925,19 @@
                         <RemoteName>FMXER_L_512.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_L_512.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_L_512.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_L_512.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_L_512.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -879,9 +949,19 @@
                         <RemoteName>FMXER_R_1080.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_R_1080.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_R_1080.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_R_1080.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_R_1080.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -893,9 +973,19 @@
                         <RemoteName>FMXER_R_256.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_R_256.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_R_256.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_R_256.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_R_256.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -907,9 +997,19 @@
                         <RemoteName>FMXER_R_512.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_R_512.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\FMXER_R_512.png" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>FMXER_R_512.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>FMXER_R_512.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -921,9 +1021,19 @@
                         <RemoteName>lottie_bubbles_MATERIAL_AMBER_800.json</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>lottie_bubbles_MATERIAL_AMBER_800.json</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\lottie_bubbles_MATERIAL_AMBER_800.json" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>lottie_bubbles_MATERIAL_AMBER_800.json</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>lottie_bubbles_MATERIAL_AMBER_800.json</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -935,9 +1045,19 @@
                         <RemoteName>spinner-loader.json</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>spinner-loader.json</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\spinner-loader.json" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>spinner-loader.json</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>spinner-loader.json</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -949,9 +1069,19 @@
                         <RemoteName>tesla.svg</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>tesla.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\..\media\tesla.svg" Configuration="Release" Class="File">
                     <Platform Name="Android">
+                        <RemoteDir>.\assets\internal</RemoteDir>
+                        <RemoteName>tesla.svg</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="Android64">
                         <RemoteDir>.\assets\internal</RemoteDir>
                         <RemoteName>tesla.svg</RemoteName>
                         <Overwrite>true</Overwrite>
