@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Documentation toolchain (VitePress and its dependencies) under docs/.
+  # Review the PR, then run docs\build.cmd to confirm the site still builds.
+  - package-ecosystem: npm
+    directory: /docs
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - documentation
+    commit-message:
+      prefix: "docs(deps)"
+    groups:
+      # One PR for routine minor/patch bumps.
+      docs-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # The GitHub Actions of the docs workflow (pinned to commit SHAs).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - ci
+    commit-message:
+      prefix: "ci(deps)"
