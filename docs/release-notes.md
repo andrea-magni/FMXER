@@ -12,7 +12,16 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 - `TDateEditFrame` (`showDatePicker`): a date with caption and extra text, the native picker on mobile.
 - `TProgressBarFrame` (`LinearProgressIndicator`): a determinate or indeterminate progress bar in `TAppColors`.
 
-New demo **FormControls** with all of them; 9 new tests (71 in all). The units are in `FMXERPackage` for Delphi 12 and 13.
+New demo **FormControls** with all of them. The units are in `FMXERPackage` for Delphi 12 and 13.
+
+**Navigation inside a screen**:
+
+- `TTabsFrame`: pages switched by a tab bar on top (`TabBar` + `TabBarView`) or by a navigation bar at the bottom (`NavigationBar`), with optional icons. See [Tabs & Navigation Bar](/elements/tabs).
+- `TScaffoldForm` drawer: `SetDrawerAsFrame<T>`/`SetDrawerAsForm<T>` add a menu button to the title and a panel that slides in from the left; `OpenDrawer`, `CloseDrawer`, `DrawerOpen`. Back and Esc close the open drawer first. See [Drawer](/elements/scaffold#drawer).
+- `TScaffoldForm.SetBottomNavigation`: a `TTabsFrame` with the bar at the bottom as content, the action buttons above it. See [Bottom navigation](/elements/scaffold#bottom-navigation).
+- `TNavigator.AddBackHandler`/`RemoveBackHandler`: elements can handle Back before the navigator closes a route. See [Back handlers](/guide/navigation#back-handlers).
+
+New demo **Navigation**. 20 new tests in this release (82 in all).
 
 ## v.1.6 — 2026-10-19
 

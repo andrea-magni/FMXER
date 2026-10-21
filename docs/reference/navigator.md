@@ -67,4 +67,6 @@ The singleton is freed by the class destructor, at unit finalization. `Navigator
 | Member | Description |
 |---|---|
 | `HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean` | Back (`vkHardwareBack`) or Esc: `StackPop` when the stack has more than one route; consumed without action while a transient route is open; not handled at the root. Clears `AKey`/`AKeyChar` and returns `True` when handled |
+| `AddBackHandler(AHandler: TFunc<Boolean>): TNavigator` | Back/Esc calls `AHandler` first (the last added first): when it returns `True` the key is handled and no route is closed (v.1.7). See [Back handlers](/guide/navigation#back-handlers) |
+| `RemoveBackHandler(AHandler: TFunc<Boolean>)` | removes it (pass the same reference) |
 | `CatchBackKey: Boolean` / `SetCatchBackKey(AValue): TNavigator` | hooks `OnKeyDown` of the form that owns `FormStand` and calls `HandleBackKey`; the previous handler gets the keys not handled. Raises when `FormStand` is not owned by a form |

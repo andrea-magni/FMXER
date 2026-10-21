@@ -81,6 +81,7 @@ contains
   FMXER.ScaffoldForm in '..\..\source\FMXER.ScaffoldForm.pas' {ScaffoldForm: TForm},
   FMXER.StackFrame in '..\..\source\FMXER.StackFrame.pas' {StackFrame: TFrame},
   FMXER.SwitchFrame in '..\..\source\FMXER.SwitchFrame.pas' {SwitchFrame: TFrame},
+  FMXER.TabsFrame in '..\..\source\FMXER.TabsFrame.pas' {TabsFrame: TFrame},
   FMXER.TextFrame in '..\..\source\FMXER.TextFrame.pas' {TextFrame: TFrame},
   FMXER.TrackbarFrame in '..\..\source\FMXER.TrackbarFrame.pas' {TrackbarFrame: TFrame},
   FMXER.UI.Consts in '..\..\source\FMXER.UI.Consts.pas',
