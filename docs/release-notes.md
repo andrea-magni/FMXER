@@ -2,6 +2,12 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## Unreleased
+
+**Fixed: crash when a route closes while its snackbar is visible**. `TScaffoldForm.ShowSnackBar` hid the snackbar with a delayed action that nothing cancelled: when the route of the scaffold was closed before `ADuration_ms` (e.g. a 3 s snackbar, then Back), the action ran on the freed snackbar and the app crashed with an access violation. The pending hide is now cancelled with the scaffold (and `AThen` is not called). The same for the drawer closing animation (`CloseDrawer`) and for the focus of a `TEditFrame` with `SetFocusOnShow`, closed within 10 ms.
+
+4 new tests (95 in all).
+
 ## v.1.7 — 2026-10-21
 
 The most used Flutter widgets that FMXER was missing, in three groups: form controls, navigation inside a screen (tabs, drawer, bottom navigation), dialogs and bottom sheets. Three new demos show them.

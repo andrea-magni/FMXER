@@ -35,6 +35,10 @@ type
     [Test] procedure BackClosesTheDrawerFirst;
     [Test] procedure BackHandlersLastAddedFirst;
     [Test] procedure BottomNavigation;
+    [Test] procedure SnackBarHidesAndCallsThen;
+    [Test] procedure SnackBarFreedWithTheScaffold;
+    [Test] procedure SnackBarWithThenFreedWithTheScaffold;
+    [Test] procedure DrawerClosingFreedWithTheScaffold;
   end;
 
 implementation
@@ -276,6 +280,55 @@ begin
   Assert.AreEqual<TObject>(LScaffold.BottomNavigation, LScaffold.Content, 'the content of the scaffold');
   Assert.AreEqual<Single>(LScaffold.BottomNavigation.GetBarHeight, LScaffold.OverlayLayout.Padding.Bottom,
     'the action buttons above the bar');
+end;
+
+procedure TScaffoldNavigationFixture.SnackBarHidesAndCallsThen;
+begin
+  var LCalled := False;
+  var LScaffold := TScaffoldForm.Create(FMain);
+  LScaffold.ShowSnackBar('Saved', 200
+  , procedure
+    begin
+      LCalled := True;
+    end
+  );
+  Assert.IsFalse(LCalled);
+  Assert.AreEqual('', PumpCatching(1000));
+  Assert.IsTrue(LCalled, 'AThen once the snackbar is hidden and closed');
+end;
+
+procedure TScaffoldNavigationFixture.SnackBarFreedWithTheScaffold;
+begin
+  // the route of the scaffold is closed while the snackbar is visible: the
+  // pending hide must not run on the freed snackbar
+  var LScaffold := TScaffoldForm.Create(FMain);
+  LScaffold.ShowSnackBar('Deleted', 200);
+  FreeAndNil(LScaffold);
+  Assert.AreEqual('', PumpCatching(600));
+end;
+
+procedure TScaffoldNavigationFixture.SnackBarWithThenFreedWithTheScaffold;
+begin
+  var LCalled := False;
+  var LScaffold := TScaffoldForm.Create(FMain);
+  LScaffold.ShowSnackBar('Deleted', 200
+  , procedure
+    begin
+      LCalled := True;
+    end
+  );
+  FreeAndNil(LScaffold);
+  Assert.AreEqual('', PumpCatching(600));
+  Assert.IsFalse(LCalled, 'cancelled with the scaffold');
+end;
+
+procedure TScaffoldNavigationFixture.DrawerClosingFreedWithTheScaffold;
+begin
+  var LScaffold := TScaffoldForm.Create(FMain);
+  LScaffold.SetDrawerAsFrame<TTextFrame>.OpenDrawer;
+  LScaffold.CloseDrawer;   // hides the drawer layer after the animation
+  FreeAndNil(LScaffold);
+  Assert.AreEqual('', PumpCatching(600));
 end;
 
 initialization
