@@ -52,6 +52,20 @@ TNavigator = class
   function HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;  // v.1.4: Back/Esc -> StackPop (not at the root)
   function SetCatchBackKey(const AValue: Boolean): TNavigator;             // v.1.4: hooks OnKeyDown of FormStand's form
   property CatchBackKey: Boolean;
+  // v.1.8: the state of a route (a TComponent, typically a TDataModule): created with Create(nil) before
+  // the view, owned by the view (freed with the route) or, with AKeepAlive, by the navigator (reused)
+  function DefineRoute<TView: TForm; TState: TComponent>(const ARouteName: string;
+    const AConfigProc: TProc<TView, TState>; const AKeepAlive: Boolean = False;
+    const AParent: TFmxObject = nil; const AStandName: string = ''): TNavigator; overload;
+  function RouteState<T: TComponent>(const ARouteName: string): T;     // raises when none
+  function HasRouteState(const ARouteName: string): Boolean;
+  // AInit: the arguments, on the new state before the view is built (not called if already active)
+  procedure RouteTo<TState: TComponent>(const ARouteName: string; const AInit: TProc<TState>;
+    const AOnResult: TProc<TValue> = nil; const ATransient: Boolean = False); overload;
+  // AOnResult: once, when the route closes: the CloseRouteWithResult value, or empty (CloseRoute, Back...)
+  procedure RouteToForResult(const ARouteName: string; const AOnResult: TProc<TValue>;
+    const ATransient: Boolean = False);
+  procedure CloseRouteWithResult(const ARouteName: string; const AResult: TValue);  // Navigator.pop(result)
   function AddBackHandler(const AHandler: TFunc<Boolean>): TNavigator;      // v.1.7: Back/Esc asks it first (last added first); True = handled, no route closed
   procedure RemoveBackHandler(const AHandler: TFunc<Boolean>);            // the same reference
   class procedure Init(const AFormStand: TFormStand);        // raises if already initialized

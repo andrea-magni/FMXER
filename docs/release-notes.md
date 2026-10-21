@@ -2,6 +2,10 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## Unreleased
+
+**The state of a route**: `DefineRoute<TView, TState>` gives a route its own state, a `TComponent` such as a `TDataModule`. The state is created before the view, passed to the configuration procedure with it and freed with it, or kept alive by the navigator with `AKeepAlive`. `RouteState<T>` returns it. **Arguments and results**: `RouteTo<TState>` initializes the state of the new route; `RouteToForResult` and `CloseRouteWithResult` give a result back to whoever opened the route (empty when it is closed in another way). See [The state of a route](/guide/state#the-state-of-a-route) and [Arguments and results](/guide/navigation#arguments-and-results). New demo **Orders**; 8 new tests (99 in all).
+
 ## v.1.7 — 2026-10-21
 
 The most used Flutter widgets that FMXER was missing, in three groups: form controls, navigation inside a screen (tabs, drawer, bottom navigation), dialogs and bottom sheets. Three new demos show them.

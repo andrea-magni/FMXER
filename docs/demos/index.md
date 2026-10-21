@@ -1,6 +1,6 @@
 # Demos
 
-The `demos` folder has one project per topic; thirteen of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
+The `demos` folder has one project per topic; fourteen of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
 
 Every demo has the same search path, set once for all platforms: `..\..\source` and the submodules `lib\TFrameStand\source`, `lib\IconFontsImageList\Source`, `lib\DelphiZXingQRCode\Source` (QRCode also the `lib\ZXing.Delphi\Lib\Classes` folders). Clone with `--recursive` (see [Installation](/guide/installation)) and the demos build as they are. If you installed TFrameStand and IconFontsImageList instead and left `lib\` empty, the IDE library path is used. The MARS client of LibraryStore is not a submodule: install MARS or add its `Source` folder to the library path.
 
@@ -21,6 +21,7 @@ Media files (Lottie animations, SVG, the icon font `Material Design Icons Deskto
 | [FormControls](#formcontrols) | switch, check box, radio group, combo box, date edit, progress bars, state in closures | — |
 | [Navigation](#navigation) | drawer, bottom navigation, a page with tabs, Back closing the drawer | — |
 | [Dialogs](#dialogs) | alert, confirm, choices in a bottom sheet, a dialog and a sheet of FMXER elements | — |
+| [Orders](#orders) | a route with a state (a data module), arguments and a result | — |
 | [MyTicketing](#myticketing) | a login column (edits, password, default button enabled by `OnUpdateHandler`) leading to a scaffold | — |
 | [EKON25 - Weather](#ekon25-weather) | a card with a nested column in a scaffold, conference starting point | — |
 
@@ -101,6 +102,13 @@ Navigation inside one screen (`Routes.Home`): a scaffold with a [drawer](/elemen
 ## Dialogs
 
 [Dialogs and bottom sheets](/elements/dialogs) (`Routes.Home`): a column of buttons that show `Modals.Alert`, `Modals.Confirm` (the answer in a snackbar), `Modals.Choose` (the choice in a snackbar, or *Dismissed*), a dialog of FMXER elements (`ShowDialog<TColumnFrame>` with an edit and an OK button that sets `ModalResult`) and a bottom sheet of switches (`ShowBottomSheet<TColumnFrame>`). A tap outside, Back and Esc close them. Started from NewProjectTemplate.
+
+## Orders
+
+[The state of a route](/guide/state#the-state-of-a-route), its arguments and its result:
+
+- **home**: the orders (`Data.Orders`, in memory) in a `TListViewFrame` (`ListItemRightDetail`). A tap opens the order with `RouteTo<TOrderState>`, which loads the order into the state of the route. The result proc refreshes the list and shows *&lt;customer&gt; saved*, or *Not saved* when the order is closed without saving;
+- **order**: `DefineRoute<TScaffoldForm, TOrderState>`. `TOrderState` is a data module (`Data.OrderState.pas`/`.dfm`), created with the route and freed with it. The switch and the edit change the state; *Save* writes it back to the list and closes the route with `CloseRouteWithResult`. The X button and Back close it without a result.
 
 ## MyTicketing
 
