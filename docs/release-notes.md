@@ -2,7 +2,9 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## Unreleased
+## v.1.8 — 2026-10-21
+
+Apps start in a fraction of a second, and routes get a state, arguments and a result.
 
 **Apps start in a fraction of a second: the web icon font**. FMXER now draws the icons with the web *Material Design Icons* font (`media\Material Design Icons.ttf`) instead of *Material Design Icons Desktop*. The icons and code points are the same: all 5918 of `IconFonts.MD` are in the new font. Skia took about 7.6 s to load the Desktop font, with its ligature tables, and every app paid it when it drew its first icon, before the window appeared: the NewProjectTemplate demo is now ready in 0.3–0.5 s instead of 7.8–8.2 s.
 
