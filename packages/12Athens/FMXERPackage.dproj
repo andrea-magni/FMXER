@@ -177,6 +177,11 @@
             <Form>CenterForm</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.CheckBoxFrame.pas">
+            <Form>CheckBoxFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <DCCReference Include="..\..\source\FMXER.ChipFrame.pas">
             <Form>ChipFrame</Form>
             <FormType>fmx</FormType>
@@ -206,12 +211,22 @@
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.ComboBoxFrame.pas">
+            <Form>ComboBoxFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <DCCReference Include="..\..\source\FMXER.ContainerForm.pas">
             <Form>ContainerForm</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="..\..\source\FMXER.ContainerFrame.pas">
             <Form>ContainerFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.DateEditFrame.pas">
+            <Form>DateEditFrame</Form>
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
@@ -281,6 +296,16 @@
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.ProgressBarFrame.pas">
+            <Form>ProgressBarFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.RadioGroupFrame.pas">
+            <Form>RadioGroupFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <DCCReference Include="..\..\source\FMXER.RowForm.pas">
             <Form>RowForm</Form>
             <FormType>fmx</FormType>
@@ -301,6 +326,11 @@
         </DCCReference>
         <DCCReference Include="..\..\source\FMXER.StackFrame.pas">
             <Form>StackFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.SwitchFrame.pas">
+            <Form>SwitchFrame</Form>
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>

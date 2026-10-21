@@ -2,6 +2,18 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## Unreleased
+
+**Form controls**: six new elements for the choices of a form, the FMXER counterparts of the most used Flutter input widgets. See [Form Controls](/elements/form-controls).
+
+- `TSwitchFrame` (`SwitchListTile`) and `TCheckBoxFrame` (`CheckboxListTile`): a text with a switch or a check box; a tap on the text toggles it.
+- `TRadioGroupFrame` (`Radio`): a caption and one radio button per option; its height follows the options, for `AUTO_HEIGHT`.
+- `TComboBoxFrame` (`DropdownButton`): a drop-down list with caption and extra text.
+- `TDateEditFrame` (`showDatePicker`): a date with caption and extra text, the native picker on mobile.
+- `TProgressBarFrame` (`LinearProgressIndicator`): a determinate or indeterminate progress bar in `TAppColors`.
+
+New demo **FormControls** with all of them; 9 new tests (71 in all). The units are in `FMXERPackage` for Delphi 12 and 13.
+
 ## v.1.6 — 2026-10-19
 
 **Safe area (Android 15+ edge-to-edge, iOS notch)**: the routes no longer go under the status bar and the navigation bar. The navigator shows them in a layout of the form that gets the safe area insets as margins (`TNavigator.SafeArea`, on by default; `SetSafeArea(False)` for apps that handle it themselves). See [The safe area](/guide/navigation#the-safe-area).

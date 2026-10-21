@@ -23,6 +23,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 | `FMXER.CardFrame`, `FMXER.ActionButtonFrame` | | TFrameStand, Skia |
 | `FMXER.TextFrame`, `FMXER.ButtonFrame`, `FMXER.ColorButtonFrame`, `FMXER.EditFrame`, `FMXER.TrackbarFrame`, `FMXER.ColorPickerFrame`, `FMXER.ActivityBubblesFrame`, `FMXER.AnimatedImageFrame`, `FMXER.SVGFrame`, `FMXER.PaintBoxFrame` | Skia elements | Skia (and TFrameStand for the edit, track bar and color picker) |
 | `FMXER.QRCodeFrame` | `TQRCodeFrame` | Skia, DelphiZXingQRCode |
+| `FMXER.SwitchFrame`, `FMXER.CheckBoxFrame`, `FMXER.RadioGroupFrame`, `FMXER.ComboBoxFrame`, `FMXER.DateEditFrame`, `FMXER.ProgressBarFrame` | form controls | Skia |
 | `FMXER.GlyphFrame`, `FMXER.ImageFrame`, `FMXER.LogoFrame`, `FMXER.WebViewFrame`, `FMXER.ChipFrame`, `FMXER.ChipsFrame`, `FMXER.HorzDividerFrame` | plain FMX elements | — |
 | `FMXER.IconFontsGlyphFrame`, `FMXER.ListViewFrame` | | IconFontsImageList |
 

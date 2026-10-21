@@ -404,6 +404,96 @@ TChipsFrame = class(TFrame)                       // a TFlowLayout of chips
 end;
 ```
 
+## Form controls (v.1.7)
+
+Setters of the value (`SetItemIndex`, `SetDate`) do not call `OnChangeProc` for the radio group, the combo box and the date edit; `SetChecked` of the switch and the check box does (the FMX controls fire their events).
+
+```pascal
+// unit FMXER.SwitchFrame — text on the left, TSwitch on the right; a tap on the text toggles (SwitchListTile). Design height 50
+TSwitchFrame = class(TFrame)
+  SwitchLayout: TLayout; SwitchControl: TSwitch; TextLabel, ExtraLabel: TSkLabel;
+  function SetText(const AText: string): TSwitchFrame;
+  function SetExtraText(const AExtraText: string): TSwitchFrame;
+  function SetChecked(const AChecked: Boolean): TSwitchFrame;
+  function SetOnChangeProc(const AOnChangeProc: TProc<Boolean>): TSwitchFrame;
+  function GetChecked: Boolean; // + GetText, GetExtraText
+  property OnChangeProc: TProc<Boolean>;
+end;
+
+// unit FMXER.CheckBoxFrame — TCheckBox on the left, text on the right; a tap on the text toggles (CheckboxListTile). Design height 50
+TCheckBoxFrame = class(TFrame)
+  CheckBoxControl: TCheckBox; TextLabel, ExtraLabel: TSkLabel;
+  function SetText(const AText: string): TCheckBoxFrame;
+  function SetExtraText(const AExtraText: string): TCheckBoxFrame;
+  function SetChecked(const AChecked: Boolean): TCheckBoxFrame;
+  function SetOnChangeProc(const AOnChangeProc: TProc<Boolean>): TCheckBoxFrame;
+  function GetChecked: Boolean; // + GetText, GetExtraText
+  property OnChangeProc: TProc<Boolean>;
+end;
+
+// unit FMXER.RadioGroupFrame — caption (24) + one TRadioButton per option (ItemHeight, default 40) + extra text;
+// Height follows them (use AUTO_HEIGHT, options set in AConfigProc). One group per frame
+TRadioGroupFrame = class(TFrame)
+  CaptionLabel, ExtraLabel: TSkLabel; OptionsLayout: TLayout;
+  function SetCaption(const ACaption: string): TRadioGroupFrame;
+  function SetExtraText(const AExtraText: string): TRadioGroupFrame;
+  function AddOption(const AText: string): TRadioGroupFrame;
+  function SetOptions(const AOptions: TArray<string>): TRadioGroupFrame;   // replaces
+  function ClearOptions: TRadioGroupFrame;
+  function SetItemIndex(const AItemIndex: Integer): TRadioGroupFrame;      // -1: none
+  function SetItemHeight(const AItemHeight: Single): TRadioGroupFrame;
+  function SetOnChangeProc(const AOnChangeProc: TProc<Integer>): TRadioGroupFrame;
+  function GetItemIndex: Integer; function GetSelectedText: string; function GetCount: Integer;
+  // + GetCaption, GetExtraText, GetItemHeight
+  property Buttons: TList<TRadioButton>;
+  property OnChangeProc: TProc<Integer>;          // index of the new selection, once per change
+end;
+
+// unit FMXER.ComboBoxFrame — caption above, TComboBox (36 high), extra text below (DropdownButton). Design height 60
+TComboBoxFrame = class(TFrame)
+  ComboBoxControl: TComboBox; CaptionLabel, ExtraLabel: TSkLabel;
+  function SetCaption(const ACaption: string): TComboBoxFrame;
+  function SetExtraText(const AExtraText: string): TComboBoxFrame;
+  function AddItem(const AText: string): TComboBoxFrame;
+  function SetItems(const AItems: TArray<string>): TComboBoxFrame;         // replaces
+  function ClearItems: TComboBoxFrame;
+  function SetItemIndex(const AItemIndex: Integer): TComboBoxFrame;
+  function SetOnChangeProc(const AOnChangeProc: TProc<Integer>): TComboBoxFrame;
+  function GetItemIndex: Integer; function GetSelectedText: string; function GetCount: Integer;
+  // + GetCaption, GetExtraText
+  property OnChangeProc: TProc<Integer>;
+end;
+
+// unit FMXER.DateEditFrame — caption above, TDateEdit (36 high; native picker on mobile), extra text below. Design height 60
+TDateEditFrame = class(TFrame)
+  DateEditControl: TDateEdit; CaptionLabel, ExtraLabel: TSkLabel;
+  function SetCaption(const ACaption: string): TDateEditFrame;
+  function SetExtraText(const AExtraText: string): TDateEditFrame;
+  function SetDate(const ADate: TDate): TDateEditFrame;
+  function SetFormat(const AFormat: string): TDateEditFrame;              // TDateEdit.Format
+  function SetIsEmpty(const AIsEmpty: Boolean): TDateEditFrame;
+  function SetOnChangeProc(const AOnChangeProc: TProc<TDate>): TDateEditFrame;
+  function GetDate: TDate; // + GetCaption, GetExtraText, GetFormat, GetIsEmpty
+  property OnChangeProc: TProc<TDate>;
+end;
+
+// unit FMXER.ProgressBarFrame — LinearProgressIndicator: TrackRect (LightBackgroundColor) with BarRect
+// (PrimaryColor) in TrackLayout; caption above, extra text below. Design height 40
+TProgressBarFrame = class(TFrame)
+  TrackLayout: TLayout; TrackRect, BarRect: TRectangle; CaptionLabel, ExtraLabel: TSkLabel;
+  function SetValue(const AValue: Single): TProgressBarFrame;              // clamped to Min..Max when drawn
+  function SetMin(const AMin: Single): TProgressBarFrame;                  // default 0
+  function SetMax(const AMax: Single): TProgressBarFrame;                  // default 100
+  function SetIndeterminate(const AIndeterminate: Boolean): TProgressBarFrame;  // a bar running along the track
+  function SetBarColor(const AColor: TAlphaColor): TProgressBarFrame;
+  function SetTrackColor(const AColor: TAlphaColor): TProgressBarFrame;
+  function SetThickness(const AThickness: Single): TProgressBarFrame;      // default 6
+  function SetCaption(const ACaption: string): TProgressBarFrame;
+  function SetExtraText(const AExtraText: string): TProgressBarFrame;
+  // + the getters of each setter
+end;
+```
+
 ## Lists
 
 ```pascal

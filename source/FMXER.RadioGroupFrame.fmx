@@ -1,0 +1,38 @@
+object RadioGroupFrame: TRadioGroupFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 120.000000000000000000
+  Size.PlatformDefault = False
+  object CaptionLabel: TSkLabel
+    Align = Top
+    AutoSize = False
+    Size.Width = 320.000000000000000000
+    Size.Height = 24.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.VertAlign = Center
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+  object OptionsLayout: TLayout
+    Align = Top
+    Position.Y = 24.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 80.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object ExtraLabel: TSkLabel
+    Align = Top
+    AutoSize = False
+    Position.Y = 104.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 24.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.VertAlign = Center
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+end

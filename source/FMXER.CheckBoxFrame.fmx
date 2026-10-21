@@ -1,0 +1,38 @@
+object CheckBoxFrame: TCheckBoxFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 50.000000000000000000
+  Size.PlatformDefault = False
+  object CheckBoxControl: TCheckBox
+    Align = Left
+    Margins.Right = 5.000000000000000000
+    Size.Width = 24.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnChange = CheckBoxControlChange
+  end
+  object TextLabel: TSkLabel
+    Align = Client
+    AutoSize = False
+    HitTest = True
+    Size.Width = 291.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.VertAlign = Center
+    OnClick = TextLabelClick
+    Words = <
+      item
+      end>
+  end
+  object ExtraLabel: TSkLabel
+    Align = MostBottom
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+end

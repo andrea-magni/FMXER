@@ -1,0 +1,57 @@
+object ProgressBarFrame: TProgressBarFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 40.000000000000000000
+  Size.PlatformDefault = False
+  object CaptionLabel: TSkLabel
+    Align = Top
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+  object TrackLayout: TLayout
+    Align = Client
+    Size.Width = 320.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    object TrackRect: TRectangle
+      Align = VertCenter
+      ClipChildren = True
+      Fill.Color = xFFE0E0E0
+      HitTest = False
+      Position.Y = 17.000000000000000000
+      Size.Width = 320.000000000000000000
+      Size.Height = 6.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+      XRadius = 3.000000000000000000
+      YRadius = 3.000000000000000000
+      OnResized = TrackRectResized
+      object BarRect: TRectangle
+        Fill.Color = xFF2196F3
+        HitTest = False
+        Size.Width = 0.000000000000000000
+        Size.Height = 6.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 3.000000000000000000
+        YRadius = 3.000000000000000000
+      end
+    end
+  end
+  object ExtraLabel: TSkLabel
+    Align = Bottom
+    Position.Y = 40.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+end
