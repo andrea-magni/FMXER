@@ -53,7 +53,7 @@ Install the dependencies first: TFrameStand (its [setup](https://github.com/andr
 
 The setup also copies the libraries the QRCode demo needs, in `lib\DelphiZXingQRCode` and `lib\ZXing.Delphi` (the demos find them through their search path). The LibraryStore demo needs the [MARS-Curiosity](https://github.com/andrea-magni/MARS) client: install MARS with its setup.
 
-The setup installs the icon font (*Material Design Icons Desktop*) for the current user, see [The icon font](#the-icon-font).
+The setup installs the icon font (*Material Design Icons*) for the current user, see [The icon font](#the-icon-font).
 
 Silent install, for every installed Delphi version: `FMXER_<version>_Setup.exe /SILENT /RADStudioVersions=all`.
 
@@ -135,16 +135,27 @@ ZXing.Delphi (QRCode demo) needs the `FRAMEWORK_FMX` define, which MSBuild sets 
 
 ## The icon font
 
-Elements with icons (`TIconFontsGlyphFrame`, `TScaffoldForm.AddActionButton` with an icon, `TListViewFrame` images) draw glyphs of the **Material Design Icons Desktop** font through a shared `TIconFontsImageList` (see [Icons](/elements/icons)). The font file is in `media\Material Design Icons Desktop.ttf`, and it must be available at runtime:
+Elements with icons (`TIconFontsGlyphFrame`, `TScaffoldForm.AddActionButton` with an icon, `TListViewFrame` images) draw glyphs of the **Material Design Icons** font through a shared `TIconFontsImageList` (see [Icons](/elements/icons)). The font file is in `media\Material Design Icons.ttf`, and it must be available at runtime:
 
 | Platform | What to do |
 |---|---|
-| Windows | install the font (double-click the `.ttf`, *Install*; the setup installs it for you), or put the `.ttf` next to the executable: FMXER registers it with Skia at startup |
+| Windows | install the font (double-click the `.ttf`, *Install*; the setup installs it for you), or put the `.ttf` next to the executable: FMXER registers it with Skia at startup. The demos run from the IDE find it in the `media` folder (`LocalFilesPath`) |
 | macOS | deploy the `.ttf` to `Contents\Resources\Fonts` and add `ATSApplicationFontsPath=Fonts` to the version info keys (as the NewProjectTemplate demo does) |
 | iOS | deploy the `.ttf` to the application bundle (remote path `.\`), as the NewProjectTemplate demo does |
 | Android | deploy the `.ttf` to `.\assets\internal` for both **Android and Android64** (two deployment entries): FMXER registers it with Skia at startup (`initialization` of `FMXER.IconFontsData`); without it the icons are missing |
 
 Use **Project > Deployment** to add the file; the demos are a working reference.
+
+`TIconFonts.FontFamily` tells which font the icons use, `TIconFonts.FontFile` the `.ttf` registered by FMXER, if any, and `IconFonts.FontAvailable` whether a font was found. Without a font, `IconFonts.AddIcon` returns `-1` and the elements show no icon instead of empty boxes. A debug message (`Log.d`) says so once.
+
+::: warning The Desktop font made apps start slowly (up to v.1.7)
+Up to v.1.7 FMXER used the **Material Design Icons Desktop** font. It has the same icons, but also a ligature for every icon name, and Skia takes **seconds** to load its tables: about 7.6 s on a test machine. Every app paid that when it drew its first icon, before its window appeared, whether the font was installed or deployed with the app. The web version, *Material Design Icons*, loads in a few milliseconds: the NewProjectTemplate demo is ready in 0.3–0.5 s instead of 7.8–8.2 s.
+
+FMXER still uses the Desktop font when the web one is not found, slowly, and writes a debug message. To move an app to the new font:
+
+- replace `Material Design Icons Desktop.ttf` with `Material Design Icons.ttf` in its deployment;
+- on Windows, install the new font or ship it next to the executable. The old font can stay installed: the new one is used first.
+:::
 
 ## Check the installation
 

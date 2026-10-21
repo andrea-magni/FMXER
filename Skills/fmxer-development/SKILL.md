@@ -92,7 +92,7 @@ The project source sets `GlobalUseSkia := True;` before `Application.Initialize`
 - **Set stand properties before the slot call** that uses them (`Row.ElementStand := 'fadeIn'; Row.AddFrame<...>`). Unknown stand names give a plain layout, no error.
 - **Delphi 12+ Skia units**: `System.Skia`, `FMX.Skia`, `FMX.Skia.Canvas` (never `Skia`, `Skia.FMX`, `Skia.FMX.Graphics` of the old Skia4Delphi: `F2613 Unit 'Skia.FMX' not found`). `TSkTextHorzAlign`, `TSkAnimatedImageWrapMode`, `TSkSvgWrapMode` come from `FMX.Skia`, `ISkCanvas` from `System.Skia`.
 - **`AddActionButton(ACaption, [OnClickProc(...)])`**: pass a `TProc` variable to `OnClickProc`; an inline anonymous method there fails on Delphi 13 (E2250) unless qualified `FMXER.UI.Misc.OnClickProc(...)`. Simpler: `AddActionButton(ACaption, AOnClickProc)`.
-- **Icons need the font**: *Material Design Icons Desktop* (`media\`) installed on Windows, deployed on the other platforms (Android: `.\assets\internal`), or glyphs are squares.
+- **Icons need the font**: *Material Design Icons* (`media\Material Design Icons.ttf`) installed on Windows or next to the exe, deployed on the other platforms (Android: `.\assets\internal`), or no icons. Not the *Desktop* variant (FMXER up to v.1.7): Skia takes seconds to load it, at every app start.
 - Follow the style of the existing project: one `Routes.<name>.pas` unit per route with a `DefineXxxRoute(const ARouteName: string)` procedure (NewProjectTemplate demo), commas at the start of argument lines, fluent chains one call per line.
 
 ## References

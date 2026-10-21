@@ -969,7 +969,7 @@ object MainForm: TMainForm
             Name = 'Item 0'
           end>
       end>
-    FontName = 'Material Design Icons Desktop'
+    FontName = 'Material Design Icons'
     FontColor = claBlack
     Left = 176
     Top = 192

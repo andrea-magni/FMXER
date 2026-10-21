@@ -249,18 +249,18 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Debug'">
             <RemoteDir>FormControlsProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Release'">
             <RemoteDir>FormControlsProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
@@ -630,18 +630,18 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Debug'">
             <RemoteDir>FormControlsProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Release'">
             <RemoteDir>FormControlsProject\assets\internal\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
@@ -944,18 +944,18 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Debug'">
             <RemoteDir>FormControlsProject.app\Contents\Resources\Fonts\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Release'">
             <RemoteDir>FormControlsProject.app\Contents\Resources\Fonts\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
@@ -1137,18 +1137,18 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Debug'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Debug'">
             <RemoteDir>FormControlsProject.app\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\..\media\Material Design Icons Desktop.ttf" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="..\..\media\Material Design Icons.ttf" Condition="'$(Config)'=='Release'">
             <RemoteDir>FormControlsProject.app\</RemoteDir>
-            <RemoteName>Material Design Icons Desktop.ttf</RemoteName>
+            <RemoteName>Material Design Icons.ttf</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>

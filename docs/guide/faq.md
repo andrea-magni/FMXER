@@ -20,6 +20,10 @@ They were written for FMXER 1.0 and use properties that became fluent setters in
 
 ## Runtime
 
+### The app takes seconds to show its window (v.1.7 and earlier)
+
+The app is loading the *Material Design Icons Desktop* icon font: Skia takes seconds to read it, about 7.6 s on a test machine, when the first icon is drawn. Since v.1.8 FMXER uses the web *Material Design Icons* font, which loads in milliseconds. Deploy or install `Material Design Icons.ttf` instead of the Desktop file. See [The icon font](./installation#the-icon-font).
+
 ### `Navigator has not been initialized`
 
 Something called `Navigator` before `Navigator(FormStand1)`. Initialize it first thing in the main form's `OnCreate` (or constructor), before any route definition.
@@ -42,7 +46,7 @@ Something called `Navigator` before `Navigator(FormStand1)`. Initialize it first
 
 ### Icons are squares, or empty
 
-The *Material Design Icons Desktop* font is not available. Install it on Windows, deploy it on the other platforms. See [The icon font](./installation#the-icon-font).
+The *Material Design Icons* font is not available. Install it on Windows, deploy it on the other platforms. See [The icon font](./installation#the-icon-font).
 
 ### Access violation after closing a screen
 

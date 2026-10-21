@@ -4,11 +4,19 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 
 ## Unreleased
 
+**Apps start in a fraction of a second: the web icon font**. FMXER now draws the icons with the web *Material Design Icons* font (`media\Material Design Icons.ttf`) instead of *Material Design Icons Desktop*. The icons and code points are the same: all 5918 of `IconFonts.MD` are in the new font. Skia took about 7.6 s to load the Desktop font, with its ligature tables, and every app paid it when it drew its first icon, before the window appeared: the NewProjectTemplate demo is now ready in 0.3–0.5 s instead of 7.8–8.2 s.
+
+- The demos, the setup and the documentation use the new font; the Desktop font stays in `media` for the apps that deploy it.
+- `FMXER.IconFontsData` looks for the web font first (installed, or a `.ttf` next to the executable or in `LocalFilesPath`), then for the Desktop one, slowly, with a debug message. New: `TIconFonts.FontFamily`, `FontFile`, `RegisterFontFile`, `IconFonts.FontAvailable`.
+- The demos run from the IDE find the font in the `media` folder, with no install.
+- Without any icon font, `AddIcon` returns `-1`: no icon instead of empty boxes.
+- **Your apps**: deploy `Material Design Icons.ttf` instead of the Desktop file. On macOS and iOS this is required, since FMXER now asks for the new family. See [The icon font](/guide/installation#the-icon-font).
+
 **The state of a route**: `DefineRoute<TView, TState>` gives a route its own state, a `TComponent` such as a `TDataModule`. The state is created before the view, passed to the configuration procedure with it and freed with it, or kept alive by the navigator with `AKeepAlive`. `RouteState<T>` returns it. **Arguments and results**: `RouteTo<TState>` initializes the state of the new route; `RouteToForResult` and `CloseRouteWithResult` give a result back to whoever opened the route (empty when it is closed in another way). See [The state of a route](/guide/state#the-state-of-a-route) and [Arguments and results](/guide/navigation#arguments-and-results). New demo **Orders**.
 
 **Fixed: crash when a route closes while its snackbar is visible**. `TScaffoldForm.ShowSnackBar` hid the snackbar with a delayed action that nothing cancelled: when the route of the scaffold was closed before `ADuration_ms` (e.g. a 3 s snackbar, then Back), the action ran on the freed snackbar and the app crashed with an access violation. The pending hide is now cancelled with the scaffold (and `AThen` is not called). The same for the drawer closing animation (`CloseDrawer`) and for the focus of a `TEditFrame` with `SetFocusOnShow`, closed within 10 ms.
 
-12 new tests in this release (103 in all).
+18 new tests in this release (109 in all).
 
 ## v.1.7 — 2026-10-21
 

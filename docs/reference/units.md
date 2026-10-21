@@ -42,7 +42,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 ## Third-party code and assets
 
 - `QRCode.Render.pas` comes from the [Skia4Delphi](https://github.com/skia4delphi/skia4delphi) webinar samples (rounded QR code rendering).
-- `media\Material Design Icons Desktop.ttf`: [Material Design Icons](https://pictogrammers.com/library/mdi/) by Pictogrammers, Apache License 2.0.
+- `media\Material Design Icons.ttf` (and `Material Design Icons Desktop.ttf`, the font of FMXER up to v.1.7): [Material Design Icons](https://pictogrammers.com/library/mdi/) by Pictogrammers, Apache License 2.0.
 - The Lottie animations in `media\` come from [LottieFiles](https://lottiefiles.com).
 
 ## Files of the repository
