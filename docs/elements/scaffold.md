@@ -117,7 +117,7 @@ Scaffold.ShowSnackBar('Saved', 3000
 );
 ```
 
-`ShowSnackBar(AText, ADuration_ms, AThen)` shows a `TTextFrame` in the `snackbar` stand — a translucent black band that springs up from the bottom — hides it after `ADuration_ms` and then calls `AThen`. Several snackbars can be on screen at once.
+`ShowSnackBar(AText, ADuration_ms, AThen)` shows a `TTextFrame` in the `snackbar` stand — a translucent black band that springs up from the bottom — hides it after `ADuration_ms` and then calls `AThen`. Several snackbars can be on screen at once. If the route of the scaffold is closed before, the snackbar goes with it and `AThen` is not called.
 
 ## Drawer
 

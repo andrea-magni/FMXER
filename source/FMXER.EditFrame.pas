@@ -17,9 +17,12 @@ type
   private
     FOnChangeProc: TProc<Boolean>;
     FFocusOnShow: Boolean;
+    FFocusAction: IDelayedAction;
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
+    destructor Destroy; override;
+
     [Show]
     procedure ShowHandler;
 
@@ -45,6 +48,14 @@ implementation
 {$R *.fmx}
 
 { TEditFrame }
+
+destructor TEditFrame.Destroy;
+begin
+  // closed before the focus was set
+  if Assigned(FFocusAction) then
+    FFocusAction.Cancel;
+  inherited;
+end;
 
 procedure TEditFrame.EditControlChange(Sender: TObject);
 begin
@@ -132,7 +143,7 @@ begin
 
   if GetFocusOnShow and EditControl.CanFocus then
   begin
-    TDelayedAction.Execute(10
+    FFocusAction := TDelayedAction.Schedule(10
     , procedure
       begin
         EditControl.SetFocus;

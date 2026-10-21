@@ -29,6 +29,11 @@ type
 /// (timers and delayed actions fire through them).</summary>
 procedure Pump(const AMS: Integer);
 
+/// <summary>Pump, returning the first exception raised meanwhile (class and
+/// message, '' when none): exceptions of timers and delayed actions reach
+/// Application.HandleException, not the caller.</summary>
+function PumpCatching(const AMS: Integer): string;
+
 implementation
 
 uses
@@ -43,6 +48,41 @@ begin
     Application.ProcessMessages;
     CheckSynchronize(5);
   until LStopwatch.ElapsedMilliseconds >= AMS;
+end;
+
+type
+  TExceptionCatcher = class
+  public
+    FirstError: string;
+    procedure HandleException(Sender: TObject; E: Exception);
+  end;
+
+procedure TExceptionCatcher.HandleException(Sender: TObject; E: Exception);
+begin
+  if FirstError = '' then
+    FirstError := E.ClassName + ': ' + E.Message;
+end;
+
+function PumpCatching(const AMS: Integer): string;
+var
+  LCatcher: TExceptionCatcher;
+  LPrevious: TExceptionEvent;
+begin
+  LCatcher := TExceptionCatcher.Create;
+  LPrevious := Application.OnException;
+  Application.OnException := LCatcher.HandleException;
+  try
+    try
+      Pump(AMS);
+    except
+      on E: Exception do
+        LCatcher.HandleException(nil, E);
+    end;
+    Result := LCatcher.FirstError;
+  finally
+    Application.OnException := LPrevious;
+    LCatcher.Free;
+  end;
 end;
 
 { TDestroySentinel }
