@@ -90,7 +90,7 @@ The main form shows the breadcrumb in the caption on Windows, closes the camera 
 
 ## FormControls
 
-The [form controls](/elements/form-controls) on one screen (`Routes.Home`): a scaffold with a `TVertScrollFrame` around a `TColumnFrame` with a `TSwitchFrame`, a `TCheckBoxFrame`, a `TRadioGroupFrame` (`AUTO_HEIGHT` from its options), a `TComboBoxFrame`, a `TDateEditFrame` that warns about a date in the past, a `TProgressBarFrame` driven by a `TTrackbarFrame`, an indeterminate `TProgressBarFrame` switched on and off by a second switch, and a summary text. The values live in local variables of the route definition, captured by the `OnChangeProc` closures, which update the summary. Started from NewProjectTemplate.
+The [form controls](/elements/form-controls) on one screen (`Routes.Home`): a scaffold with a `TVertScrollFrame` around a `TColumnFrame` with a `TSwitchFrame`, a `TCheckBoxFrame`, a `TRadioGroupFrame` (`AUTO_HEIGHT` from its options), a `TComboBoxFrame`, a `TDateEditFrame` that warns about a date in the past, a `TProgressBarFrame` driven by a `TTrackbarFrame`, an indeterminate `TProgressBarFrame` switched on and off by a second switch, and a summary text. Each control shows the value chosen in its extra text. The values live in local variables of the route definition, captured by the `OnChangeProc` closures, which update the extra texts and the summary. Started from NewProjectTemplate.
 
 ## MyTicketing
 

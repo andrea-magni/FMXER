@@ -18,6 +18,23 @@ uses
 , FMXER.IconFontsData, Icons.Utils
 ;
 
+function NotificationsText(const AOn: Boolean): string;
+begin
+  Result := IfThen(AOn, 'You will get notifications', 'Notifications are off');
+end;
+
+function TermsText(const AAccepted: Boolean): string;
+begin
+  Result := IfThen(AAccepted, 'Accepted', 'Not accepted yet');
+end;
+
+function DeliveryText(const ADate: TDate): string;
+begin
+  Result := FormatDateTime('dddd, ddddd', ADate);
+  if ADate < Today then
+    Result := Result + ' - the date is in the past';
+end;
+
 procedure DefineHomeRoute(const ARouteName: string);
 begin
   Navigator.DefineRoute<TScaffoldForm>(
@@ -65,64 +82,73 @@ begin
             begin
               Col.SetPadding(16, 8, 16, 80); // room for the action button
               Col
-              .AddFrame<TSwitchFrame>(TColumnFrame.AUTO_HEIGHT
+              // each control shows the value chosen in its extra text (below it)
+              .AddFrame<TSwitchFrame>(70
               , procedure (Switch: TSwitchFrame)
                 begin
                   Switch
                   .SetText('Notifications')
                   .SetChecked(LNotifications)
+                  .SetExtraText(NotificationsText(LNotifications))
                   .SetOnChangeProc(
                     procedure (AChecked: Boolean)
                     begin
                       LNotifications := AChecked;
+                      Switch.SetExtraText(NotificationsText(AChecked));
                       LUpdateSummary();
                     end
                   );
                 end
               )
-              .AddFrame<TCheckBoxFrame>(TColumnFrame.AUTO_HEIGHT
+              .AddFrame<TCheckBoxFrame>(70
               , procedure (Check: TCheckBoxFrame)
                 begin
                   Check
                   .SetText('I accept the terms and conditions')
                   .SetChecked(LTerms)
+                  .SetExtraText(TermsText(LTerms))
                   .SetOnChangeProc(
                     procedure (AChecked: Boolean)
                     begin
                       LTerms := AChecked;
+                      Check.SetExtraText(TermsText(AChecked));
                       LUpdateSummary();
                     end
                   );
                 end
               )
               .AddFrame<THorzDividerFrame>(1)
-              .AddFrame<TRadioGroupFrame>(TColumnFrame.AUTO_HEIGHT
+              .AddFrame<TRadioGroupFrame>(TColumnFrame.AUTO_HEIGHT // caption, options and extra text
               , procedure (Group: TRadioGroupFrame)
                 begin
                   Group
                   .SetCaption('Size')
                   .SetOptions(['Small', 'Medium', 'Large'])
                   .SetItemIndex(1)
+                  .SetExtraText('Selected: ' + LSize)
                   .SetOnChangeProc(
                     procedure (AIndex: Integer)
                     begin
                       LSize := Group.GetSelectedText;
+                      Group.SetExtraText(Format('Selected: %s (option %d)', [LSize, AIndex + 1]));
                       LUpdateSummary();
                     end
                   );
                 end
               )
-              .AddFrame<TComboBoxFrame>(TColumnFrame.AUTO_HEIGHT
+              .AddFrame<TComboBoxFrame>(80
               , procedure (Combo: TComboBoxFrame)
                 begin
                   Combo
                   .SetCaption('Country')
                   .SetItems(['Italy', 'Germany', 'France', 'Spain', 'United Kingdom'])
                   .SetItemIndex(0)
+                  .SetExtraText('Selected: ' + LCountry)
                   .SetOnChangeProc(
                     procedure (AIndex: Integer)
                     begin
                       LCountry := Combo.GetSelectedText;
+                      Combo.SetExtraText('Selected: ' + LCountry);
                       LUpdateSummary();
                     end
                   );
@@ -134,11 +160,12 @@ begin
                   DateEdit
                   .SetCaption('Delivery date')
                   .SetDate(LDelivery)
+                  .SetExtraText(DeliveryText(LDelivery))
                   .SetOnChangeProc(
                     procedure (ADate: TDate)
                     begin
                       LDelivery := ADate;
-                      DateEdit.SetExtraText(IfThen(ADate < Today, 'The date is in the past', ''));
+                      DateEdit.SetExtraText(DeliveryText(ADate));
                       LUpdateSummary();
                     end
                   );
