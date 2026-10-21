@@ -85,6 +85,23 @@ type
     property Value: T read GetValue write SetValue;
   end;
 
+  /// <summary>The link of an element to an observable, for the Bind* methods
+  /// of the elements: owned by the element (freed with it, which removes the
+  /// listener), forgets the observable when the observable is freed first.</summary>
+  TObservableLink<T> = class(TComponent)
+  private
+    FObservable: TObservable<T>;
+  protected
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+  public
+    /// <summary>Listens to AObservable with AShow (called now too), instead of
+    /// the observable linked before; nil: no observable.</summary>
+    procedure Bind(const AObservable: TObservable<T>; const AShow: TProc<T>);
+    /// <summary>Writes AValue to the observable, if any (two-way bindings).</summary>
+    procedure Write(const AValue: T);
+    property Observable: TObservable<T> read FObservable;
+  end;
+
   /// <summary>A notification without a value (Flutter ChangeNotifier): "this
   /// state changed", for example after loading it.</summary>
   TChangeNotifier = class(TObservableBase)
@@ -304,6 +321,36 @@ end;
 procedure TObservable<T>.Update(const AFunc: TFunc<T, T>);
 begin
   SetValue(AFunc(GetValue));
+end;
+
+{ TObservableLink<T> }
+
+procedure TObservableLink<T>.Bind(const AObservable: TObservable<T>; const AShow: TProc<T>);
+begin
+  if Assigned(FObservable) then
+  begin
+    FObservable.Unlisten(Self);
+    FObservable.RemoveFreeNotification(Self);
+  end;
+  FObservable := AObservable;
+  if Assigned(FObservable) then
+  begin
+    FObservable.FreeNotification(Self);
+    FObservable.Listen(Self, AShow, True);
+  end;
+end;
+
+procedure TObservableLink<T>.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited;
+  if (Operation = opRemove) and (AComponent = FObservable) then
+    FObservable := nil;
+end;
+
+procedure TObservableLink<T>.Write(const AValue: T);
+begin
+  if Assigned(FObservable) then
+    FObservable.Value := AValue;
 end;
 
 { TChangeNotifier }

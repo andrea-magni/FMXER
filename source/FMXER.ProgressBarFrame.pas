@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   System.Math,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Objects, FMX.Ani, FMX.Layouts, System.Skia, FMX.Skia;
+  FMX.Objects, FMX.Ani, FMX.Layouts, System.Skia, FMX.Skia
+, FMXER.Observable;
 
 type
   /// <summary>A linear progress bar (the Flutter LinearProgressIndicator): a
@@ -26,6 +27,7 @@ type
     FMax: Single;
     FIndeterminate: Boolean;
     FAnimation: TFloatAnimation;
+    FValueLink: TObservableLink<Single>;
     procedure UpdateBar;
   protected
   public
@@ -50,6 +52,9 @@ type
     function SetBarColor(const AColor: TAlphaColor): TProgressBarFrame;
     function SetTrackColor(const AColor: TAlphaColor): TProgressBarFrame;
     function SetThickness(const AThickness: Single): TProgressBarFrame;
+    /// <summary>One-way binding: the bar shows AObservable. Removed with the
+    /// element.</summary>
+    function BindValue(const AObservable: TObservable<Single>): TProgressBarFrame;
   end;
 
 implementation
@@ -60,6 +65,18 @@ uses
 {$R *.fmx}
 
 { TProgressBarFrame }
+
+function TProgressBarFrame.BindValue(const AObservable: TObservable<Single>): TProgressBarFrame;
+begin
+  Result := Self;
+  if not Assigned(FValueLink) then
+    FValueLink := TObservableLink<Single>.Create(Self);
+  FValueLink.Bind(AObservable,
+    procedure (AValue: Single)
+    begin
+      SetValue(AValue);
+    end);
+end;
 
 constructor TProgressBarFrame.Create(AOwner: TComponent);
 begin

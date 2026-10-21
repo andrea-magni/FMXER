@@ -378,6 +378,12 @@ TObservable<T> = class(TComponent)                         // owned by the state
   function ListenerCount: Integer;
   property Value: T;                                     // notifies when different (TEqualityComparer<T>.Default)
 end;
+// v.1.9 bindings (element owns them; two-way for inputs):
+//   TSwitchFrame/TCheckBoxFrame.BindChecked(TObservable<Boolean>), TEditFrame.BindText(TObservable<string>; AOnEditEnd = False),
+//   TTrackbarFrame.BindValue(TObservable<Single>), TComboBoxFrame/TRadioGroupFrame.BindItemIndex(TObservable<Integer>),
+//   TDateEditFrame.BindDate(TObservable<TDate>); one-way: TTextFrame.BindContent(TObservable<string>),
+//   TTextFrame.BindContent<T>(TObservable<T>; AFormat: TFunc<T, string>), TProgressBarFrame.BindValue(TObservable<Single>),
+//   TButtonFrame.BindEnabled(TObservable<Boolean>), TControl helper BindVisible/BindEnabled(TObservable<Boolean>)
 TChangeNotifier = class(TComponent)
   function Listen(const AOwner: TComponent; const AProc: TProc; const ACallNow: Boolean = False): TChangeNotifier;
   procedure Unlisten(const AOwner: TComponent);

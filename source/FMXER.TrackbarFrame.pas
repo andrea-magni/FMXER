@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, SubjectStand, FMX.Ani, FMX.Layouts,
-  FMX.ListBox, FMX.Colors, System.Skia, FMX.Skia, FMXER.UI.Misc;
+  FMX.ListBox, FMX.Colors, System.Skia, FMX.Skia, FMXER.UI.Misc
+, FMXER.Observable;
 
 type
   TTrackbarFrame = class(TFrame)
@@ -16,6 +17,7 @@ type
     procedure TrackBar1Change(Sender: TObject);
   private
     FOnChangeProc: TProc<Single>;
+    FValueLink: TObservableLink<Single>;
   protected
   public
     function GetCaption: string;
@@ -35,6 +37,10 @@ type
     function SetTracking(const ATracking: Boolean): TTrackbarFrame;
     function SetExtraText(const AExtraText: string): TTrackbarFrame;
     function SetOnChangeProc(const AOnChangeProc: TProc<Single>): TTrackbarFrame;
+    /// <summary>Two-way binding: the track bar shows AObservable, moving it
+    /// writes it (OnChangeProc is still called). Set Min and Max first.
+    /// Removed with the element.</summary>
+    function BindValue(const AObservable: TObservable<Single>): TTrackbarFrame;
 
     property OnChangeProc: TProc<Single> read FOnChangeProc write FOnChangeProc;
   end;
@@ -43,7 +49,20 @@ implementation
 
 {$R *.fmx}
 
-{ TColorPickerFrame }
+{ TTrackbarFrame }
+
+function TTrackbarFrame.BindValue(const AObservable: TObservable<Single>): TTrackbarFrame;
+begin
+  Result := Self;
+  if not Assigned(FValueLink) then
+    FValueLink := TObservableLink<Single>.Create(Self);
+  FValueLink.Bind(AObservable,
+    procedure (AValue: Single)
+    begin
+      if Trackbar1.Value <> AValue then
+        Trackbar1.Value := AValue;
+    end);
+end;
 
 function TTrackbarFrame.GetCaption: string;
 begin
@@ -161,6 +180,8 @@ end;
 
 procedure TTrackbarFrame.TrackBar1Change(Sender: TObject);
 begin
+  if Assigned(FValueLink) then
+    FValueLink.Write(Trackbar1.Value);
   if Assigned(FOnChangeProc) then
     FOnChangeProc(Trackbar1.Value);
 end;

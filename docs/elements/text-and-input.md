@@ -38,6 +38,7 @@ Col.AddFrame<TTextFrame>(80
 | `SetVertAlign(TTextAlign)` | `GetVertAlign` | |
 | `SetMaxLines(ALines)` | `GetMaxLines` | |
 | `SetOnClickProc(TProc)` (or `SetOnClick`) | `GetOnClickProc` | |
+| `BindContent(TObservable<string>)`, `BindContent<T>(TObservable<T>; AFormat)` | | one-way [binding](/guide/state#bindings) |
 
 The label is `TextContent`. `TTextFrame` is also what the scaffold uses for snackbars and for text action buttons.
 
@@ -75,6 +76,7 @@ Col.AddFrame<TButtonFrame>(60
 | `SetExtraText(AText)` | label below the button |
 | `SetOnClickProc(TProc)` (or `SetOnClickHandler`) / `OnClickHandler` | click (the action's `OnExecute`) |
 | `OnUpdateHandler: TProc<TAction>` | the action's `OnUpdate`: enable, check, rename the button |
+| `BindEnabled(TObservable<Boolean>)` | one-way [binding](/guide/state#bindings) of the action's `Enabled` |
 | `SetBackgroundFillColor`, `SetBackgroundStrokeColor`, `SetBackgroundStrokeThickness`, `SetBackgroundOpacity`, `SetBackgroundVisible` | the rectangle behind the button |
 | `BackgroundFill`, `BackgroundStroke` | its brushes |
 | `IsDefault` | the button's `Default` |
@@ -124,6 +126,7 @@ Col.AddFrame<TEditFrame>(100
 | `SetPassword(Boolean)` | `GetPassword` | |
 | `SetFocusOnShow(Boolean)` | `GetFocusOnShow` | focus the edit when the element is shown |
 | `OnChangeProc: TProc<Boolean>` | | `True` from `OnChangeTracking` (every keystroke), `False` from `OnChange` |
+| `BindText(TObservable<string>; AOnEditEnd = False)` | | two-way [binding](/guide/state#bindings) |
 
 `IfThen` is in `System.StrUtils`. The edit is `EditControl`: set `KeyboardType`, `ReturnKeyType`, `MaxLength` there.
 
@@ -137,6 +140,7 @@ Unit `FMXER.TrackbarFrame`. A `TTrackBar` with caption and extra text. The QRCod
 | `SetCaption(ACaption)`, `SetExtraText(AText)` | `GetCaption`, `GetExtraText` |
 | `SetCaptionPosition(TCaptionPosition; AMargin = 5)` | `Left`, `Right`, `Top`, `Bottom` |
 | `SetOnChangeProc(TProc<Single>)` / `OnChangeProc` | the new value |
+| `BindValue(TObservable<Single>)` | two-way [binding](/guide/state#bindings) (set `Min` and `Max` first) |
 
 ## TColorPickerFrame
 

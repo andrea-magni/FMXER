@@ -73,6 +73,7 @@ With `AddActionButton`, pass a variable to `OnClickProc`, as above: an anonymous
 | `SetAlignClient`, `SetAlignTop`, `SetAlignBottom`, `SetAlignLeft`, `SetAlignRight`, `SetAlignContents` | `Align` |
 | `SetHitTest(AHitTest)` | `HitTest` (elements forward it to their inner control) |
 | `SetWidth(AWidth)`, `SetHeight(AHeight)` | size |
+| `BindVisible(TObservable<Boolean>)`, `BindEnabled(TObservable<Boolean>)` | one-way [bindings](/guide/state#bindings) of `Visible` and `Enabled` (v.1.9) |
 
 ```pascal
 Button.SetMargin<TButtonFrame>(5).SetText('OK');

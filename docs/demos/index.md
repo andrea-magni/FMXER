@@ -112,8 +112,8 @@ Navigation inside one screen (`Routes.Home`): a scaffold with a [drawer](/elemen
   - the title detail shows *synced hh:mm:ss*, listening to `LastSync`, a `TObservable<TDateTime>` set every 3 seconds by a background task;
   - a tap opens the order with `RouteTo<TOrderState>`, which loads it into the state of the route; the result proc shows *&lt;customer&gt; saved*, or *Not saved*;
 - **order**: `DefineRoute<TScaffoldForm, TOrderState>`. `TOrderState` is a data module (`Data.OrderState.pas`/`.dfm`), created with the route and freed with it, with `Paid`, `Note` and `Modified` as observables:
-  - the switch and the edit write them, and a status text listens to `Paid`;
-  - *Save* is enabled only when `Modified` is set; it writes the order back to the list, notifies `OrdersChanged` and closes the route with `CloseRouteWithResult`;
+  - the switch and the edit are bound to them (`BindChecked`, `BindText`), a status text shows `Paid` (`BindContent<Boolean>`);
+  - *Save* is enabled only when `Modified` is set (`BindEnabled`); it writes the order back to the list, notifies `OrdersChanged` and closes the route with `CloseRouteWithResult`;
   - the X button and Back close the route without a result.
 
 ## MyTicketing

@@ -62,47 +62,32 @@ begin
                       .SetHorzAlign(TSkTextHorzAlign.Leading);
                     end
                   )
-                  // the elements edit the state, not the list: Save writes it back
+                  // the elements are bound to the state, not to the list: Save
+                  // writes it back. A binding goes with its element when the
+                  // route closes.
                   .AddFrame<TSwitchFrame>(TColumnFrame.AUTO_HEIGHT
                   , procedure (Switch: TSwitchFrame)
                     begin
-                      Switch
-                      .SetText('Paid')
-                      .SetChecked(State.Paid.Value)
-                      .SetOnChangeProc(
-                        procedure (AChecked: Boolean)
-                        begin
-                          State.Paid.Value := AChecked;
-                        end
-                      );
+                      Switch.SetText('Paid').BindChecked(State.Paid);   // two-way
                     end
                   )
-                  // listens to the state: updated whenever Paid changes, and
-                  // no longer listens when the route is closed (it is the owner)
                   .AddFrame<TTextFrame>(30
                   , procedure (Text: TTextFrame)
                     begin
                       Text
                       .SetFontColor(TAlphaColorRec.Dimgray)
-                      .SetHorzAlign(TSkTextHorzAlign.Leading);
-                      State.Paid.Listen(Text,
-                        procedure (APaid: Boolean)
+                      .SetHorzAlign(TSkTextHorzAlign.Leading)
+                      .BindContent<Boolean>(State.Paid,                   // one-way, formatted
+                        function (APaid: Boolean): string
                         begin
-                          Text.SetContent(IfThen(APaid, 'Status: paid', 'Status: to be paid'));
+                          Result := IfThen(APaid, 'Status: paid', 'Status: to be paid');
                         end);
                     end
                   )
                   .AddFrame<TEditFrame>(80
                   , procedure (Edit: TEditFrame)
                     begin
-                      Edit
-                      .SetCaption('Note')
-                      .SetText(State.Note.Value)
-                      .OnChangeProc :=
-                        procedure (ATracking: Boolean)
-                        begin
-                          State.Note.Value := Edit.GetText;
-                        end;
+                      Edit.SetCaption('Note').BindText(State.Note);     // two-way
                     end
                   )
                   .AddFrame<TButtonFrame>(60
@@ -110,6 +95,7 @@ begin
                     begin
                       Button
                       .SetText('Save')
+                      .BindEnabled(State.Modified)   // only when there is something to save
                       .SetOnClickProc(
                         procedure
                         begin
@@ -118,12 +104,6 @@ begin
                           Navigator.CloseRouteWithResult(ARouteName, State.Order.Customer);
                         end
                       );
-                      // enabled only when there is something to save
-                      State.Modified.Listen(Button,
-                        procedure (AModified: Boolean)
-                        begin
-                          Button.ButtonAction.Enabled := AModified;
-                        end);
                     end
                   );
                 end

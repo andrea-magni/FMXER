@@ -87,11 +87,13 @@ begin
           .SetVertAlign(TTextAlign.Trailing);
           Text.TextContent.Margins.Right := 8;
           Text.TextContent.Margins.Bottom := 4;
-          LastSync.Listen(Text,
-            procedure (ATime: TDateTime)
+          Text.BindContent<TDateTime>(LastSync,
+            function (ATime: TDateTime): string
             begin
               if ATime > 0 then
-                Text.SetContent('synced ' + FormatDateTime('hh:nn:ss', ATime));
+                Result := 'synced ' + FormatDateTime('hh:nn:ss', ATime)
+              else
+                Result := '';
             end);
         end
       )

@@ -225,12 +225,45 @@ The rules:
 - **The owner of a listener is the element it updates**, not the route or the form. When the element is freed (its route closed, a list rebuilt), the listener goes with it, so it never runs on a freed element. This replaces the subscription guard of [System.Messaging](#subscriptions-and-the-lifetime-of-elements).
 - **Notifications run in the main thread**. A value set by a background thread is stored at once, and its listeners are called through `TThread.Queue`. A notification still queued when the observable is freed is dropped.
 - **Equality** is the default comparer of `T`. For records it compares the bytes, so a string field may give an extra, harmless notification. An object changed inside gives none: call `Notify`.
-- **Two-way**: a switch or an edit writes the value in its `OnChangeProc` (`State.Paid.Value := AChecked`). A listener of the same value then runs: it must not write the value back to the element, or it can loop.
+- **Two-way**: a switch or an edit writes the value in its `OnChangeProc` (`State.Paid.Value := AChecked`). A listener of the same value then runs: it must not write the value back to the element, or it can loop. The [bindings](#bindings) do both for you.
 
-The [Orders demo](/demos/#orders) uses all of it: observables in the state of the order route, a `TChangeNotifier` of the app that rebuilds the list when an order is saved, and a "last sync" set every 3 seconds by a background task.
+The [Orders demo](/demos/#orders) uses all of it: observables in the state of the order route, bound to its elements, a `TChangeNotifier` of the app that rebuilds the list when an order is saved, and a "last sync" set every 3 seconds by a background task.
+
+### Bindings
+
+The `Bind*` methods of the elements write the `Listen` and the `OnChangeProc` for you. An input shows the observable and writes it back when the user changes it (**two-way**); a text, a progress bar or a button only shows it (**one-way**):
+
+```pascal
+Switch.SetText('Paid').BindChecked(State.Paid);          // two-way
+Edit.SetCaption('Note').BindText(State.Note);            // two-way, at every keystroke
+Button.SetText('Save').BindEnabled(State.Modified);      // one-way
+Text.BindContent<Currency>(State.Total,                  // one-way, formatted
+  function (V: Currency): string
+  begin
+    Result := FormatCurr('#,##0.00', V);
+  end);
+```
+
+| Element | Binding |
+|---|---|
+| `TSwitchFrame`, `TCheckBoxFrame` | `BindChecked(TObservable<Boolean>)`, two-way |
+| `TEditFrame` | `BindText(TObservable<string>; AOnEditEnd = False)`, two-way: at every keystroke, or when the edit ends with `AOnEditEnd` |
+| `TTrackbarFrame` | `BindValue(TObservable<Single>)`, two-way (set `Min` and `Max` first) |
+| `TComboBoxFrame`, `TRadioGroupFrame` | `BindItemIndex(TObservable<Integer>)`, two-way (set the items or options first) |
+| `TDateEditFrame` | `BindDate(TObservable<TDate>)`, two-way |
+| `TTextFrame` | `BindContent(TObservable<string>)`, `BindContent<T>(TObservable<T>; AFormat: TFunc<T, string>)` |
+| `TProgressBarFrame` | `BindValue(TObservable<Single>)` |
+| `TButtonFrame` | `BindEnabled(TObservable<Boolean>)`, the `Enabled` of its action |
+| any element or control (`FMXER.UI.Misc` helper) | `BindVisible(TObservable<Boolean>)`, `BindEnabled(TObservable<Boolean>)` |
+
+- **The element owns the binding**, as with `Listen`: it goes with the element. An observable freed before the element only stops the updates.
+- **The value comes from the observable**: the element shows it at once. Set the range, items or options before binding.
+- **`OnChangeProc` still works**: the binding uses its own hook. A binding that changes a switch or a check box from the observable calls `OnChangeProc`, as `SetChecked` does.
+- **No loops**: the element is updated only when it shows a different value, so the caret of an edit stays where it is while typing.
+- **One binding per property**: a second `BindChecked` (or `BindContent`, ...) on the same element replaces the first.
 
 ::: info Since v.1.9
-`FMXER.Observable` is new in v.1.9 (not released yet).
+`FMXER.Observable` and the `Bind*` methods are new in v.1.9 (not released yet).
 :::
 
 ## Notifications across screens

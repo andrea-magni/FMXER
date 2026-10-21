@@ -15,7 +15,7 @@ uses
 , FMXER.TextFrame, FMXER.TrackbarFrame, FMXER.HorzDividerFrame
 , FMXER.SwitchFrame, FMXER.CheckBoxFrame, FMXER.RadioGroupFrame
 , FMXER.ComboBoxFrame, FMXER.DateEditFrame, FMXER.ProgressBarFrame
-, FMXER.IconFontsData, Icons.Utils
+, FMXER.IconFontsData, Icons.Utils, FMXER.Observable
 ;
 
 function NotificationsText(const AOn: Boolean): string;
@@ -48,7 +48,7 @@ begin
       LCountry: string;
       LDelivery: TDate;
       LSummary: TTextFrame;
-      LUpload: TProgressBarFrame;
+      LUpload: TObservable<Single>;   // bound to a track bar and a progress bar
       LWorking: TProgressBarFrame;
       LUpdateSummary: TProc;
     begin
@@ -58,7 +58,7 @@ begin
       LCountry := 'Italy';
       LDelivery := IncDay(Today, 7);
       LSummary := nil;
-      LUpload := nil;
+      LUpload := TObservable<Single>.Create(Scaffold, 30);   // freed with the scaffold
       LWorking := nil;
 
       LUpdateSummary :=
@@ -172,31 +172,25 @@ begin
                 end
               )
               .AddFrame<THorzDividerFrame>(1)
+              // the progress bar and the track bar below are bound to the same
+              // observable: moving the track bar moves the bar
               .AddFrame<TProgressBarFrame>(50
               , procedure (Progress: TProgressBarFrame)
                 begin
-                  LUpload := Progress;
                   Progress
                   .SetCaption('Upload')
-                  .SetValue(30)
-                  .SetExtraText('30%');
+                  .BindValue(LUpload);                      // one-way
+                  LUpload.Listen(Progress,
+                    procedure (AValue: Single)
+                    begin
+                      Progress.SetExtraText(Round(AValue).ToString + '%');
+                    end);
                 end
               )
-              // a track bar drives the determinate progress bar above
               .AddFrame<TTrackbarFrame>(40
               , procedure (Track: TTrackbarFrame)
                 begin
-                  Track
-                  .SetMin(0)
-                  .SetMax(100)
-                  .SetValue(30)
-                  .SetOnChangeProc(
-                    procedure (AValue: Single)
-                    begin
-                      if Assigned(LUpload) then
-                        LUpload.SetValue(AValue).SetExtraText(Round(AValue).ToString + '%');
-                    end
-                  );
+                  Track.SetMin(0).SetMax(100).BindValue(LUpload);   // two-way
                 end
               )
               .AddFrame<TSwitchFrame>(TColumnFrame.AUTO_HEIGHT

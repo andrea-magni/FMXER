@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.ListBox, FMX.Layouts, System.Skia, FMX.Skia;
+  FMX.Controls.Presentation, FMX.ListBox, FMX.Layouts, System.Skia, FMX.Skia
+, FMXER.Observable;
 
 type
   /// <summary>A drop-down list (TComboBox) with a caption above and an extra
@@ -18,6 +19,7 @@ type
   private
     FOnChangeProc: TProc<Integer>;
     FUpdating: Boolean;
+    FItemIndexLink: TObservableLink<Integer>;
   protected
   public
     function GetCaption: string;
@@ -33,6 +35,10 @@ type
     function ClearItems: TComboBoxFrame;
     function SetItemIndex(const AItemIndex: Integer): TComboBoxFrame;
     function SetOnChangeProc(const AOnChangeProc: TProc<Integer>): TComboBoxFrame;
+    /// <summary>Two-way binding: the combo box selects the item AObservable
+    /// holds (-1: none), a choice writes it (OnChangeProc is still called). Set
+    /// the items first. Removed with the element.</summary>
+    function BindItemIndex(const AObservable: TObservable<Integer>): TComboBoxFrame;
 
     property OnChangeProc: TProc<Integer> read FOnChangeProc write FOnChangeProc;
   end;
@@ -42,6 +48,19 @@ implementation
 {$R *.fmx}
 
 { TComboBoxFrame }
+
+function TComboBoxFrame.BindItemIndex(const AObservable: TObservable<Integer>): TComboBoxFrame;
+begin
+  Result := Self;
+  if not Assigned(FItemIndexLink) then
+    FItemIndexLink := TObservableLink<Integer>.Create(Self);
+  FItemIndexLink.Bind(AObservable,
+    procedure (AValue: Integer)
+    begin
+      if ComboBoxControl.ItemIndex <> AValue then
+        SetItemIndex(AValue);
+    end);
+end;
 
 function TComboBoxFrame.AddItem(const AText: string): TComboBoxFrame;
 begin
@@ -64,6 +83,8 @@ procedure TComboBoxFrame.ComboBoxControlChange(Sender: TObject);
 begin
   if FUpdating then
     Exit;
+  if Assigned(FItemIndexLink) then
+    FItemIndexLink.Write(ComboBoxControl.ItemIndex);
   if Assigned(FOnChangeProc) then
     FOnChangeProc(ComboBoxControl.ItemIndex);
 end;

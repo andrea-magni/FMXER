@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   Generics.Collections,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Layouts, System.Skia, FMX.Skia;
+  FMX.Controls.Presentation, FMX.Layouts, System.Skia, FMX.Skia
+, FMXER.Observable;
 
 type
   /// <summary>A caption and a group of radio buttons, one per option, from
@@ -20,6 +21,7 @@ type
     FItemHeight: Single;
     FOnChangeProc: TProc<Integer>;
     FUpdating: Boolean;
+    FItemIndexLink: TObservableLink<Integer>;
     procedure RadioButtonChange(Sender: TObject);
     procedure UpdateHeight;
   protected
@@ -42,6 +44,10 @@ type
     function SetItemIndex(const AItemIndex: Integer): TRadioGroupFrame;
     function SetItemHeight(const AItemHeight: Single): TRadioGroupFrame;
     function SetOnChangeProc(const AOnChangeProc: TProc<Integer>): TRadioGroupFrame;
+    /// <summary>Two-way binding: the group selects the option AObservable
+    /// holds (-1: none), a tap writes it (OnChangeProc is still called). Set
+    /// the options first. Removed with the element.</summary>
+    function BindItemIndex(const AObservable: TObservable<Integer>): TRadioGroupFrame;
 
     property Buttons: TList<TRadioButton> read FButtons;
     property OnChangeProc: TProc<Integer> read FOnChangeProc write FOnChangeProc;
@@ -52,6 +58,19 @@ implementation
 {$R *.fmx}
 
 { TRadioGroupFrame }
+
+function TRadioGroupFrame.BindItemIndex(const AObservable: TObservable<Integer>): TRadioGroupFrame;
+begin
+  Result := Self;
+  if not Assigned(FItemIndexLink) then
+    FItemIndexLink := TObservableLink<Integer>.Create(Self);
+  FItemIndexLink.Bind(AObservable,
+    procedure (AValue: Integer)
+    begin
+      if GetItemIndex <> AValue then
+        SetItemIndex(AValue);
+    end);
+end;
 
 function TRadioGroupFrame.AddOption(const AText: string): TRadioGroupFrame;
 var
@@ -149,6 +168,8 @@ begin
   // only the new selection
   if FUpdating or not (Sender as TRadioButton).IsChecked then
     Exit;
+  if Assigned(FItemIndexLink) then
+    FItemIndexLink.Write((Sender as TRadioButton).Tag);
   if Assigned(FOnChangeProc) then
     FOnChangeProc((Sender as TRadioButton).Tag);
 end;

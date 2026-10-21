@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Edit, SubjectStand, System.Skia, FMX.Skia;
+  FMX.Controls.Presentation, FMX.Edit, SubjectStand, System.Skia, FMX.Skia
+, FMXER.Observable;
 
 type
   TEditFrame = class(TFrame)
@@ -18,6 +19,8 @@ type
     FOnChangeProc: TProc<Boolean>;
     FFocusOnShow: Boolean;
     FFocusAction: IDelayedAction;
+    FTextLink: TObservableLink<string>;
+    FTextOnEditEnd: Boolean;
   protected
     [SubjectInfo] SI: TSubjectInfo;
   public
@@ -39,6 +42,11 @@ type
     function SetExtraText(const AExtraText: string): TEditFrame;
     function SetPassword(const AIsPassword: Boolean): TEditFrame;
     function SetFocusOnShow(const AFocusOnShow: Boolean): TEditFrame;
+    /// <summary>Two-way binding: the edit shows AObservable, typing writes it
+    /// (at every keystroke; with AOnEditEnd only when the edit ends, OnChange).
+    /// OnChangeProc is still called. Removed with the element.</summary>
+    function BindText(const AObservable: TObservable<string>;
+      const AOnEditEnd: Boolean = False): TEditFrame;
 
     property OnChangeProc: TProc<Boolean> read FOnChangeProc write FOnChangeProc;
   end;
@@ -48,6 +56,22 @@ implementation
 {$R *.fmx}
 
 { TEditFrame }
+
+function TEditFrame.BindText(const AObservable: TObservable<string>;
+  const AOnEditEnd: Boolean): TEditFrame;
+begin
+  Result := Self;
+  FTextOnEditEnd := AOnEditEnd;
+  if not Assigned(FTextLink) then
+    FTextLink := TObservableLink<string>.Create(Self);
+  FTextLink.Bind(AObservable,
+    procedure (AValue: string)
+    begin
+      // only a different text: the caret stays where it is while typing
+      if EditControl.Text <> AValue then
+        EditControl.Text := AValue;
+    end);
+end;
 
 destructor TEditFrame.Destroy;
 begin
@@ -59,12 +83,16 @@ end;
 
 procedure TEditFrame.EditControlChange(Sender: TObject);
 begin
+  if Assigned(FTextLink) then
+    FTextLink.Write(EditControl.Text);
   if Assigned(FOnChangeProc) then
     FOnChangeProc(False);
 end;
 
 procedure TEditFrame.EditControlChangeTracking(Sender: TObject);
 begin
+  if Assigned(FTextLink) and not FTextOnEditEnd then
+    FTextLink.Write(EditControl.Text);
   if Assigned(FOnChangeProc) then
     FOnChangeProc(True);
 end;

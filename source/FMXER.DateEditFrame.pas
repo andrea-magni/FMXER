@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.DateTimeCtrls, FMX.Layouts, System.Skia, FMX.Skia;
+  FMX.Controls.Presentation, FMX.DateTimeCtrls, FMX.Layouts, System.Skia, FMX.Skia
+, FMXER.Observable;
 
 type
   /// <summary>A date picker (TDateEdit: the native date picker on Android and
@@ -19,6 +20,7 @@ type
   private
     FOnChangeProc: TProc<TDate>;
     FUpdating: Boolean;
+    FDateLink: TObservableLink<TDate>;
   protected
   public
     function GetCaption: string;
@@ -33,6 +35,9 @@ type
     function SetFormat(const AFormat: string): TDateEditFrame;
     function SetIsEmpty(const AIsEmpty: Boolean): TDateEditFrame;
     function SetOnChangeProc(const AOnChangeProc: TProc<TDate>): TDateEditFrame;
+    /// <summary>Two-way binding: the date edit shows AObservable, a date chosen
+    /// writes it (OnChangeProc is still called). Removed with the element.</summary>
+    function BindDate(const AObservable: TObservable<TDate>): TDateEditFrame;
 
     property OnChangeProc: TProc<TDate> read FOnChangeProc write FOnChangeProc;
   end;
@@ -43,10 +48,25 @@ implementation
 
 { TDateEditFrame }
 
+function TDateEditFrame.BindDate(const AObservable: TObservable<TDate>): TDateEditFrame;
+begin
+  Result := Self;
+  if not Assigned(FDateLink) then
+    FDateLink := TObservableLink<TDate>.Create(Self);
+  FDateLink.Bind(AObservable,
+    procedure (AValue: TDate)
+    begin
+      if DateEditControl.Date <> AValue then
+        SetDate(AValue);
+    end);
+end;
+
 procedure TDateEditFrame.DateEditControlChange(Sender: TObject);
 begin
   if FUpdating then
     Exit;
+  if Assigned(FDateLink) then
+    FDateLink.Write(DateEditControl.Date);
   if Assigned(FOnChangeProc) then
     FOnChangeProc(DateEditControl.Date);
 end;
