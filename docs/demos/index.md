@@ -1,6 +1,6 @@
 # Demos
 
-The `demos` folder has one project per topic; twelve of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
+The `demos` folder has one project per topic; thirteen of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
 
 Every demo has the same search path, set once for all platforms: `..\..\source` and the submodules `lib\TFrameStand\source`, `lib\IconFontsImageList\Source`, `lib\DelphiZXingQRCode\Source` (QRCode also the `lib\ZXing.Delphi\Lib\Classes` folders). Clone with `--recursive` (see [Installation](/guide/installation)) and the demos build as they are. If you installed TFrameStand and IconFontsImageList instead and left `lib\` empty, the IDE library path is used. The MARS client of LibraryStore is not a submodule: install MARS or add its `Source` folder to the library path.
 
@@ -20,6 +20,7 @@ Media files (Lottie animations, SVG, the icon font `Material Design Icons Deskto
 | [QRCode](#qrcode) | QR code generator and camera reader, color pickers, share sheet | ZXing.Delphi, camera |
 | [FormControls](#formcontrols) | switch, check box, radio group, combo box, date edit, progress bars, state in closures | — |
 | [Navigation](#navigation) | drawer, bottom navigation, a page with tabs, Back closing the drawer | — |
+| [Dialogs](#dialogs) | alert, confirm, choices in a bottom sheet, a dialog and a sheet of FMXER elements | — |
 | [MyTicketing](#myticketing) | a login column (edits, password, default button enabled by `OnUpdateHandler`) leading to a scaffold | — |
 | [EKON25 - Weather](#ekon25-weather) | a card with a nested column in a scaffold, conference starting point | — |
 
@@ -96,6 +97,10 @@ The [form controls](/elements/form-controls) on one screen (`Routes.Home`): a sc
 ## Navigation
 
 Navigation inside one screen (`Routes.Home`): a scaffold with a [drawer](/elements/scaffold#drawer) (a `TColumnFrame` with a header and items that close the drawer and select a page, or show a snackbar) and a [bottom navigation](/elements/scaffold#bottom-navigation) of three pages with icons: *Home*, *Tabs* (a [`TTabsFrame`](/elements/tabs) with a tab bar on top, its `OnChangeProc` shows a snackbar) and *Settings* (two switches). On Android, Back closes the open drawer before the app. Started from NewProjectTemplate.
+
+## Dialogs
+
+[Dialogs and bottom sheets](/elements/dialogs) (`Routes.Home`): a column of buttons that show `Modals.Alert`, `Modals.Confirm` (the answer in a snackbar), `Modals.Choose` (the choice in a snackbar, or *Dismissed*), a dialog of FMXER elements (`ShowDialog<TColumnFrame>` with an edit and an OK button that sets `ModalResult`) and a bottom sheet of switches (`ShowBottomSheet<TColumnFrame>`). A tap outside, Back and Esc close them. Started from NewProjectTemplate.
 
 ## MyTicketing
 

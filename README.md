@@ -34,6 +34,7 @@ The setup (see the releases), TMS Smart Setup (`tmsbuild.yaml`), the runtime pac
  - WebView
  - FormControls
  - Navigation
+ - Dialogs
 
 ## Video
  - [CodeRage 2019: Introducing FMXER](https://youtu.be/RiK2re19Kyk)

@@ -2,12 +2,14 @@
 1. AccessoryFrame
 1. ActionButtonFrame
 1. ActivityBubblesFrame
+1. AlertFrame
 1. AnimatedImageFrame
 1. BackgroundFrame
 1. ButtonFrame
 1. CardFrame
 1. CheckBoxFrame
 1. ChipFrame
+1. ChoicesFrame
 1. ChipsFrame
 1. ColorButtonFrame
 1. ColorPickerFrame
@@ -51,5 +53,6 @@
 
 # MISC:
 1. IconFontsData
+1. Modals
 1. UI.Consts
 1. UI.Misc

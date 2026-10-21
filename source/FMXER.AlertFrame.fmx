@@ -1,0 +1,82 @@
+object AlertFrame: TAlertFrame
+  Align = Client
+  Size.Width = 288.000000000000000000
+  Size.Height = 160.000000000000000000
+  Size.PlatformDefault = False
+  object TitleLabel: TSkLabel
+    Align = Top
+    Margins.Bottom = 8.000000000000000000
+    Size.Width = 288.000000000000000000
+    Size.Height = 27.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family]
+    TextSettings.Font.Size = 20.000000000000000000
+    TextSettings.Font.Weight = Semibold
+    TextSettings.FontColor = xDE000000
+    Words = <
+      item
+      end>
+  end
+  object MessageLabel: TSkLabel
+    Align = Top
+    Position.Y = 35.000000000000000000
+    Size.Width = 288.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family]
+    TextSettings.Font.Size = 15.000000000000000000
+    TextSettings.FontColor = x99000000
+    Words = <
+      item
+      end>
+  end
+  object ButtonsLayout: TLayout
+    Align = Bottom
+    Margins.Top = 16.000000000000000000
+    Position.Y = 120.000000000000000000
+    Size.Width = 288.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object OkLabel: TSkLabel
+      Align = Right
+      AutoSize = False
+      HitTest = True
+      Position.X = 208.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      StyledSettings = [Family]
+      TextSettings.Font.Size = 15.000000000000000000
+      TextSettings.Font.Weight = Semibold
+      TextSettings.HorzAlign = Center
+      TextSettings.VertAlign = Center
+      OnClick = OkLabelClick
+      Words = <
+        item
+          Text = 'OK'
+        end>
+    end
+    object CancelLabel: TSkLabel
+      Align = Right
+      AutoSize = False
+      HitTest = True
+      Margins.Right = 8.000000000000000000
+      Position.X = 120.000000000000000000
+      Size.Width = 80.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      StyledSettings = [Family]
+      TextSettings.Font.Size = 15.000000000000000000
+      TextSettings.Font.Weight = Semibold
+      TextSettings.HorzAlign = Center
+      TextSettings.VertAlign = Center
+      Visible = False
+      OnClick = CancelLabelClick
+      Words = <
+        item
+          Text = 'Cancel'
+        end>
+    end
+  end
+end

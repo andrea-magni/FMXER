@@ -82,6 +82,7 @@ const elementsSidebar = [
       { text: 'Scaffold', link: '/elements/scaffold' },
       { text: 'Containers', link: '/elements/containers' },
       { text: 'Tabs & Navigation Bar', link: '/elements/tabs' },
+      { text: 'Dialogs & Bottom Sheets', link: '/elements/dialogs' },
       { text: 'Text & Input', link: '/elements/text-and-input' },
       { text: 'Form Controls', link: '/elements/form-controls' },
       { text: 'Images & Media', link: '/elements/images-and-media' },

@@ -39,6 +39,9 @@
         <Projects Include="Navigation\NavigationProject.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Dialogs\DialogsProject.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -155,14 +158,23 @@
     <Target Name="NavigationProject:Make">
         <MSBuild Projects="Navigation\NavigationProject.dproj" Targets="Make"/>
     </Target>
+    <Target Name="DialogsProject">
+        <MSBuild Projects="Dialogs\DialogsProject.dproj"/>
+    </Target>
+    <Target Name="DialogsProject:Clean">
+        <MSBuild Projects="Dialogs\DialogsProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DialogsProject:Make">
+        <MSBuild Projects="Dialogs\DialogsProject.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="NewProject;HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject;QRCodeProject;FormControlsProject;NavigationProject"/>
+        <CallTarget Targets="NewProject;HelloWorldProject;HelloWorldProject_IFIL;DataSetProject;ColumnProject;MarginAndPaddingDemo;Skia101Project;LibraryStoreProject;WebViewProject;QRCodeProject;FormControlsProject;NavigationProject;DialogsProject"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="NewProject:Clean;HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean;QRCodeProject:Clean;FormControlsProject:Clean;NavigationProject:Clean"/>
+        <CallTarget Targets="NewProject:Clean;HelloWorldProject:Clean;HelloWorldProject_IFIL:Clean;DataSetProject:Clean;ColumnProject:Clean;MarginAndPaddingDemo:Clean;Skia101Project:Clean;LibraryStoreProject:Clean;WebViewProject:Clean;QRCodeProject:Clean;FormControlsProject:Clean;NavigationProject:Clean;DialogsProject:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="NewProject:Make;HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make;QRCodeProject:Make;FormControlsProject:Make;NavigationProject:Make"/>
+        <CallTarget Targets="NewProject:Make;HelloWorldProject:Make;HelloWorldProject_IFIL:Make;DataSetProject:Make;ColumnProject:Make;MarginAndPaddingDemo:Make;Skia101Project:Make;LibraryStoreProject:Make;WebViewProject:Make;QRCodeProject:Make;FormControlsProject:Make;NavigationProject:Make;DialogsProject:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

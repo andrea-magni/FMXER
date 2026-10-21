@@ -1,0 +1,31 @@
+object ChoicesFrame: TChoicesFrame
+  Align = Client
+  Size.Width = 328.000000000000000000
+  Size.Height = 300.000000000000000000
+  Size.PlatformDefault = False
+  object TitleLabel: TSkLabel
+    Align = Top
+    AutoSize = False
+    Size.Width = 328.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family]
+    TextSettings.Font.Size = 14.000000000000000000
+    TextSettings.Font.Weight = Semibold
+    TextSettings.FontColor = x99000000
+    TextSettings.VertAlign = Center
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+  object ItemsBox: TVertScrollBox
+    Align = Client
+    Size.Width = 328.000000000000000000
+    Size.Height = 260.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Viewport.Width = 328.000000000000000000
+    Viewport.Height = 260.000000000000000000
+  end
+end

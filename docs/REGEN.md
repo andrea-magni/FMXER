@@ -27,6 +27,9 @@ the `.pas` files. "Regenerating" means having an AI agent (Claude Code) re-synth
   - `FMXER.UI.Consts.pas` → `reference/app-colors.md`, `guide/styling.md`
   - `FMXER.ScaffoldForm.pas`, `FMXER.ActionButtonFrame.pas` → `elements/scaffold.md`
   - `FMXER.TabsFrame.pas` → `elements/tabs.md` (and the bottom navigation in `elements/scaffold.md`)
+  - `FMXER.Modals.pas`, `FMXER.AlertFrame.pas`, `FMXER.ChoicesFrame.pas` → `elements/dialogs.md`
+    (the stands in `FMXER.Modals` are `lib\TFrameStand\stands\Stands.Light.style`: regenerate the constant
+    when the gallery changes)
   - container forms and frames (`ColumnForm`, `RowForm`, `CenterForm`, `ContainerForm/Frame`, `BackgroundForm/Frame`,
     `VertScrollForm/Frame`, `HorzScrollFrame`, `StackFrame`, `AccessoryFrame`, `HorzPairFrame`, `CardFrame`,
     `MarginFrame`, `PaddingFrame`, `HorzDividerFrame`) → `elements/containers.md`, `guide/layouts.md`
