@@ -1,1 +1,1 @@
-andreamagni.fmxer: 1.7
+andreamagni.fmxer: 1.8

@@ -155,7 +155,7 @@ Navigator.CloseRouteWithResult('order', State.Order.Customer);
 See [Arguments and results](/guide/navigation#arguments-and-results) for the rules, and the [Orders demo](/demos/#orders).
 
 ::: info Since v.1.8
-The state of a route, `RouteTo<TState>`, `RouteToForResult` and `CloseRouteWithResult` are new in v.1.8 (not released yet).
+The state of a route, `RouteTo<TState>`, `RouteToForResult` and `CloseRouteWithResult` are new in v.1.8.
 :::
 
 ### Application state in a data module
