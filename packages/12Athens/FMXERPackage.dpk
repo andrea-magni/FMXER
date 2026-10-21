@@ -74,6 +74,7 @@ contains
   FMXER.MarginFrame in '..\..\source\FMXER.MarginFrame.pas' {MarginFrame: TFrame},
   FMXER.Modals in '..\..\source\FMXER.Modals.pas',
   FMXER.Navigator in '..\..\source\FMXER.Navigator.pas',
+  FMXER.Observable in '..\..\source\FMXER.Observable.pas',
   FMXER.PaddingFrame in '..\..\source\FMXER.PaddingFrame.pas' {PaddingFrame: TFrame},
   FMXER.PaintBoxFrame in '..\..\source\FMXER.PaintBoxFrame.pas' {PaintBoxFrame: TFrame},
   FMXER.ProgressBarFrame in '..\..\source\FMXER.ProgressBarFrame.pas' {ProgressBarFrame: TFrame},

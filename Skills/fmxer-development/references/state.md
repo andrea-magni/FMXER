@@ -30,6 +30,10 @@ A property assignment ends a fluent chain: `Edit.SetCaption('Name').OnChangeProc
 
 `Navigator.DefineRoute<TScaffoldForm, TOrderState>('order', procedure (Scaffold: TScaffoldForm; State: TOrderState) ...)`: `TOrderState` (a `TComponent`, usually a `TDataModule`) is created before the view (`Create(nil)`, so a data module loads its .dfm), owned by the view and freed with the route; `AKeepAlive = True` keeps it in the navigator. Open with `Navigator.RouteTo<TOrderState>('order', procedure (State: TOrderState) begin State.Load(Id) end, procedure (AResult: TValue) ...)` (the init runs only when the route is created); close with `Navigator.CloseRouteWithResult('order', Value)` (`AResult.IsEmpty` when closed otherwise). `Navigator.RouteState<TOrderState>('order')` from outside. Prefer this to globals for per-screen data.
 
+## Observable values (v.1.9)
+
+`FMXER.Observable`: `TObservable<T>.Create(AOwner, AInitial)` (a component, owned by the state that frees it), `Value` (notifies when it changes, default equality), `Listen(AOwnerElement, procedure (AValue: T) ..., ACallNow = True)`. The listener is removed when its owner is freed: make the owner the element it updates, never the route or the form. Other members: `Unlisten`, `Update(function (V: T): T ...)` for records, `Notify` to force. `TChangeNotifier`: `Listen(AOwner, TProc, ACallNow = False)`, `NotifyChanged`. Notifications run in the main thread (a background thread may set `Value`). Two-way: the element writes `Value` in its `OnChangeProc`; its listener must not write the element back. Prefer this over `System.Messaging` + guards for state the screen knows.
+
 ## Closures in a loop
 
 A closure captures variables, not values: handlers created in a loop that run later (list item taps, timers) and use the loop variable or an inline `var` of the loop body all see its **last** value. Use the element (`List.AddItem(...).Tag := LIndex;` then `AItem.Tag` in the handler) or a function `function Handler(const AIndex: Integer): TListViewItemClickProc` that returns the closure (each call has its own parameter).

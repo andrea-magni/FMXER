@@ -2,6 +2,16 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## Unreleased
+
+**Observable values**: `TObservable<T>` (unit `FMXER.Observable`, Flutter `ValueNotifier`) is a value whose listeners are called when it changes. `TChangeNotifier` (`ChangeNotifier`) is the same without a value.
+
+- A listener is tied to an owner component, the element it updates, and is removed when that element is freed. Elements can listen to the state of their route, or of the app, without subscription guards.
+- `Listen` calls the listener at once too (`ACallNow`), so initialization and updates are written once.
+- Notifications run in the main thread, also when the value is set by a background thread; a notification queued before the observable is freed is dropped.
+
+See [Observable values](/guide/state#observable-values). The **Orders** demo uses them: the order route's state, the list rebuilt when an order is saved, and a "last sync" set by a background task. 13 new tests (122 in all).
+
 ## v.1.8 — 2026-10-21
 
 Apps start in a fraction of a second, and routes get a state, arguments and a result.

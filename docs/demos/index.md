@@ -105,10 +105,16 @@ Navigation inside one screen (`Routes.Home`): a scaffold with a [drawer](/elemen
 
 ## Orders
 
-[The state of a route](/guide/state#the-state-of-a-route), its arguments and its result:
+[The state of a route](/guide/state#the-state-of-a-route), its arguments and its result, and [observable values](/guide/state#observable-values):
 
-- **home**: the orders (`Data.Orders`, in memory) in a `TListViewFrame` (`ListItemRightDetail`). A tap opens the order with `RouteTo<TOrderState>`, which loads the order into the state of the route. The result proc refreshes the list and shows *&lt;customer&gt; saved*, or *Not saved* when the order is closed without saving;
-- **order**: `DefineRoute<TScaffoldForm, TOrderState>`. `TOrderState` is a data module (`Data.OrderState.pas`/`.dfm`), created with the route and freed with it. The switch and the edit change the state; *Save* writes it back to the list and closes the route with `CloseRouteWithResult`. The X button and Back close it without a result.
+- **home**: the orders (`Data.Orders`, in memory) in a `TListViewFrame` (`ListItemRightDetail`):
+  - the list and the title (*Orders: 2 to pay (5,450.00)*) listen to `OrdersChanged`, a `TChangeNotifier` of the app, and rebuild themselves when an order is saved;
+  - the title detail shows *synced hh:mm:ss*, listening to `LastSync`, a `TObservable<TDateTime>` set every 3 seconds by a background task;
+  - a tap opens the order with `RouteTo<TOrderState>`, which loads it into the state of the route; the result proc shows *&lt;customer&gt; saved*, or *Not saved*;
+- **order**: `DefineRoute<TScaffoldForm, TOrderState>`. `TOrderState` is a data module (`Data.OrderState.pas`/`.dfm`), created with the route and freed with it, with `Paid`, `Note` and `Modified` as observables:
+  - the switch and the edit write them, and a status text listens to `Paid`;
+  - *Save* is enabled only when `Modified` is set; it writes the order back to the list, notifies `OrdersChanged` and closes the route with `CloseRouteWithResult`;
+  - the X button and Back close the route without a result.
 
 ## MyTicketing
 
