@@ -1,0 +1,47 @@
+object SwitchFrame: TSwitchFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 50.000000000000000000
+  Size.PlatformDefault = False
+  object SwitchLayout: TLayout
+    Align = Right
+    Margins.Left = 5.000000000000000000
+    Position.X = 260.000000000000000000
+    Size.Width = 60.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    object SwitchControl: TSwitch
+      Align = VertCenter
+      IsChecked = False
+      Position.Y = 11.000000000000000000
+      Size.Width = 60.000000000000000000
+      Size.Height = 28.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnSwitch = SwitchControlSwitch
+    end
+  end
+  object TextLabel: TSkLabel
+    Align = Client
+    AutoSize = False
+    HitTest = True
+    Size.Width = 255.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.VertAlign = Center
+    OnClick = TextLabelClick
+    Words = <
+      item
+      end>
+  end
+  object ExtraLabel: TSkLabel
+    Align = MostBottom
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+end

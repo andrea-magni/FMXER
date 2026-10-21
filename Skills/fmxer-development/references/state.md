@@ -12,6 +12,9 @@ FMXER has no state library: elements are created by closures, and closures are w
 | `TEditFrame` | `OnChangeProc: TProc<Boolean>` (`True` while typing, `False` on change) — property only, no setter |
 | `TTrackbarFrame` | `OnChangeProc: TProc<Single>` (`SetOnChangeProc`) |
 | `TColorPickerFrame` | `OnChangeProc: TProc<TAlphaColor>` |
+| `TSwitchFrame`, `TCheckBoxFrame` | `OnChangeProc: TProc<Boolean>` (`SetOnChangeProc`) |
+| `TRadioGroupFrame`, `TComboBoxFrame` | `OnChangeProc: TProc<Integer>`, the selected index (`SetOnChangeProc`) |
+| `TDateEditFrame` | `OnChangeProc: TProc<TDate>` (`SetOnChangeProc`) |
 | `TTextFrame` | `SetOnClickProc(TProc)` (also `SetOnClick`) |
 | `TGlyphFrame`, `TIconFontsGlyphFrame` | `SetOnClickProc(TProc)` |
 | `TChipFrame` | `SetOnClickProc(TProc)` (also `OnClickHandler`) |

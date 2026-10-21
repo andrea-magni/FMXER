@@ -31,6 +31,8 @@ the `.pas` files. "Regenerating" means having an AI agent (Claude Code) re-synth
     `MarginFrame`, `PaddingFrame`, `HorzDividerFrame`) → `elements/containers.md`, `guide/layouts.md`
   - `TextFrame`, `ButtonFrame`, `ColorButtonFrame`, `EditFrame`, `TrackbarFrame`, `ColorPickerFrame`, `ChipFrame`,
     `ChipsFrame` → `elements/text-and-input.md`
+  - `SwitchFrame`, `CheckBoxFrame`, `RadioGroupFrame`, `ComboBoxFrame`, `DateEditFrame`, `ProgressBarFrame`
+    → `elements/form-controls.md`
   - `ImageFrame`, `LogoFrame`, `SVGFrame`, `AnimatedImageFrame`, `ActivityBubblesFrame`, `PaintBoxFrame`,
     `WebViewFrame` → `elements/images-and-media.md`
   - `ListViewFrame` → `elements/lists.md`

@@ -1,0 +1,37 @@
+object ComboBoxFrame: TComboBoxFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 60.000000000000000000
+  Size.PlatformDefault = False
+  object CaptionLabel: TSkLabel
+    Align = Top
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+  object ComboBoxControl: TComboBox
+    Align = Top
+    Margins.Top = 2.000000000000000000
+    Position.Y = 20.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 36.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnChange = ComboBoxControlChange
+  end
+  object ExtraLabel: TSkLabel
+    Align = Top
+    Position.Y = 60.000000000000000000
+    Size.Width = 320.000000000000000000
+    Size.Height = 0.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    Words = <
+      item
+      end>
+  end
+end

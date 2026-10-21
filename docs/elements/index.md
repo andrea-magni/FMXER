@@ -33,6 +33,12 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 | `TTrackbarFrame` | track bar with caption and extra text | [Text & Input](./text-and-input#ttrackbarframe) |
 | `TColorPickerFrame` | color panel with caption | [Text & Input](./text-and-input#tcolorpickerframe) |
 | `TChipFrame`, `TChipsFrame` | a chip; a flow of chips | [Text & Input](./text-and-input#tchipframe-and-tchipsframe) |
+| `TSwitchFrame` | text with a switch (Flutter `SwitchListTile`) | [Form Controls](./form-controls#tswitchframe) |
+| `TCheckBoxFrame` | check box with a text (Flutter `CheckboxListTile`) | [Form Controls](./form-controls#tcheckboxframe) |
+| `TRadioGroupFrame` | caption and radio buttons, one per option | [Form Controls](./form-controls#tradiogroupframe) |
+| `TComboBoxFrame` | drop-down list with caption (Flutter `DropdownButton`) | [Form Controls](./form-controls#tcomboboxframe) |
+| `TDateEditFrame` | date picker with caption | [Form Controls](./form-controls#tdateeditframe) |
+| `TProgressBarFrame` | linear progress bar, determinate or indeterminate | [Form Controls](./form-controls#tprogressbarframe) |
 | `TActionButtonFrame` | round floating button with an overlay element | [Scaffold](./scaffold#action-buttons) |
 | `TImageFrame` | bitmap image, tappable | [Images & Media](./images-and-media#timageframe) |
 | `TLogoFrame` | an image from a resource (the FMXER logo by default) | [Images & Media](./images-and-media#tlogoframe) |

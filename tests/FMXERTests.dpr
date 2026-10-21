@@ -21,7 +21,8 @@ uses
   Tests.Navigator in 'Tests.Navigator.pas',
   Tests.Elements in 'Tests.Elements.pas',
   Tests.Layout in 'Tests.Layout.pas',
-  Tests.Design in 'Tests.Design.pas';
+  Tests.Design in 'Tests.Design.pas',
+  Tests.FormControls in 'Tests.FormControls.pas';
 
 var
   LResults: IRunResults;

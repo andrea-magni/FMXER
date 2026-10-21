@@ -82,6 +82,7 @@ const elementsSidebar = [
       { text: 'Scaffold', link: '/elements/scaffold' },
       { text: 'Containers', link: '/elements/containers' },
       { text: 'Text & Input', link: '/elements/text-and-input' },
+      { text: 'Form Controls', link: '/elements/form-controls' },
       { text: 'Images & Media', link: '/elements/images-and-media' },
       { text: 'Lists', link: '/elements/lists' },
       { text: 'QR Codes', link: '/elements/qrcode' },
