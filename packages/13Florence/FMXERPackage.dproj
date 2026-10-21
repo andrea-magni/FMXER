@@ -273,6 +273,7 @@
         </DCCReference>
         <DCCReference Include="..\..\source\FMXER.Modals.pas"/>
         <DCCReference Include="..\..\source\FMXER.Navigator.pas"/>
+        <DCCReference Include="..\..\source\FMXER.Observable.pas"/>
         <DCCReference Include="..\..\source\FMXER.PaddingFrame.pas">
             <Form>PaddingFrame</Form>
             <FormType>fmx</FormType>

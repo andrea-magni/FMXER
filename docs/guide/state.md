@@ -174,9 +174,68 @@ List.AddItem(Author.Surname + ' ' + Author.Name, '', -1
 
 Because a route is rebuilt each time it is opened, this is often all you need.
 
+## Observable values
+
+A value read when a screen is built does not update the screen when it changes. `TObservable<T>` (unit `FMXER.Observable`) is a value that notifies its **listeners** when it changes, the FMXER counterpart of a Flutter `ValueNotifier` used with `ValueListenableBuilder`. There are two differences from Flutter: the listener updates its element instead of rebuilding a widget tree, and the Delphi ownership removes the listener when the element is freed.
+
+```pascal
+type
+  TOrderState = class(TDataModule)
+  public
+    Paid: TObservable<Boolean>;
+    constructor Create(AOwner: TComponent); override;
+  end;
+
+constructor TOrderState.Create(AOwner: TComponent);
+begin
+  inherited;
+  Paid := TObservable<Boolean>.Create(Self, False);   // a component: freed with the state
+end;
+
+// in the route: the text listens to the state
+Col.AddFrame<TTextFrame>(30
+, procedure (Text: TTextFrame)
+  begin
+    State.Paid.Listen(Text,          // the owner: when Text is freed, it stops listening
+      procedure (APaid: Boolean)
+      begin
+        Text.SetContent(IfThen(APaid, 'Paid', 'To be paid'));
+      end);                          // called now too: the text starts with the current value
+  end
+);
+
+// anywhere, a background thread too
+State.Paid.Value := True;
+```
+
+| Member | Description |
+|---|---|
+| `Create(AOwner; AInitial)` | a `TComponent`: create it owned by the state (a data module, the state of a route), which frees it |
+| `Value` | setting a different value notifies the listeners (equality: `TEqualityComparer<T>.Default`) |
+| `Listen(AOwner, AProc: TProc<T>; ACallNow = True): TObservable<T>` | `AProc` gets every new value. With `ACallNow` it is called now too, with the current value, so you initialize and update the element in one place. The listener is removed when `AOwner` is freed (`nil`: never). Call it from the main thread |
+| `Unlisten(AOwner)` | removes the listeners of `AOwner` before it is freed |
+| `Update(AFunc: TFunc<T, T>)` | `Value := AFunc(Value)`: change a field of a record |
+| `Notify` | notifies the current value even if it did not change |
+| `ListenerCount` | |
+
+`TChangeNotifier`, in the same unit, is the counterpart of `ChangeNotifier`: a notification without a value. Use it to say "this state changed" as a whole, for example after loading it: `Listen(AOwner, AProc: TProc; ACallNow = False)`, `NotifyChanged`, `Unlisten`.
+
+The rules:
+
+- **The owner of a listener is the element it updates**, not the route or the form. When the element is freed (its route closed, a list rebuilt), the listener goes with it, so it never runs on a freed element. This replaces the subscription guard of [System.Messaging](#subscriptions-and-the-lifetime-of-elements).
+- **Notifications run in the main thread**. A value set by a background thread is stored at once, and its listeners are called through `TThread.Queue`. A notification still queued when the observable is freed is dropped.
+- **Equality** is the default comparer of `T`. For records it compares the bytes, so a string field may give an extra, harmless notification. An object changed inside gives none: call `Notify`.
+- **Two-way**: a switch or an edit writes the value in its `OnChangeProc` (`State.Paid.Value := AChecked`). A listener of the same value then runs: it must not write the value back to the element, or it can loop.
+
+The [Orders demo](/demos/#orders) uses all of it: observables in the state of the order route, a `TChangeNotifier` of the app that rebuilds the list when an order is saved, and a "last sync" set every 3 seconds by a background task.
+
+::: info Since v.1.9
+`FMXER.Observable` is new in v.1.9 (not released yet).
+:::
+
 ## Notifications across screens
 
-When an open screen must react to a change made elsewhere, the demos use `System.Messaging`. `TAppState` in the HelloWorld demo sends a message whenever its value changes:
+When an open screen must react to a change made elsewhere, an [observable value](#observable-values) is usually the simplest way. For a part of the app that should not know the state it reacts to, the demos use `System.Messaging`. `TAppState` in the HelloWorld demo sends a message whenever its value changes:
 
 ```pascal
 type

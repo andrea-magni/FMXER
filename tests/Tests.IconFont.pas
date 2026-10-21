@@ -8,7 +8,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.UITypes, System.IOUtils, System.Diagnostics,
   System.Skia, DUnitX.TestFramework
-, FMXER.IconFontsData
+, FMXER.IconFontsData, FMXER.UI.Misc
 , Tests.Common
 ;
 
@@ -16,7 +16,7 @@ type
   [TestFixture]
   TIconFontFixture = class
   public
-    [Test] procedure FontFoundInLocalFilesPath;
+    [Test] procedure WebFontSelected;
     [Test] procedure NoImageWithoutTheFont;
     [Test] procedure RegisterMissingFileFails;
     {$IFDEF MSWINDOWS}
@@ -34,14 +34,24 @@ type
 
 { TIconFontFixture }
 
-procedure TIconFontFixture.FontFoundInLocalFilesPath;
+function MediaFontFile: string;
 begin
   // the test executable is in build\<ver>\<platform>\tests: four folders below
   // the repository, like the demos, so LocalFilesPath is the media folder
-  Assert.IsTrue(TIconFonts.FontFile.EndsWith(ICON_FONTS_FILENAME, True),
-    'registered: ' + TIconFonts.FontFile);
-  Assert.IsTrue(TFile.Exists(TIconFonts.FontFile));
+  Result := TPath.GetFullPath(TPath.Combine(ExtractFilePath(ParamStr(0)), LocalFile(ICON_FONTS_FILENAME)));
+end;
+
+procedure TIconFontFixture.WebFontSelected;
+begin
+  // the web font, installed (e.g. by the setup) or registered from the media
+  // folder: never the Desktop one, which is installed too on some machines
   Assert.AreEqual(ICON_FONTS_FAMILYNAME, TIconFonts.FontFamily, 'the web font, not the Desktop one');
+  if not TIconFonts.FontFile.IsEmpty then
+    Assert.AreEqual(MediaFontFile, TIconFonts.FontFile, 'registered from media')
+  {$IFDEF MSWINDOWS}
+  else
+    Assert.IsTrue(TIconFonts.IsFontInstalled(ICON_FONTS_FAMILYNAME), 'installed')
+  {$ENDIF};
   Assert.AreEqual(TIconFonts.FontFamily, IconFonts.ImageList.FontName);
   Assert.IsTrue(IconFonts.FontAvailable);
 end;
@@ -93,7 +103,8 @@ begin
   // the reason of the web font: the Desktop .ttf takes seconds to load (its
   // ligature tables), the web one milliseconds
   var LWatch := TStopwatch.StartNew;
-  var LTypeface := TSkTypeface.MakeFromFile(TIconFonts.FontFile);
+  Assert.IsTrue(TFile.Exists(MediaFontFile), MediaFontFile);
+  var LTypeface := TSkTypeface.MakeFromFile(MediaFontFile);
   Assert.IsNotNull(LTypeface);
   Assert.AreEqual(ICON_FONTS_FAMILYNAME, LTypeface.FamilyName);
   Assert.IsTrue(LWatch.ElapsedMilliseconds < 500, LWatch.ElapsedMilliseconds.ToString + ' ms');

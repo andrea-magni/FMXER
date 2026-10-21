@@ -364,6 +364,27 @@ TTabsFrame = class(TFrame)
 end;
 ```
 
+## Observable values (v.1.9)
+
+```pascal
+// unit FMXER.Observable — Flutter ValueNotifier / ChangeNotifier; notifications in the main thread
+TObservable<T> = class(TComponent)                         // owned by the state (data module): freed with it
+  constructor Create(AOwner: TComponent; const AInitial: T); overload;
+  function Listen(const AOwner: TComponent; const AProc: TProc<T>;
+    const ACallNow: Boolean = True): TObservable<T>;     // removed when AOwner (the element) is freed
+  procedure Unlisten(const AOwner: TComponent);
+  procedure Update(const AFunc: TFunc<T, T>);            // records: change a field and notify
+  procedure Notify;                                      // notify without a change
+  function ListenerCount: Integer;
+  property Value: T;                                     // notifies when different (TEqualityComparer<T>.Default)
+end;
+TChangeNotifier = class(TComponent)
+  function Listen(const AOwner: TComponent; const AProc: TProc; const ACallNow: Boolean = False): TChangeNotifier;
+  procedure Unlisten(const AOwner: TComponent);
+  procedure NotifyChanged;
+end;
+```
+
 ## Dialogs and bottom sheets (v.1.7)
 
 ```pascal

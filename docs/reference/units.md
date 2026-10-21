@@ -22,6 +22,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 | `FMXER.ContainerFrame`, `FMXER.MarginFrame`, `FMXER.PaddingFrame`, `FMXER.StackFrame`, `FMXER.VertScrollFrame`, `FMXER.HorzScrollFrame`, `FMXER.AccessoryFrame`, `FMXER.HorzPairFrame`, `FMXER.BackgroundFrame` | frame containers | TFrameStand |
 | `FMXER.CardFrame`, `FMXER.ActionButtonFrame` | | TFrameStand, Skia |
 | `FMXER.TabsFrame` | `TTabsFrame`, `TTabItem`, `TTabBarPosition` | TFrameStand, Skia, IconFontsImageList |
+| `FMXER.Observable` | `TObservable<T>`, `TChangeNotifier` | — |
 | `FMXER.Modals` | `TModals`, `Modals()` | TFrameStand v.2.3+ (`ShowModal`, the stand gallery) |
 | `FMXER.AlertFrame`, `FMXER.ChoicesFrame` | `TAlertFrame`, `TChoicesFrame` | TFrameStand, Skia |
 | `FMXER.TextFrame`, `FMXER.ButtonFrame`, `FMXER.ColorButtonFrame`, `FMXER.EditFrame`, `FMXER.TrackbarFrame`, `FMXER.ColorPickerFrame`, `FMXER.ActivityBubblesFrame`, `FMXER.AnimatedImageFrame`, `FMXER.SVGFrame`, `FMXER.PaintBoxFrame` | Skia elements | Skia (and TFrameStand for the edit, track bar and color picker) |

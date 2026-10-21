@@ -9,7 +9,7 @@ procedure DefineOrderRoute(const ARouteName: string);
 implementation
 
 uses
-  System.Rtti, System.UITypes, FMX.Graphics, FMX.Skia
+  System.Rtti, System.UITypes, System.StrUtils, FMX.Graphics, FMX.Skia
 , FMXER.Navigator, FMXER.UI.Misc, FMXER.UI.Consts
 , FMXER.ScaffoldForm, FMXER.ColumnFrame, FMXER.VertScrollFrame, FMXER.BackgroundFrame
 , FMXER.TextFrame, FMXER.EditFrame, FMXER.SwitchFrame, FMXER.ButtonFrame
@@ -68,15 +68,28 @@ begin
                     begin
                       Switch
                       .SetText('Paid')
-                      .SetChecked(State.Order.Paid)
+                      .SetChecked(State.Paid.Value)
                       .SetOnChangeProc(
                         procedure (AChecked: Boolean)
                         begin
-                          var LOrder := State.Order;
-                          LOrder.Paid := AChecked;
-                          State.Order := LOrder;
+                          State.Paid.Value := AChecked;
                         end
                       );
+                    end
+                  )
+                  // listens to the state: updated whenever Paid changes, and
+                  // no longer listens when the route is closed (it is the owner)
+                  .AddFrame<TTextFrame>(30
+                  , procedure (Text: TTextFrame)
+                    begin
+                      Text
+                      .SetFontColor(TAlphaColorRec.Dimgray)
+                      .SetHorzAlign(TSkTextHorzAlign.Leading);
+                      State.Paid.Listen(Text,
+                        procedure (APaid: Boolean)
+                        begin
+                          Text.SetContent(IfThen(APaid, 'Status: paid', 'Status: to be paid'));
+                        end);
                     end
                   )
                   .AddFrame<TEditFrame>(80
@@ -84,13 +97,11 @@ begin
                     begin
                       Edit
                       .SetCaption('Note')
-                      .SetText(State.Order.Note)
+                      .SetText(State.Note.Value)
                       .OnChangeProc :=
                         procedure (ATracking: Boolean)
                         begin
-                          var LOrder := State.Order;
-                          LOrder.Note := Edit.GetText;
-                          State.Order := LOrder;
+                          State.Note.Value := Edit.GetText;
                         end;
                     end
                   )
@@ -107,6 +118,12 @@ begin
                           Navigator.CloseRouteWithResult(ARouteName, State.Order.Customer);
                         end
                       );
+                      // enabled only when there is something to save
+                      State.Modified.Listen(Button,
+                        procedure (AModified: Boolean)
+                        begin
+                          Button.ButtonAction.Enabled := AModified;
+                        end);
                     end
                   );
                 end
