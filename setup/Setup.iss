@@ -62,8 +62,11 @@
 #define LibrarySupportURL "https://github.com/andrea-magni/FMXER/issues/"
 #define LibraryUpdatesURL "https://github.com/andrea-magni/FMXER/releases/"
 #define LibraryLicenseFileName "..\LICENSE"
-#define BannerImagesFileName "WizFMXERImage.bmp"
-#define SmallImagesFileName "WizFMXERSmallImage.bmp"
+{ the wizard images, one per DPI scaling (100% to 250%): Inno Setup picks   }
+{ the best fit; made from setup\images-source\*.html (headless Edge,       }
+{ then downscaled)                                                          }
+#define BannerImagesFileName "WizFMXERImage_164x314.bmp,WizFMXERImage_192x386.bmp,WizFMXERImage_246x459.bmp,WizFMXERImage_273x556.bmp,WizFMXERImage_328x604.bmp,WizFMXERImage_355x700.bmp,WizFMXERImage_410x797.bmp"
+#define SmallImagesFileName "WizFMXERSmallImage_55x55.bmp,WizFMXERSmallImage_64x68.bmp,WizFMXERSmallImage_83x80.bmp,WizFMXERSmallImage_92x97.bmp,WizFMXERSmallImage_110x106.bmp,WizFMXERSmallImage_119x123.bmp,WizFMXERSmallImage_138x140.bmp"
 #define SetupFolder "setup"
 #define FilesEmbedded
 
