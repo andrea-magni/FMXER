@@ -2,7 +2,9 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## Unreleased
+## v.1.7 — 2026-10-21
+
+The most used Flutter widgets that FMXER was missing, in three groups: form controls, navigation inside a screen (tabs, drawer, bottom navigation), dialogs and bottom sheets. Three new demos show them.
 
 **Form controls**: six new elements for the choices of a form, the FMXER counterparts of the most used Flutter input widgets. See [Form Controls](/elements/form-controls).
 
