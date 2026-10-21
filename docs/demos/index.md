@@ -4,7 +4,7 @@ The `demos` folder has one project per topic; thirteen of them are in `demos\All
 
 Every demo has the same search path, set once for all platforms: `..\..\source` and the submodules `lib\TFrameStand\source`, `lib\IconFontsImageList\Source`, `lib\DelphiZXingQRCode\Source` (QRCode also the `lib\ZXing.Delphi\Lib\Classes` folders). Clone with `--recursive` (see [Installation](/guide/installation)) and the demos build as they are. If you installed TFrameStand and IconFontsImageList instead and left `lib\` empty, the IDE library path is used. The MARS client of LibraryStore is not a submodule: install MARS or add its `Source` folder to the library path.
 
-Media files (Lottie animations, SVG, the icon font `Material Design Icons Desktop.ttf`) come from the `media` folder: on Windows the demos read them from there with `LocalFile`, on mobile they are deployed with the app.
+Media files (Lottie animations, SVG, the icon font `Material Design Icons.ttf`) come from the `media` folder: on Windows the demos read them from there with `LocalFile`, on mobile they are deployed with the app.
 
 | Demo | Shows | Extra requirements |
 |---|---|---|

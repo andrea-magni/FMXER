@@ -171,7 +171,7 @@ Source: "..\*"; Excludes: "{#CommonRADStudioFilesExcludes},*.gitattributes,*.git
 ; the icon font of FMXER (FMXER.IconFontsData): installed for the current user, so that
 ; icons show in the demos and in the applications run on this machine. Kept on uninstall:
 ; other applications may use it
-Source: "..\media\Material Design Icons Desktop.ttf"; DestDir: "{autofonts}"; FontInstall: "Material Design Icons Desktop"; Flags: onlyifdoesntexist uninsneveruninstall
+Source: "..\media\Material Design Icons.ttf"; DestDir: "{autofonts}"; FontInstall: "Material Design Icons"; Flags: onlyifdoesntexist uninsneveruninstall
 
 [Icons]
 Name: "{group}\Uninstall"; Filename: "{uninstallexe}"

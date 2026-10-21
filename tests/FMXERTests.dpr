@@ -24,7 +24,8 @@ uses
   Tests.Design in 'Tests.Design.pas',
   Tests.FormControls in 'Tests.FormControls.pas',
   Tests.ScaffoldNavigation in 'Tests.ScaffoldNavigation.pas',
-  Tests.Modals in 'Tests.Modals.pas';
+  Tests.Modals in 'Tests.Modals.pas',
+  Tests.IconFont in 'Tests.IconFont.pas';
 
 var
   LResults: IRunResults;
