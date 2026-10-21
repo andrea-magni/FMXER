@@ -83,9 +83,9 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_MajorVer>1</VerInfo_MajorVer>
-        <VerInfo_MinorVer>6</VerInfo_MinorVer>
+        <VerInfo_MinorVer>7</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
-        <VerInfo_Keys>CompanyName=Andrea Magni;FileDescription=FMXER QR code Runtime Package;FileVersion=1.6.0.0;InternalName=FMXERQRCodePackage;LegalCopyright=Andrea Magni;LegalTrademarks=;OriginalFilename=;ProductName=FMXER;ProductVersion=1.6.0.0;Comments=https://github.com/andrea-magni/FMXER</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Andrea Magni;FileDescription=FMXER QR code Runtime Package;FileVersion=1.7.0.0;InternalName=FMXERQRCodePackage;LegalCopyright=Andrea Magni;LegalTrademarks=;OriginalFilename=;ProductName=FMXER;ProductVersion=1.7.0.0;Comments=https://github.com/andrea-magni/FMXER</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_CBuilderOutput>None</DCC_CBuilderOutput>
