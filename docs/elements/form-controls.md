@@ -48,6 +48,7 @@ Col.AddFrame<TSwitchFrame>(TColumnFrame.AUTO_HEIGHT
 | `SetChecked(Boolean)` | `GetChecked` | |
 | `SetExtraText(AText)` | `GetExtraText` | label below |
 | `SetOnChangeProc(TProc<Boolean>)` / `OnChangeProc` | | the new state |
+| `BindChecked(TObservable<Boolean>)` | | two-way [binding](/guide/state#bindings) |
 
 Controls: `SwitchControl` (in `SwitchLayout`, on the right), `TextLabel`, `ExtraLabel`. Set `SwitchControl.Enabled := False` to disable it (the text tap follows).
 
@@ -77,6 +78,7 @@ Col.AddFrame<TCheckBoxFrame>(TColumnFrame.AUTO_HEIGHT
 | `SetChecked(Boolean)` | `GetChecked` | |
 | `SetExtraText(AText)` | `GetExtraText` | label below |
 | `SetOnChangeProc(TProc<Boolean>)` / `OnChangeProc` | | the new state |
+| `BindChecked(TObservable<Boolean>)` | | two-way [binding](/guide/state#bindings) |
 
 Controls: `CheckBoxControl`, `TextLabel`, `ExtraLabel`.
 
@@ -114,6 +116,7 @@ Col.AddFrame<TRadioGroupFrame>(TColumnFrame.AUTO_HEIGHT
 | `SetItemHeight(AHeight)` / `GetItemHeight` | height of each option (default 40) |
 | `SetExtraText(AText)` / `GetExtraText` | label below |
 | `SetOnChangeProc(TProc<Integer>)` / `OnChangeProc` | the index of the new selection (once per change) |
+| `BindItemIndex(TObservable<Integer>)` | two-way [binding](/guide/state#bindings) (set the options first) |
 | `Buttons: TList<TRadioButton>` | the radio buttons, to style them |
 
 ::: tip Size of the slot
@@ -153,6 +156,7 @@ Col.AddFrame<TComboBoxFrame>(TColumnFrame.AUTO_HEIGHT
 | `GetCount` | number of items |
 | `SetExtraText(AText)` / `GetExtraText` | label below |
 | `SetOnChangeProc(TProc<Integer>)` / `OnChangeProc` | the index chosen by the user |
+| `BindItemIndex(TObservable<Integer>)` | two-way [binding](/guide/state#bindings) (set the items first) |
 
 The combo box is `ComboBoxControl`. With an extra text, give the slot more height (80).
 
@@ -185,6 +189,7 @@ Col.AddFrame<TDateEditFrame>(80
 | `SetCaption(ACaption)` | `GetCaption` | label above |
 | `SetExtraText(AText)` | `GetExtraText` | label below |
 | `SetOnChangeProc(TProc<TDate>)` / `OnChangeProc` | | the date chosen by the user |
+| `BindDate(TObservable<TDate>)` | | two-way [binding](/guide/state#bindings) |
 
 `Today` and `IncDay` are in `System.DateUtils`, `IfThen` for strings in `System.StrUtils`. The date edit is `DateEditControl`.
 
@@ -225,6 +230,7 @@ LUpload.SetValue(LSent).SetExtraText(Format('%d of %d KB', [LSent div 1024, LFil
 | `SetThickness(AThickness)` | `GetThickness` | height of track and bar, rounded ends (default 6) |
 | `SetCaption(ACaption)` | `GetCaption` | label above |
 | `SetExtraText(AText)` | `GetExtraText` | label below, e.g. the percentage |
+| `BindValue(TObservable<Single>)` | | one-way [binding](/guide/state#bindings) |
 
 Controls: `TrackRect` (vertically centered in `TrackLayout`) with `BarRect` inside, `CaptionLabel`, `ExtraLabel`.
 

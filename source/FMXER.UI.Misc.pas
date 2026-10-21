@@ -5,7 +5,7 @@ interface
 uses
   Classes, SysUtils, System.Rtti, FMX.Forms, FMX.Layouts, Types, FMX.Types,
   FMX.Controls, Generics.Collections,
-  SubjectStand, FrameStand, FormStand;
+  SubjectStand, FrameStand, FormStand, FMXER.Observable;
 
 type
   TNameValueParam = record
@@ -72,6 +72,13 @@ type
 
     function SetWidth(const AWidth: Single): TControl;
     function SetHeight(const AHeight: Single): TControl;
+
+    /// <summary>One-way binding: the control is visible when AObservable is
+    /// True. Removed with the control; a second BindVisible replaces the first.</summary>
+    function BindVisible(const AObservable: TObservable<Boolean>): TControl;
+    /// <summary>One-way binding: the control is enabled when AObservable is
+    /// True (TButtonFrame has its own BindEnabled, on its action).</summary>
+    function BindEnabled(const AObservable: TObservable<Boolean>): TControl;
   end;
 
   TCaptionPosition = (Left, Right, Top, Bottom);
@@ -502,6 +509,44 @@ begin
   Result := Self;
   Result.Padding.Top := APadding;
   Result.Padding.Bottom := APadding;
+end;
+
+// the link of a helper binding: a component owned by the control, found by name
+function BooleanLink(const AControl: TControl; const AName: string): TObservableLink<Boolean>;
+var
+  LComponent: TComponent;
+begin
+  LComponent := AControl.FindComponent(AName);
+  if LComponent is TObservableLink<Boolean> then
+    Exit(TObservableLink<Boolean>(LComponent));
+  Result := TObservableLink<Boolean>.Create(AControl);
+  Result.Name := AName;
+end;
+
+function TFMXERFrameHelper.BindVisible(const AObservable: TObservable<Boolean>): TControl;
+var
+  LControl: TControl;
+begin
+  Result := Self;
+  LControl := Self;
+  BooleanLink(Self, 'FMXERBindVisible').Bind(AObservable,
+    procedure (AValue: Boolean)
+    begin
+      LControl.Visible := AValue;
+    end);
+end;
+
+function TFMXERFrameHelper.BindEnabled(const AObservable: TObservable<Boolean>): TControl;
+var
+  LControl: TControl;
+begin
+  Result := Self;
+  LControl := Self;
+  BooleanLink(Self, 'FMXERBindEnabled').Bind(AObservable,
+    procedure (AValue: Boolean)
+    begin
+      LControl.Enabled := AValue;
+    end);
 end;
 
 function TFMXERFrameHelper.SetWidth(const AWidth: Single): TControl;

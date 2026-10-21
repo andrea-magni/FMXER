@@ -7,6 +7,7 @@ uses
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Objects
 , System.Skia, FMX.Skia
+, FMXER.Observable
 ;
 
 type
@@ -15,10 +16,17 @@ type
     procedure TextContentClick(Sender: TObject);
   private
     FOnClickProc: TProc;
+    FContentLink: TComponent;   // a TObservableLink<T> of BindContent
   public
     constructor Create(AOwner: TComponent); override;
 
     function SetContent(const AText: string): TTextFrame;
+    /// <summary>One-way binding: the text shows AObservable. Removed with the
+    /// element; a second BindContent replaces the first.</summary>
+    function BindContent(const AObservable: TObservable<string>): TTextFrame; overload;
+    /// <summary>One-way binding of any value, shown as AFormat returns it.</summary>
+    function BindContent<T>(const AObservable: TObservable<T>;
+      const AFormat: TFunc<T, string>): TTextFrame; overload;
     function SetHorzAlign(const AHorzAlign: TSkTextHorzAlign): TTextFrame;
     function SetVertAlign(const AVertAlign: TTextAlign): TTextFrame;
     function SetOnClick(const AOnClickProc: TProc): TTextFrame;
@@ -51,6 +59,31 @@ constructor TTextFrame.Create(AOwner: TComponent);
 begin
   inherited;
   TextContent.TextSettings.FontColor := TAppColors.PrimaryTextColor;
+end;
+
+function TTextFrame.BindContent(const AObservable: TObservable<string>): TTextFrame;
+begin
+  Result := BindContent<string>(AObservable,
+    function (AValue: string): string
+    begin
+      Result := AValue;
+    end);
+end;
+
+function TTextFrame.BindContent<T>(const AObservable: TObservable<T>;
+  const AFormat: TFunc<T, string>): TTextFrame;
+var
+  LLink: TObservableLink<T>;
+begin
+  Result := Self;
+  FreeAndNil(FContentLink);
+  LLink := TObservableLink<T>.Create(Self);
+  FContentLink := LLink;
+  LLink.Bind(AObservable,
+    procedure (AValue: T)
+    begin
+      SetContent(AFormat(AValue));
+    end);
 end;
 
 function TTextFrame.GetContent: string;

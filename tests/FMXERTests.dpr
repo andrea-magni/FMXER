@@ -27,7 +27,8 @@ uses
   Tests.Modals in 'Tests.Modals.pas',
   Tests.RouteState in 'Tests.RouteState.pas',
   Tests.IconFont in 'Tests.IconFont.pas',
-  Tests.Observable in 'Tests.Observable.pas';
+  Tests.Observable in 'Tests.Observable.pas',
+  Tests.Bindings in 'Tests.Bindings.pas';
 
 var
   LResults: IRunResults;

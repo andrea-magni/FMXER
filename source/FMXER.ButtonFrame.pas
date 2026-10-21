@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, System.Actions, FMX.ActnList, System.Skia,
-  FMX.Skia, FMX.Objects;
+  FMX.Skia, FMX.Objects
+, FMXER.Observable;
 
 type
   TButtonFrame = class(TFrame)
@@ -19,6 +20,7 @@ type
     procedure ButtonActionExecute(Sender: TObject);
     procedure ButtonActionUpdate(Sender: TObject);
   private
+    FEnabledLink: TObservableLink<Boolean>;
     FOnClickHandler: TProc;
     FOnUpdateHandler: TProc<TAction>;
     function GetIsDefault: Boolean;
@@ -26,6 +28,9 @@ type
     function GetBackgroundFill: TBrush;
     function GetBackgroundStroke: TStrokeBrush;
   public
+    /// <summary>One-way binding: the button is enabled when AObservable is
+    /// True (the Enabled of its action). Removed with the element.</summary>
+    function BindEnabled(const AObservable: TObservable<Boolean>): TButtonFrame;
     function SetCaption(const ACaption: string): TButtonFrame;
     function SetExtraText(const AExtraText: string): TButtonFrame;
     function SetText(const AText: string): TButtonFrame;
@@ -49,6 +54,18 @@ implementation
 {$R *.fmx}
 
 { TEditFrame }
+
+function TButtonFrame.BindEnabled(const AObservable: TObservable<Boolean>): TButtonFrame;
+begin
+  Result := Self;
+  if not Assigned(FEnabledLink) then
+    FEnabledLink := TObservableLink<Boolean>.Create(Self);
+  FEnabledLink.Bind(AObservable,
+    procedure (AValue: Boolean)
+    begin
+      ButtonAction.Enabled := AValue;
+    end);
+end;
 
 procedure TButtonFrame.ButtonActionExecute(Sender: TObject);
 begin

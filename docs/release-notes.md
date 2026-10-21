@@ -10,7 +10,9 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 - `Listen` calls the listener at once too (`ACallNow`), so initialization and updates are written once.
 - Notifications run in the main thread, also when the value is set by a background thread; a notification queued before the observable is freed is dropped.
 
-See [Observable values](/guide/state#observable-values). The **Orders** demo uses them: the order route's state, the list rebuilt when an order is saved, and a "last sync" set by a background task. 13 new tests (122 in all).
+**Bindings**: `Bind*` methods connect an element to an observable. They are two-way for the inputs: `BindChecked` (switch, check box), `BindText` (edit), `BindValue` (track bar), `BindItemIndex` (combo box, radio group), `BindDate` (date edit). They are one-way for `TTextFrame.BindContent`/`BindContent<T>`, `TProgressBarFrame.BindValue`, `TButtonFrame.BindEnabled`, and `BindVisible`/`BindEnabled` on any control. The element owns the binding; `OnChangeProc` still works. See [Bindings](/guide/state#bindings).
+
+See [Observable values](/guide/state#observable-values). The **Orders** demo uses them: the order route's state, the list rebuilt when an order is saved, and a "last sync" set by a background task. The **FormControls** demo binds a track bar and a progress bar to the same observable. 27 new tests (136 in all).
 
 ## v.1.8 — 2026-10-21
 
