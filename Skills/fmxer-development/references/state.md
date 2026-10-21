@@ -26,6 +26,14 @@ FMXER has no state library: elements are created by closures, and closures are w
 
 A property assignment ends a fluent chain: `Edit.SetCaption('Name').OnChangeProc := procedure (ATracking: Boolean) begin ... end;`.
 
+## The state of a route (v.1.8)
+
+`Navigator.DefineRoute<TScaffoldForm, TOrderState>('order', procedure (Scaffold: TScaffoldForm; State: TOrderState) ...)`: `TOrderState` (a `TComponent`, usually a `TDataModule`) is created before the view (`Create(nil)`, so a data module loads its .dfm), owned by the view and freed with the route; `AKeepAlive = True` keeps it in the navigator. Open with `Navigator.RouteTo<TOrderState>('order', procedure (State: TOrderState) begin State.Load(Id) end, procedure (AResult: TValue) ...)` (the init runs only when the route is created); close with `Navigator.CloseRouteWithResult('order', Value)` (`AResult.IsEmpty` when closed otherwise). `Navigator.RouteState<TOrderState>('order')` from outside. Prefer this to globals for per-screen data.
+
+## Closures in a loop
+
+A closure captures variables, not values: handlers created in a loop that run later (list item taps, timers) and use the loop variable or an inline `var` of the loop body all see its **last** value. Use the element (`List.AddItem(...).Tag := LIndex;` then `AItem.Tag` in the handler) or a function `function Handler(const AIndex: Integer): TListViewItemClickProc` that returns the closure (each call has its own parameter).
+
 ## Sharing values between elements
 
 Captured local variable, safe when both elements belong to the same screen (freed together):

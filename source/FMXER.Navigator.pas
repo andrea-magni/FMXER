@@ -4,6 +4,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.StrUtils, System.Types, System.UITypes, Generics.Collections
+, System.Rtti
 , FMX.Types, FMX.Controls, FMX.Forms, FMX.Layouts
 , SubjectStand, FormStand
 ;
@@ -27,6 +28,11 @@ type
     FStack: TStack<string>;
     FTransientRoutes: TList<string>; // active routes opened as transient (not on the stack)
     FBackHandlers: TList<TFunc<Boolean>>;
+    FRouteStates: TDictionary<string, TComponent>;        // the state of each active route
+    FKeepAliveStates: TObjectDictionary<string, TComponent>; // states that outlive their route (owned)
+    FResultProcs: TDictionary<string, TProc<TValue>>;    // who waits for the result of a route
+    FPendingResults: TDictionary<string, TValue>;
+    FPendingInit: TProc<TComponent>;                       // RouteTo<TState>: runs on the new state
   protected
     class var _ClassInstance: TNavigator;
     class function GetClassInstance: TNavigator; static;
@@ -43,12 +49,43 @@ type
     procedure CloseRoute(const ARouteName: string; const ATransient: Boolean = False);
     procedure CloseRouteDelayed(const ARouteName: string; const ATransient: Boolean; const ADelay_ms: Integer = 100);
     procedure StackPop;
-    procedure RouteTo(const ARouteName: string; const ATransient: Boolean = False);
+    procedure RouteTo(const ARouteName: string; const ATransient: Boolean = False); overload;
+    /// <summary>Opens a route with a state (DefineRoute&lt;TView, TState&gt;):
+    /// AInit receives the new state before the view is built (the arguments of
+    /// the route); not called when the route is already active (it is only
+    /// shown). AOnResult, if assigned, is called once when the route closes,
+    /// with the value of CloseRouteWithResult (empty when it is closed in
+    /// another way: CloseRoute, StackPop, Back).</summary>
+    procedure RouteTo<TState: TComponent>(const ARouteName: string;
+      const AInit: TProc<TState>; const AOnResult: TProc<TValue> = nil;
+      const ATransient: Boolean = False); overload;
+    /// <summary>RouteTo, and AOnResult called once when the route closes (see
+    /// RouteTo&lt;TState&gt;).</summary>
+    procedure RouteToForResult(const ARouteName: string; const AOnResult: TProc<TValue>;
+      const ATransient: Boolean = False);
+    /// <summary>CloseRoute, giving AResult to the AOnResult of whoever opened
+    /// the route (Flutter Navigator.pop(result)).</summary>
+    procedure CloseRouteWithResult(const ARouteName: string; const AResult: TValue);
+    /// <summary>The state of an active route defined with
+    /// DefineRoute&lt;TView, TState&gt;; raises when there is none.</summary>
+    function RouteState<T: TComponent>(const ARouteName: string): T;
+    function HasRouteState(const ARouteName: string): Boolean;
     procedure RouteToDelayed(const ARouteName: string; const ATransient: Boolean; const ADelay_ms: Integer = 100);
     function DefineRoute(const ARouteName: string;
       const ARouteDef: TFunc<TSubjectInfo>): TNavigator; overload;
     function DefineRoute<T: TForm>(const ARouteName: string;
       const AConfigProc: TProc<T> = nil;
+      const AParent: TFmxObject = nil;
+      const AStandName: string = ''): TNavigator; overload;
+    /// <summary>A route with a state: a TState (a TDataModule, any TComponent)
+    /// is created with the route, before the view, and passed to AConfigProc
+    /// with it. The view owns it, so it is freed when the route closes; with
+    /// AKeepAlive the navigator owns it instead, and the route finds it again
+    /// when it is opened again. RouteState returns it while the route is
+    /// active; RouteTo&lt;TState&gt; initializes it.</summary>
+    function DefineRoute<TView: TForm; TState: TComponent>(const ARouteName: string;
+      const AConfigProc: TProc<TView, TState>;
+      const AKeepAlive: Boolean = False;
       const AParent: TFmxObject = nil;
       const AStandName: string = ''): TNavigator; overload;
 
@@ -288,9 +325,24 @@ end;
 procedure TNavigator.CloseRoute(const ARouteName: string; const ATransient: Boolean);
 var
   LSubjectInfo: TSubjectInfo;
+  LResultProc: TProc<TValue>;
+  LResult: TValue;
 begin
   if ActiveRoutes.TryGetValue(ARouteName, LSubjectInfo) then
   begin
+    // the result goes to whoever opened the route, before the route hides
+    if FResultProcs.TryGetValue(ARouteName, LResultProc) then
+    begin
+      FResultProcs.Remove(ARouteName);
+      if not FPendingResults.TryGetValue(ARouteName, LResult) then
+        LResult := TValue.Empty;
+      FPendingResults.Remove(ARouteName);
+      LResultProc(LResult);
+    end;
+    FPendingResults.Remove(ARouteName);
+    // the state goes with the view (it owns it), unless kept alive
+    FRouteStates.Remove(ARouteName);
+
     LSubjectInfo.HideAndClose(
       0
     , procedure
@@ -327,6 +379,10 @@ begin
   FStack := TStack<string>.Create;
   FTransientRoutes := TList<string>.Create;
   FBackHandlers := TList<TFunc<Boolean>>.Create;
+  FRouteStates := TDictionary<string, TComponent>.Create;
+  FKeepAliveStates := TObjectDictionary<string, TComponent>.Create([doOwnsValues]);
+  FResultProcs := TDictionary<string, TProc<TValue>>.Create;
+  FPendingResults := TDictionary<string, TValue>.Create;
   // the routes within the safe area of the form (system bars, notch)
   if Assigned(FFormStand) and (FFormStand.Owner is TCommonCustomForm) then
     SetSafeAreaValue(True);
@@ -353,6 +409,104 @@ begin
   );
 end;
 
+function TNavigator.DefineRoute<TView, TState>(const ARouteName: string;
+  const AConfigProc: TProc<TView, TState>; const AKeepAlive: Boolean;
+  const AParent: TFmxObject; const AStandName: string): TNavigator;
+begin
+  Result := DefineRoute(ARouteName
+  , function: TSubjectInfo
+    var
+      LInit: TProc<TComponent>;
+      LKept: TComponent;
+      LState: TState;
+      LCreated: Boolean;
+    begin
+      LInit := FPendingInit;
+      FPendingInit := nil;
+
+      LCreated := False;
+      if AKeepAlive and FKeepAliveStates.TryGetValue(ARouteName, LKept) then
+        LState := LKept as TState
+      else
+      begin
+        // TState.Create: the virtual constructor of the actual class (a data
+        // module loads its design)
+        LState := TState.Create(nil);
+        LCreated := True;
+      end;
+      try
+        if Assigned(LInit) then
+          LInit(LState);
+        Result := FormStand.New<TView>(AParent, AStandName);
+      except
+        if LCreated then
+          LState.Free;
+        raise;
+      end;
+
+      if AKeepAlive then
+      begin
+        if LCreated then
+          FKeepAliveStates.Add(ARouteName, LState);
+      end
+      else
+        Result.Subject.InsertComponent(LState);   // freed with the view
+      FRouteStates.AddOrSetValue(ARouteName, LState);
+
+      if Assigned(AConfigProc) then
+        AConfigProc(TView(Result.Subject), LState);
+    end
+  );
+end;
+
+function TNavigator.RouteState<T>(const ARouteName: string): T;
+var
+  LState: TComponent;
+begin
+  if not FRouteStates.TryGetValue(ARouteName, LState) then
+    raise Exception.CreateFmt('Route %s has no state (not active, or not defined with a state)', [ARouteName]);
+  Result := LState as T;
+end;
+
+function TNavigator.HasRouteState(const ARouteName: string): Boolean;
+begin
+  Result := FRouteStates.ContainsKey(ARouteName);
+end;
+
+procedure TNavigator.RouteTo<TState>(const ARouteName: string;
+  const AInit: TProc<TState>; const AOnResult: TProc<TValue>; const ATransient: Boolean);
+begin
+  // already active: only shown, its state is not initialized again
+  if Assigned(AInit) and not IsRouteActive(ARouteName) then
+    FPendingInit :=
+      procedure (AState: TComponent)
+      begin
+        AInit(AState as TState);
+      end;
+  try
+    RouteToForResult(ARouteName, AOnResult, ATransient);
+  finally
+    FPendingInit := nil;
+  end;
+end;
+
+procedure TNavigator.RouteToForResult(const ARouteName: string;
+  const AOnResult: TProc<TValue>; const ATransient: Boolean);
+begin
+  RouteTo(ARouteName, ATransient);
+  // after RouteTo: a route that cannot be created leaves nobody waiting
+  if Assigned(AOnResult) then
+    FResultProcs.AddOrSetValue(ARouteName, AOnResult);
+end;
+
+procedure TNavigator.CloseRouteWithResult(const ARouteName: string; const AResult: TValue);
+begin
+  if not IsRouteActive(ARouteName) then
+    Exit;
+  FPendingResults.AddOrSetValue(ARouteName, AResult);
+  CloseRoute(ARouteName);
+end;
+
 destructor TNavigator.Destroy;
 begin
   SetCatchBackKeyValue(False);
@@ -363,6 +517,11 @@ begin
     FSafeAreaHook := nil;
   end;
   FreeAndNil(FBackHandlers);
+  FreeAndNil(FPendingResults);
+  FreeAndNil(FResultProcs);
+  FreeAndNil(FRouteStates);
+  // the states kept alive: after the routes (a view may still use its state)
+  FreeAndNil(FKeepAliveStates);
   FreeAndNil(FTransientRoutes);
   FreeAndNil(FStack);
   FreeAndNil(FActiveRoutes);

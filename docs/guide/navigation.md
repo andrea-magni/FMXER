@@ -106,6 +106,33 @@ The navigator remembers which routes were opened as transient: `CloseRoute`, `Cl
 Up to v.1.1, `CloseRoute` removed the **top** of the stack whatever route it closed, and needed the same `ATransient` value used with `RouteTo`; `CloseAllRoutes` treated every route as non-transient and raised `EListError` (*Unbalanced stack or queue operation*) with a transient route open. On v.1.1, close routes in reverse order of opening and close transient routes with `CloseRoute(AName, True)` first.
 :::
 
+### Arguments and results
+
+Routes have no parameters: a route [with a state](/guide/state#the-state-of-a-route) gets its arguments in the state, and any route can give a result back to whoever opened it, like `Navigator.pushNamed(arguments)` and `Navigator.pop(result)` in Flutter.
+
+| Call | Effect |
+|---|---|
+| `RouteTo<TState>(AName, AInit, AOnResult = nil, ATransient = False)` | a route defined with `DefineRoute<TView, TState>`: `AInit` gets the new state before the view is built. If the route is already active, it is only shown: `AInit` is not called and the state keeps its values |
+| `RouteToForResult(AName, AOnResult, ATransient = False)` | `RouteTo` for any route, with a result |
+| `CloseRouteWithResult(AName, AResult: TValue)` | closes the route; `AOnResult` gets `AResult` |
+
+`AOnResult: TProc<TValue>` is called **once**, when the route closes, before its hide animation. It gets the value of `CloseRouteWithResult`, or an empty `TValue` (`AResult.IsEmpty`) when the route is closed in another way: `CloseRoute`, `StackPop`, Back, `CloseAllRoutes`. A second `RouteTo...` with a result proc on an active route replaces the first.
+
+```pascal
+Navigator.RouteToForResult('pick_color'
+, procedure (AResult: TValue)
+  begin
+    if not AResult.IsEmpty then
+      Theme.Accent := AResult.AsType<TAlphaColor>;
+  end
+);
+
+// in the pick_color route:
+Navigator.CloseRouteWithResult('pick_color', TValue.From<TAlphaColor>(Picked));
+```
+
+`TValue` is in `System.Rtti`.
+
 ### Closing a route from inside it
 
 A route often closes itself from one of its own buttons (the X action button of a scaffold). That is fine: `CloseRoute` hides the screen first and frees it afterwards, through the stand. To close a route and open another one in the same handler, close first and then route:

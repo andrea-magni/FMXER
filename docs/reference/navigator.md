@@ -26,6 +26,8 @@ The singleton is freed by the class destructor, at unit finalization. `Navigator
 |---|---|
 | `DefineRoute(const ARouteName: string; const ARouteDef: TFunc<TSubjectInfo>): TNavigator` | registers a route built by `ARouteDef`, which must create the subject and return its info (it is shown by the navigator) |
 | `DefineRoute<T: TForm>(const ARouteName: string; const AConfigProc: TProc<T> = nil; const AParent: TFmxObject = nil; const AStandName: string = ''): TNavigator` | registers a route built as `FormStand.New<T>(AParent, AStandName)` + `AConfigProc` |
+| `DefineRoute<TView: TForm; TState: TComponent>(const ARouteName: string; const AConfigProc: TProc<TView, TState>; const AKeepAlive: Boolean = False; const AParent: TFmxObject = nil; const AStandName: string = ''): TNavigator` | a route with a state: a `TState` is created (`Create(nil)`) before the view, initialized by `RouteTo<TState>`, passed to `AConfigProc` with the view and owned by it (by the navigator with `AKeepAlive`, and reused). v.1.8, see [The state of a route](/guide/state#the-state-of-a-route) |
+| `RouteState<T: TComponent>(const ARouteName: string): T` / `HasRouteState(const ARouteName: string): Boolean` | the state of an active route; `RouteState` raises when there is none |
 | `IsRouteDefined(const ARouteName: string): Boolean` | |
 | `RouteDefinitions: TDictionary<string, TFunc<TSubjectInfo>>` | the definitions (a duplicate name raises `EListError` on `DefineRoute`) |
 
@@ -34,6 +36,9 @@ The singleton is freed by the class destructor, at unit finalization. `Navigator
 | Member | Description |
 |---|---|
 | `RouteTo(const ARouteName: string; const ATransient: Boolean = False)` | if the route is not active: builds it, adds it to `ActiveRoutes`, pushes it on `Stack` (unless transient), fires `OnCreateRoute`. Then shows it (`SubjectShow`). Raises `Exception` (*Route definition not found*) for unknown names |
+| `RouteTo<TState: TComponent>(const ARouteName: string; const AInit: TProc<TState>; const AOnResult: TProc<TValue> = nil; const ATransient: Boolean = False)` | `AInit` gets the new state before the view is built (not called when the route is already active); `AOnResult` as in `RouteToForResult`. v.1.8 |
+| `RouteToForResult(const ARouteName: string; const AOnResult: TProc<TValue>; const ATransient: Boolean = False)` | `RouteTo`; `AOnResult` is called once when the route closes: with the value of `CloseRouteWithResult`, empty otherwise. v.1.8, see [Arguments and results](/guide/navigation#arguments-and-results) |
+| `CloseRouteWithResult(const ARouteName: string; const AResult: TValue)` | `CloseRoute`, giving `AResult` to `AOnResult`. v.1.8 |
 | `RouteToDelayed(const ARouteName: string; const ATransient: Boolean; const ADelay_ms: Integer = 100)` | `RouteTo` through `TDelayedAction` |
 | `CloseRoute(const ARouteName: string; const ATransient: Boolean = False)` | if active: `HideAndClose` with `OnCloseRoute` as continuation, removes it from `ActiveRoutes` and, unless it was opened as transient, from `Stack` (wherever it is). `ATransient` is ignored since v.1.2: the navigator remembers it. No-op for inactive routes |
 | `CloseRouteDelayed(const ARouteName: string; const ATransient: Boolean; const ADelay_ms: Integer = 100)` | `CloseRoute` through `TDelayedAction` |
