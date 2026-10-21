@@ -45,6 +45,9 @@ type
     FDrawerBackHandler: TFunc<Boolean>;
     FDrawerBackHandlerAdded: Boolean;
     FBottomNavigation: TTabsFrame;
+    // delayed actions on the scaffold: cancelled when it is destroyed
+    FPendingActions: TList<IDelayedAction>;
+    procedure Track(const AAction: IDelayedAction);
     procedure CreateDrawer(const AWidth: Single);
     procedure MenuButtonClick(Sender: TObject);
     procedure DrawerScrimClick(Sender: TObject);
@@ -234,6 +237,7 @@ constructor TScaffoldForm.Create(AOwner: TComponent);
 begin
   inherited;
   FActionButtons := TList<TFrameInfo<TActionButtonFrame>>.Create;
+  FPendingActions := TList<IDelayedAction>.Create;
 
   TitleBackground.Fill.Color := TAppColors.PrimaryColor;
   TitleLabel.TextSettings.FontColor := TAppColors.PrimaryTextColor;
@@ -249,7 +253,14 @@ begin
 end;
 
 destructor TScaffoldForm.Destroy;
+var
+  LAction: IDelayedAction;
 begin
+  // the route was closed before (e.g. a snackbar still visible): nothing runs
+  // on the freed scaffold and its subjects
+  for LAction in FPendingActions do
+    LAction.Cancel;
+  FreeAndNil(FPendingActions);
   SetDrawerBackHandler(False);
   FreeAndNil(FActionButtons);
   inherited;
@@ -341,14 +352,14 @@ begin
   SetDrawerBackHandler(False);
   TAnimator.AnimateFloat(FDrawerPanel, 'Margins.Left', -FDrawerPanel.Width, DRAWER_ANIMATION);
   TAnimator.AnimateFloat(FDrawerScrim, 'Opacity', 0, DRAWER_ANIMATION);
-  TDelayedAction.Execute(Round(DRAWER_ANIMATION * 1000) + 10
+  Track(TDelayedAction.Schedule(Round(DRAWER_ANIMATION * 1000) + 10
   , procedure
     begin
       // unless it was opened again meanwhile
       if Assigned(FDrawerLayer) and not FDrawerOpen then
         FDrawerLayer.Visible := False;
     end
-  );
+  ));
 end;
 
 function TScaffoldForm.GetDrawerOpen: Boolean;
@@ -490,13 +501,28 @@ begin
   LSnackBar.Frame.SetContent(AText);
   LSnackBar.Show();
 
-  // hide and free the snackbar (Hide alone kept one hidden frame per call)
-  TDelayedAction.Execute(ADuration_ms
-    , procedure
-      begin
-        LSnackBar.HideAndClose(0, AThen);
-      end
-  );
+  // hide and free the snackbar (Hide alone kept one hidden frame per call);
+  // tracked: nothing runs if the scaffold (its route) is closed before
+  if not Assigned(AThen) then
+    LSnackBar.HideAndCloseAfter(ADuration_ms)
+  else
+    Track(TDelayedAction.Schedule(ADuration_ms
+      , procedure
+        begin
+          LSnackBar.HideAndClose(0, AThen);
+        end
+    ));
+end;
+
+procedure TScaffoldForm.Track(const AAction: IDelayedAction);
+var
+  LIndex: Integer;
+begin
+  for LIndex := FPendingActions.Count - 1 downto 0 do
+    if not FPendingActions[LIndex].Pending then
+      FPendingActions.Delete(LIndex);
+  if Assigned(AAction) and AAction.Pending then
+    FPendingActions.Add(AAction);
 end;
 
 procedure TScaffoldForm.ShowTitleDetailContent;
