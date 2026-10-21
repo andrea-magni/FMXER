@@ -125,6 +125,11 @@
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.AlertFrame.pas">
+            <Form>AlertFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <DCCReference Include="..\..\source\FMXER.AnimatedImageFrame.pas">
             <Form>AnimatedImageFrame</Form>
             <FormType>fmx</FormType>
@@ -165,6 +170,11 @@
         </DCCReference>
         <DCCReference Include="..\..\source\FMXER.ChipsFrame.pas">
             <Form>ChipsFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.ChoicesFrame.pas">
+            <Form>ChoicesFrame</Form>
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
@@ -261,6 +271,7 @@
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.Modals.pas"/>
         <DCCReference Include="..\..\source\FMXER.Navigator.pas"/>
         <DCCReference Include="..\..\source\FMXER.PaddingFrame.pas">
             <Form>PaddingFrame</Form>

@@ -22,6 +22,7 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 | `TCardFrame` | frame | titled card with optional glyphs and content | [Containers](./containers#tcardframe) |
 | `THorzDividerFrame` | frame | horizontal line | [Containers](./containers#thorzdividerframe) |
 | `TTabsFrame` | frame | pages switched by a tab bar (top) or a navigation bar (bottom) | [Tabs & Navigation Bar](./tabs) |
+| `TAlertFrame`, `TChoicesFrame` | frame | the content of `Modals.Alert`/`Confirm` and of `Modals.Choose` | [Dialogs & Bottom Sheets](./dialogs) |
 
 ## Content
 
@@ -58,6 +59,7 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 | Unit | Content | Page |
 |---|---|---|
 | `FMXER.Navigator` | `TNavigator`, `Navigator()` | [TNavigator](/reference/navigator) |
+| `FMXER.Modals` | `TModals`, `Modals()`: dialogs and bottom sheets (`Alert`, `Confirm`, `Choose`, `ShowDialog<T>`, `ShowBottomSheet<T>`) | [Dialogs & Bottom Sheets](./dialogs) |
 | `FMXER.UI.Misc` | `TElementDef<T>`, `Param()`, control and form helpers, `TSubjectInfoContainer`, `LocalFile`, `LocalFilesPath` | [FMXER.UI.Misc](/reference/ui-misc) |
 | `FMXER.UI.Consts` | `TAppColors` | [TAppColors](/reference/app-colors) |
 | `FMXER.UI.Types` | `TOnTapHandler` | [Images & Media](./images-and-media#tap-handlers) |

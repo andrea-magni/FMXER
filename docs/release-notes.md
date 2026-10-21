@@ -21,7 +21,13 @@ New demo **FormControls** with all of them. The units are in `FMXERPackage` for 
 - `TScaffoldForm.SetBottomNavigation`: a `TTabsFrame` with the bar at the bottom as content, the action buttons above it. See [Bottom navigation](/elements/scaffold#bottom-navigation).
 - `TNavigator.AddBackHandler`/`RemoveBackHandler`: elements can handle Back before the navigator closes a route. See [Back handlers](/guide/navigation#back-handlers).
 
-New demo **Navigation**. 20 new tests in this release (82 in all).
+New demo **Navigation**.
+
+**Dialogs and bottom sheets**: `Modals` (unit `FMXER.Modals`) shows `Alert`, `Confirm` (`AlertDialog`), `Choose` (a list in a modal bottom sheet), and any frame with `ShowDialog<T>` and `ShowBottomSheet<T>` (`showDialog`, `showModalBottomSheet`). The `dialog` and `bottomsheet` stands of the TFrameStand stand gallery are built into the unit. The dialogs are TFrameStand dialogs (`ShowModal`): a tap outside, Back and Esc cancel the one on top. New demo **Dialogs**. See [Dialogs & Bottom Sheets](/elements/dialogs).
+
+TFrameStand v.2.3 or later is now required (it was recommended).
+
+29 new tests in this release (91 in all).
 
 ## v.1.6 — 2026-10-19
 

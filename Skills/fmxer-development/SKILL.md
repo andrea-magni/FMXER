@@ -62,6 +62,7 @@ The project source sets `GlobalUseSkia := True;` before `Application.Initialize`
 | overlay not in Back history (wait screen, splash) | `RouteTo(AName, True)` (transient), `CloseRouteDelayed(AName, True, 3000)` |
 | pass data to a screen | set a field/data module value, then `RouteTo`: the definition reads it while it builds (routes have no parameters) |
 | title bar, floating buttons, short messages | `TScaffoldForm`: `SetTitle`, `SetContentAs*`, `AddActionButton`, `ShowSnackBar(AText, ADuration_ms[, AThen])`, `SetTitleDetailContentAs*` |
+| alert, confirm, choice list, custom dialog or bottom sheet | v.1.7: `Modals.Alert`, `Modals.Confirm(..., procedure (AOk: Boolean) ...)`, `Modals.Choose(ATitle, AChoices, procedure (AIndex: Integer) ...)`, `Modals.ShowDialog<T>` / `ShowBottomSheet<T>` (unit `FMXER.Modals`) |
 | side menu (drawer), bottom navigation bar, tabs | v.1.7: `Scaffold.SetDrawerAsFrame<T>` (+ `CloseDrawer` in its items), `Scaffold.SetBottomNavigation(procedure (Tabs: TTabsFrame) ...)`, `TTabsFrame.AddTabFrame<T>(ACaption[, AIcon], AConfigProc)` |
 | elements one under another | `TColumnForm.AddFrame<T>(AHeight, ...)` (default 200; `TColumnForm.AUTO_HEIGHT` = the element's own height) |
 | scrolling column | `TVertScrollFrame.SetContentAsForm<TColumnForm>` (or `SetContentAsFrame<TColumnFrame>`) |

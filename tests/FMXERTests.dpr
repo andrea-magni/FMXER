@@ -23,7 +23,8 @@ uses
   Tests.Layout in 'Tests.Layout.pas',
   Tests.Design in 'Tests.Design.pas',
   Tests.FormControls in 'Tests.FormControls.pas',
-  Tests.ScaffoldNavigation in 'Tests.ScaffoldNavigation.pas';
+  Tests.ScaffoldNavigation in 'Tests.ScaffoldNavigation.pas',
+  Tests.Modals in 'Tests.Modals.pas';
 
 var
   LResults: IRunResults;

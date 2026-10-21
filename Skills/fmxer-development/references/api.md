@@ -350,6 +350,36 @@ TTabsFrame = class(TFrame)
 end;
 ```
 
+## Dialogs and bottom sheets (v.1.7)
+
+```pascal
+// unit FMXER.Modals — singleton Modals (TModals); TFrameStand v.2.3+ ShowModal on the 'dialog' and
+// 'bottomsheet' stands of the TFrameStand gallery (embedded). Non-blocking: results arrive in closures.
+// A tap outside, Back and Esc cancel the one on top (mrCancel) before the navigator closes a route
+TModals = class
+  procedure Alert(const ATitle, AMessage: string; const AThen: TProc = nil; const AOkText: string = 'OK');
+  procedure Confirm(const ATitle, AMessage: string; const AResultProc: TProc<Boolean>;   // True = OK
+    const AOkText: string = 'OK'; const ACancelText: string = 'Cancel');
+  procedure Choose(const ATitle: string; const AChoices: TArray<string>;
+    const AResultProc: TProc<Integer>);                                  // index, -1 = dismissed
+  function ShowDialog<T: TFrame>(const AConfigProc: TProc<T> = nil;
+    const AResultProc: TProc<T, TModalResult> = nil;
+    const AWidth: Single = 0; const AHeight: Single = 0): TFrameInfo<T>; // card 320x240 by default
+  function ShowBottomSheet<T: TFrame>(const AConfigProc: TProc<T> = nil;
+    const AResultProc: TProc<T, TModalResult> = nil; const AHeight: Single = 0): TFrameInfo<T>;  // 360
+  function CancelTop: Boolean;
+  function GetOpenCount: Integer;
+  function SetParent(const AParent: TFmxObject): TModals;  // default: Navigator.SafeAreaLayout
+  property FrameStand: TFrameStand; property Stands: TStyleBook;
+  class procedure ReleaseInstance;
+end;
+function Modals: TModals;
+// Your frame closes the dialog: Info.ModalResult := mrOk (the TFrameInfo<T> returned, captured in a
+// variable, or a [SubjectInfo] SI: TSubjectInfo field of the frame). The stands are white: dark text
+// (TTextFrame.SetFontColor). Content frames: FMXER.AlertFrame (TAlertFrame: SetTitle, SetMessage,
+// SetOkText, SetCancelText), FMXER.ChoicesFrame (TChoicesFrame: SetTitle, SetChoices, Chosen)
+```
+
 ## Text and input
 
 ```pascal
