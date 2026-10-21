@@ -1,0 +1,69 @@
+object TabsFrame: TTabsFrame
+  Align = Client
+  Size.Width = 320.000000000000000000
+  Size.Height = 400.000000000000000000
+  Size.PlatformDefault = False
+  object BarLayout: TLayout
+    Align = Top
+    Size.Width = 320.000000000000000000
+    Size.Height = 56.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnResized = BarLayoutResized
+    object BarBackground: TRectangle
+      Align = Contents
+      Fill.Color = xFFFF8F00
+      HitTest = False
+      Sides = []
+      Size.Width = 320.000000000000000000
+      Size.Height = 56.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+    end
+    object ButtonsLayout: TLayout
+      Align = Contents
+      Size.Width = 320.000000000000000000
+      Size.Height = 56.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    object Indicator: TRectangle
+      Fill.Color = claWhite
+      HitTest = False
+      Position.Y = 53.000000000000000000
+      Sides = []
+      Size.Width = 100.000000000000000000
+      Size.Height = 3.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+    end
+  end
+  object PagesLayout: TLayout
+    Align = Client
+    ClipChildren = True
+    Size.Width = 320.000000000000000000
+    Size.Height = 344.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object FormStand1: TFormStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'formstand'
+    DefaultStandName = 'formstand'
+    Left = 24
+    Top = 176
+  end
+  object FrameStand1: TFrameStand
+    AnimationShow = 'OnShow*'
+    AnimationHide = 'OnHide*'
+    CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
+    DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
+    Left = 104
+    Top = 176
+  end
+end

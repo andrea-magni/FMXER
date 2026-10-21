@@ -34,6 +34,7 @@
 1. StackFrame
 1. SVGFrame
 1. SwitchFrame
+1. TabsFrame
 1. TextFrame
 1. TrackbarFrame
 1. VertScrollFrame

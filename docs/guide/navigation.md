@@ -151,6 +151,23 @@ begin
 end;
 ```
 
+### Back handlers
+
+An element that closes something of its own on Back registers a back handler: a `TFunc<Boolean>` that the navigator calls before it closes any route, the last added first. When the handler returns `True` the key is handled, and no route is closed. The scaffold uses one while its [drawer](/elements/scaffold#drawer) is open.
+
+```pascal
+var LHandler: TFunc<Boolean> :=
+  function: Boolean
+  begin
+    Result := Panel.Visible;   // Back hides the panel first
+    if Result then
+      Panel.Visible := False;
+  end;
+Navigator.AddBackHandler(LHandler);
+// ...
+Navigator.RemoveBackHandler(LHandler);   // the same reference
+```
+
 ::: info Why not TFrameStand's Push/Pop?
 TFrameStand 2.3 has its own navigation stack (`Push`/`Pop`) and Back handling (`CatchBackKey` on a stand). The navigator does not delegate to them: `Push` hides the page below while routes stay visible under the new one (overlays, wait screens), routes can be built by any stand (`DefineRoute` with a function), and closing a route through TFrameStand would skip the navigator's bookkeeping (active routes, stack, `OnCloseRoute`). The navigator follows the same rules for the keys instead. If you also show dialogs with `FormStand1.ShowModal` and its `CatchBackKey`, set it after `Navigator.SetCatchBackKey(True)`: the last hook installed runs first, so Back cancels the dialog before it closes a route.
 :::

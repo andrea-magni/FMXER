@@ -334,6 +334,11 @@
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\..\source\FMXER.TabsFrame.pas">
+            <Form>TabsFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <DCCReference Include="..\..\source\FMXER.TextFrame.pas">
             <Form>TextFrame</Form>
             <FormType>fmx</FormType>

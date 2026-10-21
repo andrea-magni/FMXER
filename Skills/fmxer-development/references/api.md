@@ -52,6 +52,8 @@ TNavigator = class
   function HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;  // v.1.4: Back/Esc -> StackPop (not at the root)
   function SetCatchBackKey(const AValue: Boolean): TNavigator;             // v.1.4: hooks OnKeyDown of FormStand's form
   property CatchBackKey: Boolean;
+  function AddBackHandler(const AHandler: TFunc<Boolean>): TNavigator;      // v.1.7: Back/Esc asks it first (last added first); True = handled, no route closed
+  procedure RemoveBackHandler(const AHandler: TFunc<Boolean>);            // the same reference
   class procedure Init(const AFormStand: TFormStand);        // raises if already initialized
   class procedure ReleaseInstance;                           // v.1.4: frees the singleton
   class property Instance: TNavigator;                       // raises if not initialized
@@ -89,6 +91,18 @@ TScaffoldForm = class(TForm)
   procedure ShowTitleDetailContent;
   procedure HideTitleDetailContent(const ADelay: Integer = 0; const AThen: TProc = nil);
   function SetTitle(const ATitle: string): TScaffoldForm;
+  // v.1.7 drawer: menu button (drawn) left of the title, white panel sliding in from the left
+  // over the whole screen; tap outside, Back or Esc close it. Once per scaffold (twice raises)
+  function SetDrawerAsFrame<T: TFrame>(const AConfigProc: TProc<T> = nil; const AWidth: Single = 280): TScaffoldForm;
+  function SetDrawerAsForm<T: TForm>(const AConfigProc: TProc<T> = nil; const AWidth: Single = 280): TScaffoldForm;
+  function OpenDrawer: TScaffoldForm;
+  function CloseDrawer: TScaffoldForm;     // call it from the drawer items
+  function GetDrawerOpen: Boolean;
+  property DrawerOpen: Boolean; property Drawer: TSubjectInfo; property DrawerPanel: TRectangle; property MenuButton: TLayout;
+  // v.1.7 bottom navigation: content = TTabsFrame with the bar at the bottom; action buttons above it.
+  // Instead of SetContentAs*
+  function SetBottomNavigation(const AConfigProc: TProc<TTabsFrame>): TScaffoldForm;
+  property BottomNavigation: TTabsFrame;   // e.g. BottomNavigation.SetTabIndex(2) from a drawer item
   property ActionButtonStand: string;
   property ContentStand: string;
   property TitleDetailStand: string;
@@ -296,6 +310,43 @@ end;
 // unit FMXER.HorzDividerFrame — a line in DividerColor; put it in a 1-pixel slot
 THorzDividerFrame = class(TFrame)
   DividerLine: TLine;
+end;
+```
+
+## Tabs (v.1.7)
+
+```pascal
+// unit FMXER.TabsFrame — pages switched by a bar of tabs; every page created when added, only the
+// selected one visible (the others keep their state); the first tab added is selected
+TTabBarPosition = (Top, Bottom);   // Top: TabBar + TabBarView (PrimaryColor bar, indicator); Bottom: NavigationBar (white)
+TTabItem = class
+  property Button: TLayout; property TextLabel: TSkLabel;
+  property Glyph: TGlyph;                         // nil without an icon
+  property Page: TSubjectInfoContainer;           // Page.ContainedFrame<T> / ContainedForm<T>
+end;
+TTabsFrame = class(TFrame)
+  BarLayout: TLayout; BarBackground: TRectangle; ButtonsLayout: TLayout; Indicator: TRectangle;
+  PagesLayout: TLayout; FrameStand1: TFrameStand; FormStand1: TFormStand;
+  function AddTabFrame<T: TFrame>(const ACaption: string; const AConfigProc: TProc<T> = nil): TTabsFrame; overload;
+  function AddTabFrame<T: TFrame>(const ACaption: string; const AIcon: TIconEntry;   // icon above the text
+    const AConfigProc: TProc<T> = nil): TTabsFrame; overload;
+  function AddTabForm<T: TForm>(const ACaption: string; const AConfigProc: TProc<T> = nil): TTabsFrame; overload;
+  function AddTabForm<T: TForm>(const ACaption: string; const AIcon: TIconEntry;
+    const AConfigProc: TProc<T> = nil): TTabsFrame; overload;
+  function SetTabIndex(const AIndex: Integer): TTabsFrame;   // no OnChangeProc; out of range raises
+  function SetBarPosition(const APosition: TTabBarPosition): TTabsFrame;   // resets colors and font size: call first
+  function SetBarHeight(const AHeight: Single): TTabsFrame;            // default 56
+  function SetBarColor(const AColor: TAlphaColor): TTabsFrame;
+  function SetTextColor(const AColor: TAlphaColor): TTabsFrame;        // the other tabs (and their icons)
+  function SetSelectedTextColor(const AColor: TAlphaColor): TTabsFrame;
+  function SetIndicatorColor(const AColor: TAlphaColor): TTabsFrame;
+  function SetFontSize(const ASize: Single): TTabsFrame;               // Top 15, Bottom 12
+  function SetPageStand(const AStand: string): TTabsFrame;
+  function SetOnChangeProc(const AOnChangeProc: TProc<Integer>): TTabsFrame;   // tab tapped by the user
+  function GetTabIndex: Integer; function GetTabCount: Integer;
+  // + GetBarPosition, GetBarHeight, GetBarColor, GetTextColor, GetSelectedTextColor, GetIndicatorColor, GetFontSize
+  property Tabs[const AIndex: Integer]: TTabItem;
+  property OnChangeProc: TProc<Integer>;
 end;
 ```
 

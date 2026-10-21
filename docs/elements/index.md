@@ -6,7 +6,7 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 
 | Element | Kind | Purpose | Page |
 |---|---|---|---|
-| `TScaffoldForm` | form | screen with title bar, title detail area, content, floating action buttons, snackbar | [Scaffold](./scaffold) |
+| `TScaffoldForm` | form | screen with title bar, title detail area, content, floating action buttons, snackbar, drawer, bottom navigation | [Scaffold](./scaffold) |
 | `TColumnForm` | form | elements stacked vertically, fixed heights | [Containers](./containers#tcolumnform) |
 | `TRowForm` | form | elements side by side, fixed widths | [Containers](./containers#trowform) |
 | `TColumnFrame`, `TRowFrame` | frame | the same as frames: cheaper, for columns and rows created many times | [Containers](./containers#tcolumnframe-and-trowframe) |
@@ -21,6 +21,7 @@ Every element is a unit in `source\` named `FMXER.<Element>.pas`, with its `.fmx
 | `THorzPairFrame` | frame | two elements, 50% / 50% | [Containers](./containers#thorzpairframe) |
 | `TCardFrame` | frame | titled card with optional glyphs and content | [Containers](./containers#tcardframe) |
 | `THorzDividerFrame` | frame | horizontal line | [Containers](./containers#thorzdividerframe) |
+| `TTabsFrame` | frame | pages switched by a tab bar (top) or a navigation bar (bottom) | [Tabs & Navigation Bar](./tabs) |
 
 ## Content
 

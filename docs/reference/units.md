@@ -21,6 +21,7 @@ Every unit is in `source\`. FMXER has no packages: add `source\` to the search p
 | `FMXER.CenterForm`, `FMXER.ContainerForm`, `FMXER.BackgroundForm`, `FMXER.VertScrollForm` | the other form containers | TFrameStand |
 | `FMXER.ContainerFrame`, `FMXER.MarginFrame`, `FMXER.PaddingFrame`, `FMXER.StackFrame`, `FMXER.VertScrollFrame`, `FMXER.HorzScrollFrame`, `FMXER.AccessoryFrame`, `FMXER.HorzPairFrame`, `FMXER.BackgroundFrame` | frame containers | TFrameStand |
 | `FMXER.CardFrame`, `FMXER.ActionButtonFrame` | | TFrameStand, Skia |
+| `FMXER.TabsFrame` | `TTabsFrame`, `TTabItem`, `TTabBarPosition` | TFrameStand, Skia, IconFontsImageList |
 | `FMXER.TextFrame`, `FMXER.ButtonFrame`, `FMXER.ColorButtonFrame`, `FMXER.EditFrame`, `FMXER.TrackbarFrame`, `FMXER.ColorPickerFrame`, `FMXER.ActivityBubblesFrame`, `FMXER.AnimatedImageFrame`, `FMXER.SVGFrame`, `FMXER.PaintBoxFrame` | Skia elements | Skia (and TFrameStand for the edit, track bar and color picker) |
 | `FMXER.QRCodeFrame` | `TQRCodeFrame` | Skia, DelphiZXingQRCode |
 | `FMXER.SwitchFrame`, `FMXER.CheckBoxFrame`, `FMXER.RadioGroupFrame`, `FMXER.ComboBoxFrame`, `FMXER.DateEditFrame`, `FMXER.ProgressBarFrame` | form controls | Skia |

@@ -1,6 +1,6 @@
 # Demos
 
-The `demos` folder has one project per topic; eleven of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
+The `demos` folder has one project per topic; twelve of them are in `demos\AllDemos.groupproj` (MyTicketing and EKON25 - Weather are not). They target Windows, macOS, iOS and Android.
 
 Every demo has the same search path, set once for all platforms: `..\..\source` and the submodules `lib\TFrameStand\source`, `lib\IconFontsImageList\Source`, `lib\DelphiZXingQRCode\Source` (QRCode also the `lib\ZXing.Delphi\Lib\Classes` folders). Clone with `--recursive` (see [Installation](/guide/installation)) and the demos build as they are. If you installed TFrameStand and IconFontsImageList instead and left `lib\` empty, the IDE library path is used. The MARS client of LibraryStore is not a submodule: install MARS or add its `Source` folder to the library path.
 
@@ -19,6 +19,7 @@ Media files (Lottie animations, SVG, the icon font `Material Design Icons Deskto
 | [HelloWorld_IFIL](#helloworld-ifil) | an image list of icon fonts on the main form | — |
 | [QRCode](#qrcode) | QR code generator and camera reader, color pickers, share sheet | ZXing.Delphi, camera |
 | [FormControls](#formcontrols) | switch, check box, radio group, combo box, date edit, progress bars, state in closures | — |
+| [Navigation](#navigation) | drawer, bottom navigation, a page with tabs, Back closing the drawer | — |
 | [MyTicketing](#myticketing) | a login column (edits, password, default button enabled by `OnUpdateHandler`) leading to a scaffold | — |
 | [EKON25 - Weather](#ekon25-weather) | a card with a nested column in a scaffold, conference starting point | — |
 
@@ -91,6 +92,10 @@ The main form shows the breadcrumb in the caption on Windows, closes the camera 
 ## FormControls
 
 The [form controls](/elements/form-controls) on one screen (`Routes.Home`): a scaffold with a `TVertScrollFrame` around a `TColumnFrame` with a `TSwitchFrame`, a `TCheckBoxFrame`, a `TRadioGroupFrame` (`AUTO_HEIGHT` from its options), a `TComboBoxFrame`, a `TDateEditFrame` that warns about a date in the past, a `TProgressBarFrame` driven by a `TTrackbarFrame`, an indeterminate `TProgressBarFrame` switched on and off by a second switch, and a summary text. Each control shows the value chosen in its extra text. The values live in local variables of the route definition, captured by the `OnChangeProc` closures, which update the extra texts and the summary. Started from NewProjectTemplate.
+
+## Navigation
+
+Navigation inside one screen (`Routes.Home`): a scaffold with a [drawer](/elements/scaffold#drawer) (a `TColumnFrame` with a header and items that close the drawer and select a page, or show a snackbar) and a [bottom navigation](/elements/scaffold#bottom-navigation) of three pages with icons: *Home*, *Tabs* (a [`TTabsFrame`](/elements/tabs) with a tab bar on top, its `OnChangeProc` shows a snackbar) and *Settings* (two switches). On Android, Back closes the open drawer before the app. Started from NewProjectTemplate.
 
 ## MyTicketing
 

@@ -26,6 +26,7 @@ type
     FActiveRoutes: TDictionary<string, TSubjectInfo>;
     FStack: TStack<string>;
     FTransientRoutes: TList<string>; // active routes opened as transient (not on the stack)
+    FBackHandlers: TList<TFunc<Boolean>>;
   protected
     class var _ClassInstance: TNavigator;
     class function GetClassInstance: TNavigator; static;
@@ -64,6 +65,12 @@ type
     /// is closed. Returns True when it handled the key. Call it from OnKeyDown
     /// of the form, or set CatchBackKey.</summary>
     function HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;
+    /// <summary>Back/Esc asks AHandler first (the last added first): when it
+    /// returns True the key is handled and no route is closed. For an element
+    /// that closes something of its own on Back (the drawer of TScaffoldForm).
+    /// Remove it with RemoveBackHandler, passing the same reference.</summary>
+    function AddBackHandler(const AHandler: TFunc<Boolean>): TNavigator;
+    procedure RemoveBackHandler(const AHandler: TFunc<Boolean>);
     /// <summary>True: the navigator handles Back/Esc by itself, hooking
     /// OnKeyDown of the form that owns FormStand (the previous handler is still
     /// called for the keys the navigator does not handle).</summary>
@@ -319,6 +326,7 @@ begin
   FActiveRoutes := TDictionary<string, TSubjectInfo>.Create;
   FStack := TStack<string>.Create;
   FTransientRoutes := TList<string>.Create;
+  FBackHandlers := TList<TFunc<Boolean>>.Create;
   // the routes within the safe area of the form (system bars, notch)
   if Assigned(FFormStand) and (FFormStand.Owner is TCommonCustomForm) then
     SetSafeAreaValue(True);
@@ -354,6 +362,7 @@ begin
     TNavigatorSafeArea(FSafeAreaHook).FNavigator := nil;
     FSafeAreaHook := nil;
   end;
+  FreeAndNil(FBackHandlers);
   FreeAndNil(FTransientRoutes);
   FreeAndNil(FStack);
   FreeAndNil(FActiveRoutes);
@@ -453,11 +462,21 @@ begin
 end;
 
 function TNavigator.HandleBackKey(var AKey: Word; var AKeyChar: WideChar): Boolean;
+var
+  LIndex: Integer;
 begin
   Result := False;
   if (AKey <> vkHardwareBack) and (AKey <> vkEscape) then
     Exit;
-  if FTransientRoutes.Count > 0 then
+  for LIndex := FBackHandlers.Count - 1 downto 0 do
+    if FBackHandlers[LIndex]() then
+    begin
+      Result := True;
+      Break;
+    end;
+  if Result then
+    // handled by an element
+  else if FTransientRoutes.Count > 0 then
     Result := True // a wait screen is open: Back does nothing
   else if FStack.Count > 1 then
   begin
@@ -470,6 +489,17 @@ begin
     AKey := 0;
     AKeyChar := #0;
   end;
+end;
+
+function TNavigator.AddBackHandler(const AHandler: TFunc<Boolean>): TNavigator;
+begin
+  Result := Self;
+  FBackHandlers.Add(AHandler);
+end;
+
+procedure TNavigator.RemoveBackHandler(const AHandler: TFunc<Boolean>);
+begin
+  FBackHandlers.Remove(AHandler);
 end;
 
 class procedure TNavigator.ReleaseInstance;
