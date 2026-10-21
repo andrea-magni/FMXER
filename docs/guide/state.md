@@ -70,6 +70,94 @@ Col
 
 This is safe as long as both elements belong to the same screen: they are freed together.
 
+::: warning Closures in a loop capture the variable, not its value
+An anonymous method captures **variables**, not their values. An inline variable declared in the body of a loop is not a new variable at each iteration: it is one variable, shared by all the closures created in the loop. A handler that runs **later**, such as a tap or a timer, sees the value of the last iteration:
+
+```pascal
+for LIndex := 0 to High(Orders) do
+begin
+  var LOrder := LIndex;
+  List.AddItem(Orders[LIndex].Customer, '', -1
+  , procedure (const AItem: TListViewItem)
+    begin
+      OpenOrder(LOrder);   // wrong: the last order, whatever the item tapped
+    end
+  );
+end;
+```
+
+Give each handler its own value instead:
+
+- from the element that calls it, for example the `Tag` of the list item;
+- or through a function that takes the value as a parameter and returns the closure, since each call has its own parameter.
+
+```pascal
+for LIndex := 0 to High(Orders) do
+  List.AddItem(Orders[LIndex].Customer, '', -1
+  , procedure (const AItem: TListViewItem)
+    begin
+      OpenOrder(AItem.Tag);   // the item tapped
+    end
+  ).Tag := LIndex;
+```
+
+The same holds for the loop variable itself. Configuration procedures are not affected: they run immediately, during the iteration, as with `AddFrame` and `AddTabFrame`.
+:::
+
+### The state of a route
+
+Most screens work on something: an order, a customer, a form being filled. A route defined with a **state** gets its own `TComponent` (usually a `TDataModule`, designed in the IDE with its FireDAC components and LiveBindings), created with the route and freed with it. It is the FMXER counterpart of the `State` of a Flutter `StatefulWidget`, with `dispose` done by the Delphi ownership.
+
+```pascal
+type
+  TOrderState = class(TDataModule)
+  public
+    procedure Load(const AIndex: Integer);   // the arguments of the route
+    procedure Save;
+    property Order: TOrder ...;
+  end;
+
+Navigator.DefineRoute<TScaffoldForm, TOrderState>('order'
+, procedure (Scaffold: TScaffoldForm; State: TOrderState)
+  begin
+    Scaffold.SetTitle(State.Order.Customer);
+    // ... the elements read and write State
+  end
+);
+```
+
+- The navigator creates the state with the route, **before the view**, through the virtual constructor `Create(nil)`, so a data module loads its design. The view then owns it: closing the route frees the state with the view.
+- `Navigator.RouteState<TOrderState>('order')` returns the state while the route is active, `HasRouteState` tells whether there is one.
+- With `AKeepAlive = True` (third parameter) the navigator owns the state instead. It survives the route and the route finds it again, with its values, when it is opened again. It is freed with the navigator.
+
+The route gets its arguments in its state, from whoever opens it, and can give back a result:
+
+```pascal
+Navigator.RouteTo<TOrderState>('order'
+, procedure (State: TOrderState)
+  begin
+    State.Load(LIndex);   // before the view is built
+  end
+, procedure (AResult: TValue)
+  begin
+    if AResult.IsEmpty then
+      Scaffold.ShowSnackBar('Not saved', 1500)
+    else
+      List.RefreshList;
+  end
+);
+
+// in the order route, the Save button:
+State.Save;
+Navigator.CloseRouteWithResult('order', State.Order.Customer);
+```
+
+See [Arguments and results](/guide/navigation#arguments-and-results) for the rules, and the [Orders demo](/demos/#orders).
+
+::: info Since v.1.8
+The state of a route, `RouteTo<TState>`, `RouteToForResult` and `CloseRouteWithResult` are new in v.1.8 (not released yet).
+:::
+
 ### Application state in a data module
 
 For values that outlive a screen — the user, a selection, a setting — use a data module or an object created at startup, and let routes read it **when they are built**. The LibraryStore demo stores the selected author in `RemoteData.selectedAuthorId` before routing to the books of that author:

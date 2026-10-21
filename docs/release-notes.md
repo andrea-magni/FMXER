@@ -12,11 +12,11 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 - Without any icon font, `AddIcon` returns `-1`: no icon instead of empty boxes.
 - **Your apps**: deploy `Material Design Icons.ttf` instead of the Desktop file. On macOS and iOS this is required, since FMXER now asks for the new family. See [The icon font](/guide/installation#the-icon-font).
 
-## Unreleased
+**The state of a route**: `DefineRoute<TView, TState>` gives a route its own state, a `TComponent` such as a `TDataModule`. The state is created before the view, passed to the configuration procedure with it and freed with it, or kept alive by the navigator with `AKeepAlive`. `RouteState<T>` returns it. **Arguments and results**: `RouteTo<TState>` initializes the state of the new route; `RouteToForResult` and `CloseRouteWithResult` give a result back to whoever opened the route (empty when it is closed in another way). See [The state of a route](/guide/state#the-state-of-a-route) and [Arguments and results](/guide/navigation#arguments-and-results). New demo **Orders**.
 
 **Fixed: crash when a route closes while its snackbar is visible**. `TScaffoldForm.ShowSnackBar` hid the snackbar with a delayed action that nothing cancelled: when the route of the scaffold was closed before `ADuration_ms` (e.g. a 3 s snackbar, then Back), the action ran on the freed snackbar and the app crashed with an access violation. The pending hide is now cancelled with the scaffold (and `AThen` is not called). The same for the drawer closing animation (`CloseDrawer`) and for the focus of a `TEditFrame` with `SetFocusOnShow`, closed within 10 ms.
 
-4 new tests (95 in all).
+18 new tests in this release (109 in all).
 
 ## v.1.7 — 2026-10-21
 
