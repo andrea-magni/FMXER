@@ -38,7 +38,7 @@ end;
 
 // a button with an icon in APosition: a tap tells where the icon is
 function IconButton(const AScaffold: TScaffoldForm; const AText: string; const AIcon: TIconEntry;
-  const APosition: TButtonIconPosition; const APositionName: string): TProc<TButtonFrame>;
+  const APosition: TButtonIconPosition; const APositionName: string; const AIconSize: Single = 0): TProc<TButtonFrame>;
 begin
   Result :=
     procedure (Button: TButtonFrame)
@@ -46,6 +46,7 @@ begin
       Button
       .SetText(AText)
       .SetIcon(AIcon, APosition)
+      .SetIconSize(AIconSize)   // 0: the size of the style (16)
       .SetOnClickProc(
         procedure
         begin
@@ -253,9 +254,9 @@ begin
                   .AddFrame<TButtonFrame>(LWidth
                   , IconButton(Scaffold, 'Next', IconFonts.MD.arrow_right, TButtonIconPosition.Right, 'right'))
                   .AddFrame<TButtonFrame>(LWidth
-                  , IconButton(Scaffold, 'Upload', IconFonts.MD.upload, TButtonIconPosition.Top, 'above'))
+                  , IconButton(Scaffold, 'Upload', IconFonts.MD.upload, TButtonIconPosition.Top, 'above', 24))
                   .AddFrame<TButtonFrame>(LWidth
-                  , IconButton(Scaffold, 'Download', IconFonts.MD.download, TButtonIconPosition.Bottom, 'below'));
+                  , IconButton(Scaffold, 'Download', IconFonts.MD.download, TButtonIconPosition.Bottom, 'below', 24));
                 end
               )
               .AddFrame<THorzDividerFrame>(1)

@@ -460,7 +460,9 @@ TButtonFrame = class(TFrame)
   function SetIcon(const AIcon: TIconEntry; const AColor: TAlphaColor; const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame; overload;
   function SetImage(const AImages: TCustomImageList; const AImageIndex: Integer; const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame;
   function ClearIcon: TButtonFrame;
+  function SetIconSize(const ASize: Single): TButtonFrame;   // 0 = the style's 16; reduced to fit inside the button
   property IconPosition: TButtonIconPosition;
+  property IconSize: Single;
   property BackgroundFill: TBrush;
   property BackgroundStroke: TStrokeBrush;
   property IsDefault: Boolean;
