@@ -43,6 +43,7 @@ type
     [Test] procedure ButtonIconFromTheIconFont;
     [Test] procedure ButtonIconWithoutTheFont;
     [Test] procedure ButtonIconPositions;
+    [Test] procedure ButtonIconNextToTheText;
     [Test] procedure ButtonIconSurvivesActionUpdate;
     [Test] procedure ButtonImageAndClearIcon;
   end;
@@ -392,6 +393,47 @@ begin
   Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
   Assert.AreEqual(TAlignLayout.Left, LGlyph.Align);
   Assert.IsTrue(LGlyph.Stretch);
+end;
+
+procedure TElementsFixture.ButtonIconNextToTheText;
+var
+  LButton: TButtonFrame;
+  LGlyph: TGlyph;
+  LText: TControl;
+begin
+  LButton := NewButton;
+  LButton.Align := TAlignLayout.None;
+  LButton.SetBounds(0, 0, 240, 60);
+  LButton.SetIcon(IconFonts.MD.content_save);
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TControl>('text', LText));
+  // the icon next to the text, the two centered: the space left of the icon is
+  // about half of what the icon and the text leave
+  var LWide := LGlyph.Margins.Left;
+  Assert.IsTrue(LWide > 60, Format('icon far from the side of a wide button (%.1f)', [LWide]));
+  Assert.AreEqual(Single(6), LGlyph.Margins.Right, 'gap between icon and text');
+  Assert.AreEqual(TTextAlign.Leading, (LText as TText).TextSettings.HorzAlign, 'the text starts at the icon');
+
+  // narrower: placed again
+  LButton.Width := 140;
+  Assert.IsTrue(LGlyph.Margins.Left < LWide, 'resized: closer to the side');
+  Assert.IsTrue(LGlyph.Margins.Left > 3);
+
+  // a text too long to center the two: the layout of the style
+  LButton.SetText('A text much longer than the button');
+  Assert.AreEqual(Single(3), LGlyph.Margins.Left, 'style margin');
+  Assert.AreEqual(TTextAlign.Center, (LText as TText).TextSettings.HorzAlign, 'style alignment');
+
+  // no text: the icon in the middle
+  LButton.SetText('');
+  Assert.AreEqual(Single((140 - 16) / 2), LGlyph.Margins.Left, 0.5, 'centered icon');
+
+  // on the right: the mirror
+  LButton.SetText('Next').SetIcon(IconFonts.MD.arrow_right, TButtonIconPosition.Right);
+  Assert.IsTrue(LGlyph.Margins.Right > 3, 'space right of the icon');
+  Assert.AreEqual(Single(6), LGlyph.Margins.Left, 'gap between text and icon');
+  Assert.AreEqual(TTextAlign.Trailing, (LText as TText).TextSettings.HorzAlign, 'the text ends at the icon');
 end;
 
 procedure TElementsFixture.ButtonIconSurvivesActionUpdate;

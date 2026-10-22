@@ -12,7 +12,8 @@ uses
 type
   {$SCOPEDENUMS ON}
   /// <summary>Where the icon of a TButtonFrame is: beside the text (Left,
-  /// Right) or above / below it (Top, Bottom).</summary>
+  /// Right: the icon next to the text, the two centered in the button) or
+  /// above / below it (Top, Bottom).</summary>
   TButtonIconPosition = (Left, Right, Top, Bottom);
   {$SCOPEDENUMS OFF}
 
@@ -37,8 +38,15 @@ type
     FGlyphStretch: Boolean;
     FTextAlign: TAlignLayout;
     FTextHeight: Single;
+    FGlyphMargins: TRectF;
+    FTextMargins: TRectF;
+    FTextHorzAlign: TTextAlign;
+    // the text and the width the icon was placed for (Left, Right)
+    FLayoutKey: string;
     procedure ButtonApplyStyleLookup(Sender: TObject);
+    procedure ButtonResized(Sender: TObject);
     procedure ApplyIconPosition;
+    procedure UpdateIconLayout;
     function GetIsDefault: Boolean;
     procedure SetIsDefault(const Value: Boolean);
     function GetBackgroundFill: TBrush;
@@ -84,7 +92,35 @@ implementation
 {$R *.fmx}
 
 uses
-  FMXER.UI.Consts, FMXER.IconFontsData;
+  FMX.TextLayout
+, FMXER.UI.Consts, FMXER.IconFontsData;
+
+const
+  // between the icon and the text (Left, Right)
+  ICON_TEXT_GAP = 6;
+
+function TextWidth(const AText: TText): Single;
+var
+  LLayout: TTextLayout;
+begin
+  if AText.Text = '' then
+    Exit(0);
+  LLayout := TTextLayoutManager.DefaultTextLayout.Create;
+  try
+    LLayout.BeginUpdate;
+    try
+      LLayout.Font.Assign(AText.TextSettings.Font);
+      LLayout.WordWrap := False;
+      LLayout.MaxSize := TPointF.Create(100000, 100000);
+      LLayout.Text := AText.Text;
+    finally
+      LLayout.EndUpdate;
+    end;
+    Result := LLayout.TextWidth;
+  finally
+    LLayout.Free;
+  end;
+end;
 
 { TEditFrame }
 
@@ -120,6 +156,10 @@ begin
     FGlyphStretch := LGlyph.Stretch;
     FTextAlign := LText.Align;
     FTextHeight := LText.Height;
+    FGlyphMargins := LGlyph.Margins.Rect;
+    FTextMargins := LText.Margins.Rect;
+    if LText is TText then
+      FTextHorzAlign := TText(LText).TextSettings.HorzAlign;
   end
   else
   begin
@@ -128,6 +168,10 @@ begin
     LGlyph.Stretch := FGlyphStretch;
     LText.Align := FTextAlign;
     LText.Height := FTextHeight;
+    LGlyph.Margins.Rect := FGlyphMargins;
+    LText.Margins.Rect := FTextMargins;
+    if LText is TText then
+      TText(LText).TextSettings.HorzAlign := FTextHorzAlign;
   end;
   case FIconPosition of
     TButtonIconPosition.Right:
@@ -146,11 +190,73 @@ begin
       LGlyph.Stretch := False;
     end;
   end;
+  // beside the text: placed for the text and the width of the button
+  FLayoutKey := '';
+  UpdateIconLayout;
+end;
+
+procedure TButtonFrame.UpdateIconLayout;
+var
+  LGlyph: TGlyph;
+  LText: TControl;
+  LKey: string;
+  LTextWidth, LSide: Single;
+begin
+  if not (FIconPosition in [TButtonIconPosition.Left, TButtonIconPosition.Right]) then
+    Exit;
+  if not (ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph)
+    and ButtonControl.FindStyleResource<TControl>('text', LText)) or (LGlyph <> FStyleGlyph)
+    or not (LText is TText) then
+    Exit;
+  // only when the text or the width changed (also called when the action is
+  // updated, at idle time)
+  LKey := Format('%s|%.2f', [TText(LText).Text, ButtonControl.Width]);
+  if LKey = FLayoutKey then
+    Exit;
+  FLayoutKey := LKey;
+
+  // the style: the glyph at the side of the button, the text centered in the rest
+  LGlyph.Margins.Rect := FGlyphMargins;
+  LText.Margins.Rect := FTextMargins;
+  TText(LText).TextSettings.HorzAlign := FTextHorzAlign;
+  if (ButtonControl.Images = nil) or (ButtonAction.ImageIndex < 0) then
+    Exit;
+
+  // the icon next to the text, the two centered in the button (no text: the
+  // icon in the middle); a text too long for that: the style
+  LTextWidth := TextWidth(TText(LText));
+  if LTextWidth > 0 then
+    LSide := (ButtonControl.Width - (FGlyphSize.Width + ICON_TEXT_GAP + LTextWidth)) / 2
+  else
+    LSide := (ButtonControl.Width - FGlyphSize.Width) / 2;
+  if FIconPosition = TButtonIconPosition.Left then
+  begin
+    if LSide <= FGlyphMargins.Left then
+      Exit;
+    LGlyph.Margins.Left := LSide;
+    LGlyph.Margins.Right := ICON_TEXT_GAP;
+    LText.Margins.Left := 0;
+    TText(LText).TextSettings.HorzAlign := TTextAlign.Leading;
+  end
+  else
+  begin
+    if LSide <= FGlyphMargins.Right then
+      Exit;
+    LGlyph.Margins.Right := LSide;
+    LGlyph.Margins.Left := ICON_TEXT_GAP;
+    LText.Margins.Right := 0;
+    TText(LText).TextSettings.HorzAlign := TTextAlign.Trailing;
+  end;
 end;
 
 procedure TButtonFrame.ButtonApplyStyleLookup(Sender: TObject);
 begin
   ApplyIconPosition;
+end;
+
+procedure TButtonFrame.ButtonResized(Sender: TObject);
+begin
+  UpdateIconLayout;
 end;
 
 procedure TButtonFrame.ButtonActionExecute(Sender: TObject);
@@ -163,6 +269,7 @@ procedure TButtonFrame.ButtonActionUpdate(Sender: TObject);
 begin
   if Assigned(FOnUpdateHandler) then
     FOnUpdateHandler(ButtonAction);
+  UpdateIconLayout; // the text may have changed
 end;
 
 function TButtonFrame.SetExtraText(const AExtraText: string): TButtonFrame;
@@ -243,6 +350,7 @@ function TButtonFrame.SetText(const AText: string): TButtonFrame;
 begin
   Result := Self;
   ButtonAction.Caption := AText;
+  UpdateIconLayout;
 end;
 
 function TButtonFrame.SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;
@@ -275,6 +383,7 @@ begin
   // the position is applied to the style of the button: now, if it is styled,
   // and whenever the style is applied
   ButtonControl.OnApplyStyleLookup := ButtonApplyStyleLookup;
+  ButtonControl.OnResized := ButtonResized;
   ApplyIconPosition;
 end;
 

@@ -101,11 +101,12 @@ Button.SetText('Upload').SetIcon(IconFonts.MD.upload, TAlphaColorRec.Teal, TButt
 
 | `TButtonIconPosition` | Layout |
 |---|---|
-| `Left` (default), `Right` | the icon beside the text, at the side of the button, as the style of `TButton` draws it |
+| `Left` (default), `Right` | the icon next to the text, and the two centered in the button; without text, the icon in the middle. A text too long for that: the icon at the side of the button, as the style of `TButton` draws it |
 | `Top`, `Bottom` | the text on one line at the other side, the icon centered in the rest: give the slot room for both (about 70) |
 
 - The color is drawn into the image of the icon (default `TAppColors.PrimaryColor`, for buttons without background). A disabled button (`BindEnabled`, `OnUpdateHandler`) dims its icon too.
 - The icon is the image of the action (`ButtonAction.ImageIndex`), so it stays when the action is updated.
+- Beside the text, the icon is placed again when the width of the button or its text changes (`SetText`, `OnUpdateHandler`).
 - Without the icon font `SetIcon` adds no image: the button shows only its text. The same icon in the same color is added once to `IconFonts.ImageList`, also when a route is built again.
 - `SetImage(AImages, AImageIndex, AIconPosition)` does the same with any image list; `ClearIcon` removes the icon.
 
