@@ -6,10 +6,16 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Edit, System.Actions, FMX.ActnList, System.Skia,
-  FMX.Skia, FMX.Objects
-, FMXER.Observable;
+  FMX.Skia, FMX.Objects, FMX.ImgList
+, FMXER.Observable, Icons.Utils;
 
 type
+  {$SCOPEDENUMS ON}
+  /// <summary>Where the icon of a TButtonFrame is: beside the text (Left,
+  /// Right) or above / below it (Top, Bottom).</summary>
+  TButtonIconPosition = (Left, Right, Top, Bottom);
+  {$SCOPEDENUMS OFF}
+
   TButtonFrame = class(TFrame)
     ButtonControl: TButton;
     ActionList1: TActionList;
@@ -23,6 +29,16 @@ type
     FEnabledLink: TObservableLink<Boolean>;
     FOnClickHandler: TProc;
     FOnUpdateHandler: TProc<TAction>;
+    FIconPosition: TButtonIconPosition;
+    // the layout of the style of the button, before a position changed it
+    FStyleGlyph: TObject;
+    FGlyphAlign: TAlignLayout;
+    FGlyphSize: TSizeF;
+    FGlyphStretch: Boolean;
+    FTextAlign: TAlignLayout;
+    FTextHeight: Single;
+    procedure ButtonApplyStyleLookup(Sender: TObject);
+    procedure ApplyIconPosition;
     function GetIsDefault: Boolean;
     procedure SetIsDefault(const Value: Boolean);
     function GetBackgroundFill: TBrush;
@@ -41,7 +57,21 @@ type
     function SetBackgroundOpacity(const AOpacity: Single): TButtonFrame;
     function SetOnClickHandler(const AOnClickHandler: TProc): TButtonFrame;
     function SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;
+    /// <summary>An icon of the icon font (IconFonts.MD...) beside, above or
+    /// below the text, in AColor (default TAppColors.PrimaryColor). Without the
+    /// icon font the button shows only its text.</summary>
+    function SetIcon(const AIcon: TIconEntry;
+      const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame; overload;
+    function SetIcon(const AIcon: TIconEntry; const AColor: TAlphaColor;
+      const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame; overload;
+    /// <summary>An image of any image list (AImageIndex -1: none) beside, above
+    /// or below the text.</summary>
+    function SetImage(const AImages: TCustomImageList; const AImageIndex: Integer;
+      const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame;
+    /// <summary>No icon: only the text.</summary>
+    function ClearIcon: TButtonFrame;
 
+    property IconPosition: TButtonIconPosition read FIconPosition;
     property BackgroundFill: TBrush read GetBackgroundFill;
     property BackgroundStroke: TStrokeBrush read GetBackgroundStroke;
     property IsDefault: Boolean read GetIsDefault write SetIsDefault;
@@ -52,6 +82,9 @@ type
 implementation
 
 {$R *.fmx}
+
+uses
+  FMXER.UI.Consts, FMXER.IconFontsData;
 
 { TEditFrame }
 
@@ -65,6 +98,59 @@ begin
     begin
       ButtonAction.Enabled := AValue;
     end);
+end;
+
+procedure TButtonFrame.ApplyIconPosition;
+var
+  LGlyph: TGlyph;
+  LText: TControl;
+begin
+  // the style of the button: a glyph ('glyphstyle', 16 wide, on the left) and
+  // the text ('text', the rest); not styled yet: applied with the style
+  if not (ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph)
+    and ButtonControl.FindStyleResource<TControl>('text', LText)) then
+    Exit;
+  // the style objects stay when the style is looked up again: the layout of
+  // the style, kept the first time, is restored before every position
+  if LGlyph <> FStyleGlyph then
+  begin
+    FStyleGlyph := LGlyph;
+    FGlyphAlign := LGlyph.Align;
+    FGlyphSize := LGlyph.Size.Size;
+    FGlyphStretch := LGlyph.Stretch;
+    FTextAlign := LText.Align;
+    FTextHeight := LText.Height;
+  end
+  else
+  begin
+    LGlyph.Align := FGlyphAlign;
+    LGlyph.Size.Size := FGlyphSize;
+    LGlyph.Stretch := FGlyphStretch;
+    LText.Align := FTextAlign;
+    LText.Height := FTextHeight;
+  end;
+  case FIconPosition of
+    TButtonIconPosition.Right:
+      LGlyph.Align := TAlignLayout.Right;
+    TButtonIconPosition.Top, TButtonIconPosition.Bottom:
+    begin
+      // the text on one line at the other side, the icon centered in the rest
+      // at its own size (not stretched to the area)
+      if FIconPosition = TButtonIconPosition.Top then
+        LText.Align := TAlignLayout.Bottom
+      else
+        LText.Align := TAlignLayout.Top;
+      if LText is TText then
+        LText.Height := Round(TText(LText).TextSettings.Font.Size * 1.5);
+      LGlyph.Align := TAlignLayout.Client;
+      LGlyph.Stretch := False;
+    end;
+  end;
+end;
+
+procedure TButtonFrame.ButtonApplyStyleLookup(Sender: TObject);
+begin
+  ApplyIconPosition;
 end;
 
 procedure TButtonFrame.ButtonActionExecute(Sender: TObject);
@@ -162,6 +248,39 @@ end;
 function TButtonFrame.SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;
 begin
   Result := SetOnClickHandler(AOnClickProc);
+end;
+
+function TButtonFrame.SetIcon(const AIcon: TIconEntry;
+  const AIconPosition: TButtonIconPosition): TButtonFrame;
+begin
+  Result := SetIcon(AIcon, TAppColors.PrimaryColor, AIconPosition);
+end;
+
+function TButtonFrame.SetIcon(const AIcon: TIconEntry; const AColor: TAlphaColor;
+  const AIconPosition: TButtonIconPosition): TButtonFrame;
+begin
+  // AddIcon: -1 without the icon font (only the text), the same index for the
+  // same icon and color
+  Result := SetImage(IconFonts.ImageList, IconFonts.AddIcon(AIcon, AColor), AIconPosition);
+end;
+
+function TButtonFrame.SetImage(const AImages: TCustomImageList; const AImageIndex: Integer;
+  const AIconPosition: TButtonIconPosition): TButtonFrame;
+begin
+  Result := Self;
+  FIconPosition := AIconPosition;
+  ButtonControl.Images := AImages;
+  // on the action: the button takes its image (as its text) from the action
+  ButtonAction.ImageIndex := AImageIndex;
+  // the position is applied to the style of the button: now, if it is styled,
+  // and whenever the style is applied
+  ButtonControl.OnApplyStyleLookup := ButtonApplyStyleLookup;
+  ApplyIconPosition;
+end;
+
+function TButtonFrame.ClearIcon: TButtonFrame;
+begin
+  Result := SetImage(nil, -1, TButtonIconPosition.Left);
 end;
 
 end.

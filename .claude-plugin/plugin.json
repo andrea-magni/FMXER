@@ -1,7 +1,7 @@
 {
   "name": "fmxer",
   "displayName": "FMXER",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "Agent Skill for FMXER, the declarative, Flutter-inspired visual framework for Delphi FireMonkey built on TFrameStand: screens composed in code, named routes with TNavigator (Back button, transient routes), TScaffoldForm, containers and sizing (fixed or automatic), elements with fluent setters, icons, TAppColors, state shared through closures and the lifetime of elements, Delphi 12+ Skia units.",
   "author": {
     "name": "Andrea Magni",

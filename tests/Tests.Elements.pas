@@ -1,16 +1,16 @@
 unit Tests.Elements;
 
-// Elements and helpers: scaffold, pair, list view, icon fonts, form helpers.
+// Elements and helpers: scaffold, pair, list view, icon fonts, form helpers, button icons.
 
 interface
 
 uses
-  System.SysUtils, System.Classes, System.UITypes, DUnitX.TestFramework
-, FMX.Types, FMX.Forms, FMX.Controls, FMX.ListView.Appearances
+  System.SysUtils, System.Classes, System.UITypes, System.Actions, DUnitX.TestFramework
+, FMX.Types, FMX.Forms, FMX.Controls, FMX.ListView.Appearances, FMX.ImgList, FMX.Objects, FMX.ActnList
 , SubjectStand, FrameStand, FormStand
 , FMXER.UI.Misc, FMXER.ScaffoldForm, FMXER.ActionButtonFrame, FMXER.HorzPairFrame
 , FMXER.ListViewFrame, FMXER.IconFontsData, FMXER.CardFrame, FMXER.ContainerForm
-, FMXER.LogoFrame, FMXER.ColumnForm
+, FMXER.LogoFrame, FMXER.ColumnForm, FMXER.ButtonFrame, FMXER.UI.Consts
 , FMXER.UI.Types, FMXER.ImageFrame, FMXER.SVGFrame, FMXER.AnimatedImageFrame, FMXER.QRCodeFrame
 , FMX.Graphics, System.Types, QRCode.Utils
 , Tests.Common
@@ -22,6 +22,7 @@ type
   private
     FMain: TForm;
     function FindActionButtons(const AScaffold: TScaffoldForm): TArray<TActionButtonFrame>;
+    function NewButton: TButtonFrame;
   public
     [Setup] procedure Setup;
     [TearDown] procedure TearDown;
@@ -39,9 +40,18 @@ type
     [Test] procedure SvgToBitmapMarginsAreSymmetric;
     [Test] procedure LocalFileUsesLocalFilesPath;
     [Test] procedure ColumnClosesItsFormElements;
+    [Test] procedure ButtonIconFromTheIconFont;
+    [Test] procedure ButtonIconWithoutTheFont;
+    [Test] procedure ButtonIconPositions;
+    [Test] procedure ButtonIconSurvivesActionUpdate;
+    [Test] procedure ButtonImageAndClearIcon;
   end;
 
 implementation
+
+type
+  // access to the cached check, to simulate a machine without the icon font
+  TIconFontsAccess = class(TIconFonts);
 
 { TElementsFixture }
 
@@ -69,6 +79,16 @@ function TElementsFixture.FindActionButtons(const AScaffold: TScaffoldForm): TAr
 begin
   Result := [];
   Collect(AScaffold.ActionButtonsLayout);
+end;
+
+function TElementsFixture.NewButton: TButtonFrame;
+begin
+  FMain.SetBounds(0, 0, 400, 300);
+  // no owner: several buttons in one test (the same component name); freed
+  // with the form, their parent
+  Result := TButtonFrame.Create(nil);
+  Result.Parent := FMain;
+  Result.SetText('Save');
 end;
 
 procedure TElementsFixture.FormSetPaddingGeneric;
@@ -299,6 +319,111 @@ begin
   Pump(100);
   Assert.IsTrue(LFormFreed, 'form element freed with the column');
   Assert.IsTrue(LFrameFreed, 'frame element freed with the column');
+end;
+
+procedure TElementsFixture.ButtonIconFromTheIconFont;
+begin
+  var LButton := NewButton;
+  Assert.AreSame(LButton, LButton.SetIcon(IconFonts.MD.content_save), 'fluent');
+  var LIndex := IconFonts.AddIcon(IconFonts.MD.content_save, TAppColors.PrimaryColor);
+  Assert.IsTrue(LIndex >= 0, 'the icon font is available to the tests');
+  Assert.AreSame(IconFonts.ImageList, LButton.ButtonControl.Images);
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonAction.ImageIndex), 'on the action, default color');
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonControl.ImageIndex), 'the button takes it from the action');
+  // another color: another image; the same icon and color again: the same one
+  LButton.SetIcon(IconFonts.MD.content_save, TAlphaColorRec.Red);
+  var LRed := Integer(LButton.ButtonAction.ImageIndex);
+  Assert.AreNotEqual(LIndex, LRed);
+  LButton.SetIcon(IconFonts.MD.content_save, TAlphaColorRec.Red);
+  Assert.AreEqual(LRed, Integer(LButton.ButtonAction.ImageIndex));
+end;
+
+procedure TElementsFixture.ButtonIconWithoutTheFont;
+begin
+  var LButton := NewButton;
+  var LAccess := TIconFontsAccess(IconFonts);
+  LAccess.FFontChecked := True;
+  LAccess.FFontAvailable := False;
+  try
+    // a code point never added before: not in the cache
+    LButton.SetIcon(IconFonts.MD.alpha_y_box, TAlphaColorRec.Fuchsia);
+    Assert.AreEqual(-1, Integer(LButton.ButtonAction.ImageIndex), 'no icon: only the text');
+  finally
+    LAccess.FFontChecked := False;   // checked again
+  end;
+  Assert.AreEqual('Save', LButton.ButtonAction.Text);
+end;
+
+procedure TElementsFixture.ButtonIconPositions;
+var
+  LGlyph: TGlyph;
+  LText: TControl;
+
+  procedure Check(const APosition: TButtonIconPosition; const AGlyphAlign, ATextAlign: TAlignLayout;
+    const AStretch: Boolean);
+  var
+    LButton: TButtonFrame;
+  begin
+    LButton := NewButton;
+    LButton.SetIcon(IconFonts.MD.content_save, APosition);
+    LButton.ButtonControl.ApplyStyleLookup;
+    Assert.AreEqual(APosition, LButton.IconPosition);
+    Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph), 'glyph of the style');
+    Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TControl>('text', LText), 'text of the style');
+    Assert.AreEqual(AGlyphAlign, LGlyph.Align, 'glyph');
+    Assert.AreEqual(ATextAlign, LText.Align, 'text');
+    Assert.AreEqual(AStretch, LGlyph.Stretch, 'stretch');
+  end;
+
+begin
+  Check(TButtonIconPosition.Left, TAlignLayout.Left, TAlignLayout.Client, True);
+  Check(TButtonIconPosition.Right, TAlignLayout.Right, TAlignLayout.Client, True);
+  // above / below the text: the text on one line, the icon at its size in the rest
+  Check(TButtonIconPosition.Top, TAlignLayout.Client, TAlignLayout.Bottom, False);
+  Check(TButtonIconPosition.Bottom, TAlignLayout.Client, TAlignLayout.Top, False);
+  Assert.IsTrue(LText.Height > 0, 'one line of text');
+
+  // the position changes on a button already styled: the style is applied again
+  var LButton := NewButton;
+  LButton.SetIcon(IconFonts.MD.content_save, TButtonIconPosition.Top);
+  LButton.ButtonControl.ApplyStyleLookup;
+  LButton.SetIcon(IconFonts.MD.content_save, TButtonIconPosition.Left);
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  Assert.AreEqual(TAlignLayout.Left, LGlyph.Align);
+  Assert.IsTrue(LGlyph.Stretch);
+end;
+
+procedure TElementsFixture.ButtonIconSurvivesActionUpdate;
+begin
+  var LButton := NewButton;
+  LButton.SetIcon(IconFonts.MD.content_save);
+  var LIndex := Integer(LButton.ButtonAction.ImageIndex);
+  LButton.OnUpdateHandler :=
+    procedure (AAction: TAction)
+    begin
+      AAction.Enabled := False;
+      AAction.Text := 'Saving...';
+    end;
+  LButton.ButtonAction.Update;
+  Assert.IsFalse(LButton.ButtonControl.Enabled, 'updated');
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonAction.ImageIndex));
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonControl.ImageIndex));
+end;
+
+procedure TElementsFixture.ButtonImageAndClearIcon;
+begin
+  var LButton := NewButton;
+  var LImages := TImageList.Create(FMain);
+  LButton.SetImage(LImages, 3, TButtonIconPosition.Right);
+  Assert.AreSame(LImages, LButton.ButtonControl.Images);
+  Assert.AreEqual(3, Integer(LButton.ButtonAction.ImageIndex));
+  Assert.AreEqual(TButtonIconPosition.Right, LButton.IconPosition);
+
+  Assert.AreSame(LButton, LButton.ClearIcon, 'fluent');
+  Assert.IsNull(LButton.ButtonControl.Images);
+  Assert.AreEqual(-1, Integer(LButton.ButtonAction.ImageIndex));
+  Assert.AreEqual(TButtonIconPosition.Left, LButton.IconPosition);
 end;
 
 initialization
