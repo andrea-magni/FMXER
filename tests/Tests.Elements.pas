@@ -44,6 +44,7 @@ type
     [Test] procedure ButtonIconWithoutTheFont;
     [Test] procedure ButtonIconPositions;
     [Test] procedure ButtonIconNextToTheText;
+    [Test] procedure ButtonIconFollowsTheActionText;
     [Test] procedure ButtonIconSurvivesActionUpdate;
     [Test] procedure ButtonImageAndClearIcon;
   end;
@@ -434,6 +435,42 @@ begin
   Assert.IsTrue(LGlyph.Margins.Right > 3, 'space right of the icon');
   Assert.AreEqual(Single(6), LGlyph.Margins.Left, 'gap between text and icon');
   Assert.AreEqual(TTextAlign.Trailing, (LText as TText).TextSettings.HorzAlign, 'the text ends at the icon');
+end;
+
+procedure TElementsFixture.ButtonIconFollowsTheActionText;
+var
+  LButton: TButtonFrame;
+  LGlyph: TGlyph;
+begin
+  LButton := NewButton;
+  LButton.Align := TAlignLayout.None;
+  LButton.SetBounds(0, 0, 240, 60);
+  LButton.SetIcon(IconFonts.MD.content_save);
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  var LShort := LGlyph.Margins.Left;
+
+  // the text of the action set directly: placed again at the action's update
+  // (what FMX runs at idle time)
+  LButton.ButtonAction.Text := 'Save the document';
+  LButton.ButtonAction.Update;
+  var LLonger := LGlyph.Margins.Left;
+  Assert.IsTrue(LLonger < LShort, Format('longer text: the icon moves left (%.1f, %.1f)', [LShort, LLonger]));
+  Assert.IsTrue(LLonger > 3, 'still next to the text');
+
+  // the text changed by the OnUpdateHandler
+  LButton.OnUpdateHandler :=
+    procedure (AAction: TAction)
+    begin
+      AAction.Text := 'Saving...';
+    end;
+  LButton.ButtonAction.Update;
+  Assert.IsTrue(LGlyph.Margins.Left > LLonger, 'shorter text: the icon moves right');
+
+  // an update that changes nothing keeps the place
+  var LPlace := LGlyph.Margins.Left;
+  LButton.ButtonAction.Update;
+  Assert.AreEqual(Double(LPlace), Double(LGlyph.Margins.Left), 0.01, 'same place');
 end;
 
 procedure TElementsFixture.ButtonIconSurvivesActionUpdate;

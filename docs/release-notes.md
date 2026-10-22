@@ -4,7 +4,7 @@ Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/release
 
 ## Unreleased
 
-**Icons on buttons**: `TButtonFrame.SetIcon(AIcon[, AColor][, AIconPosition])` puts an icon of the icon font on the button, on the left of the text by default, on the right, above or below it (`TButtonIconPosition`). Beside the text, the icon and the text are centered together in the button. `SetImage` does the same with any image list, `ClearIcon` removes it. The icon is the image of the button's action, so it stays when the action is updated; without the icon font the button shows only its text. See [Icons](/elements/text-and-input#icons). The **FormControls** demo has a button for each position, the **Orders** demo an icon on its Save button. 6 new tests (142 in all).
+**Icons on buttons**: `TButtonFrame.SetIcon(AIcon[, AColor][, AIconPosition])` puts an icon of the icon font on the button, on the left of the text by default, on the right, above or below it (`TButtonIconPosition`). Beside the text, the icon and the text are centered together in the button. `SetImage` does the same with any image list, `ClearIcon` removes it. The icon is the image of the button's action, so it stays when the action is updated; without the icon font the button shows only its text. See [Icons](/elements/text-and-input#icons). The **FormControls** demo has a button for each position, the **Orders** demo an icon on its Save button. 7 new tests (143 in all).
 
 ## v.1.9 — 2026-10-22
 
