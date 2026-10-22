@@ -77,10 +77,47 @@ Col.AddFrame<TButtonFrame>(60
 | `SetOnClickProc(TProc)` (or `SetOnClickHandler`) / `OnClickHandler` | click (the action's `OnExecute`) |
 | `OnUpdateHandler: TProc<TAction>` | the action's `OnUpdate`: enable, check, rename the button |
 | `BindEnabled(TObservable<Boolean>)` | one-way [binding](/guide/state#bindings) of the action's `Enabled` |
+| `SetIcon(AIcon[, AColor][, AIconPosition])` | an icon of the [icon font](./icons) beside, above or below the text (see [Icons](#icons)) |
+| `SetImage(AImages, AImageIndex[, AIconPosition])` | an image of any image list (`-1`: none) |
+| `ClearIcon` / `IconPosition` | only the text again / where the icon is |
+| `SetIconSize(ASize)` / `IconSize` | the size of the icon; `0` (default): the size of the style (16) |
 | `SetBackgroundFillColor`, `SetBackgroundStrokeColor`, `SetBackgroundStrokeThickness`, `SetBackgroundOpacity`, `SetBackgroundVisible` | the rectangle behind the button |
 | `BackgroundFill`, `BackgroundStroke` | its brushes |
 | `IsDefault` | the button's `Default` |
 | `ButtonControl`, `ButtonAction`, `CaptionLabel`, `ExtraLabel`, `BackgroundRectangle` | controls |
+
+### Icons
+
+`SetIcon` puts an icon of the [icon font](./icons) on the button, beside the text (on the left by default, or on the right) or above or below it:
+
+```pascal
+Button
+.SetText('Save')
+.SetIcon(IconFonts.MD.content_save)                                   // left, TAppColors.PrimaryColor
+.SetOnClickProc(Save);
+
+Button.SetText('Next').SetIcon(IconFonts.MD.arrow_right, TButtonIconPosition.Right);
+Button.SetText('Upload').SetIcon(IconFonts.MD.upload, TAlphaColorRec.Teal, TButtonIconPosition.Top);
+Button.SetText('Download').SetIcon(IconFonts.MD.download, TButtonIconPosition.Bottom).SetIconSize(24);
+```
+
+| `TButtonIconPosition` | Layout |
+|---|---|
+| `Left` (default), `Right` | the icon next to the text, vertically centered, and the two centered in the button; without text, the icon in the middle. A text too long for that: the icon at the side of the button, the text centered in the rest |
+| `Top`, `Bottom` | the text on one line at the other side, the icon centered in the rest: give the slot room for both (about 70) |
+
+- The color is drawn into the image of the icon (default `TAppColors.PrimaryColor`, for buttons without background). A disabled button (`BindEnabled`, `OnUpdateHandler`) dims its icon too.
+- The icon is the image of the action (`ButtonAction.ImageIndex`), so it stays when the action is updated.
+- `SetIconSize(ASize)`: the icon is `ASize` wide and high (`0`: the 16 of the style of `TButton`); the icons of the font stay sharp at any size. The icon always stays inside the button: larger than the room it has (the height of the button, or the room the line of text leaves above or below), it is reduced to it.
+- The icon is placed again when the size of the button or its text changes (`SetText`, `OnUpdateHandler`).
+- Without the icon font `SetIcon` adds no image: the button shows only its text. The same icon in the same color is added once to `IconFonts.ImageList`, also when a route is built again.
+- `SetImage(AImages, AImageIndex, AIconPosition)` does the same with any image list; `ClearIcon` removes the icon.
+
+The [FormControls demo](/demos/#formcontrols) has a button for each position (24 above and below the text); the Save button of the [Orders demo](/demos/#orders) has an icon.
+
+::: info Since v.1.10
+`SetIcon`, `SetImage`, `ClearIcon`, `SetIconSize` and `TButtonIconPosition` are new in v.1.10.
+:::
 
 ## TColorButtonFrame
 

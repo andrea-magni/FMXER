@@ -18,7 +18,7 @@ Media files (Lottie animations, SVG, the icon font `Material Design Icons.ttf`) 
 | [LibraryStore](#librarystore) | lists filled from a REST server, async loading, multiple routes | MARS client, a MARS server |
 | [HelloWorld_IFIL](#helloworld-ifil) | an image list of icon fonts on the main form | — |
 | [QRCode](#qrcode) | QR code generator and camera reader, color pickers, share sheet | ZXing.Delphi, camera |
-| [FormControls](#formcontrols) | switch, check box, radio group, combo box, date edit, progress bars, state in closures | — |
+| [FormControls](#formcontrols) | switch, check box, radio group, combo box, date edit, progress bars, buttons with icons, state in closures | — |
 | [Navigation](#navigation) | drawer, bottom navigation, a page with tabs, Back closing the drawer | — |
 | [Dialogs](#dialogs) | alert, confirm, choices in a bottom sheet, a dialog and a sheet of FMXER elements | — |
 | [Orders](#orders) | a route with a state (a data module), arguments and a result | — |
@@ -93,7 +93,7 @@ The main form shows the breadcrumb in the caption on Windows, closes the camera 
 
 ## FormControls
 
-The [form controls](/elements/form-controls) on one screen (`Routes.Home`): a scaffold with a `TVertScrollFrame` around a `TColumnFrame` with a `TSwitchFrame`, a `TCheckBoxFrame`, a `TRadioGroupFrame` (`AUTO_HEIGHT` from its options), a `TComboBoxFrame`, a `TDateEditFrame` that warns about a date in the past, a `TProgressBarFrame` driven by a `TTrackbarFrame`, an indeterminate `TProgressBarFrame` switched on and off by a second switch, and a summary text. Each control shows the value chosen in its extra text. The values live in local variables of the route definition, captured by the `OnChangeProc` closures, which update the extra texts and the summary. Started from NewProjectTemplate.
+The [form controls](/elements/form-controls) on one screen (`Routes.Home`): a scaffold with a `TVertScrollFrame` around a `TColumnFrame` with a `TSwitchFrame`, a `TCheckBoxFrame`, a `TRadioGroupFrame` (`AUTO_HEIGHT` from its options), a `TComboBoxFrame`, a `TDateEditFrame` that warns about a date in the past, a `TProgressBarFrame` driven by a `TTrackbarFrame`, an indeterminate `TProgressBarFrame` switched on and off by a second switch, a row of four `TButtonFrame` with an [icon](/elements/text-and-input#icons) on the left, on the right, above and below the text (24 px, `SetIconSize`; a tap tells where), and a summary text. Each control shows the value chosen in its extra text. The values live in local variables of the route definition, captured by the `OnChangeProc` closures, which update the extra texts and the summary. Started from NewProjectTemplate.
 
 ## Navigation
 
@@ -113,7 +113,7 @@ Navigation inside one screen (`Routes.Home`): a scaffold with a [drawer](/elemen
   - a tap opens the order with `RouteTo<TOrderState>`, which loads it into the state of the route; the result proc shows *&lt;customer&gt; saved*, or *Not saved*;
 - **order**: `DefineRoute<TScaffoldForm, TOrderState>`. `TOrderState` is a data module (`Data.OrderState.pas`/`.dfm`), created with the route and freed with it, with `Paid`, `Note` and `Modified` as observables:
   - the switch and the edit are bound to them (`BindChecked`, `BindText`), a status text shows `Paid` (`BindContent<Boolean>`);
-  - *Save* is enabled only when `Modified` is set (`BindEnabled`); it writes the order back to the list, notifies `OrdersChanged` and closes the route with `CloseRouteWithResult`;
+  - *Save* has an [icon](/elements/text-and-input#icons) (`SetIcon`) and is enabled only when `Modified` is set (`BindEnabled`); it writes the order back to the list, notifies `OrdersChanged` and closes the route with `CloseRouteWithResult`;
   - the X button and Back close the route without a result.
 
 ## MyTicketing

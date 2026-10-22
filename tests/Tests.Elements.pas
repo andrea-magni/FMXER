@@ -1,16 +1,16 @@
 unit Tests.Elements;
 
-// Elements and helpers: scaffold, pair, list view, icon fonts, form helpers.
+// Elements and helpers: scaffold, pair, list view, icon fonts, form helpers, button icons.
 
 interface
 
 uses
-  System.SysUtils, System.Classes, System.UITypes, DUnitX.TestFramework
-, FMX.Types, FMX.Forms, FMX.Controls, FMX.ListView.Appearances
+  System.SysUtils, System.Classes, System.UITypes, System.Actions, DUnitX.TestFramework
+, FMX.Types, FMX.Forms, FMX.Controls, FMX.ListView.Appearances, FMX.ImgList, FMX.Objects, FMX.ActnList
 , SubjectStand, FrameStand, FormStand
 , FMXER.UI.Misc, FMXER.ScaffoldForm, FMXER.ActionButtonFrame, FMXER.HorzPairFrame
 , FMXER.ListViewFrame, FMXER.IconFontsData, FMXER.CardFrame, FMXER.ContainerForm
-, FMXER.LogoFrame, FMXER.ColumnForm
+, FMXER.LogoFrame, FMXER.ColumnForm, FMXER.ButtonFrame, FMXER.UI.Consts
 , FMXER.UI.Types, FMXER.ImageFrame, FMXER.SVGFrame, FMXER.AnimatedImageFrame, FMXER.QRCodeFrame
 , FMX.Graphics, System.Types, QRCode.Utils
 , Tests.Common
@@ -22,6 +22,7 @@ type
   private
     FMain: TForm;
     function FindActionButtons(const AScaffold: TScaffoldForm): TArray<TActionButtonFrame>;
+    function NewButton: TButtonFrame;
   public
     [Setup] procedure Setup;
     [TearDown] procedure TearDown;
@@ -39,9 +40,21 @@ type
     [Test] procedure SvgToBitmapMarginsAreSymmetric;
     [Test] procedure LocalFileUsesLocalFilesPath;
     [Test] procedure ColumnClosesItsFormElements;
+    [Test] procedure ButtonIconFromTheIconFont;
+    [Test] procedure ButtonIconWithoutTheFont;
+    [Test] procedure ButtonIconPositions;
+    [Test] procedure ButtonIconNextToTheText;
+    [Test] procedure ButtonIconFollowsTheActionText;
+    [Test] procedure ButtonIconSize;
+    [Test] procedure ButtonIconSurvivesActionUpdate;
+    [Test] procedure ButtonImageAndClearIcon;
   end;
 
 implementation
+
+type
+  // access to the cached check, to simulate a machine without the icon font
+  TIconFontsAccess = class(TIconFonts);
 
 { TElementsFixture }
 
@@ -69,6 +82,16 @@ function TElementsFixture.FindActionButtons(const AScaffold: TScaffoldForm): TAr
 begin
   Result := [];
   Collect(AScaffold.ActionButtonsLayout);
+end;
+
+function TElementsFixture.NewButton: TButtonFrame;
+begin
+  FMain.SetBounds(0, 0, 400, 300);
+  // no owner: several buttons in one test (the same component name); freed
+  // with the form, their parent
+  Result := TButtonFrame.Create(nil);
+  Result.Parent := FMain;
+  Result.SetText('Save');
 end;
 
 procedure TElementsFixture.FormSetPaddingGeneric;
@@ -299,6 +322,247 @@ begin
   Pump(100);
   Assert.IsTrue(LFormFreed, 'form element freed with the column');
   Assert.IsTrue(LFrameFreed, 'frame element freed with the column');
+end;
+
+procedure TElementsFixture.ButtonIconFromTheIconFont;
+begin
+  var LButton := NewButton;
+  Assert.AreSame(LButton, LButton.SetIcon(IconFonts.MD.content_save), 'fluent');
+  var LIndex := IconFonts.AddIcon(IconFonts.MD.content_save, TAppColors.PrimaryColor);
+  Assert.IsTrue(LIndex >= 0, 'the icon font is available to the tests');
+  Assert.AreSame(IconFonts.ImageList, LButton.ButtonControl.Images);
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonAction.ImageIndex), 'on the action, default color');
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonControl.ImageIndex), 'the button takes it from the action');
+  // another color: another image; the same icon and color again: the same one
+  LButton.SetIcon(IconFonts.MD.content_save, TAlphaColorRec.Red);
+  var LRed := Integer(LButton.ButtonAction.ImageIndex);
+  Assert.AreNotEqual(LIndex, LRed);
+  LButton.SetIcon(IconFonts.MD.content_save, TAlphaColorRec.Red);
+  Assert.AreEqual(LRed, Integer(LButton.ButtonAction.ImageIndex));
+end;
+
+procedure TElementsFixture.ButtonIconWithoutTheFont;
+begin
+  var LButton := NewButton;
+  var LAccess := TIconFontsAccess(IconFonts);
+  LAccess.FFontChecked := True;
+  LAccess.FFontAvailable := False;
+  try
+    // a code point never added before: not in the cache
+    LButton.SetIcon(IconFonts.MD.alpha_y_box, TAlphaColorRec.Fuchsia);
+    Assert.AreEqual(-1, Integer(LButton.ButtonAction.ImageIndex), 'no icon: only the text');
+  finally
+    LAccess.FFontChecked := False;   // checked again
+  end;
+  Assert.AreEqual('Save', LButton.ButtonAction.Text);
+end;
+
+procedure TElementsFixture.ButtonIconPositions;
+var
+  LButton: TButtonFrame;
+  LGlyph: TGlyph;
+  LText: TControl;
+
+  procedure Check(const APosition: TButtonIconPosition; const ATextAlign: TAlignLayout);
+  begin
+    LButton := NewButton;
+    LButton.Align := TAlignLayout.None;
+    LButton.SetBounds(0, 0, 160, 72);
+    LButton.SetIcon(IconFonts.MD.content_save, APosition);
+    LButton.ButtonControl.ApplyStyleLookup;
+    Assert.AreEqual(APosition, LButton.IconPosition);
+    Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph), 'glyph of the style');
+    Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TControl>('text', LText), 'text of the style');
+    // the glyph placed by the element (not aligned), the icon at the size of the style
+    Assert.AreEqual(TAlignLayout.None, LGlyph.Align, 'glyph');
+    Assert.AreEqual(Double(16), Double(LGlyph.Width), 0.01, 'icon width');
+    Assert.AreEqual(Double(16), Double(LGlyph.Height), 0.01, 'icon height');
+    Assert.AreEqual(ATextAlign, LText.Align, 'text');
+  end;
+
+begin
+  Check(TButtonIconPosition.Left, TAlignLayout.Client);
+  Assert.IsTrue(LGlyph.Position.X + LGlyph.Width < LText.Margins.Left, 'icon left of the text');
+  Assert.AreEqual(Double((72 - 16) / 2), Double(LGlyph.Position.Y), 0.5, 'vertically centered');
+  Check(TButtonIconPosition.Right, TAlignLayout.Client);
+  Assert.IsTrue(LGlyph.Position.X > 160 - LText.Margins.Right, 'icon right of the text');
+  // above / below the text: the text on one line, the icon centered in the rest
+  Check(TButtonIconPosition.Top, TAlignLayout.Bottom);
+  Assert.IsTrue(LGlyph.Position.Y + LGlyph.Height <= LText.Position.Y, 'icon above the text');
+  Assert.AreEqual(Double((160 - 16) / 2), Double(LGlyph.Position.X), 0.5, 'horizontally centered');
+  Check(TButtonIconPosition.Bottom, TAlignLayout.Top);
+  Assert.IsTrue(LGlyph.Position.Y >= LText.Position.Y + LText.Height, 'icon below the text');
+  Assert.IsTrue(LText.Height > 0, 'one line of text');
+
+  // the position changes on a button already styled: placed again
+  LButton := NewButton;
+  LButton.SetIcon(IconFonts.MD.content_save, TButtonIconPosition.Top);
+  LButton.ButtonControl.ApplyStyleLookup;
+  LButton.SetIcon(IconFonts.MD.content_save, TButtonIconPosition.Left);
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TControl>('text', LText));
+  Assert.AreEqual(TAlignLayout.Client, LText.Align, 'text beside the icon again');
+
+  // no icon: the layout of the style
+  LButton.ClearIcon;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  Assert.AreEqual(TAlignLayout.Left, LGlyph.Align, 'style glyph');
+end;
+
+procedure TElementsFixture.ButtonIconNextToTheText;
+var
+  LButton: TButtonFrame;
+  LGlyph: TGlyph;
+  LText: TControl;
+begin
+  LButton := NewButton;
+  LButton.Align := TAlignLayout.None;
+  LButton.SetBounds(0, 0, 240, 60);
+  LButton.SetIcon(IconFonts.MD.content_save);
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TControl>('text', LText));
+  // the icon next to the text, the two centered: the space left of the icon is
+  // about half of what the icon and the text leave
+  var LWide := LGlyph.Position.X;
+  Assert.IsTrue(LWide > 60, Format('icon far from the side of a wide button (%.1f)', [LWide]));
+  Assert.AreEqual(Double(LWide + 16 + 6), Double(LText.Margins.Left), 0.01, 'text 6 after the icon');
+  Assert.AreEqual(TTextAlign.Leading, (LText as TText).TextSettings.HorzAlign, 'the text starts at the icon');
+
+  // narrower: placed again
+  LButton.Width := 140;
+  Assert.IsTrue(LGlyph.Position.X < LWide, 'resized: closer to the side');
+  Assert.IsTrue(LGlyph.Position.X > 3);
+
+  // a text too long to center the two: the icon at the side, the text centered in the rest
+  LButton.SetText('A text much longer than the button');
+  Assert.AreEqual(Double(3), Double(LGlyph.Position.X), 0.01, 'side margin of the style');
+  Assert.AreEqual(TTextAlign.Center, (LText as TText).TextSettings.HorzAlign, 'text centered');
+
+  // no text: the icon in the middle
+  LButton.SetText('');
+  Assert.AreEqual(Double((140 - 16) / 2), Double(LGlyph.Position.X), 0.5, 'centered icon');
+
+  // on the right: the mirror
+  LButton.SetText('Next').SetIcon(IconFonts.MD.arrow_right, TButtonIconPosition.Right);
+  var LRightSpace := 140 - (LGlyph.Position.X + LGlyph.Width);
+  Assert.IsTrue(LRightSpace > 3, 'space right of the icon');
+  Assert.AreEqual(Double(LRightSpace + 16 + 6), Double(LText.Margins.Right), 0.01, 'text 6 before the icon');
+  Assert.AreEqual(TTextAlign.Trailing, (LText as TText).TextSettings.HorzAlign, 'the text ends at the icon');
+end;
+
+procedure TElementsFixture.ButtonIconFollowsTheActionText;
+var
+  LButton: TButtonFrame;
+  LGlyph: TGlyph;
+begin
+  LButton := NewButton;
+  LButton.Align := TAlignLayout.None;
+  LButton.SetBounds(0, 0, 240, 60);
+  LButton.SetIcon(IconFonts.MD.content_save);
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  var LShort := LGlyph.Position.X;
+
+  // the text of the action set directly: placed again at the action's update
+  // (what FMX runs at idle time)
+  LButton.ButtonAction.Text := 'Save the document';
+  LButton.ButtonAction.Update;
+  var LLonger := LGlyph.Position.X;
+  Assert.IsTrue(LLonger < LShort, Format('longer text: the icon moves left (%.1f, %.1f)', [LShort, LLonger]));
+  Assert.IsTrue(LLonger > 3, 'still next to the text');
+
+  // the text changed by the OnUpdateHandler
+  LButton.OnUpdateHandler :=
+    procedure (AAction: TAction)
+    begin
+      AAction.Text := 'Saving...';
+    end;
+  LButton.ButtonAction.Update;
+  Assert.IsTrue(LGlyph.Position.X > LLonger, 'shorter text: the icon moves right');
+
+  // an update that changes nothing keeps the place
+  var LPlace := LGlyph.Position.X;
+  LButton.ButtonAction.Update;
+  Assert.AreEqual(Double(LPlace), Double(LGlyph.Position.X), 0.01, 'same place');
+end;
+
+procedure TElementsFixture.ButtonIconSize;
+var
+  LButton: TButtonFrame;
+  LGlyph: TGlyph;
+  LText: TControl;
+begin
+  LButton := NewButton;
+  LButton.Align := TAlignLayout.None;
+  LButton.SetBounds(0, 0, 200, 60);
+  Assert.AreEqual(Double(0), Double(LButton.IconSize), 0.01, 'the size of the style by default');
+  Assert.AreSame(LButton, LButton.SetIcon(IconFonts.MD.content_save).SetIconSize(24), 'fluent');
+  LButton.ButtonControl.ApplyStyleLookup;
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TGlyph>('glyphstyle', LGlyph));
+  Assert.IsTrue(LButton.ButtonControl.FindStyleResource<TControl>('text', LText));
+  Assert.AreEqual(Double(24), Double(LGlyph.Width), 0.01);
+  Assert.AreEqual(Double(24), Double(LGlyph.Height), 0.01);
+  Assert.AreEqual(Double((60 - 24) / 2), Double(LGlyph.Position.Y), 0.5, 'vertically centered');
+  Assert.AreEqual(Double(LGlyph.Position.X + 24 + 6), Double(LText.Margins.Left), 0.01, 'text after the icon');
+
+  // a resize keeps the size (an aligned glyph would get back the 16 of the style)
+  LButton.Width := 150;
+  LButton.Height := 64;
+  Assert.AreEqual(Double(24), Double(LGlyph.Width), 0.01, 'after a resize');
+
+  // larger than the button: reduced to the room it has, inside the button
+  LButton.Height := 40;
+  LButton.SetIconSize(64);
+  Assert.IsTrue(LGlyph.Height <= 40, Format('inside the button (%.1f)', [LGlyph.Height]));
+  Assert.IsTrue(LGlyph.Position.Y >= 0);
+  Assert.AreEqual(Double(LGlyph.Width), Double(LGlyph.Height), 0.01, 'square');
+
+  // above the text: inside the room the line of text leaves
+  LButton.SetIcon(IconFonts.MD.upload, TButtonIconPosition.Top);
+  LButton.Height := 72;
+  LButton.SetIconSize(32);
+  Assert.AreEqual(Double(32), Double(LGlyph.Height), 0.01, 'room for 32 above the text');
+  Assert.IsTrue(LGlyph.Position.Y + LGlyph.Height <= LText.Position.Y, 'above the text');
+  LButton.SetIconSize(64);
+  Assert.IsTrue(LGlyph.Position.Y + LGlyph.Height <= LText.Position.Y, 'reduced, still above the text');
+  Assert.IsTrue(LGlyph.Height < 64);
+
+  // 0: the size of the style again
+  LButton.SetIconSize(0);
+  Assert.AreEqual(Double(16), Double(LGlyph.Height), 0.01, 'the size of the style');
+end;
+
+procedure TElementsFixture.ButtonIconSurvivesActionUpdate;
+begin
+  var LButton := NewButton;
+  LButton.SetIcon(IconFonts.MD.content_save);
+  var LIndex := Integer(LButton.ButtonAction.ImageIndex);
+  LButton.OnUpdateHandler :=
+    procedure (AAction: TAction)
+    begin
+      AAction.Enabled := False;
+      AAction.Text := 'Saving...';
+    end;
+  LButton.ButtonAction.Update;
+  Assert.IsFalse(LButton.ButtonControl.Enabled, 'updated');
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonAction.ImageIndex));
+  Assert.AreEqual(LIndex, Integer(LButton.ButtonControl.ImageIndex));
+end;
+
+procedure TElementsFixture.ButtonImageAndClearIcon;
+begin
+  var LButton := NewButton;
+  var LImages := TImageList.Create(FMain);
+  LButton.SetImage(LImages, 3, TButtonIconPosition.Right);
+  Assert.AreSame(LImages, LButton.ButtonControl.Images);
+  Assert.AreEqual(3, Integer(LButton.ButtonAction.ImageIndex));
+  Assert.AreEqual(TButtonIconPosition.Right, LButton.IconPosition);
+
+  Assert.AreSame(LButton, LButton.ClearIcon, 'fluent');
+  Assert.IsNull(LButton.ButtonControl.Images);
+  Assert.AreEqual(-1, Integer(LButton.ButtonAction.ImageIndex));
+  Assert.AreEqual(TButtonIconPosition.Left, LButton.IconPosition);
 end;
 
 initialization

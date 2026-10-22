@@ -453,6 +453,16 @@ TButtonFrame = class(TFrame)
   function SetBackgroundOpacity(const AOpacity: Single): TButtonFrame;
   function SetOnClickHandler(const AOnClickHandler: TProc): TButtonFrame;
   function SetOnClickProc(const AOnClickProc: TProc): TButtonFrame;   // v.1.3, same as SetOnClickHandler
+  // v.1.10: an icon of the icon font (IconFonts.MD...), default color TAppColors.PrimaryColor;
+  // TButtonIconPosition = (Left, Right, Top, Bottom), scoped; Left/Right: icon next to the text, the two
+  // centered (re-placed on resize and text change); Top/Bottom: give the slot ~70 of height
+  function SetIcon(const AIcon: TIconEntry; const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame; overload;
+  function SetIcon(const AIcon: TIconEntry; const AColor: TAlphaColor; const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame; overload;
+  function SetImage(const AImages: TCustomImageList; const AImageIndex: Integer; const AIconPosition: TButtonIconPosition = TButtonIconPosition.Left): TButtonFrame;
+  function ClearIcon: TButtonFrame;
+  function SetIconSize(const ASize: Single): TButtonFrame;   // 0 = the style's 16; reduced to fit inside the button
+  property IconPosition: TButtonIconPosition;
+  property IconSize: Single;
   property BackgroundFill: TBrush;
   property BackgroundStroke: TStrokeBrush;
   property IsDefault: Boolean;

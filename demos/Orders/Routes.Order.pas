@@ -95,6 +95,7 @@ begin
                     begin
                       Button
                       .SetText('Save')
+                      .SetIcon(IconFonts.MD.content_save)   // an icon of the icon font, left of the text
                       .BindEnabled(State.Modified)   // only when there is something to save
                       .SetOnClickProc(
                         procedure

@@ -9,12 +9,13 @@ procedure DefineHomeRoute(const ARouteName: string);
 implementation
 
 uses
-  System.DateUtils, System.UITypes, System.StrUtils, System.Math, FMX.Skia
+  System.DateUtils, System.UITypes, System.Types, System.StrUtils, System.Math, FMX.Skia
 , FMXER.Navigator, FMXER.UI.Misc, FMXER.UI.Consts
 , FMXER.ScaffoldForm, FMXER.VertScrollFrame, FMXER.ColumnFrame
 , FMXER.TextFrame, FMXER.TrackbarFrame, FMXER.HorzDividerFrame
 , FMXER.SwitchFrame, FMXER.CheckBoxFrame, FMXER.RadioGroupFrame
 , FMXER.ComboBoxFrame, FMXER.DateEditFrame, FMXER.ProgressBarFrame
+, FMXER.RowFrame, FMXER.ButtonFrame
 , FMXER.IconFontsData, Icons.Utils, FMXER.Observable
 ;
 
@@ -33,6 +34,27 @@ begin
   Result := FormatDateTime('dddd, ddddd', ADate);
   if ADate < Today then
     Result := Result + ' - the date is in the past';
+end;
+
+// a button with an icon in APosition: a tap tells where the icon is
+function IconButton(const AScaffold: TScaffoldForm; const AText: string; const AIcon: TIconEntry;
+  const APosition: TButtonIconPosition; const APositionName: string; const AIconSize: Single = 0): TProc<TButtonFrame>;
+begin
+  Result :=
+    procedure (Button: TButtonFrame)
+    begin
+      Button
+      .SetText(AText)
+      .SetIcon(AIcon, APosition)
+      .SetIconSize(AIconSize)   // 0: the size of the style (16)
+      .SetOnClickProc(
+        procedure
+        begin
+          AScaffold.ShowSnackBar(AText + ': icon ' + APositionName, 1500);
+        end
+      );
+      Button.Margins.Rect := TRectF.Create(2, 4, 2, 4);
+    end;
 end;
 
 procedure DefineHomeRoute(const ARouteName: string);
@@ -216,6 +238,25 @@ begin
                   .SetIndeterminate(True)
                   .SetBarColor(TAppColors.MATERIAL_DEEP_ORANGE_400)
                   .SetThickness(4);
+                end
+              )
+              .AddFrame<THorzDividerFrame>(1)
+              // buttons with an icon of the icon font: left, right, above, below the text
+              .AddFrame<TRowFrame>(72
+              , procedure (Row: TRowFrame)
+                var
+                  LWidth: Integer;
+                begin
+                  LWidth := Max(80, Trunc((Col.Width - Col.Padding.Left - Col.Padding.Right) / 4));
+                  Row
+                  .AddFrame<TButtonFrame>(LWidth
+                  , IconButton(Scaffold, 'Save', IconFonts.MD.content_save, TButtonIconPosition.Left, 'left'))
+                  .AddFrame<TButtonFrame>(LWidth
+                  , IconButton(Scaffold, 'Next', IconFonts.MD.arrow_right, TButtonIconPosition.Right, 'right'))
+                  .AddFrame<TButtonFrame>(LWidth
+                  , IconButton(Scaffold, 'Upload', IconFonts.MD.upload, TButtonIconPosition.Top, 'above', 24))
+                  .AddFrame<TButtonFrame>(LWidth
+                  , IconButton(Scaffold, 'Download', IconFonts.MD.download, TButtonIconPosition.Bottom, 'below', 24));
                 end
               )
               .AddFrame<THorzDividerFrame>(1)
