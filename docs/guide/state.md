@@ -263,7 +263,7 @@ Text.BindContent<Currency>(State.Total,                  // one-way, formatted
 - **One binding per property**: a second `BindChecked` (or `BindContent`, ...) on the same element replaces the first.
 
 ::: info Since v.1.9
-`FMXER.Observable` and the `Bind*` methods are new in v.1.9 (not released yet).
+`FMXER.Observable` and the `Bind*` methods are new in v.1.9.
 :::
 
 ## Notifications across screens

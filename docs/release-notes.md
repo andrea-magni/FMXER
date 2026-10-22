@@ -2,7 +2,9 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
-## Unreleased
+## v.1.9 — 2026-10-22
+
+Screens update themselves when the state changes: observable values and bindings.
 
 **Observable values**: `TObservable<T>` (unit `FMXER.Observable`, Flutter `ValueNotifier`) is a value whose listeners are called when it changes. `TChangeNotifier` (`ChangeNotifier`) is the same without a value.
 
