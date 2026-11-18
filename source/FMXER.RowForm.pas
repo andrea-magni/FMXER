@@ -24,6 +24,10 @@ type
     /// <summary>AddFrame/AddForm width: the element's own width (its design
     /// width, or the one set by the configuration procedure).</summary>
     const AUTO_WIDTH = TFMXERSlots.AUTO_SIZE;
+    /// <summary>AddFrame/AddForm width: the slot fills the space left by the
+    /// fixed ones (Flutter's Expanded) and follows resizes. Declare it last,
+    /// one per row.</summary>
+    const EXPAND = TFMXERSlots.EXPAND;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;

@@ -2,6 +2,10 @@
 
 Releases are published on [GitHub](https://github.com/andrea-magni/FMXER/releases).
 
+## Unreleased
+
+**Expanded slots**: `TColumnForm.EXPAND` / `TRowForm.EXPAND` (and the frame variants) passed as the slot size make the slot fill the space left by the fixed ones, following later resizes — Flutter's `Expanded`. One per column or row, declared last. See [Expanded slots](/guide/layouts#expanded-slots). 2 new tests (146 in all).
+
 ## v.1.10 — 2026-10-22
 
 Buttons with an icon beside, above or below the text.

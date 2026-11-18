@@ -43,6 +43,24 @@ Col
 
 The size is taken once, when the element is added: an element that changes size later does not resize its slot. The scroll boxes follow the same rule for a frame content: it keeps its design height (`TVertScrollFrame`) or width (`THorzScrollFrame`), or the one set by the configuration procedure.
 
+### Expanded slots
+
+Pass `EXPAND` instead of a size (Flutter's `Expanded`), and the slot fills the space left by the fixed ones — and keeps filling it when the container is resized later, unlike every fixed or automatic size. The typical screen: a few fixed rows and a list that takes the rest.
+
+```pascal
+Col
+.AddFrame<TEditFrame>(78)
+.AddForm<TRowForm>(64, ...)
+.AddFrame<TListViewFrame>(TColumnForm.EXPAND   // fills the leftover space,
+, procedure (List: TListViewFrame)             // follows window resizes
+  begin
+    // ...
+  end
+);
+```
+
+One `EXPAND` slot per column or row, declared last: it is FMX's `Client` alignment, so it renders after the fixed slots wherever it is declared, and two of them would overlap, not share. The `EXPAND` slot contributes nothing to the column's own `Height` (row's `Width`): with `AUTO_HEIGHT` on a nested column, only the fixed slots are measured.
+
 ::: info Since v.1.3
 `AUTO_HEIGHT`/`AUTO_WIDTH` are new in v.1.3. Before, a frame put in a scroll box got a height (width) of 50 unless the configuration procedure set one.
 :::

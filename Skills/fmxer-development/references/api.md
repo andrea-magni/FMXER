@@ -149,6 +149,7 @@ TColumnForm = class(TForm)
   ContentLayout: TLayout; Stands: TStyleBook;               // Stands has 'fadeIn'
   const DEFAULT_ELEMENT_HEIGHT = 200;
   const AUTO_HEIGHT = -1;   // v.1.3: slot = the element's own height (design, or set in AConfigProc; margins included; forms: Height)
+  const EXPAND = -2;        // slot fills the leftover space (Flutter's Expanded) and follows resizes; one per column, declare it last; adds nothing to the column Height
   function AddFrame<T: TFrame>(const AHeight: Integer = DEFAULT_ELEMENT_HEIGHT;
     const AConfigProc: TProc<T> = nil): TColumnForm; overload;
   function AddFrame<T: TFrame>(const AColDef: TElementDef<T>): TColumnForm; overload;   // param 'Height'
@@ -164,7 +165,7 @@ end;
 // All four (TColumnForm, TRowForm, TColumnFrame, TRowFrame) also have, since v.1.4:
 //   function BatchUpdate(const ABuildProc: TProc<TSelf>): TSelf;   // add many elements: one realign, O(N) not O(N^2)
 // unit FMXER.ColumnFrame / FMXER.RowFrame (v.1.4): TColumnFrame = class(TFrame), TRowFrame = class(TFrame),
-//   the same members as TColumnForm / TRowForm (AddFrame, AddForm, AUTO_HEIGHT / AUTO_WIDTH, Elements,
+//   the same members as TColumnForm / TRowForm (AddFrame, AddForm, AUTO_HEIGHT / AUTO_WIDTH, EXPAND, Elements,
 //   SetElementStand, SetElementAlign, ElementStand, ElementAlign, BatchUpdate); Height/Width start at 0.
 //   ~10x cheaper to create than the forms (a form creates a native window on Windows).
 

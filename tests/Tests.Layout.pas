@@ -32,7 +32,9 @@ type
     [Test] procedure ColumnAutoHeightFromConfig;
     [Test] procedure ColumnAutoHeightWithMargins;
     [Test] procedure ColumnAutoHeightOfANestedColumn;
+    [Test] procedure ColumnExpandFillsTheLeftover;
     [Test] procedure RowAutoWidth;
+    [Test] procedure RowExpandFillsTheLeftover;
     [Test] procedure VertScrollKeepsTheDesignHeight;
     [Test] procedure VertScrollUsesContentStand;
     [Test] procedure HorzScrollKeepsTheDesignWidth;
@@ -152,6 +154,23 @@ begin
   Assert.AreEqual(Single(1 + 40 + 80), LCol.Elements[0].Height, 'height of the inner column');
 end;
 
+procedure TLayoutFixture.ColumnExpandFillsTheLeftover;
+begin
+  var LCol := TColumnForm.Create(FMain);
+  LCol
+  .AddFrame<TTextFrame>(60)
+  .AddFrame<TTextFrame>(40)
+  .AddFrame<TTextFrame>(TColumnForm.EXPAND);
+  Assert.AreEqual(101, LCol.Height, 'the EXPAND slot adds nothing to the column');
+  // whoever hosts the column decides the real estate (scaffold content, stand...)
+  LCol.ClientHeight := 400; // the window chrome is not the column's
+  Pump(50);
+  Assert.AreEqual(Single(300), LCol.Elements[2].Height, 'fills the leftover');
+  LCol.ClientHeight := 250;
+  Pump(50);
+  Assert.AreEqual(Single(150), LCol.Elements[2].Height, 'follows resizes');
+end;
+
 procedure TLayoutFixture.RowAutoWidth;
 var
   LConfig: TProc<TButtonFrame>;
@@ -169,6 +188,18 @@ begin
   Assert.AreEqual(LDesign, LRow.Elements[0].Width, 'design width');
   Assert.AreEqual(Single(70), LRow.Elements[1].Width, 'width set by the configuration');
   Assert.AreEqual(Integer(Round(LDesign) + 70), LRow.Width, 'starts at 0, grows with the elements');
+end;
+
+procedure TLayoutFixture.RowExpandFillsTheLeftover;
+begin
+  var LRow := TRowForm.Create(FMain);
+  LRow
+  .AddFrame<TTextFrame>(100)
+  .AddFrame<TTextFrame>(TRowForm.EXPAND);
+  Assert.AreEqual(100, LRow.Width, 'the EXPAND slot adds nothing to the row');
+  LRow.ClientWidth := 360; // the window chrome is not the row's
+  Pump(50);
+  Assert.AreEqual(Single(260), LRow.Elements[1].Width, 'fills the leftover');
 end;
 
 procedure TLayoutFixture.VertScrollKeepsTheDesignHeight;
