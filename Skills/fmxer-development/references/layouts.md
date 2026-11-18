@@ -8,7 +8,7 @@ Every slot method (`SetContentAsFrame<T>`, `AddFrame<T>`, `SetLeftAsFrame<T>`...
 
 ## Sizing: top-down
 
-FMXER has no measure pass like Flutter: pass the size, or (v.1.3+) `AUTO_HEIGHT`/`AUTO_WIDTH` for the element's own size.
+FMXER has no measure pass like Flutter: pass the size, or (v.1.3+) `AUTO_HEIGHT`/`AUTO_WIDTH` for the element's own size, or `EXPAND` (columns and rows) for Flutter's `Expanded`: the slot fills the space left by the fixed ones and follows later resizes. One `EXPAND` slot per column/row, declared last (it is FMX `Client` alignment: it renders after the fixed slots wherever declared, two would overlap); it adds nothing to the container's own `Height`/`Width`.
 
 | Container | Rule |
 |---|---|

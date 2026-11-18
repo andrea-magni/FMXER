@@ -23,6 +23,10 @@ type
     /// <summary>AddFrame/AddForm height: the element's own height (its design
     /// height, or the one set by the configuration procedure).</summary>
     const AUTO_HEIGHT = TFMXERSlots.AUTO_SIZE;
+    /// <summary>AddFrame/AddForm height: the slot fills the space left by the
+    /// fixed ones (Flutter's Expanded) and follows resizes. Declare it last,
+    /// one per column.</summary>
+    const EXPAND = TFMXERSlots.EXPAND;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;

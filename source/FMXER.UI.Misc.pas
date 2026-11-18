@@ -100,6 +100,11 @@ type
   public
     /// <summary>ASize value: the slot takes the element's own size.</summary>
     const AUTO_SIZE = -1;
+    /// <summary>ASize value: the slot fills the space left by the fixed ones
+    /// (Flutter's Expanded) and follows later resizes of the container. It
+    /// renders after the fixed slots regardless of where it is declared
+    /// (FMX Client alignment): declare it last, one per column or row.</summary>
+    const EXPAND = -2;
   private
     class function NewSlot(const AContent: TControl; const AOwner: TComponent;
       const AVertical: Boolean; const ASlotAlign: TAlignLayout;
@@ -188,7 +193,10 @@ begin
     Result.Parent := AContent;
     if ASize >= 0 then
       SetSlotSize(Result, AVertical, ASize);
-    Result.Align := ASlotAlign;
+    if ASize = EXPAND then
+      Result.Align := TAlignLayout.Client
+    else
+      Result.Align := ASlotAlign;
   except
     Result.Free;
     raise;
@@ -231,6 +239,8 @@ begin
       AConfigProc(LElement.Frame);
 
     Result := ASize;
+    if ASize = EXPAND then
+      Result := 0; // the container's own size only accounts for the fixed slots
     if ASize = AUTO_SIZE then
     begin
       LFrame := LElement.Frame;
@@ -266,6 +276,8 @@ begin
       AConfigProc(LElement.Form);
 
     Result := ASize;
+    if ASize = EXPAND then
+      Result := 0; // the container's own size only accounts for the fixed slots
     if ASize = AUTO_SIZE then
     begin
       if AVertical then
